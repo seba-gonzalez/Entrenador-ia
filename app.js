@@ -1,0 +1,86 @@
+const screens = ['welcome', 'profile', 'summary', 'pending', 'plan'];
+const labels = ['Bienvenida', 'Conocerte', 'Confirmar', 'Aclarar', 'Tu propuesta'];
+const $ = (selector) => document.querySelector(selector);
+const value = (id) => document.getElementById(id).value.trim();
+let profile = {};
+
+function showScreen(name) {
+  const index = screens.indexOf(name);
+  document.querySelectorAll('.screen').forEach((screen) => screen.classList.toggle('active', screen.dataset.screen === name));
+  $('#stepLabel').textContent = labels[index];
+  $('#stepCount').textContent = `${index + 1} de ${screens.length}`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  sessionStorage.setItem('entrenador-screen', name);
+}
+
+function collectProfile() {
+  const checkedDays = document.querySelector('input[name="days"]:checked');
+  return { goal:value('goal'), experience:value('experience'), days:checkedDays?.value || '', duration:value('duration'), equipment:value('equipment'), preferences:value('preferences'), likes:value('likes'), dislikes:value('dislikes'), limitations:value('limitations'), extra:value('extra') };
+}
+
+function validateProfile() {
+  let valid = true;
+  [['goal', value('goal')], ['experience', value('experience')], ['days', document.querySelector('input[name="days"]:checked')]].forEach(([id, answer]) => {
+    const field = document.getElementById(id).closest('.question');
+    field.classList.toggle('invalid', !answer);
+    if (!answer) valid = false;
+  });
+  if (!valid) document.querySelector('.invalid').scrollIntoView({ behavior:'smooth', block:'center' });
+  return valid;
+}
+
+function fallback(text, alternative) { return text || alternative; }
+function renderSummary() {
+  const cards = [
+    ['◎','Tu dirección', `Quieres ${profile.goal.replace(/^[Qq]uiero\s+/, '').replace(/[.]$/, '')}.`],
+    ['↗','Tu punto de partida', `${profile.experience}. Podemos trabajar ${profile.days} días por semana, con sesiones de ${profile.duration.toLowerCase()}.`],
+    ['◇','El entorno', fallback(profile.equipment, 'Aún tenemos que concretar el material disponible.')],
+    ['♡','Lo que te mueve', profile.likes ? `Disfrutas ${profile.likes.toLowerCase()}${profile.dislikes ? ` y prefieres evitar ${profile.dislikes.toLowerCase()}` : ''}.` : fallback(profile.preferences, 'Buscaremos juntos una forma de entrenar que disfrutes.')],
+    ['+','Cómo cuidarte', profile.limitations && !/ningun|no tengo|sin molest/i.test(profile.limitations) ? `Tendremos presente: ${profile.limitations}` : 'No señalas molestias relevantes por ahora; seguiremos atentos a tus sensaciones.'],
+    ['≋','Tu contexto', fallback(profile.extra, profile.preferences || 'Iremos completando tu contexto a medida que entrenemos.')]
+  ];
+  $('#summaryCards').innerHTML = cards.map(([icon,title,text]) => `<article class="summary-card"><span class="icon">${icon}</span><small>${title}</small><p>${escapeHtml(text)}</p></article>`).join('');
+  $('#coachReading').textContent = `La prioridad será avanzar hacia tu objetivo con una carga que encaje con tu experiencia y con el tiempo real que tienes. La propuesta debe ser sostenible, medible y dejar espacio para ajustar según tus sensaciones.`;
+}
+
+function preparePending() {
+  const hasConcern = profile.limitations && !/ningun|no tengo|sin molest/i.test(profile.limitations);
+  const question = hasConcern
+    ? 'Sobre esa molestia: ¿qué movimientos la hacen aparecer y cómo se siente hoy, del 1 al 10?'
+    : !profile.equipment
+      ? '¿Entrenarás en casa, al aire libre o en un gimnasio? ¿Tienes algún material a mano?'
+      : 'Pensando en una semana normal, ¿qué haría que este plan fuese realmente fácil de cumplir?';
+  $('#pendingQuestion').textContent = question;
+  $('#pendingAnswer').placeholder = hasConcern ? 'Por ejemplo: aparece al bajar escaleras, hoy es un 2/10…' : 'Cuéntamelo con tus palabras…';
+}
+
+const blocks = [
+  { name:'Calentamiento', time:'8 min', exercises:[['Respiración y movilidad articular','2 rondas','Sin prisa','Movimientos cómodos y progresivos'],['Sentadilla a banco + alcance','8 repeticiones','RPE 3','Controla la bajada']] },
+  { name:'Fuerza principal', time:'24 min', exercises:[['Sentadilla goblet o a banco','3 × 8','90 s · RPE 7','Termina con 3 repeticiones posibles'],['Remo con mancuerna o banda','3 × 10/lado','75 s · RPE 7','Hombro lejos de la oreja'],['Peso muerto rumano','3 × 8','90 s · RPE 6–7','Cadera atrás, espalda estable']] },
+  { name:'Transferencia y potencia', time:'6 min', exercises:[['Lanzamiento de balón o subida rápida','4 × 5','60 s · RPE 6','Rápido, siempre con control']] },
+  { name:'Acondicionamiento', time:'6 min', exercises:[['Bici, caminata con pendiente o marcha','6 × 30/30 s','RPE 7','Ritmo vivo / ritmo suave']] },
+  { name:'Vuelta a la calma', time:'4 min', exercises:[['Movilidad suave y respiración','4 minutos','RPE 2','Respira lento, sin forzar']] }
+];
+
+function renderPlan() {
+  $('#planMeta').textContent = `${profile.days} días por semana · ${profile.duration} por sesión · Intensidad progresiva`;
+  $('#planIntent').textContent = `Construir una base sólida para ${profile.goal.toLowerCase()}, aprendiendo cómo responde tu cuerpo sin perseguir fatiga innecesaria.`;
+  $('#workoutBlocks').innerHTML = blocks.map((block,i) => `<article class="workout-block"><header class="block-head"><div><span class="block-index">0${i+1}</span><h3>${block.name}</h3></div><small>${block.time}</small></header>${block.exercises.map(ex => `<div class="exercise"><div><strong>${ex[0]}</strong><p>${ex[3]}</p></div><div class="exercise-stat"><small>Volumen</small><b>${ex[1]}</b></div><div class="exercise-stat"><small>Descanso / esfuerzo</small><b>${ex[2]}</b></div></div>`).join('')}</article>`).join('');
+}
+
+function escapeHtml(text) { const div=document.createElement('div'); div.textContent=text; return div.innerHTML; }
+
+document.addEventListener('click', (event) => {
+  const next = event.target.closest('[data-next]');
+  const back = event.target.closest('[data-back]');
+  if (next) { if (next.dataset.next === 'pending') preparePending(); showScreen(next.dataset.next); }
+  if (back) showScreen(back.dataset.back);
+  if (event.target.closest('[data-restart]')) { sessionStorage.clear(); $('#profileForm').reset(); showScreen('welcome'); }
+});
+
+$('#profileForm').addEventListener('submit', (event) => { event.preventDefault(); if (!validateProfile()) return; profile=collectProfile(); sessionStorage.setItem('entrenador-profile', JSON.stringify(profile)); renderSummary(); showScreen('summary'); });
+$('#pendingForm').addEventListener('submit', (event) => { event.preventDefault(); const field=$('#pendingAnswer').closest('.pending-card'); field.classList.toggle('invalid', !value('pendingAnswer')); if (!value('pendingAnswer')) return; renderPlan(); showScreen('plan'); });
+$('#finishButton').addEventListener('click', () => { const toast=$('#toast'); toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2600); });
+document.querySelectorAll('input,select,textarea').forEach(el => el.addEventListener('input', () => el.closest('.question,.pending-card')?.classList.remove('invalid')));
+
+try { const saved=JSON.parse(sessionStorage.getItem('entrenador-profile')); if(saved) profile=saved; } catch (_) { sessionStorage.removeItem('entrenador-profile'); }
