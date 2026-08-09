@@ -35,23 +35,23 @@
         <button class="back" data-back="welcome">← Volver</button>
         <p class="eyebrow">Nuestra primera conversación</p>
         <h2 id="profile-title">Cuéntame un poco sobre ti</h2>
-        <p>No hay respuestas perfectas. Háblame como lo harías con un entrenador.</p>
+        <p>No hay respuestas técnicas correctas. Respóndeme como se lo contarías a un entrenador: puedes ser breve o explayarte si hay algo que creas importante.</p>
       </div>
       <form id="profileForm" novalidate>
-        <div class="question wide"><label for="goal">¿Qué te gustaría conseguir principalmente? <b>*</b></label><textarea id="goal" rows="3" required placeholder="Por ejemplo: sentirme más fuerte, preparar una carrera, volver a moverme con confianza…"></textarea><span class="error">Cuéntame tu objetivo para poder continuar.</span></div>
+        <div class="question wide"><label for="goal">Para empezar, ¿qué te gustaría conseguir principalmente? <b>*</b></label><textarea id="goal" rows="3" required placeholder="Por ejemplo: sentirme más fuerte, preparar una carrera, volver a moverme con confianza…"></textarea><span class="error">Cuéntame tu objetivo para poder continuar.</span></div>
         <div class="grid-2">
-          <div class="question"><label for="experience">¿Cómo describirías tu experiencia? <b>*</b></label><select id="experience" required><option value="">Elige una opción</option><option>Estoy empezando</option><option>He entrenado alguna vez</option><option>Entreno con regularidad</option><option>Tengo mucha experiencia</option></select><span class="error">Selecciona tu experiencia.</span></div>
-          <div class="question"><label for="days">¿Cuántos días puedes entrenar? <b>*</b></label><div class="choice-row" id="days" role="radiogroup" aria-label="Días disponibles"><label><input type="radio" name="days" value="2"><span>2</span></label><label><input type="radio" name="days" value="3"><span>3</span></label><label><input type="radio" name="days" value="4"><span>4</span></label><label><input type="radio" name="days" value="5"><span>5+</span></label></div><span class="error">Selecciona una frecuencia.</span></div>
-          <div class="question"><label for="duration">¿Cuánto tiempo tienes por sesión?</label><select id="duration"><option>30 minutos</option><option selected>45 minutos</option><option>60 minutos</option><option>75 minutos o más</option></select></div>
-          <div class="question"><label for="equipment">¿Con qué equipamiento cuentas?</label><input id="equipment" placeholder="Gimnasio, mancuernas, bandas, solo mi cuerpo…"></div>
+          <div class="question"><label for="experience">¿Qué experiencia tienes entrenando? <b>*</b></label><select id="experience" required><option value="">Elige una opción</option><option>Estoy empezando</option><option>He entrenado alguna vez</option><option>Entreno con regularidad</option><option>Tengo mucha experiencia</option></select><span class="error">Selecciona tu experiencia.</span></div>
+          <div class="question"><label for="days">Pensando en una semana normal, ¿cuántos días podrías entrenar? <b>*</b></label><div class="choice-row" id="days" role="radiogroup" aria-label="Días disponibles"><label><input type="radio" name="days" value="2"><span>2</span></label><label><input type="radio" name="days" value="3"><span>3</span></label><label><input type="radio" name="days" value="4"><span>4</span></label><label><input type="radio" name="days" value="5"><span>5+</span></label></div><span class="error">Selecciona una frecuencia.</span></div>
+          <div class="question"><label for="duration">¿Cuánto tiempo tienes normalmente para cada sesión?</label><select id="duration"><option>30 minutos</option><option selected>45 minutos</option><option>60 minutos</option><option>75 minutos o más</option></select></div>
+          <div class="question"><label for="equipment">¿Dónde entrenas y con qué equipamiento cuentas?</label><input id="equipment" placeholder="Gimnasio, mancuernas, bandas, solo mi cuerpo…"></div>
         </div>
-        <div class="question wide"><label for="preferences">¿Cómo te gusta entrenar?</label><textarea id="preferences" rows="2" placeholder="Con calma, con variedad, sintiendo intensidad, al aire libre…"></textarea></div>
+        <div class="question wide"><label for="preferences">¿Cómo disfrutas más entrenar?</label><textarea id="preferences" rows="2" placeholder="Con calma, con variedad, sintiendo intensidad, al aire libre…"></textarea></div>
         <div class="grid-2">
-          <div class="question"><label for="likes">Algo que disfrutas</label><input id="likes" placeholder="Caminar, sentadillas, bici, clases…"></div>
-          <div class="question"><label for="dislikes">Algo que no te gusta</label><input id="dislikes" placeholder="Correr, rutinas muy largas…"></div>
+          <div class="question"><label for="likes">¿Hay alguna actividad o forma de entrenar que disfrutes especialmente?</label><input id="likes" placeholder="Caminar, sentadillas, bici, clases…"></div>
+          <div class="question"><label for="dislikes">¿Hay algo que prefieras evitar si tenemos otras opciones?</label><input id="dislikes" placeholder="Correr, rutinas muy largas…"></div>
         </div>
-        <div class="question safety wide"><span class="safety-icon">+</span><div><label for="limitations">¿Hay alguna molestia o limitación que deba tener en cuenta?</label><textarea id="limitations" rows="2" placeholder="Cuéntame dónde, cuándo aparece y qué movimientos la provocan. Si no hay, escribe “ninguna”."></textarea></div></div>
-        <div class="question wide"><label for="extra">¿Hay algo más que te gustaría que supiera?</label><textarea id="extra" rows="3" placeholder="Tu rutina diaria, una preocupación, algo que te haya funcionado antes…"></textarea></div>
+        <div class="question safety wide"><span class="safety-icon">+</span><div><label for="limitations">¿Hay alguna molestia, lesión o situación que debamos cuidar al entrenar?</label><textarea id="limitations" rows="2" placeholder="Cuéntame dónde, cuándo aparece y qué movimientos la provocan. Si no hay, escribe “ninguna”."></textarea></div></div>
+        <div class="question wide optional-question"><label for="extra">¿Hay algo más que debería saber de ti antes de empezar? <span class="optional-badge">Opcional</span></label><textarea id="extra" rows="3" aria-describedby="extraHelp" placeholder="Tu rutina diaria, otro deporte, una preocupación, algo que te haya funcionado antes…"></textarea><p class="field-help" id="extraHelp">Puedes dejar este espacio vacío y continuar. Iremos conociéndote mejor a medida que entrenemos.</p></div>
         <div class="form-actions"><p><b>*</b> Campos necesarios para empezar</p><button class="primary" type="submit">Interpretar mis respuestas <span>→</span></button></div>
       </form>
     </section>
