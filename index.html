@@ -9,80 +9,15 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Entrenador IA, inicio"><span class="brand-mark">E</span><span>Entrenador <strong>IA</strong></span></a>
-    <div class="step-status" aria-live="polite"><span id="stepLabel">Bienvenida</span><span id="stepCount">1 de 5</span></div>
-  </header>
-
+  <header class="topbar"><a class="brand" href="#" aria-label="Entrenador IA, inicio"><span class="brand-mark">E</span><span>Entrenador <strong>IA</strong></span></a><div class="step-status" aria-live="polite"><span id="stepLabel">Bienvenida</span><span id="stepCount">1 de 5</span></div></header>
   <main>
-    <section class="screen active hero" data-screen="welcome" aria-labelledby="welcome-title">
-      <div class="hero-copy">
-        <p class="eyebrow">Tu entrenamiento empieza antes de entrenar</p>
-        <h1 id="welcome-title">Primero quiero<br><em>conocerte.</em></h1>
-        <p class="lead">No voy a darte una rutina genérica. Cuéntame dónde estás y hacia dónde quieres ir; juntos construiremos un punto de partida que tenga sentido para ti.</p>
-        <button class="primary" data-next="profile">Comenzar <span aria-hidden="true">→</span></button>
-        <p class="microcopy">Sin registro · Unos 4 minutos</p>
-      </div>
-      <aside class="coach-note">
-        <span class="pulse"></span>
-        <p>“Una buena decisión empieza por escuchar el contexto, no por elegir ejercicios.”</p>
-        <div class="coach-id"><span class="avatar">IA</span><span><strong>Tu entrenador</strong><small>Presente para acompañarte</small></span></div>
-      </aside>
-    </section>
-
-    <section class="screen form-screen" data-screen="profile" aria-labelledby="profile-title">
-      <div class="section-intro">
-        <button class="back" data-back="welcome">← Volver</button>
-        <p class="eyebrow">Nuestra primera conversación</p>
-        <h2 id="profile-title">Cuéntame un poco sobre ti</h2>
-        <p>No hay respuestas técnicas correctas. Respóndeme como se lo contarías a un entrenador: puedes ser breve o explayarte si hay algo que creas importante.</p>
-      </div>
-      <form id="profileForm" novalidate>
-        <div class="question wide"><label for="goal">Para empezar, ¿qué te gustaría conseguir principalmente? <b>*</b></label><textarea id="goal" rows="3" required placeholder="Por ejemplo: sentirme más fuerte, preparar una carrera, volver a moverme con confianza…"></textarea><span class="error">Cuéntame tu objetivo para poder continuar.</span></div>
-        <div class="grid-2">
-          <div class="question"><label for="experience">¿Qué experiencia tienes entrenando? <b>*</b></label><select id="experience" required><option value="">Elige una opción</option><option>Estoy empezando</option><option>He entrenado alguna vez</option><option>Entreno con regularidad</option><option>Tengo mucha experiencia</option></select><span class="error">Selecciona tu experiencia.</span></div>
-          <div class="question"><label for="days">Pensando en una semana normal, ¿cuántos días podrías entrenar? <b>*</b></label><div class="choice-row" id="days" role="radiogroup" aria-label="Días disponibles"><label><input type="radio" name="days" value="2"><span>2</span></label><label><input type="radio" name="days" value="3"><span>3</span></label><label><input type="radio" name="days" value="4"><span>4</span></label><label><input type="radio" name="days" value="5"><span>5+</span></label></div><span class="error">Selecciona una frecuencia.</span></div>
-          <div class="question"><label for="duration">¿Cuánto tiempo tienes normalmente para cada sesión?</label><select id="duration"><option>30 minutos</option><option selected>45 minutos</option><option>60 minutos</option><option>75 minutos o más</option></select></div>
-          <div class="question"><label for="equipment">¿Dónde entrenas y con qué equipamiento cuentas?</label><input id="equipment" placeholder="Gimnasio, mancuernas, bandas, solo mi cuerpo…"></div>
-        </div>
-        <div class="question wide"><label for="preferences">¿Cómo disfrutas más entrenar?</label><textarea id="preferences" rows="2" placeholder="Con calma, con variedad, sintiendo intensidad, al aire libre…"></textarea></div>
-        <div class="grid-2">
-          <div class="question"><label for="likes">¿Hay alguna actividad o forma de entrenar que disfrutes especialmente?</label><input id="likes" placeholder="Caminar, sentadillas, bici, clases…"></div>
-          <div class="question"><label for="dislikes">¿Hay algo que prefieras evitar si tenemos otras opciones?</label><input id="dislikes" placeholder="Correr, rutinas muy largas…"></div>
-        </div>
-        <div class="question safety wide"><span class="safety-icon">+</span><div><label for="limitations">¿Hay alguna molestia, lesión o situación que debamos cuidar al entrenar?</label><textarea id="limitations" rows="2" placeholder="Cuéntame dónde, cuándo aparece y qué movimientos la provocan. Si no hay, escribe “ninguna”."></textarea></div></div>
-        <div class="question wide optional-question"><label for="extra">¿Hay algo más que debería saber de ti antes de empezar? <span class="optional-badge">Opcional</span></label><textarea id="extra" rows="3" aria-describedby="extraHelp" placeholder="Tu rutina diaria, otro deporte, una preocupación, algo que te haya funcionado antes…"></textarea><p class="field-help" id="extraHelp">Puedes dejar este espacio vacío y continuar. Iremos conociéndote mejor a medida que entrenemos.</p></div>
-        <div class="form-actions"><p><b>*</b> Campos necesarios para empezar</p><button class="primary" type="submit">Interpretar mis respuestas <span>→</span></button></div>
-      </form>
-    </section>
-
-    <section class="screen summary-screen" data-screen="summary" aria-labelledby="summary-title">
-      <button class="back" data-back="profile">← Volver a mis respuestas</button>
-      <div class="section-intro centered"><p class="eyebrow">Antes de decidir</p><h2 id="summary-title">Esto es lo que entendí de ti</h2><p>Quiero asegurarme de que estamos mirando en la misma dirección.</p></div>
-      <div id="summaryCards" class="summary-grid"></div>
-      <div class="interpretation"><span class="avatar">IA</span><div><strong>Mi lectura como entrenador</strong><p id="coachReading"></p></div></div>
-      <div class="confirm-box"><h3>¿Te representa este resumen?</h3><p>Podrás ajustar los detalles antes de que prepare tu propuesta.</p><div><button class="secondary" data-back="profile">Quiero corregir algo</button><button class="primary" data-next="pending">Sí, esto me representa <span>→</span></button></div></div>
-    </section>
-
-    <section class="screen pending-screen" data-screen="pending" aria-labelledby="pending-title">
-      <button class="back" data-back="summary">← Volver al resumen</button>
-      <div class="conversation">
-        <div class="avatar large">IA</div><div><p class="eyebrow">Una última cosa</p><h2 id="pending-title">Ya tengo una imagen bastante clara.</h2><p id="pendingIntro">Solo necesito entender un detalle para que la propuesta encaje mejor contigo.</p></div>
-      </div>
-      <form id="pendingForm" class="pending-card"><span class="question-number">Pregunta final</span><label id="pendingQuestion" for="pendingAnswer"></label><textarea id="pendingAnswer" rows="4" required></textarea><span class="error">Este detalle me ayudará a preparar mejor la propuesta.</span><button class="primary" type="submit">Preparar mi propuesta <span>→</span></button></form>
-      <p class="privacy">🔒 Tus respuestas se quedan en este dispositivo durante el prototipo.</p>
-    </section>
-
-    <section class="screen plan-screen" data-screen="plan" aria-labelledby="plan-title">
-      <div class="plan-heading"><div><p class="eyebrow">Tu punto de partida</p><h2 id="plan-title">Primera propuesta de entrenamiento</h2><p id="planMeta"></p></div><span class="status-pill">Propuesta inicial</span></div>
-      <div class="plan-callout"><span>01</span><div><strong>La intención de esta sesión</strong><p id="planIntent"></p></div></div>
-      <div id="workoutBlocks" class="workout"></div>
-      <div class="adapt-message"><span class="spark">✦</span><div><h3>Esto es solo el comienzo.</h3><p>Esta es tu primera propuesta. A partir de tus entrenamientos y feedback iremos aprendiendo y adaptándola.</p></div></div>
-      <div class="plan-actions"><button class="secondary" data-restart>Empezar de nuevo</button><button class="primary" id="finishButton">Entendido, estoy listo <span>✓</span></button></div>
-      <p class="disclaimer">Si aparece dolor agudo o una molestia que aumenta, detén el ejercicio. Este prototipo no sustituye la evaluación de un profesional sanitario.</p>
-    </section>
-  </main>
-  <div id="toast" role="status" aria-live="polite">Propuesta guardada para esta sesión</div>
-  <script src="app.js"></script>
-</body>
-</html>
+    <section class="screen active hero" data-screen="welcome" aria-labelledby="welcome-title"><div class="hero-copy"><p class="eyebrow">Tu entrenamiento empieza antes de entrenar</p><h1 id="welcome-title">Primero quiero<br><em>conocerte.</em></h1><p class="lead">No voy a darte una rutina genérica. Cuéntame dónde estás y hacia dónde quieres ir; juntos construiremos un punto de partida que tenga sentido para ti.</p><button class="primary" data-next="profile">Comenzar <span aria-hidden="true">→</span></button><p class="microcopy">Sin registro · Unos 4 minutos</p></div><aside class="coach-note"><span class="pulse"></span><p>“Una buena decisión empieza por escuchar el contexto, no por elegir ejercicios.”</p><div class="coach-id"><span class="avatar">IA</span><span><strong>Tu entrenador</strong><small>Presente para acompañarte</small></span></div></aside></section>
+    <section class="screen form-screen" data-screen="profile" aria-labelledby="profile-title"><div class="section-intro"><button class="back" data-back="welcome">← Volver</button><p class="eyebrow">Nuestra primera conversación</p><h2 id="profile-title">Cuéntame un poco sobre ti</h2><p>No hay respuestas técnicas correctas. Puedes responder en pocas palabras o explayarte con total libertad: háblame como lo harías con un entrenador.</p></div><form id="profileForm" novalidate>
+      <div class="question wide"><label for="goal">Para empezar, ¿qué te gustaría conseguir? <b>*</b></label><textarea id="goal" rows="3" required placeholder="Por ejemplo: sentirme más fuerte, preparar una carrera, volver a moverme con confianza…"></textarea><span class="error">Cuéntame tu objetivo para poder continuar.</span></div>
+      <div class="grid-2"><div class="question"><label for="experience">¿Cómo ha sido tu relación con el entrenamiento hasta ahora? <b>*</b></label><select id="experience" required><option value="">Elige la que más se parezca a ti</option><option>Estoy empezando</option><option>He entrenado alguna vez</option><option>Entreno con regularidad</option><option>Tengo mucha experiencia</option></select><span class="error">Selecciona tu experiencia.</span></div><div class="question"><label for="days">En una semana normal, ¿cuántos días te vendría bien entrenar? <b>*</b></label><div class="choice-row" id="days" role="radiogroup" aria-label="Días disponibles"><label><input type="radio" name="days" value="2"><span>2</span></label><label><input type="radio" name="days" value="3"><span>3</span></label><label><input type="radio" name="days" value="4"><span>4</span></label><label><input type="radio" name="days" value="5"><span>5+</span></label></div><span class="error">Selecciona una frecuencia.</span></div><div class="question"><label for="duration">¿Cuánto tiempo podrías dedicarle cada vez?</label><select id="duration"><option>30 minutos</option><option selected>45 minutos</option><option>60 minutos</option><option>75 minutos o más</option></select></div><div class="question"><label for="equipment">¿Dónde entrenarías y qué tendrías a mano?</label><input id="equipment" placeholder="Un gimnasio, mancuernas, bandas, solo mi cuerpo…"></div></div>
+      <div class="question wide"><label for="preferences">Cuando imaginas un entrenamiento que disfrutas, ¿cómo es?</label><textarea id="preferences" rows="2" placeholder="Con calma, con variedad, sintiendo intensidad, al aire libre…"></textarea></div><div class="grid-2"><div class="question"><label for="likes">¿Qué ejercicios o actividades sueles disfrutar?</label><input id="likes" placeholder="Caminar, sentadillas, bici, clases…"></div><div class="question"><label for="dislikes">¿Y hay algo que prefieras evitar?</label><input id="dislikes" placeholder="Correr, rutinas muy largas…"></div></div>
+      <div class="question safety wide"><span class="safety-icon">+</span><div><label for="limitations">¿Hay alguna molestia o movimiento con el que quieras que tengamos especial cuidado?</label><textarea id="limitations" rows="2" placeholder="Si quieres, cuéntame dónde aparece y qué suele provocarla. Si no hay ninguna, puedes decirme “ninguna”."></textarea></div></div><div class="question wide"><label for="extra">¿Hay algo más que debería saber de ti antes de empezar? <small class="optional-note">Opcional</small></label><textarea id="extra" rows="3" aria-describedby="extraHint" placeholder="Tu rutina diaria, una preocupación, algo que te haya funcionado antes…"></textarea><p class="field-hint" id="extraHint">Puedes dejar este espacio vacío y continuar. Iremos conociéndote mejor a medida que entrenemos.</p></div><div class="form-actions"><p><b>*</b> Campos necesarios para empezar</p><button class="primary" type="submit">Interpretar mis respuestas <span>→</span></button></div></form></section>
+    <section class="screen summary-screen" data-screen="summary" aria-labelledby="summary-title"><button class="back" data-back="profile">← Volver a mis respuestas</button><div class="section-intro centered"><p class="eyebrow">Antes de decidir</p><h2 id="summary-title">Esto es lo que entendí de ti</h2><p>Quiero asegurarme de que estamos mirando en la misma dirección.</p></div><div class="interpretation interpretation-main"><span class="avatar">IA</span><div><p class="eyebrow">Mi lectura como entrenador</p><div id="coachReading" class="coach-reading"></div></div></div><div id="summaryCards" class="summary-grid summary-support"></div><section class="working-agreement" aria-labelledby="working-title"><span class="spark" aria-hidden="true">✦</span><div><p class="eyebrow">Un proceso que se adapta</p><h3 id="working-title">Cómo vamos a trabajar contigo</h3><p>La primera rutina será un punto de partida, no una decisión cerrada. Las cargas, el RPE, tus sensaciones, cualquier molestia, tu disponibilidad real y el feedback de cada entrenamiento nos ayudarán a ajustar las siguientes sesiones. No necesitamos descubrirlo todo hoy: iremos conociéndote también mientras entrenas.</p></div></section><div class="confirm-box"><h3>¿Te representa este resumen?</h3><p>Podrás ajustar los detalles antes de que prepare tu propuesta.</p><div><button class="secondary" data-back="profile">Quiero corregir algo</button><button class="primary" data-next="pending">Sí, esto me representa <span>→</span></button></div></div></section>
+    <section class="screen pending-screen" data-screen="pending" aria-labelledby="pending-title"><button class="back" data-back="summary">← Volver al resumen</button><div class="conversation"><div class="avatar large">IA</div><div><p class="eyebrow">Una última cosa</p><h2 id="pending-title">Ya tengo una imagen bastante clara.</h2><p id="pendingIntro">Solo necesito entender un detalle para que la propuesta encaje mejor contigo.</p></div></div><form id="pendingForm" class="pending-card"><span class="question-number">Pregunta final</span><label id="pendingQuestion" for="pendingAnswer"></label><textarea id="pendingAnswer" rows="4" required></textarea><span class="error">Este detalle me ayudará a preparar mejor la propuesta.</span><button class="primary" type="submit">Preparar mi propuesta <span>→</span></button></form><p class="privacy">🔒 Tus respuestas se quedan en este dispositivo durante el prototipo.</p></section>
+    <section class="screen plan-screen" data-screen="plan" aria-labelledby="plan-title"><div class="plan-heading"><div><p class="eyebrow">Tu punto de partida</p><h2 id="plan-title">Primera propuesta de entrenamiento</h2><p id="planMeta"></p></div><span class="status-pill">Propuesta inicial</span></div><div class="plan-callout"><span>01</span><div><strong>La intención de esta sesión</strong><p id="planIntent"></p></div></div><div id="workoutBlocks" class="workout"></div><div class="adapt-message"><span class="spark">✦</span><div><h3>Esto es solo el comienzo.</h3><p>Esta es tu primera propuesta. A partir de tus entrenamientos y feedback iremos aprendiendo y adaptándola.</p></div></div><div class="plan-actions"><button class="secondary" data-restart>Empezar de nuevo</button><button class="primary" id="finishButton">Entendido, estoy listo <span>✓</span></button></div><p class="disclaimer">Si aparece dolor agudo o una molestia que aumenta, detén el ejercicio. Este prototipo no sustituye la evaluación de un profesional sanitario.</p></section>
+  </main><div id="toast" role="status" aria-live="polite">Propuesta guardada para esta sesión</div><script src="app.js"></script></body></html>
