@@ -1,23 +1,297 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f4f1ea">
-  <title>Entrenador IA</title>
-  <meta name="description" content="Tu entrenador personal que escucha, interpreta y adapta.">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrenador IA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --paper:#F5F4EF; --card:#FFFFFF; --ink:#1E241F; --ink-soft:#5B6259; --ink-faint:#93998F;
+  --line:#E1DED2; --accent:#5B7355; --accent-soft:#E4E9DC; --amber:#C98A3D; --amber-soft:#F5E7CE;
+  --radius:16px; --radius-sm:10px;
+  --font-display:'Space Grotesk',Arial,sans-serif; --font-body:'IBM Plex Sans',Arial,sans-serif;
+  --font-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;min-height:100vh;}
+.wrap{max-width:520px;margin:0 auto;padding:24px 16px 40px;min-height:100vh;display:flex;flex-direction:column;}
+
+/* ---------- SCREENS ---------- */
+.screen{display:none;flex:1;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* ---------- LANDING ---------- */
+#screen-landing{justify-content:center;align-items:center;text-align:center;gap:22px;}
+.landing-avatar{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:24px;}
+.landing-title{font-family:var(--font-display);font-weight:700;font-size:26px;line-height:1.25;margin:0;}
+.landing-sub{font-size:15px;color:var(--ink-soft);line-height:1.6;max-width:380px;margin:0;}
+.landing-points{display:flex;flex-direction:column;gap:10px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;width:100%;}
+.landing-point{display:flex;gap:10px;font-size:13.5px;color:var(--ink-soft);align-items:flex-start;}
+.landing-point b{color:var(--ink);}
+.landing-point .dot{flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:6px;}
+.btn-big{font-family:var(--font-body);font-weight:600;font-size:15px;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:15px 24px;cursor:pointer;width:100%;max-width:340px;}
+.landing-note{font-size:11.5px;color:var(--ink-faint);font-family:var(--font-mono);}
+
+/* ---------- CHAT ---------- */
+#screen-chat{gap:0;}
+.progress-bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:20px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);transition:width .3s ease;}
+.chat-scroll{flex:1;display:flex;flex-direction:column;gap:14px;overflow-y:auto;padding-bottom:16px;}
+.bubble{max-width:88%;padding:12px 16px;border-radius:16px;font-size:14.5px;line-height:1.55;}
+.bubble-coach{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px;}
+.bubble-user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px;}
+.chat-input-area{border-top:1px solid var(--line);padding-top:14px;margin-top:10px;}
+.chat-textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-family:var(--font-body);font-size:14.5px;min-height:52px;resize:vertical;background:var(--card);color:var(--ink);margin-bottom:10px;}
+.chat-textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.chip{font-size:13.5px;padding:10px 15px;border-radius:20px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;}
+.chip.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
+.chat-send-row{display:flex;gap:8px;}
+.btn-send{font-family:var(--font-body);font-weight:600;font-size:14px;background:var(--ink);color:#fff;border:none;border-radius:10px;padding:12px 20px;cursor:pointer;}
+.btn-skip{font-family:var(--font-body);font-weight:500;font-size:12.5px;background:none;color:var(--ink-faint);border:none;text-decoration:underline;cursor:pointer;padding:12px 4px;}
+
+/* ---------- SUMMARY ---------- */
+#screen-summary{gap:16px;}
+.summary-header{text-align:center;margin-bottom:4px;}
+.summary-header h2{font-family:var(--font-display);font-size:20px;margin:0 0 6px;}
+.summary-header p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+.summary-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;}
+.summary-label{font-family:var(--font-mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin:0 0 4px;display:flex;justify-content:space-between;align-items:center;}
+.summary-label button{font-family:var(--font-body);font-size:11.5px;background:none;border:none;color:var(--ink-faint);text-decoration:underline;cursor:pointer;padding:0;}
+.summary-text{font-size:14px;color:var(--ink);line-height:1.5;white-space:pre-wrap;}
+.summary-edit textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:var(--font-body);font-size:13.5px;min-height:48px;background:var(--paper);color:var(--ink);margin-top:6px;}
+.summary-edit .save-row{display:flex;gap:8px;margin-top:6px;}
+.summary-edit .save-row button{font-size:12px;padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-family:var(--font-body);font-weight:600;}
+.save-btn{background:var(--accent);color:#fff;}
+.cancel-btn{background:var(--line);color:var(--ink-soft);}
+
+.send-actions{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+.btn-copy{font-family:var(--font-body);font-weight:600;font-size:13.5px;background:var(--accent-soft);color:var(--accent);border:none;border-radius:10px;padding:12px 16px;cursor:pointer;width:100%;}
+.copy-hint{font-size:11.5px;color:var(--ink-faint);text-align:center;}
+</style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="#" aria-label="Entrenador IA, inicio"><span class="brand-mark">E</span><span>Entrenador <strong>IA</strong></span></a><div class="step-status" aria-live="polite"><span id="stepLabel">Bienvenida</span><span id="stepCount">1 de 5</span></div></header>
-  <main>
-    <section class="screen active hero" data-screen="welcome" aria-labelledby="welcome-title"><div class="hero-copy"><p class="eyebrow">Tu entrenamiento empieza antes de entrenar</p><h1 id="welcome-title">Primero quiero<br><em>conocerte.</em></h1><p class="lead">No voy a darte una rutina genérica. Cuéntame dónde estás y hacia dónde quieres ir; juntos construiremos un punto de partida que tenga sentido para ti.</p><button class="primary" data-next="profile">Comenzar <span aria-hidden="true">→</span></button><p class="microcopy">Sin registro · Unos 4 minutos</p></div><aside class="coach-note"><span class="pulse"></span><p>“Una buena decisión empieza por escuchar el contexto, no por elegir ejercicios.”</p><div class="coach-id"><span class="avatar">IA</span><span><strong>Tu entrenador</strong><small>Presente para acompañarte</small></span></div></aside></section>
-    <section class="screen form-screen" data-screen="profile" aria-labelledby="profile-title"><div class="section-intro"><button class="back" data-back="welcome">← Volver</button><p class="eyebrow">Nuestra primera conversación</p><h2 id="profile-title">Cuéntame un poco sobre ti</h2><p>No hay respuestas técnicas correctas. Puedes responder en pocas palabras o explayarte con total libertad: háblame como lo harías con un entrenador.</p></div><form id="profileForm" novalidate>
-      <div class="question wide"><label for="goal">Para empezar, ¿qué te gustaría conseguir? <b>*</b></label><textarea id="goal" rows="3" required placeholder="Por ejemplo: sentirme más fuerte, preparar una carrera, volver a moverme con confianza…"></textarea><span class="error">Cuéntame tu objetivo para poder continuar.</span></div>
-      <div class="grid-2"><div class="question"><label for="experience">¿Cómo ha sido tu relación con el entrenamiento hasta ahora? <b>*</b></label><select id="experience" required><option value="">Elige la que más se parezca a ti</option><option>Estoy empezando</option><option>He entrenado alguna vez</option><option>Entreno con regularidad</option><option>Tengo mucha experiencia</option></select><span class="error">Selecciona tu experiencia.</span></div><div class="question"><label for="days">En una semana normal, ¿cuántos días te vendría bien entrenar? <b>*</b></label><div class="choice-row" id="days" role="radiogroup" aria-label="Días disponibles"><label><input type="radio" name="days" value="2"><span>2</span></label><label><input type="radio" name="days" value="3"><span>3</span></label><label><input type="radio" name="days" value="4"><span>4</span></label><label><input type="radio" name="days" value="5"><span>5+</span></label></div><span class="error">Selecciona una frecuencia.</span></div><div class="question"><label for="duration">¿Cuánto tiempo podrías dedicarle cada vez?</label><select id="duration"><option>30 minutos</option><option selected>45 minutos</option><option>60 minutos</option><option>75 minutos o más</option></select></div><div class="question"><label for="equipment">¿Dónde entrenarías y qué tendrías a mano?</label><input id="equipment" placeholder="Un gimnasio, mancuernas, bandas, solo mi cuerpo…"></div></div>
-      <div class="question wide"><label for="preferences">Cuando imaginas un entrenamiento que disfrutas, ¿cómo es?</label><textarea id="preferences" rows="2" placeholder="Con calma, con variedad, sintiendo intensidad, al aire libre…"></textarea></div><div class="grid-2"><div class="question"><label for="likes">¿Qué ejercicios o actividades sueles disfrutar?</label><input id="likes" placeholder="Caminar, sentadillas, bici, clases…"></div><div class="question"><label for="dislikes">¿Y hay algo que prefieras evitar?</label><input id="dislikes" placeholder="Correr, rutinas muy largas…"></div></div>
-      <div class="question safety wide"><span class="safety-icon">+</span><div><label for="limitations">¿Hay alguna molestia o movimiento con el que quieras que tengamos especial cuidado?</label><textarea id="limitations" rows="2" placeholder="Si quieres, cuéntame dónde aparece y qué suele provocarla. Si no hay ninguna, puedes decirme “ninguna”."></textarea></div></div><div class="question wide"><label for="extra">¿Hay algo más que debería saber de ti antes de empezar? <small class="optional-note">Opcional</small></label><textarea id="extra" rows="3" aria-describedby="extraHint" placeholder="Tu rutina diaria, una preocupación, algo que te haya funcionado antes…"></textarea><p class="field-hint" id="extraHint">Puedes dejar este espacio vacío y continuar. Iremos conociéndote mejor a medida que entrenemos.</p></div><div class="form-actions"><p><b>*</b> Campos necesarios para empezar</p><button class="primary" type="submit">Interpretar mis respuestas <span>→</span></button></div></form></section>
-    <section class="screen summary-screen" data-screen="summary" aria-labelledby="summary-title"><button class="back" data-back="profile">← Volver a mis respuestas</button><div class="section-intro centered"><p class="eyebrow">Antes de decidir</p><h2 id="summary-title">Esto es lo que entendí de ti</h2><p>Quiero asegurarme de que estamos mirando en la misma dirección.</p></div><div class="interpretation interpretation-main"><span class="avatar">IA</span><div><p class="eyebrow">Mi lectura como entrenador</p><div id="coachReading" class="coach-reading"></div></div></div><div class="technical-heading"><p class="eyebrow">Tu ficha técnica</p><h3>Los datos que tendremos presentes</h3><p>Una memoria breve para tomar decisiones y no perder de vista tu contexto.</p></div><div id="summaryCards" class="summary-grid technical-grid"></div><div class="confirm-box"><h3>¿Te representa este resumen?</h3><p>Podrás ajustar los detalles antes de que prepare tu propuesta.</p><div><button class="secondary" data-back="profile">Quiero corregir algo</button><button class="primary" data-next="pending">Sí, esto me representa <span>→</span></button></div></div></section>
-    <section class="screen pending-screen" data-screen="pending" aria-labelledby="pending-title"><button class="back" data-back="summary">← Volver al resumen</button><div class="conversation"><div class="avatar large">IA</div><div><p class="eyebrow">Una última cosa</p><h2 id="pending-title">Ya tengo una imagen bastante clara.</h2><p id="pendingIntro">Solo necesito entender un detalle para que la propuesta encaje mejor contigo.</p></div></div><form id="pendingForm" class="pending-card"><span class="question-number">Pregunta final</span><label id="pendingQuestion" for="pendingAnswer"></label><textarea id="pendingAnswer" rows="4" required></textarea><span class="error">Este detalle me ayudará a preparar mejor la propuesta.</span><button class="primary" type="submit">Preparar mi propuesta <span>→</span></button></form><div id="enoughInformation" class="pending-card enough-card" hidden><span class="question-number">Listos para empezar</span><h3>Con esto tengo información suficiente para preparar tu primera propuesta.</h3><p>No necesito preguntarte nada más por ahora. La rutina será nuestra primera hipótesis y la iremos ajustando con tu experiencia real.</p><button class="primary" type="button" data-prepare-plan>Preparar mi propuesta <span>→</span></button></div><p class="privacy">🔒 Tus respuestas se quedan en este dispositivo durante el prototipo.</p></section>
-    <section class="screen plan-screen" data-screen="plan" aria-labelledby="plan-title"><div class="plan-heading"><div><p class="eyebrow">Tu punto de partida</p><h2 id="plan-title">Primera propuesta de entrenamiento</h2><p id="planMeta"></p></div><span class="status-pill">Propuesta inicial</span></div><div class="plan-callout"><span>01</span><div><strong>La intención de esta sesión</strong><p id="planIntent"></p></div></div><div id="workoutBlocks" class="workout"></div><div class="adapt-message"><span class="spark">✦</span><div><h3>Esto es solo el comienzo.</h3><p>Esta es tu primera propuesta. A partir de tus entrenamientos y feedback iremos aprendiendo y adaptándola.</p></div></div><div class="plan-actions"><button class="secondary" data-restart>Empezar de nuevo</button><button class="primary" id="finishButton">Entendido, estoy listo <span>✓</span></button></div><p class="disclaimer">Si aparece dolor agudo o una molestia que aumenta, detén el ejercicio. Este prototipo no sustituye la evaluación de un profesional sanitario.</p></section>
-  </main><div id="toast" role="status" aria-live="polite">Propuesta guardada para esta sesión</div><script src="app.js"></script></body></html>
+<div class="wrap">
+
+  <!-- LANDING -->
+  <div class="screen active" id="screen-landing">
+    <div class="landing-avatar">S</div>
+    <h1 class="landing-title">Antes de entrenarte,<br>quiero conocerte.</h1>
+    <p class="landing-sub">Esto no es un formulario. Es el comienzo de tu acompañamiento — te voy a hacer algunas preguntas, como lo haría cualquier entrenador la primera vez que te conoce.</p>
+    <div class="landing-points">
+      <div class="landing-point"><span class="dot"></span><span><b>Vas a contarme</b> quién eres, qué buscas, cómo entrenas y qué debería cuidar.</span></div>
+      <div class="landing-point"><span class="dot"></span><span><b>Toma unos minutos</b> — respondes con tus palabras, no hay respuestas técnicas correctas.</span></div>
+      <div class="landing-point"><span class="dot"></span><span><b>Al final</b> reviso todo contigo y te armo tu primera propuesta.</span></div>
+    </div>
+    <button class="btn-big" onclick="goTo('chat')">Empezar</button>
+    <div class="landing-note">~5 min</div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="screen" id="screen-chat">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="chat-scroll" id="chatScroll"></div>
+    <div class="chat-input-area" id="chatInputArea"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="screen" id="screen-summary">
+    <div class="summary-header">
+      <h2>Esto entendí de ti</h2>
+      <p>Revísalo — si algo no quedó bien, puedes ajustarlo antes de copiarlo.</p>
+    </div>
+    <div id="summaryList"></div>
+    <div class="send-actions">
+      <button class="btn-big" onclick="copySummary()">Copiar respuestas</button>
+      <div class="copy-hint" id="copyHint">Listo. Copia tus respuestas y envíaselas a tu entrenador por el medio que ya usan para comunicarse.</div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ============================================================
+   PREGUNTAS DEL ONBOARDING
+   ============================================================ */
+const questions = [
+  {id:'nombre', type:'text', q:'Hola 👋 Soy tu entrenador. Antes de armarte cualquier cosa quiero conocerte un poco. ¿Cómo te llamas?'},
+  {id:'objetivo', type:'text', q:'Un gusto. Contame, ¿qué te gustaría lograr entrenando? No hace falta que sea técnico — contámelo como lo sientas.'},
+  {id:'experiencia', type:'choice', q:'¿Cómo describirías tu experiencia entrenando?', options:['Nunca he entrenado','Entrené antes, pero dejé','Entreno de vez en cuando','Entreno con regularidad']},
+  {id:'disponibilidad', type:'text', q:'¿Cuántos días a la semana podrías entrenar, y más o menos cuánto tiempo tienes por sesión?'},
+  {id:'lugar', type:'text', q:'¿Dónde vas a entrenar — gimnasio, algo en casa, al aire libre? Si sabes qué equipamiento tienes, cuéntamelo también.'},
+  {id:'antecedentes', type:'text', q:'¿Hay algo de tu cuerpo que debamos cuidar — alguna molestia, lesión antigua o algo que te preocupe al moverte?'},
+  {id:'preferencias', type:'text', q:'¿Hay algo que sepas que te gusta o que definitivamente no te gusta al entrenar?'},
+  {id:'extra', type:'text', q:'Por último — ¿algo más que quieras contarme antes de empezar? Puede ser cualquier cosa que creas que debería saber.', optional:true},
+];
+
+const categoryLabels = {
+  nombre:'Nombre', objetivo:'Objetivo', experiencia:'Experiencia',
+  disponibilidad:'Disponibilidad', lugar:'Lugar y equipamiento',
+  antecedentes:'Cosas a cuidar', preferencias:'Preferencias', extra:'Algo más'
+};
+
+let currentQ = 0;
+let answers = {};
+
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+screen).classList.add('active');
+  if(screen==='chat') startChat();
+}
+
+function startChat(){
+  document.getElementById('chatScroll').innerHTML = '';
+  currentQ = 0;
+  askQuestion();
+}
+
+function updateProgress(){
+  const pct = Math.round((currentQ/questions.length)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+
+function addBubble(text, who){
+  const scroll = document.getElementById('chatScroll');
+  const b = document.createElement('div');
+  b.className = 'bubble bubble-'+who;
+  b.textContent = text;
+  scroll.appendChild(b);
+  scroll.scrollTop = scroll.scrollHeight;
+}
+
+function askQuestion(){
+  if(currentQ >= questions.length){
+    finishChat();
+    return;
+  }
+  updateProgress();
+  const q = questions[currentQ];
+  let text = q.q;
+  if(q.id==='objetivo' && answers.nombre) text = text.replace('Un gusto,', 'Un gusto, '+answers.nombre+',');
+  addBubble(text, 'coach');
+  renderInput(q);
+}
+
+function renderInput(q){
+  const area = document.getElementById('chatInputArea');
+  if(q.type==='choice'){
+    let chips = q.options.map(o=>`<button class="chip" onclick="selectChip(this,'${o.replace(/'/g,"\\'")}')">${o}</button>`).join('');
+    area.innerHTML = `<div class="chip-row">${chips}</div>`;
+  } else {
+    const skip = q.optional ? `<button class="btn-skip" onclick="submitAnswer('')">Prefiero no responder esto</button>` : '';
+    area.innerHTML = `
+      <textarea class="chat-textarea" id="chatTextInput" placeholder="Escribe tu respuesta..."></textarea>
+      <div class="chat-send-row">
+        <button class="btn-send" onclick="submitTextAnswer()">Enviar</button>
+        ${skip}
+      </div>`;
+    // Sin autofoco: en iPhone el teclado empuja la pregunta fuera de vista.
+  }
+}
+
+function selectChip(btn, value){
+  document.querySelectorAll('.chip-row .chip').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(()=>submitAnswer(value), 150);
+}
+
+function submitTextAnswer(){
+  const val = document.getElementById('chatTextInput').value.trim();
+  if(!val) return;
+  submitAnswer(val);
+}
+
+function submitAnswer(value){
+  const q = questions[currentQ];
+  answers[q.id] = value || '(sin responder)';
+  addBubble(value || '(prefiero no responder)', 'user');
+  document.getElementById('chatInputArea').innerHTML = '';
+  currentQ++;
+  setTimeout(askQuestion, 350);
+}
+
+function finishChat(){
+  updateProgress();
+  addBubble('Perfecto, con esto ya tengo una buena primera idea de quién eres. Dame un segundo para ordenarlo.', 'coach');
+  document.getElementById('chatInputArea').innerHTML = '';
+  setTimeout(()=>{ buildSummary(); goTo('summary'); }, 900);
+}
+
+/* ============================================================
+   RESUMEN EDITABLE
+   ============================================================ */
+function buildSummary(){
+  const list = document.getElementById('summaryList');
+  list.innerHTML = '';
+  questions.forEach(q=>{
+    const val = answers[q.id] || '(sin responder)';
+    const card = document.createElement('div');
+    card.className = 'summary-card';
+    card.id = 'summary-'+q.id;
+    card.innerHTML = `
+      <p class="summary-label"><span>${categoryLabels[q.id]}</span><button onclick="editField('${q.id}')">Editar</button></p>
+      <p class="summary-text">${val}</p>`;
+    list.appendChild(card);
+  });
+}
+
+function editField(id){
+  const card = document.getElementById('summary-'+id);
+  const current = answers[id] || '';
+  card.innerHTML = `
+    <p class="summary-label"><span>${categoryLabels[id]}</span></p>
+    <div class="summary-edit">
+      <textarea id="edit-${id}">${current}</textarea>
+      <div class="save-row">
+        <button class="save-btn" onclick="saveField('${id}')">Guardar</button>
+        <button class="cancel-btn" onclick="buildSummary()">Cancelar</button>
+      </div>
+    </div>`;
+}
+
+function saveField(id){
+  const val = document.getElementById('edit-'+id).value.trim();
+  answers[id] = val || '(sin responder)';
+  buildSummary();
+}
+
+/* ============================================================
+   ENVÍO
+   ============================================================ */
+function formatSummaryText(){
+  const lines = [];
+  lines.push('👋 MIS RESPUESTAS INICIALES');
+  lines.push('');
+  lines.push('Nombre: ' + (answers.nombre || '(sin responder)'));
+  lines.push('');
+  const parts = [
+    ['objetivo', 'Mi objetivo:'],
+    ['experiencia', 'Experiencia entrenando:'],
+    ['disponibilidad', 'Disponibilidad:'],
+    ['lugar', 'Dónde voy a entrenar:'],
+    ['antecedentes', 'Algo que debemos cuidar:'],
+    ['preferencias', 'Lo que me gusta / no me gusta:'],
+    ['extra', 'Algo más que quiero contar:'],
+  ];
+  parts.forEach(function(p){
+    lines.push(p[1]);
+    lines.push(answers[p[0]] || '(sin responder)');
+    lines.push('');
+  });
+  lines.push('Estas son mis respuestas iniciales para empezar a preparar mi entrenamiento.');
+  return lines.join('\n');
+}
+
+function copySummary(){
+  const text = formatSummaryText();
+  navigator.clipboard.writeText(text).then(()=>{
+    document.getElementById('copyHint').textContent = 'Copiado ✓ — ahora pégalo y envíaselo a tu entrenador por el medio que ya usan para comunicarse.';
+  }).catch(()=>{
+    document.getElementById('copyHint').textContent = 'No se pudo copiar automáticamente. Selecciona el texto manualmente y envíaselo a tu entrenador.';
+  });
+}
+</script>
+</body>
+</html>
