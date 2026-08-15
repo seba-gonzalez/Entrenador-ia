@@ -118,8 +118,10 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);-webk
 const questions = [
   {id:'nombre', type:'text', q:'Hola 👋 Soy tu entrenador. Antes de armarte cualquier cosa quiero conocerte un poco. ¿Cómo te llamas?'},
   {id:'objetivo', type:'text', q:'Un gusto. Contame, ¿qué te gustaría lograr entrenando? No hace falta que sea técnico — contámelo como lo sientas.'},
-  {id:'experiencia', type:'choice', q:'¿Cómo describirías tu experiencia entrenando?', options:['Nunca he entrenado','Entrené antes, pero dejé','Entreno de vez en cuando','Entreno con regularidad']},
-  {id:'disponibilidad', type:'text', q:'¿Cuántos días a la semana podrías entrenar, y más o menos cuánto tiempo tienes por sesión?'},
+  {id:'experiencia_general', type:'text', q:'¿Qué experiencia tienes entrenando en general? Cuéntame si has hecho gimnasio, algún deporte, clases, lo que sea. Y si tu objetivo es aprender o mejorar algo específico, cuéntame también qué experiencia tienes justamente en eso.'},
+  {id:'experiencia_especifica', type:'text', q:'Y específicamente en tu objetivo, ¿qué experiencia tienes ahí?', optional:true, emptyLabel:'No aplica', skipLabel:'No aplica'},
+  {id:'disponibilidad_nosotros', type:'text', q:'¿Cuántos días por semana quieres entrenar con nosotros y cuánto tiempo tienes por sesión, aproximadamente? Si además haces otros deportes, yoga, clases u otras actividades regularmente, cuéntamelas también para tenerlas en cuenta — eso no significa que te las vayamos a programar nosotros.'},
+  {id:'otras_actividades', type:'text', q:'¿Y haces algo más regularmente — otro deporte, yoga, clases — que deba tener en cuenta?', optional:true, emptyLabel:'Ninguna', skipLabel:'No, ninguna'},
   {id:'lugar', type:'text', q:'¿Dónde vas a entrenar — gimnasio, algo en casa, al aire libre? Si sabes qué equipamiento tienes, cuéntamelo también.'},
   {id:'antecedentes', type:'text', q:'¿Hay algo de tu cuerpo que debamos cuidar — alguna molestia, lesión antigua o algo que te preocupe al moverte?'},
   {id:'preferencias', type:'text', q:'¿Hay algo que sepas que te gusta o que definitivamente no te gusta al entrenar?'},
@@ -127,8 +129,10 @@ const questions = [
 ];
 
 const categoryLabels = {
-  nombre:'Nombre', objetivo:'Objetivo', experiencia:'Experiencia',
-  disponibilidad:'Disponibilidad', lugar:'Lugar y equipamiento',
+  nombre:'Nombre', objetivo:'Objetivo',
+  experiencia_general:'Experiencia general', experiencia_especifica:'Experiencia específica en el objetivo',
+  disponibilidad_nosotros:'Entrenamiento con nosotros', otras_actividades:'Otras actividades a considerar',
+  lugar:'Lugar y equipamiento',
   antecedentes:'Cosas a cuidar', preferencias:'Preferencias', extra:'Algo más'
 };
 
@@ -180,7 +184,7 @@ function renderInput(q){
     let chips = q.options.map(o=>`<button class="chip" onclick="selectChip(this,'${o.replace(/'/g,"\\'")}')">${o}</button>`).join('');
     area.innerHTML = `<div class="chip-row">${chips}</div>`;
   } else {
-    const skip = q.optional ? `<button class="btn-skip" onclick="submitAnswer('')">Prefiero no responder esto</button>` : '';
+    const skip = q.optional ? `<button class="btn-skip" onclick="submitAnswer('')">${q.skipLabel || 'Prefiero no responder esto'}</button>` : '';
     area.innerHTML = `
       <textarea class="chat-textarea" id="chatTextInput" placeholder="Escribe tu respuesta..."></textarea>
       <div class="chat-send-row">
@@ -205,8 +209,9 @@ function submitTextAnswer(){
 
 function submitAnswer(value){
   const q = questions[currentQ];
-  answers[q.id] = value || '(sin responder)';
-  addBubble(value || '(prefiero no responder)', 'user');
+  const fallback = q.emptyLabel || '(sin responder)';
+  answers[q.id] = value || fallback;
+  addBubble(value || (q.emptyLabel || '(prefiero no responder)'), 'user');
   document.getElementById('chatInputArea').innerHTML = '';
   currentQ++;
   setTimeout(askQuestion, 350);
@@ -268,8 +273,10 @@ function formatSummaryText(){
   lines.push('');
   const parts = [
     ['objetivo', 'Mi objetivo:'],
-    ['experiencia', 'Experiencia entrenando:'],
-    ['disponibilidad', 'Disponibilidad:'],
+    ['experiencia_general', 'Experiencia general:'],
+    ['experiencia_especifica', 'Experiencia específica en el objetivo:'],
+    ['disponibilidad_nosotros', 'Entrenamiento con nosotros:'],
+    ['otras_actividades', 'Otras actividades a considerar:'],
     ['lugar', 'Dónde voy a entrenar:'],
     ['antecedentes', 'Algo que debemos cuidar:'],
     ['preferencias', 'Lo que me gusta / no me gusta:'],
