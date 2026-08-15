@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/seba-gonzalez/entrenador-ia/esquemas/sesion.schema.json",
   "title": "sesion",
-  "description": "Documento vivo de una sesion (ARQUITECTURA.md 5.4). Esquema minimo de H1: incluye versiones, observaciones, checklist y publicaciones. No incluye contingencias (H4) ni referencias a check_in, feedback o perfil (H4-H6).",
+  "description": "Documento vivo de una sesion (ARQUITECTURA.md 5.4). Esquema minimo de H1: incluye versiones, observaciones, checklist y publicaciones. No incluye contingencias (H4) ni referencias a check_in, feedback o perfil (H4-H6). Lo obligatorio depende del estado: un borrador valida sin datos de aprobacion, y una sesion aprobada o publicada no valida sin ellos.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,12 +13,49 @@
     "estado",
     "generador_version",
     "versiones",
-    "observaciones",
-    "checklist_aprobacion",
-    "version_aprobada",
-    "aprobada_por",
-    "fecha_aprobacion",
-    "publicaciones"
+    "observaciones"
+  ],
+
+  "allOf": [
+    {
+      "title": "Aprobar exige constancia de quien aprobo, cuando y contra que checklist",
+      "if": { "required": ["estado"], "properties": { "estado": { "enum": ["aprobada", "publicada"] } } },
+      "then": { "required": ["version_aprobada", "aprobada_por", "fecha_aprobacion", "checklist_aprobacion"] }
+    },
+    {
+      "title": "Un documento que todavia no fue aprobado no puede traer datos de aprobacion",
+      "if": { "required": ["estado"], "properties": { "estado": { "enum": ["borrador", "en_revision"] } } },
+      "then": {
+        "not": {
+          "anyOf": [
+            { "required": ["version_aprobada"] },
+            { "required": ["aprobada_por"] },
+            { "required": ["fecha_aprobacion"] },
+            { "required": ["checklist_aprobacion"] },
+            { "required": ["publicaciones"] }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Aprobada aun no es publicada: publicar es un paso posterior y explicito",
+      "if": { "required": ["estado"], "properties": { "estado": { "const": "aprobada" } } },
+      "then": { "not": { "required": ["publicaciones"] } }
+    },
+    {
+      "title": "Exactamente una publicacion vigente mientras el estado sea publicada (12)",
+      "if": { "required": ["estado"], "properties": { "estado": { "const": "publicada" } } },
+      "then": {
+        "required": ["publicaciones"],
+        "properties": {
+          "publicaciones": {
+            "contains": { "required": ["vigente"], "properties": { "vigente": { "const": true } } },
+            "minContains": 1,
+            "maxContains": 1
+          }
+        }
+      }
+    }
   ],
   "properties": {
     "id": { "$ref": "#/$defs/identificador" },
@@ -35,7 +72,7 @@
     "aviso_demo": { "type": "string", "minLength": 1 },
     "estado": {
       "enum": ["borrador", "en_revision", "aprobada", "publicada", "descartada"],
-      "description": "Ciclo de vida del documento (6.1). 'corregida' no es un estado: es una transicion que crea una version nueva (D-006)."
+      "description": "Ciclo de vida del documento (6.1). 'corregida' no es un estado: es una transicion que crea una version nueva (D-006). Que campos son obligatorios depende de este valor: ver 'allOf'. 'descartada' no impone ni prohibe datos de aprobacion a proposito, porque V1-B sigue abierto y todavia no se sabe si un borrador se descarta antes o despues de aprobarse."
     },
     "generador_version": {
       "type": "string",

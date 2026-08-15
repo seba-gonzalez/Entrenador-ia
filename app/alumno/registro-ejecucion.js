@@ -2,13 +2,15 @@
  * registro-ejecucion.js — lo que ocurrio, separado de lo que estaba programado
  * (ARQUITECTURA.md 5.5, D-008).
  *
- * Tres reglas gobiernan este modulo, y las tres son la misma regla:
+ * Cuatro reglas gobiernan este modulo, y las cuatro son la misma regla:
  *
  *   1. Nada se rellena. Una serie sin registrar no vale cero ni vale lo
  *      programado: vale "no registrada", con su motivo escrito.
  *   2. Nada se deduce. El resultado de la sesion lo elige una persona; el
  *      codigo no lo infiere de cuantas casillas quedaron marcadas.
- *   3. Nada se toca. Emitir una ejecucion no modifica la publicacion: la
+ *   3. Nada se resuelve por cuenta propia. Si los datos de una serie se
+ *      contradicen entre si, el registro se detiene y la persona decide.
+ *   4. Nada se toca. Emitir una ejecucion no modifica la publicacion: la
  *      publicacion es un archivo, y este modulo solo lee.
  */
 
@@ -23,6 +25,10 @@ const ETIQUETAS = {
   faltaResultado: 'Elige primero como resulto la sesion. No se elige solo.',
   copiado: 'Copiado. Pegalo en el repositorio como un archivo nuevo.',
   sinPortapapeles: 'El navegador no dejo copiar. El registro quedo impreso en la consola para copiarlo a mano.',
+  contradiccion: (lista) =>
+    `Hay datos escritos en series que no marcaste como realizadas: ${lista}. ` +
+    'Marca la casilla si la hiciste, o borra los valores si no la hiciste. ' +
+    'No lo resuelvo por ti: cualquiera de las dos opciones cambia lo que queda registrado.',
 };
 
 const MOTIVOS = {
@@ -43,6 +49,44 @@ function el(etiqueta, clase, texto) {
   if (clase) nodo.className = clase;
   if (texto !== undefined) nodo.textContent = texto;
   return nodo;
+}
+
+/** Serie con valores escritos que nadie declaro realizada. */
+export class ContradiccionDeRegistro extends Error {
+  constructor(conflictos) {
+    super('Hay series con datos escritos que no estan marcadas como realizadas.');
+    this.name = 'ContradiccionDeRegistro';
+    this.conflictos = conflictos;
+  }
+}
+
+/**
+ * Busca series cuyos datos se contradicen: hay valores escritos, pero la casilla
+ * de "realizada" esta sin marcar.
+ *
+ * Las dos lecturas posibles —se hizo y falto marcar, o se anoto y no se hizo—
+ * producen registros distintos, y ninguna se deduce de la otra. Marcar la
+ * casilla porque hay numeros, o descartar los numeros porque no esta marcada,
+ * serian las dos formas de que el sistema decida algo que no le toca (1.4).
+ */
+export function detectarContradicciones(registros) {
+  const conflictos = [];
+  registros.forEach((registro) => {
+    registro.filas.forEach((fila) => {
+      const hayValores = registro.por_serie.some(
+        (campo) => fila.entradas[campo.campo].value.trim() !== ''
+      );
+      if (hayValores && !fila.marca.checked) {
+        conflictos.push({
+          ejercicio_id: registro.ejercicio_id,
+          ejercicio_nombre: registro.ejercicio_nombre,
+          serie: fila.serie,
+          fila,
+        });
+      }
+    });
+  });
+  return conflictos;
 }
 
 /**
@@ -86,6 +130,12 @@ function leerFila(registro, fila) {
 }
 
 export function construirEjecucion({ publicacion, registros, resultado, notas, ahora }) {
+  // Se comprueba aqui y no solo en la interfaz: ningun camino —incluido el de
+  // otro programa que importe esta funcion— puede producir un registro a partir
+  // de un estado contradictorio.
+  const conflictos = detectarContradicciones(registros);
+  if (conflictos.length) throw new ContradiccionDeRegistro(conflictos);
+
   const series = [];
   registros.forEach((registro) => {
     registro.filas.forEach((fila) => series.push(leerFila(registro, fila)));
@@ -171,13 +221,25 @@ export function montarCierre({ publicacion, registros, esquema }) {
       return;
     }
 
-    const ejecucion = construirEjecucion({
-      publicacion,
-      registros,
-      resultado: select.value,
-      notas: textarea.value.trim(),
-      ahora: new Date().toISOString(),
-    });
+    let ejecucion;
+    try {
+      ejecucion = construirEjecucion({
+        publicacion,
+        registros,
+        resultado: select.value,
+        notas: textarea.value.trim(),
+        ahora: new Date().toISOString(),
+      });
+    } catch (error) {
+      if (!(error instanceof ContradiccionDeRegistro)) throw error;
+      const lista = error.conflictos
+        .map((c) => `${c.ejercicio_nombre} · serie ${c.serie}`)
+        .join('; ');
+      estado.textContent = ETIQUETAS.contradiccion(lista);
+      estado.classList.add('error');
+      error.conflictos[0].fila.marca.scrollIntoView({ block: 'center' });
+      return;
+    }
 
     const texto = JSON.stringify(ejecucion, null, 2);
 

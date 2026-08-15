@@ -178,15 +178,22 @@ parecería válido.
 la que el entrenador decida no pedirlo usa el mismo `solicitado: false`, sin
 migrar los registros anteriores.
 
-### D-021 · Ausencia declarada en lugar de campo faltante
-Todo dato que puede no existir se escribe como `{registrado: false, motivo}` en
-vez de omitirse, quedar en `null` o rellenarse. Aplica a lo ejecutado por serie,
-al motivo de diferencia, a las notas y al inicio/fin de la sesión.
-**Por qué:** es el principio 1.5 hecho estructura. Una serie en blanco no vale
-cero ni vale lo programado, y una vista que no observa el inicio real de la
-sesión no puede escribir la hora en que se abrió la página: sería una inferencia
-presentada como hecho (1.4).
+### D-021 · Ausencia declarada en los campos de ejecución de H1
+**Alcance: la entidad `ejecucion` tal como H1 la modela, y nada más.** Cuatro
+campos concretos —lo ejecutado por serie, el motivo de diferencia, las notas de
+ejecución y el inicio/fin de la sesión— se escriben como
+`{registrado: false, motivo}` en vez de omitirse, quedar en `null` o rellenarse.
+**Por qué:** es el principio 1.5 aplicado donde H1 tiene evidencia de que hace
+falta. Una serie en blanco no vale cero ni vale lo programado, y una vista que no
+observa el inicio real de la sesión no puede escribir la hora en que se abrió la
+página: sería una inferencia presentada como hecho (1.4).
 **Descartado:** timestamps de conveniencia tomados de la carga de la página.
+**Qué NO decide esta entrada:** no establece una regla general para perfil,
+check-in, feedback, adaptaciones ni ninguna entidad futura. La forma se ve
+prometedora y probablemente se repita, pero extenderla es una decisión que se
+toma cuando esa entidad exista y con su caso a la vista, no por anticipado. El
+perfil, en particular, ya tiene su propio mecanismo para esto (`estado` por
+campo, D-004) y no se toca.
 
 ### D-022 · El artefacto publicado vive en `/casos/{caso}/publicado/`, con índice
 El repo público no tiene `/publicado/` en la raíz —esa ruta pertenece al repo de
