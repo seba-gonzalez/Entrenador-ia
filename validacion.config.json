@@ -1,0 +1,15 @@
+{
+  "descripcion": "Donde vive cada cosa EN ESTE repositorio. El validador no conoce ninguna disposicion de archivos: la recibe. El repositorio privado tendra su propio archivo con las rutas suyas y consumira el mismo validador.",
+
+  "publico": true,
+
+  "sesiones": ["casos/*/sesion.json"],
+  "indices": ["casos/*/publicado/indice.json"],
+  "ejecuciones": ["casos/*/ejecuciones/*.json"],
+
+  "notas": {
+    "publico": "true exige que toda sesion, publicacion y ejecucion lleve 'demo: true'. No aplica a esquemas, configuracion ni ningun otro metadato: solo a las entidades que pueden representar a una persona.",
+    "relacion": "Las sesiones, los indices y las ejecuciones se relacionan por 'sesion_id', nunca por su ubicacion. Por eso las rutas pueden cambiar sin tocar el validador.",
+    "publicaciones": "No se declaran: se descubren desde cada indice, que nombra sus archivos y vive junto a ellos."
+  }
+}

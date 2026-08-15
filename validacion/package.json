@@ -1,0 +1,18 @@
+{
+  "name": "entrenador-ia-validacion",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Validacion de invariantes. Herramienta, no producto: /app/ no depende de nada de aqui.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "validar": "node validar.mjs --raiz ..",
+    "pruebas": "node pruebas/esquema-sesion.mjs && node pruebas/tarjetas.mjs && node pruebas/rechazos.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}
