@@ -220,3 +220,25 @@ cualquier ejecución registrada sobre él.
 **Por qué:** D-019 solo garantiza que el artefacto público esté anonimizado. La
 marca en el dato impide, además, que un registro sintético circule después como
 evidencia de una persona. Ningún paso manual lo sostiene.
+
+### D-025 · La integridad de la publicación se verifica en runtime, con fallo cerrado
+Antes de mostrar una sesión, la vista calcula el SHA-256 de los bytes que acaba
+de recibir y lo compara con el hash que el índice declara. Si no coinciden, o si
+el navegador no ofrece `crypto.subtle` y por tanto no se puede comprobar, **no se
+renderiza nada** y se explica por qué.
+**Por qué:** el hash declarado no probaba nada sobre el archivo realmente
+cargado. Si la publicación cambiaba sin republicarse, el alumno veía un contenido
+y la ejecución registraba el hash de otro — exactamente el blanco móvil que
+D-008 existe para evitar. Una sesión cuya procedencia no se puede acreditar no
+debe ejecutarse, y mostrarla con una advertencia dejaría la decisión en manos de
+quien menos contexto tiene para tomarla.
+**Descartado:** registrar `publicacion_hash_verificado` y seguir mostrando la
+sesión cuando no se puede verificar. Habría sido consistente con D-021, pero
+convierte una garantía en una etiqueta que alguien tiene que leer y entender
+antes de entrenar.
+**Consecuencia aceptada:** la vista deja de funcionar por `http://` desde una IP
+de red, porque ahí no existe `crypto.subtle`. El flujo protegido para iPad es
+GitHub Pages sobre HTTPS (§2); `localhost` sigue sirviendo para desarrollo.
+**Complementario, no alternativo:** H3 añadirá la misma comprobación en CI. El
+runtime detecta un artefacto alterado aunque haya llegado a servirse; CI lo
+detecta antes de que llegue. Ninguna de las dos sustituye a la otra.
