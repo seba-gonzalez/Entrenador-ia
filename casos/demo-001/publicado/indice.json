@@ -1,0 +1,13 @@
+{
+  "sesion_id": "sesion-demo-001",
+  "vigente": 1,
+  "publicaciones": [
+    {
+      "p": 1,
+      "archivo": "1.json",
+      "fecha": "2027-03-10T19:45:00-04:00",
+      "hash": "sha256:a5fef354bf65618753fbd8c743f9cbec201df43d5ea4d9fe840f941870407d2b",
+      "vigente": true
+    }
+  ]
+}

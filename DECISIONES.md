@@ -157,3 +157,59 @@ análisis.
 
 **Cierre de la fase de arquitectura inicial.** `ARQUITECTURA.md` v0.2 aprobado.
 Siguiente: H1.
+
+---
+
+## 2026-08-15 — H1
+
+### D-020 · "No se solicitó check-in" no vive en el enum de respuesta
+`check_in.solicitado` es un booleano. Cuando es `false` acompaña un `motivo`
+explícito y **no existe** `estado_respuesta`. Cuando es `true`, `estado_respuesta`
+es obligatorio y vale `respondido | parcial | sin_respuesta`. "No solicitado" no
+se representa con `null` ni se agrega al enum.
+**Por qué:** `sin_respuesta` es una afirmación sobre la persona —se le preguntó y
+no contestó—; "no hubo check-in" es una afirmación sobre el sistema. Con un solo
+enum, contar cuántas veces un alumno ignora el check-in devolvería un número
+inflado por todas las sesiones en que responder era imposible, y el número
+parecería válido.
+**Descartado:** `null` (indistinguible de un campo olvidado) y un valor
+`no_solicitado` dentro del enum (mezcla las dos afirmaciones).
+**Alcance:** la forma sobrevive a H1. Cuando el check-in exista, una sesión para
+la que el entrenador decida no pedirlo usa el mismo `solicitado: false`, sin
+migrar los registros anteriores.
+
+### D-021 · Ausencia declarada en lugar de campo faltante
+Todo dato que puede no existir se escribe como `{registrado: false, motivo}` en
+vez de omitirse, quedar en `null` o rellenarse. Aplica a lo ejecutado por serie,
+al motivo de diferencia, a las notas y al inicio/fin de la sesión.
+**Por qué:** es el principio 1.5 hecho estructura. Una serie en blanco no vale
+cero ni vale lo programado, y una vista que no observa el inicio real de la
+sesión no puede escribir la hora en que se abrió la página: sería una inferencia
+presentada como hecho (1.4).
+**Descartado:** timestamps de conveniencia tomados de la carga de la página.
+
+### D-022 · El artefacto publicado vive en `/casos/{caso}/publicado/`, con índice
+El repo público no tiene `/publicado/` en la raíz —esa ruta pertenece al repo de
+datos—, así que el artefacto extraído acompaña a su caso. Un `indice.json` por
+caso declara cuál publicación está vigente y con qué `hash`.
+**Por qué:** el invariante "exactamente una publicación vigente" necesita un
+lugar donde leerse sin abrir el documento interno. El hash vive en el índice y no
+dentro del archivo publicado, para que sea el sha256 verificable de ese archivo
+tal como quedó en el repositorio.
+**Descartado:** que la vista adivine el archivo por convención de nombre.
+
+### D-023 · El contenido de la sesión es dato, no plantilla
+Secciones, pestañas, tarjetas, riel de días, campos de la ficha de ejercicio y
+campos de registro por serie salen todos del JSON. El renderizador solo decide
+cómo se dibuja cada tipo de tarjeta.
+**Por qué:** si el HTML conoce los títulos o los campos, la separación es parcial
+y el primer caso distinto obliga a tocar código. `programado.presentacion` es lo
+que se muestra; `programado.por_serie` es lo que se compara contra lo ejecutado.
+Los dos los escribe el entrenador y el código no deriva uno del otro.
+
+### D-024 · Un caso demo marca sus propios datos como sintéticos
+`demo: true` viaja desde el documento interno al artefacto publicado y de ahí a
+cualquier ejecución registrada sobre él.
+**Por qué:** D-019 solo garantiza que el artefacto público esté anonimizado. La
+marca en el dato impide, además, que un registro sintético circule después como
+evidencia de una persona. Ningún paso manual lo sostiene.

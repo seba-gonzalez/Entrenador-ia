@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vista Alumno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!--
+  Este archivo no contiene la sesion: contiene los huecos donde la sesion se
+  monta. Ni un titulo, ni un ejercicio, ni una serie estan escritos aqui.
+  Todo lo visible sale de casos/{caso}/publicado/, a traves de repositorio.js.
+-->
+
+<div class="coach" id="cabecera" hidden><div class="coach-inner"></div></div>
+<nav class="tabbar" id="tabbar" aria-label="Secciones" hidden></nav>
+<div class="wrap" id="paneles"></div>
+<footer id="pie" hidden></footer>
+
+<p class="aviso-carga" id="aviso">Cargando la sesion publicada…</p>
+
+<script type="module" src="vista-sesion.js"></script>
+</body>
+</html>
