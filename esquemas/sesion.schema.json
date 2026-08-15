@@ -232,7 +232,7 @@
         },
         "paneles": {
           "type": "object",
-          "description": "Una entrada por seccion, con la misma clave que seccion.id.",
+          "description": "Una entrada por seccion, con la misma clave que seccion.id. ATENCION: que exista un panel por cada seccion declarada es un invariante entre dos campos, y JSON Schema no puede expresarlo — las claves dependen de valores de otro array. Aqui solo se garantiza la forma de cada panel. La correspondencia la comprueba la vista al montar, que se detiene con un error nombrando la seccion sin panel, y le corresponde a H3 verificarla en CI junto al resto de invariantes de la seccion 12.",
           "minProperties": 1,
           "additionalProperties": {
             "type": "object",
@@ -273,6 +273,7 @@
 
     "tarjeta": {
       "type": "object",
+      "description": "Cada tipo exige los campos que el renderizador recorre sin comprobar. Un JSON que valida contra este esquema no puede romper la vista por una propiedad ausente.",
       "required": ["tipo"],
       "properties": {
         "tipo": {
@@ -283,8 +284,69 @@
       },
       "allOf": [
         {
-          "if": { "properties": { "tipo": { "const": "sesion" } } },
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "sesion" } } },
           "then": { "$ref": "#/$defs/tarjetaSesion" }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "enum": ["notas", "objetivos", "competencia", "argumentos"] } } },
+          "then": {
+            "required": ["parrafos"],
+            "properties": {
+              "parrafos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/parrafo" } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "contexto" } } },
+          "then": {
+            "required": ["items"],
+            "properties": {
+              "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/parrafo" } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "preguntas" } } },
+          "then": {
+            "required": ["items"],
+            "properties": {
+              "items": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "mapa" } } },
+          "then": {
+            "required": ["fases"],
+            "properties": {
+              "fases": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["numero", "titulo", "fechas", "texto"],
+                  "properties": {
+                    "numero": { "type": "string", "minLength": 1 },
+                    "titulo": { "type": "string", "minLength": 1 },
+                    "fechas": { "type": "string", "minLength": 1 },
+                    "texto": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "programa" } } },
+          "then": {
+            "description": "El renderizador comprueba intro, lista y destacado antes de usarlos, asi que ninguno es obligatorio. Lo que si se exige es que, si aparecen, tengan contenido: una tarjeta con una lista vacia se dibuja como un hueco.",
+            "properties": {
+              "intro": { "type": "string", "minLength": 1 },
+              "lista": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "destacado": { "$ref": "#/$defs/parrafo" }
+            }
+          }
         }
       ]
     },

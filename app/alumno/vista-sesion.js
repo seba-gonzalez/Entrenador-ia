@@ -309,6 +309,14 @@ function pintarPaneles(contenido, registros) {
     const cuerpo = el('main');
     const datos = contenido.paneles[seccion.id];
 
+    // Que cada seccion declarada tenga su panel es un invariante entre dos
+    // campos, y el esquema no puede expresarlo: las claves de 'paneles'
+    // dependen de valores de 'secciones'. Se comprueba aqui para que el fallo
+    // sea una frase que nombra el problema, y no un TypeError a media pantalla.
+    if (!datos) {
+      throw new Error(`La publicacion declara la seccion "${seccion.id}" pero no trae su panel.`);
+    }
+
     if (datos.dias && datos.dias.length) cuerpo.appendChild(pintarDias(datos.dias));
 
     datos.tarjetas.forEach((tarjeta) => {
@@ -364,6 +372,17 @@ async function montar() {
 
     aviso.remove();
   } catch (error) {
+    // Media sesion dibujada es peor que ninguna: alguien podria entrenar
+    // siguiendo lo que alcanzo a pintarse antes del fallo. Se borra todo y
+    // queda unicamente el motivo.
+    document.querySelector('#cabecera .coach-inner').replaceChildren();
+    document.getElementById('cabecera').hidden = true;
+    document.getElementById('tabbar').replaceChildren();
+    document.getElementById('tabbar').hidden = true;
+    document.getElementById('paneles').replaceChildren();
+    document.getElementById('pie').replaceChildren();
+    document.getElementById('pie').hidden = true;
+
     aviso.textContent = `No se pudo mostrar la sesion: ${error.message}`;
     aviso.classList.add('emitir-estado', 'error');
   }
