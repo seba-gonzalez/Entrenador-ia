@@ -1,0 +1,801 @@
+{
+  "id": "sesion-demo-001",
+  "schema_version": 1,
+  "alumno_id": "demo-001",
+  "plan_id": "plan-demo-001",
+  "demo": true,
+  "aviso_demo": "Caso demo anonimo. Todos los datos de este archivo son sinteticos: la persona, las fechas, el deporte, las molestias y las observaciones son inventados y no corresponden a ningun alumno real. Ningun dato de este archivo puede presentarse como evidencia de un alumno.",
+  "estado": "publicada",
+  "generador_version": "demo-h1-0",
+  "version_aprobada": 2,
+  "aprobada_por": "entrenador",
+  "fecha_aprobacion": "2027-03-10T19:40:00-04:00",
+
+  "versiones": [
+    {
+      "v": 1,
+      "autor": "sistema",
+      "fecha": "2027-03-10T17:05:00-04:00",
+      "contenido": {
+        "titulo_documento": "Alumno demo — puesta a punto",
+        "cabecera": {
+          "eyebrow": "Alumno demo — puesta a punto",
+          "titulo": "Rumbo al torneo",
+          "mensaje": { "destacado": "Esta semana no se construye, se mantiene.", "texto": " Fuerza justa, cero estimulos nuevos, llegar fresco a competir." },
+          "nota": { "texto": "Si llegas con mas fatiga de la habitual, o aparece una molestia distinta o mayor: bajas la carga o una serie y me avisas." }
+        },
+        "secciones": [
+          { "id": "rutina", "etiqueta": "Rutina" },
+          { "id": "informacion", "etiqueta": "Informacion" },
+          { "id": "feedback", "etiqueta": "Feedback" }
+        ],
+        "paneles": {
+          "rutina": {
+            "tarjetas": [
+              {
+                "tipo": "notas",
+                "id": "antes",
+                "titulo": "Antes de entrenar",
+                "parrafos": [
+                  { "destacado": "RIR 2–3:", "texto": " terminas la serie sintiendo que todavia podrias hacer 2–3 repeticiones buenas." },
+                  { "destacado": "RPE 3–4 (carrera):", "texto": " repeticiones en reserva 3–4." }
+                ]
+              },
+              {
+                "tipo": "sesion",
+                "id": "s1",
+                "etiqueta": "Sesion 1",
+                "cuando": "Sesion de fuerza 1 — a principios de semana",
+                "abierta": true,
+                "calentamiento": {
+                  "titulo": "Calentamiento",
+                  "pasos": ["Calienta bien el tobillo antes de cargar."]
+                },
+                "titulo_bloques": "Bloques",
+                "ejercicios": [
+                  {
+                    "id": "s1-a",
+                    "codigo": "A",
+                    "nombre": "Prensa de piernas",
+                    "etiquetas": [{ "texto": "tobillo — seguro", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: mantener fuerza de tren inferior sin exigir el rango profundo de tobillo." }]
+                  },
+                  {
+                    "id": "s1-b",
+                    "codigo": "B",
+                    "nombre": "Zancada hacia atras con mancuernas",
+                    "etiquetas": [{ "texto": "tobillo — seguro", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 2,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "2" },
+                        { "etiqueta": "Reps", "valor": "8/lado" },
+                        { "etiqueta": "RIR objetivo", "valor": "3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8/lado" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: patron unilateral que ya toleras bien." }]
+                  },
+                  {
+                    "id": "s1-c",
+                    "codigo": "C",
+                    "nombre": "Press banca con mancuernas",
+                    "etiquetas": [{ "texto": "muñeca — carga moderada", "estilo": "precaucion" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: mantener presion horizontal." }]
+                  },
+                  {
+                    "id": "s1-d",
+                    "codigo": "D",
+                    "nombre": "Jalon al pecho",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: traccion vertical conocida." }]
+                  },
+                  {
+                    "id": "s1-e",
+                    "codigo": "E",
+                    "nombre": "Rotacion externa con banda",
+                    "etiquetas": [{ "texto": "opcional · simple", "estilo": "opcional" }],
+                    "programado": {
+                      "series": 2,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "2" },
+                        { "etiqueta": "Reps", "valor": "15" }
+                      ],
+                      "por_serie": [
+                        { "campo": "tension", "etiqueta": "Tension banda", "prescrito": false, "motivo_no_prescrito": "se elige la banda mas liviana disponible" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "15" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Como hacerlo", "cuerpo": "Codo pegado al cuerpo en 90°, giras el antebrazo hacia afuera contra una banda muy liviana." }]
+                  }
+                ]
+              },
+              {
+                "tipo": "sesion",
+                "id": "s2",
+                "etiqueta": "Sesion 2",
+                "cuando": "Sesion de fuerza 2 — hacia el fin de semana",
+                "abierta": true,
+                "calentamiento": {
+                  "titulo": "Calentamiento",
+                  "pasos": ["Calienta bien el tobillo antes de cargar."]
+                },
+                "titulo_bloques": "Bloques",
+                "ejercicios": [
+                  {
+                    "id": "s2-a",
+                    "codigo": "A",
+                    "nombre": "Bulgara (peso en el talon del pie de apoyo)",
+                    "etiquetas": [{ "texto": "tobillo — seguro", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8/lado" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8/lado" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: unilateral de mayor exigencia." }]
+                  },
+                  {
+                    "id": "s2-b",
+                    "codigo": "B",
+                    "nombre": "Peso muerto rumano con mancuernas",
+                    "etiquetas": [{ "texto": "tobillo — seguro", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: cadena posterior." }]
+                  },
+                  {
+                    "id": "s2-c",
+                    "codigo": "C",
+                    "nombre": "Remo (maquina o mancuerna)",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: traccion horizontal." }]
+                  },
+                  {
+                    "id": "s2-d",
+                    "codigo": "D",
+                    "nombre": "Flexiones de brazos",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10–12" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" }
+                      ],
+                      "por_serie": [
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10–12" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "tipo": "programa",
+                "id": "taper",
+                "titulo": "Resto de la semana — sin fuerza",
+                "intro": "Sigues con tu deporte normal. Suma esto cada dia, 6–8 minutos, antes o despues de entrenar:",
+                "lista": [
+                  "Rotacion de hombro con banda liviana — 2 × 15",
+                  "Deslizamiento de omoplato contra la pared — 2 × 10",
+                  "Sentadilla con tu propio peso, controlada — 2 × 10"
+                ],
+                "destacado": { "destacado": "El dia antes de competir — descanso total.", "texto": " Nada nuevo. Dormir bien es el entrenamiento de ese dia." }
+              },
+              {
+                "tipo": "objetivos",
+                "id": "carrera",
+                "titulo": "Tu carrera esta semana",
+                "parrafos": [
+                  { "destacado": "Un rodaje suave en la semana:", "texto": " 5 km, Z2, a tu ritmo habitual, RPE 3–4." },
+                  { "destacado": "Cerca de la competencia, sin carrera:", "texto": " cortamos el impacto antes de competir, igual que la fuerza." }
+                ]
+              },
+              {
+                "tipo": "competencia",
+                "id": "comp",
+                "titulo": "Fin de semana de torneo",
+                "parrafos": [{ "texto": "A competir. Nada de entrenamiento nuevo el dia antes. Hidratate, come lo que siempre te ha funcionado, y confia en el trabajo hecho." }]
+              }
+            ]
+          },
+          "informacion": {
+            "tarjetas": [
+              {
+                "tipo": "contexto",
+                "id": "donde",
+                "titulo": "Donde estamos",
+                "items": [
+                  { "destacado": "Prioridad actual:", "texto": " fuerza primero, rendimiento en la cancha segundo, masa muscular tercero." },
+                  { "destacado": "Esta semana:", "texto": " nada nuevo, nada al limite — el objetivo es frescura para el torneo." },
+                  { "destacado": "Tobillo:", "texto": " prensa, zancada hacia atras y bulgara (peso en el talon) van bien. Sentadilla profunda y zancada hacia adelante estan fuera." },
+                  { "destacado": "Hombro y muñeca:", "texto": " nada de press sobre la cabeza con carga esta semana." },
+                  { "destacado": "Carrera:", "texto": " sigues corriendo, pero se reduce a un solo rodaje suave." }
+                ]
+              },
+              {
+                "tipo": "argumentos",
+                "id": "porque",
+                "titulo": "Por que esta armado asi",
+                "parrafos": [
+                  { "destacado": "Prensa en vez de sentadilla:", "texto": " la sentadilla profunda esta fuera. La prensa da el mismo estimulo de fuerza sin ese riesgo." },
+                  { "destacado": "Nada sobre la cabeza con carga:", "texto": " tus hombros hoy no tienen el rango ni la comodidad para sostener peso ahi arriba." },
+                  { "destacado": "Banca lejos de tu zona de molestia:", "texto": " tu muñeca te avisa cerca de los 70 kg, asi que esta semana nos quedamos bien por debajo." },
+                  { "destacado": "Solo dos sesiones y no mas:", "texto": " tu semana ya esta cargada. Meter mas fuerza no te hace mas fuerte para el torneo — te resta frescura." }
+                ]
+              },
+              {
+                "tipo": "mapa",
+                "id": "mapa",
+                "titulo": "El mapa por delante",
+                "fases": [
+                  { "numero": "1", "titulo": "Puesta a punto", "fechas": "Ahora — el torneo", "texto": "Mantener fuerza, llegar fresco a competir." },
+                  { "numero": "2", "titulo": "Construccion", "fechas": "Despues del torneo", "texto": "Fuerza como eje, mas volumen de carrera. La armamos apenas veamos como llegaste." },
+                  { "numero": "3", "titulo": "Bloque especifico", "fechas": "Segunda mitad del año", "texto": "Potencia y capacidad aerobica orientada a tu deporte." }
+                ]
+              }
+            ]
+          },
+          "feedback": {
+            "tarjetas": [
+              {
+                "tipo": "preguntas",
+                "id": "post",
+                "titulo": "Despues de competir, cuentame esto",
+                "items": [
+                  "¿Llegaste fresco o cargado — como sentiste la energia general?",
+                  "¿Como fue tu rendimiento en la competencia?",
+                  "El tobillo en movimiento: ¿bien, o hubo algun momento de molestia? ¿En que situacion exacta?",
+                  "Hombro y muñeca — ¿alguna molestia al competir?",
+                  "Fuerza: ¿sentiste que la mantuviste, o notaste que bajo algo?",
+                  "Fatiga en los dias previos — ¿alta, media, baja?",
+                  "Carrera: que dia corriste, cuantos kilometros, a que ritmo aproximado y como respondio el tobillo.",
+                  "¿Algo de esta semana no te sirvio, o te hubiera gustado distinto?"
+                ]
+              }
+            ]
+          }
+        },
+        "pie": "Con esto armamos la proxima fase. Exito en el torneo."
+      }
+    },
+
+    {
+      "v": 2,
+      "autor": "entrenador",
+      "fecha": "2027-03-10T19:35:00-04:00",
+      "deriva_de": 1,
+      "contenido": {
+        "titulo_documento": "Alumno demo — semana de puesta a punto",
+        "cabecera": {
+          "eyebrow": "Alumno demo — puesta a punto",
+          "titulo": "Rumbo al 21–22 de marzo",
+          "mensaje": { "destacado": "Esta semana no se construye, se mantiene.", "texto": " Fuerza justa, cero estimulos nuevos, llegar fresco a la cancha." },
+          "nota": { "texto": "Si hoy llegas con mas fatiga de la habitual, o aparece una molestia distinta o mayor: bajas la carga o una serie y me avisas. No hay que cumplirlo a cualquier costo." }
+        },
+        "secciones": [
+          { "id": "rutina", "etiqueta": "Rutina" },
+          { "id": "informacion", "etiqueta": "Informacion" },
+          { "id": "feedback", "etiqueta": "Feedback" }
+        ],
+        "paneles": {
+          "rutina": {
+            "dias": [
+              { "dia": "JUE", "fecha": "12", "etiqueta": "S1", "ancla": "s1", "estilo": "fuerza" },
+              { "dia": "VIE", "fecha": "13", "etiqueta": "PAD", "ancla": "taper", "estilo": "base" },
+              { "dia": "SAB", "fecha": "14", "etiqueta": "S2", "ancla": "s2", "estilo": "fuerza" },
+              { "dia": "DOM", "fecha": "15", "etiqueta": "5K", "ancla": "carrera", "estilo": "base" },
+              { "dia": "LUN", "fecha": "16", "etiqueta": "PAD", "ancla": "taper", "estilo": "base" },
+              { "dia": "MAR", "fecha": "17", "etiqueta": "PAD", "ancla": "taper", "estilo": "base" },
+              { "dia": "MIE", "fecha": "18", "etiqueta": "PAD", "ancla": "taper", "estilo": "base" },
+              { "dia": "JUE", "fecha": "19", "etiqueta": "PAD", "ancla": "taper", "estilo": "base" },
+              { "dia": "VIE", "fecha": "20", "etiqueta": "desc.", "ancla": "taper", "estilo": "base" },
+              { "dia": "SAB", "fecha": "21", "etiqueta": "COMP", "ancla": "comp", "estilo": "competencia" },
+              { "dia": "DOM", "fecha": "22", "etiqueta": "COMP", "ancla": "comp", "estilo": "competencia" }
+            ],
+            "tarjetas": [
+              {
+                "tipo": "notas",
+                "id": "antes",
+                "titulo": "Antes de entrenar",
+                "parrafos": [
+                  { "destacado": "RIR 2–3:", "texto": " terminas la serie sintiendo que todavia podrias hacer 2–3 repeticiones buenas." },
+                  { "destacado": "RPE 3–4 (carrera):", "texto": " ritmo conversacional — si no puedes hablar comodo mientras corres, vas muy rapido. Se mide por sensacion y respiracion, no por repeticiones." }
+                ]
+              },
+              {
+                "tipo": "sesion",
+                "id": "s1",
+                "etiqueta": "Sesion 1",
+                "cuando": "JUEVES 12 — antes de tu padel de hoy",
+                "abierta": true,
+                "calentamiento": {
+                  "titulo": "Calentamiento (8–10 min)",
+                  "pasos": [
+                    "5 min bici o eliptica suave — sube el pulso y la temperatura del tobillo antes de cargarlo. La molestia en frio es tuya, asi que esto no es opcional.",
+                    "Sentadilla con tu propio peso, 2 × 10, controlada y sin buscar rango. Chequea como esta el tobillo hoy.",
+                    "Puente de gluteo, 2 × 12.",
+                    "Rotacion de hombro con banda liviana, 2 × 15.",
+                    "Una serie liviana (mitad de tu carga de trabajo) de prensa y de press banca antes de la serie en serio de cada uno."
+                  ],
+                  "nota": "Pausa breve: 15–30 seg entre ejercicios/series, solo lo necesario para acomodarte. El calentamiento no busca fatigarte."
+                },
+                "titulo_bloques": "Bloques",
+                "ejercicios": [
+                  {
+                    "id": "s1-a",
+                    "codigo": "A",
+                    "nombre": "Prensa de piernas",
+                    "etiquetas": [{ "texto": "tobillo — opcion tolerada", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "2min" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "precaucion": { "destacado": "Si aparece molestia:", "texto": " acorta el recorrido y no busques el rango final. Si sigue, cortas a 2 series y me avisas." },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: mantener fuerza de tren inferior sin exigir el rango profundo de tobillo." }],
+                    "transicion": "Pasas directo a la zancada, mismo rincon de maquinas."
+                  },
+                  {
+                    "id": "s1-b",
+                    "codigo": "B",
+                    "nombre": "Zancada hacia atras con mancuernas",
+                    "etiquetas": [{ "texto": "tobillo — opcion tolerada", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 2,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "2" },
+                        { "etiqueta": "Reps", "valor": "8/lado" },
+                        { "etiqueta": "RIR objetivo", "valor": "3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8/lado" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "3" }
+                      ]
+                    },
+                    "precaucion": { "destacado": "Si aparece molestia:", "texto": " baja a zancada sin peso. Si igual molesta, la sacas hoy y me cuentas." },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: patron unilateral que ya toleras bien, sostiene el trabajo de pierna sin sumar riesgo." }]
+                  },
+                  {
+                    "id": "s1-c",
+                    "codigo": "C",
+                    "nombre": "Press banca con mancuernas",
+                    "etiquetas": [{ "texto": "muñeca — controlar carga", "estilo": "precaucion" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "2min" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "precaucion": { "destacado": "Si aparece molestia:", "texto": " baja el peso de inmediato — no empujes a traves de la muñeca esta semana." },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: mantener presion horizontal, bien por debajo de tu zona de molestia de muñeca." }]
+                  },
+                  {
+                    "id": "s1-d",
+                    "codigo": "D",
+                    "nombre": "Jalon al pecho",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: traccion vertical conocida, complementa el agarre que necesitas en la cancha." }]
+                  },
+                  {
+                    "id": "s1-e",
+                    "codigo": "E",
+                    "nombre": "Rotacion externa con banda",
+                    "etiquetas": [{ "texto": "opcional · simple", "estilo": "opcional" }],
+                    "programado": {
+                      "series": 2,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "2" },
+                        { "etiqueta": "Reps", "valor": "15" },
+                        { "etiqueta": "Descanso", "valor": "60s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "tension", "etiqueta": "Tension banda", "prescrito": false, "motivo_no_prescrito": "se elige la banda mas liviana disponible; no hay carga objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "15" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Como hacerlo", "cuerpo": "Codo pegado al cuerpo en 90°, giras el antebrazo hacia afuera contra una banda super liviana. Nada de peso, nada de tecnica compleja — si no te cuadra, la saltas sin problema." }]
+                  }
+                ],
+                "nota_cierre": "No sumamos core nuevo esta semana. Entre tren inferior y padel ya tienes suficiente, y no vale la pena meter algo que no conoces a dias de competir. Lo retomamos la proxima semana con algo simple."
+              },
+              {
+                "tipo": "sesion",
+                "id": "s2",
+                "etiqueta": "Sesion 2",
+                "cuando": "SABADO 14 — antes de tu padel",
+                "abierta": true,
+                "calentamiento": {
+                  "titulo": "Calentamiento (8 min)",
+                  "pasos": [
+                    "5 min bici o eliptica suave, mismo criterio que el jueves — tobillo caliente antes de cargar.",
+                    "Puente de gluteo, 2 × 12.",
+                    "Circulos de cadera, 10 por lado.",
+                    "Una serie liviana de bulgara sin peso antes de la serie de trabajo."
+                  ],
+                  "nota": "Pausa breve: 15–30 seg entre ejercicios/series. El calentamiento no busca fatigarte."
+                },
+                "titulo_bloques": "Bloques",
+                "ejercicios": [
+                  {
+                    "id": "s2-a",
+                    "codigo": "A",
+                    "nombre": "Bulgara (peso en el talon del pie de apoyo)",
+                    "etiquetas": [{ "texto": "tobillo — tolerada si el peso queda en el talon", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "8/lado" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "2min" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8/lado" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "precaucion": { "destacado": "Si aparece molestia:", "texto": " revisa que el peso este realmente en el talon. Si persiste, bajas a solo tu peso corporal." },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: unilateral de mayor exigencia, ya la manejas bien." }]
+                  },
+                  {
+                    "id": "s2-b",
+                    "codigo": "B",
+                    "nombre": "Peso muerto rumano con mancuernas",
+                    "etiquetas": [{ "texto": "tobillo — tolerado, sin rango profundo", "estilo": "tolerancia" }],
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "2min" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: cadena posterior — el tobillo casi no trabaja en rango en este movimiento." }]
+                  },
+                  {
+                    "id": "s2-c",
+                    "codigo": "C",
+                    "nombre": "Remo (maquina o mancuerna)",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": false, "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "detalles": [{ "resumen": "Quiero entender este ejercicio", "cuerpo": "Objetivo: traccion horizontal, agarre para la cancha." }]
+                  },
+                  {
+                    "id": "s2-d",
+                    "codigo": "D",
+                    "nombre": "Flexiones de brazos",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10–12" },
+                        { "etiqueta": "RIR objetivo", "valor": "2–3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10–12" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2–3" }
+                      ]
+                    },
+                    "precaucion": { "destacado": "Objetivo:", "texto": " empuje horizontal liviano, sin acercarte a tu zona de molestia de muñeca." }
+                  }
+                ],
+                "nota_cierre": "Despues del ultimo bloque, foam roller opcional en cuadriceps, 2 min. No es obligatorio, solo si te acomoda."
+              },
+              {
+                "tipo": "programa",
+                "id": "taper",
+                "titulo": "13, 15 al 20 — sin fuerza",
+                "intro": "Sigues con tu padel normal. Suma esto cada dia, 6–8 minutos, antes o despues de entrenar:",
+                "lista": [
+                  "Rotacion de hombro con banda liviana — 2 × 15",
+                  "Deslizamiento de omoplato contra la pared — 2 × 10",
+                  "Sentadilla con tu propio peso, controlada, sin buscar mas rango del que tienes hoy — 2 × 10"
+                ],
+                "destacado": { "destacado": "Viernes 20 — descanso total.", "texto": " Nada nuevo, ni siquiera la movilidad de arriba si estas cansado. Dormir bien es el entrenamiento de ese dia." }
+              },
+              {
+                "tipo": "objetivos",
+                "id": "carrera",
+                "titulo": "Tu carrera esta semana",
+                "parrafos": [
+                  { "destacado": "Domingo 15, unico rodaje de la semana:", "texto": " 5 km, Z2, a tu ritmo habitual (~6:10–6:20/km), RPE 3–4. Si ese dia no calza con tu rutina real, lo mueves — lo importante es que sea uno solo y quede lejos de la competencia." },
+                  { "destacado": "Desde el lunes 16, sin carrera:", "texto": " cortamos el impacto antes de competir, igual que la fuerza." }
+                ]
+              },
+              {
+                "tipo": "competencia",
+                "id": "comp",
+                "titulo": "21–22 de marzo",
+                "parrafos": [{ "texto": "A competir. Nada de entrenamiento nuevo el dia antes. Hidratate, come lo que siempre te ha funcionado, y confia en el trabajo hecho." }]
+              }
+            ]
+          },
+          "informacion": {
+            "tarjetas": [
+              {
+                "tipo": "contexto",
+                "id": "donde",
+                "titulo": "Donde estamos",
+                "items": [
+                  { "destacado": "Prioridad actual:", "texto": " fuerza primero, rendimiento en la cancha segundo, masa muscular tercero." },
+                  { "destacado": "Esta semana:", "texto": " nada nuevo, nada al limite — el objetivo es frescura para el 21–22." },
+                  { "destacado": "Tobillo:", "texto": " prensa, zancada hacia atras y bulgara (peso en el talon) van bien. Sentadilla profunda y zancada hacia adelante quedan afuera por ahora, no para siempre." },
+                  { "destacado": "Hombro y muñeca:", "texto": " nada de press sobre la cabeza con carga esta semana. Banca se mantiene bien lejos de tu zona de molestia." },
+                  { "destacado": "Carrera:", "texto": " sigues corriendo, pero esta semana se reduce a un solo rodaje suave y se corta antes de competir." }
+                ]
+              },
+              {
+                "tipo": "argumentos",
+                "id": "porque",
+                "titulo": "Por que esta armado asi",
+                "parrafos": [
+                  { "destacado": "Prensa en vez de sentadilla:", "texto": " hoy la sentadilla profunda te genera molestia real, y la prensa te da el mismo estimulo de fuerza con mejor tolerancia actual para tu tobillo. No esta descartada — es una decision de esta fase." },
+                  { "destacado": "Nada sobre la cabeza con carga:", "texto": " tus hombros hoy no tienen el rango ni la comodidad para sostener peso ahi arriba." },
+                  { "destacado": "Banca lejos de tu zona de molestia:", "texto": " tu muñeca te avisa cerca de los 70 kg, asi que esta semana nos quedamos bien por debajo." },
+                  { "destacado": "Solo dos sesiones y no mas:", "texto": " tu semana ya esta cargada de padel. Meter mas fuerza no te hace mas fuerte para el sabado — te resta frescura." }
+                ]
+              },
+              {
+                "tipo": "mapa",
+                "id": "mapa",
+                "titulo": "El mapa hasta octubre",
+                "fases": [
+                  { "numero": "1", "titulo": "Puesta a punto", "fechas": "Ahora — 22 de marzo", "texto": "Mantener fuerza, llegar fresco al torneo." },
+                  { "numero": "2", "titulo": "Construccion", "fechas": "24 de marzo — 30 de mayo", "texto": "Fuerza como eje, mas volumen de carrera hacia los 10K del 23/5, segundo torneo el 6–7/6. La armamos apenas veamos como llegaste del 21–22." },
+                  { "numero": "3", "titulo": "Bloque especifico", "fechas": "Junio — octubre", "texto": "Potencia y capacidad aerobica orientada al padel, apuntando a tu ascenso de categoria de octubre." }
+                ]
+              }
+            ]
+          },
+          "feedback": {
+            "tarjetas": [
+              {
+                "tipo": "preguntas",
+                "id": "post",
+                "titulo": "Despues de competir, cuentame esto",
+                "items": [
+                  "¿Llegaste fresco o cargado — como sentiste la energia general?",
+                  "¿Como fue tu rendimiento en la competencia?",
+                  "El tobillo en movimiento: ¿bien, o hubo algun momento de molestia? ¿En que situacion exacta?",
+                  "Hombro y muñeca — ¿alguna molestia al competir?",
+                  "Fuerza: ¿sentiste que la mantuviste, o notaste que bajo algo?",
+                  "Fatiga en los dias previos — ¿alta, media, baja?",
+                  "Carrera: que dia corriste, cuantos kilometros, a que ritmo aproximado, con que RPE/sensacion, y como respondio el tobillo.",
+                  "¿Algo de esta semana no te sirvio, o te hubiera gustado distinto?"
+                ]
+              }
+            ]
+          }
+        },
+        "pie": "Con esto armamos la proxima fase. Exito el 21–22. · Caso demo anonimo: todos los datos de esta pagina son sinteticos y no corresponden a ninguna persona real."
+      }
+    }
+  ],
+
+  "observaciones": [
+    {
+      "sobre_version": 1,
+      "familia": "calendarizacion",
+      "tipo": "correccion",
+      "observacion": "La semana no tiene dias concretos. 'A principios de semana' y 'hacia el fin de semana' dejan la distribucion en manos del alumno.",
+      "modificacion": "Se fijo fecha y momento para cada sesion y se agrego el riel de dias de la semana completa, incluida la competencia.",
+      "motivo": "La distribucion de la carga en la semana es justamente la decision que esta fase controla. Delegarla al alumno vacia la fase.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "dosificacion",
+      "tipo": "omision",
+      "observacion": "Ningun ejercicio especifica descanso entre series.",
+      "modificacion": "Se agrego descanso explicito a cada ejercicio de ambas sesiones.",
+      "motivo": "Sin descanso declarado, el RIR objetivo no es interpretable: la misma serie con 45 o con 120 segundos de pausa no es la misma dosis.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "calentamiento",
+      "tipo": "correccion",
+      "observacion": "'Calienta bien el tobillo antes de cargar' no es ejecutable: no dice que hacer, cuanto ni con que criterio de suficiencia.",
+      "modificacion": "Se reescribio como protocolo con pasos, series y una serie de aproximacion previa a los ejercicios principales, ligado al dato de molestia en frio.",
+      "motivo": "Un calentamiento que no se puede ejecutar no se ejecuta, y es precisamente el bloque que protege la articulacion limitada.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "lenguaje_de_riesgo",
+      "tipo": "correccion",
+      "observacion": "Las etiquetas 'tobillo — seguro' y 'muñeca — carga moderada' afirman una categoria de seguridad que nadie puede sostener por adelantado.",
+      "modificacion": "Se reemplazaron por lenguaje de tolerancia observada ('opcion tolerada', 'controlar carga') y se dejaron visibles las instrucciones de que hacer si aparece molestia.",
+      "motivo": "Una etiqueta categorica se lee como garantia y desactiva la atencion del alumno justo donde mas se necesita.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "lenguaje_de_riesgo",
+      "tipo": "correccion",
+      "observacion": "'La prensa da el mismo estimulo de fuerza sin ese riesgo' afirma ausencia de riesgo.",
+      "modificacion": "Se cambio a 'con mejor tolerancia actual para tu tobillo'.",
+      "motivo": "Lo que se observo es la tolerancia de hoy, no la ausencia de riesgo. Afirmar de mas convierte una observacion en una promesa.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "decision_de_fase",
+      "tipo": "correccion",
+      "observacion": "'La sentadilla profunda esta fuera' esta redactada como prohibicion, sin horizonte.",
+      "modificacion": "Se redacto como decision de esta fase, con 'quedan afuera por ahora, no para siempre' y 'no esta descartada'.",
+      "motivo": "Una restriccion de fase presentada como prohibicion se vuelve permanente por inercia: nadie revisa lo que quedo escrito como regla.",
+      "resuelta_en": 2
+    },
+    {
+      "sobre_version": 1,
+      "familia": "escala_de_esfuerzo",
+      "tipo": "correccion",
+      "observacion": "El RPE de la carrera esta definido como 'repeticiones en reserva', que es la definicion de RIR.",
+      "modificacion": "Se redefinio por sensacion, ritmo conversacional y respiracion, consistente con el RPE 3–4 ya prescrito.",
+      "motivo": "RIR y RPE de carrera no son la misma escala. Mezclarlas hace que el alumno corra siguiendo un criterio que no aplica a correr.",
+      "resuelta_en": 2
+    }
+  ],
+
+  "checklist_aprobacion": {
+    "checklist_version": "0.0-demo",
+    "respuestas": [
+      {
+        "item_id": "cal-01",
+        "respuesta": "Del dato de molestia en frio en el tobillo y de los dos patrones que la sesion va a cargar.",
+        "justificacion": "Los 5 min de bici y la sentadilla sin carga preparan la articulacion limitada; la serie de aproximacion prepara especificamente prensa y banca. No se agrega nada que no prepare algo de esta sesion."
+      },
+      {
+        "item_id": "est-01",
+        "respuesta": "Ninguna capacidad secundaria nueva.",
+        "justificacion": "La semana busca frescura para competir. Sumar una capacidad secundaria en la semana previa aporta fatiga sin aportar adaptacion utilizable a tiempo."
+      },
+      {
+        "item_id": "pau-01",
+        "respuesta": "Pausa pasiva de 2 min en los principales, 90 s en los accesorios, 60 s en el opcional.",
+        "justificacion": "Con RIR 2–3 el objetivo es sostener calidad, no acumular fatiga. Una pausa activa aqui competiria con la recuperacion que la semana busca."
+      },
+      {
+        "item_id": "hol-01",
+        "respuesta": "Es una secuencia, no ejercicios en fila.",
+        "justificacion": "Ambas sesiones alternan tren inferior tolerado con traccion y empuje horizontal, de modo que el descanso de un patron es el trabajo del siguiente, y ningun bloque compromete la frescura del que viene despues."
+      }
+    ]
+  },
+
+  "publicaciones": [
+    {
+      "p": 1,
+      "de_version": 2,
+      "fecha": "2027-03-10T19:45:00-04:00",
+      "hash": "sha256:a5fef354bf65618753fbd8c743f9cbec201df43d5ea4d9fe840f941870407d2b",
+      "vigente": true
+    }
+  ]
+}

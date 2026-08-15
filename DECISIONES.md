@@ -157,3 +157,88 @@ análisis.
 
 **Cierre de la fase de arquitectura inicial.** `ARQUITECTURA.md` v0.2 aprobado.
 Siguiente: H1.
+
+---
+
+## 2026-08-15 — H1
+
+### D-020 · "No se solicitó check-in" no vive en el enum de respuesta
+`check_in.solicitado` es un booleano. Cuando es `false` acompaña un `motivo`
+explícito y **no existe** `estado_respuesta`. Cuando es `true`, `estado_respuesta`
+es obligatorio y vale `respondido | parcial | sin_respuesta`. "No solicitado" no
+se representa con `null` ni se agrega al enum.
+**Por qué:** `sin_respuesta` es una afirmación sobre la persona —se le preguntó y
+no contestó—; "no hubo check-in" es una afirmación sobre el sistema. Con un solo
+enum, contar cuántas veces un alumno ignora el check-in devolvería un número
+inflado por todas las sesiones en que responder era imposible, y el número
+parecería válido.
+**Descartado:** `null` (indistinguible de un campo olvidado) y un valor
+`no_solicitado` dentro del enum (mezcla las dos afirmaciones).
+**Alcance:** la forma sobrevive a H1. Cuando el check-in exista, una sesión para
+la que el entrenador decida no pedirlo usa el mismo `solicitado: false`, sin
+migrar los registros anteriores.
+
+### D-021 · Ausencia declarada en los campos de ejecución de H1
+**Alcance: la entidad `ejecucion` tal como H1 la modela, y nada más.** Cuatro
+campos concretos —lo ejecutado por serie, el motivo de diferencia, las notas de
+ejecución y el inicio/fin de la sesión— se escriben como
+`{registrado: false, motivo}` en vez de omitirse, quedar en `null` o rellenarse.
+**Por qué:** es el principio 1.5 aplicado donde H1 tiene evidencia de que hace
+falta. Una serie en blanco no vale cero ni vale lo programado, y una vista que no
+observa el inicio real de la sesión no puede escribir la hora en que se abrió la
+página: sería una inferencia presentada como hecho (1.4).
+**Descartado:** timestamps de conveniencia tomados de la carga de la página.
+**Qué NO decide esta entrada:** no establece una regla general para perfil,
+check-in, feedback, adaptaciones ni ninguna entidad futura. La forma se ve
+prometedora y probablemente se repita, pero extenderla es una decisión que se
+toma cuando esa entidad exista y con su caso a la vista, no por anticipado. El
+perfil, en particular, ya tiene su propio mecanismo para esto (`estado` por
+campo, D-004) y no se toca.
+
+### D-022 · El artefacto publicado vive en `/casos/{caso}/publicado/`, con índice
+El repo público no tiene `/publicado/` en la raíz —esa ruta pertenece al repo de
+datos—, así que el artefacto extraído acompaña a su caso. Un `indice.json` por
+caso declara cuál publicación está vigente y con qué `hash`.
+**Por qué:** el invariante "exactamente una publicación vigente" necesita un
+lugar donde leerse sin abrir el documento interno. El hash vive en el índice y no
+dentro del archivo publicado, para que sea el sha256 verificable de ese archivo
+tal como quedó en el repositorio.
+**Descartado:** que la vista adivine el archivo por convención de nombre.
+
+### D-023 · El contenido de la sesión es dato, no plantilla
+Secciones, pestañas, tarjetas, riel de días, campos de la ficha de ejercicio y
+campos de registro por serie salen todos del JSON. El renderizador solo decide
+cómo se dibuja cada tipo de tarjeta.
+**Por qué:** si el HTML conoce los títulos o los campos, la separación es parcial
+y el primer caso distinto obliga a tocar código. `programado.presentacion` es lo
+que se muestra; `programado.por_serie` es lo que se compara contra lo ejecutado.
+Los dos los escribe el entrenador y el código no deriva uno del otro.
+
+### D-024 · Un caso demo marca sus propios datos como sintéticos
+`demo: true` viaja desde el documento interno al artefacto publicado y de ahí a
+cualquier ejecución registrada sobre él.
+**Por qué:** D-019 solo garantiza que el artefacto público esté anonimizado. La
+marca en el dato impide, además, que un registro sintético circule después como
+evidencia de una persona. Ningún paso manual lo sostiene.
+
+### D-025 · La integridad de la publicación se verifica en runtime, con fallo cerrado
+Antes de mostrar una sesión, la vista calcula el SHA-256 de los bytes que acaba
+de recibir y lo compara con el hash que el índice declara. Si no coinciden, o si
+el navegador no ofrece `crypto.subtle` y por tanto no se puede comprobar, **no se
+renderiza nada** y se explica por qué.
+**Por qué:** el hash declarado no probaba nada sobre el archivo realmente
+cargado. Si la publicación cambiaba sin republicarse, el alumno veía un contenido
+y la ejecución registraba el hash de otro — exactamente el blanco móvil que
+D-008 existe para evitar. Una sesión cuya procedencia no se puede acreditar no
+debe ejecutarse, y mostrarla con una advertencia dejaría la decisión en manos de
+quien menos contexto tiene para tomarla.
+**Descartado:** registrar `publicacion_hash_verificado` y seguir mostrando la
+sesión cuando no se puede verificar. Habría sido consistente con D-021, pero
+convierte una garantía en una etiqueta que alguien tiene que leer y entender
+antes de entrenar.
+**Consecuencia aceptada:** la vista deja de funcionar por `http://` desde una IP
+de red, porque ahí no existe `crypto.subtle`. El flujo protegido para iPad es
+GitHub Pages sobre HTTPS (§2); `localhost` sigue sirviendo para desarrollo.
+**Complementario, no alternativo:** H3 añadirá la misma comprobación en CI. El
+runtime detecta un artefacto alterado aunque haya llegado a servirse; CI lo
+detecta antes de que llegue. Ninguna de las dos sustituye a la otra.

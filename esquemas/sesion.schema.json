@@ -1,0 +1,478 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/seba-gonzalez/entrenador-ia/esquemas/sesion.schema.json",
+  "title": "sesion",
+  "description": "Documento vivo de una sesion (ARQUITECTURA.md 5.4). Esquema minimo de H1: incluye versiones, observaciones, checklist y publicaciones. No incluye contingencias (H4) ni referencias a check_in, feedback o perfil (H4-H6). Lo obligatorio depende del estado: un borrador valida sin datos de aprobacion, y una sesion aprobada o publicada no valida sin ellos.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "schema_version",
+    "alumno_id",
+    "plan_id",
+    "estado",
+    "generador_version",
+    "versiones",
+    "observaciones"
+  ],
+
+  "allOf": [
+    {
+      "title": "Aprobar exige constancia de quien aprobo, cuando y contra que checklist",
+      "if": { "required": ["estado"], "properties": { "estado": { "enum": ["aprobada", "publicada"] } } },
+      "then": { "required": ["version_aprobada", "aprobada_por", "fecha_aprobacion", "checklist_aprobacion"] }
+    },
+    {
+      "title": "Un documento que todavia no fue aprobado no puede traer datos de aprobacion",
+      "if": { "required": ["estado"], "properties": { "estado": { "enum": ["borrador", "en_revision"] } } },
+      "then": {
+        "not": {
+          "anyOf": [
+            { "required": ["version_aprobada"] },
+            { "required": ["aprobada_por"] },
+            { "required": ["fecha_aprobacion"] },
+            { "required": ["checklist_aprobacion"] },
+            { "required": ["publicaciones"] }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Aprobada aun no es publicada: publicar es un paso posterior y explicito",
+      "if": { "required": ["estado"], "properties": { "estado": { "const": "aprobada" } } },
+      "then": { "not": { "required": ["publicaciones"] } }
+    },
+    {
+      "title": "Exactamente una publicacion vigente mientras el estado sea publicada (12)",
+      "if": { "required": ["estado"], "properties": { "estado": { "const": "publicada" } } },
+      "then": {
+        "required": ["publicaciones"],
+        "properties": {
+          "publicaciones": {
+            "contains": { "required": ["vigente"], "properties": { "vigente": { "const": true } } },
+            "minContains": 1,
+            "maxContains": 1
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "id": { "$ref": "#/$defs/identificador" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "alumno_id": { "$ref": "#/$defs/identificador" },
+    "plan_id": {
+      "$ref": "#/$defs/identificador",
+      "description": "Referencia estable al plan. La entidad plan no existe todavia: se implementa despues de H1."
+    },
+    "demo": {
+      "type": "boolean",
+      "description": "true cuando el caso es sintetico y anonimo. Ningun dato de un caso demo puede presentarse como evidencia real de un alumno."
+    },
+    "aviso_demo": { "type": "string", "minLength": 1 },
+    "estado": {
+      "enum": ["borrador", "en_revision", "aprobada", "publicada", "descartada"],
+      "description": "Ciclo de vida del documento (6.1). 'corregida' no es un estado: es una transicion que crea una version nueva (D-006). Que campos son obligatorios depende de este valor: ver 'allOf'. 'descartada' no impone ni prohibe datos de aprobacion a proposito, porque V1-B sigue abierto y todavia no se sabe si un borrador se descarta antes o despues de aprobarse."
+    },
+    "generador_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Version del generador que produjo la v1. Permite atribuir una mejora a un cambio concreto."
+    },
+
+    "versiones": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/version" }
+    },
+
+    "observaciones": {
+      "type": "array",
+      "description": "Juicios del entrenador sobre una version. Informacion interna: nunca viaja al artefacto publicado (D-015).",
+      "items": { "$ref": "#/$defs/observacion" }
+    },
+
+    "checklist_aprobacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checklist_version", "respuestas"],
+      "properties": {
+        "checklist_version": { "type": "string", "minLength": 1 },
+        "respuestas": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item_id", "respuesta", "justificacion"],
+            "properties": {
+              "item_id": { "type": "string", "minLength": 1 },
+              "respuesta": { "type": "string", "minLength": 1 },
+              "justificacion": {
+                "type": "string",
+                "minLength": 1,
+                "description": "El campo obligatorio es la justificacion, no la presencia del elemento (D-014). 'Ninguna' es una respuesta valida si esta justificada."
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "version_aprobada": { "type": "integer", "minimum": 1 },
+    "aprobada_por": { "type": "string", "minLength": 1 },
+    "fecha_aprobacion": { "$ref": "#/$defs/fechaISO" },
+
+    "publicaciones": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/publicacion" }
+    }
+  },
+
+  "$defs": {
+    "identificador": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Identificador estable. Ninguna logica puede depender de como esta escrito (ARQUITECTURA.md 4)."
+    },
+
+    "fechaISO": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$",
+      "description": "ISO-8601 con zona horaria explicita."
+    },
+
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v", "autor", "fecha", "contenido"],
+      "properties": {
+        "v": { "type": "integer", "minimum": 1 },
+        "autor": {
+          "enum": ["sistema", "entrenador"],
+          "description": "Hace medible el aprendizaje del sistema: solo se puede evaluar si mejoro si consta que la v1 la escribio el sistema."
+        },
+        "fecha": { "$ref": "#/$defs/fechaISO" },
+        "deriva_de": { "type": "integer", "minimum": 1 },
+        "contenido": { "$ref": "#/$defs/contenido" }
+      }
+    },
+
+    "observacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sobre_version", "familia", "tipo", "observacion", "motivo"],
+      "properties": {
+        "sobre_version": { "type": "integer", "minimum": 1 },
+        "familia": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Del vocabulario vigente de familias de correccion. El vocabulario todavia no existe (V1-A abierto) y por eso aqui no se enumera: enumerarlo seria escribir metodologia en el esquema antes de que el entrenador la haya escrito."
+        },
+        "tipo": { "type": "string", "minLength": 1 },
+        "observacion": { "type": "string", "minLength": 1 },
+        "modificacion": { "type": "string", "minLength": 1 },
+        "motivo": { "type": "string", "minLength": 1 },
+        "resuelta_en": { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "publicacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p", "de_version", "fecha", "hash", "vigente"],
+      "properties": {
+        "p": { "type": "integer", "minimum": 1 },
+        "de_version": { "type": "integer", "minimum": 1 },
+        "fecha": { "$ref": "#/$defs/fechaISO" },
+        "hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "sha256 del archivo publicado tal como quedo en el repositorio. Se escribe a mano en H1; verificarlo automaticamente es H3."
+        },
+        "vigente": { "type": "boolean" },
+        "sustituida_por": { "type": "integer", "minimum": 1 },
+        "origen": { "type": "string", "minLength": 1 },
+        "motivo": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "contenido": {
+      "type": "object",
+      "description": "Lo que el alumno ve. Es dato, no plantilla: el renderizador no conoce ningun titulo, etiqueta ni valor de esta estructura.",
+      "additionalProperties": false,
+      "required": ["titulo_documento", "cabecera", "secciones", "paneles", "pie"],
+      "properties": {
+        "titulo_documento": { "type": "string", "minLength": 1 },
+        "cabecera": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["eyebrow", "titulo", "mensaje"],
+          "properties": {
+            "eyebrow": { "type": "string", "minLength": 1 },
+            "titulo": { "type": "string", "minLength": 1 },
+            "mensaje": { "$ref": "#/$defs/parrafo" },
+            "nota": { "$ref": "#/$defs/parrafo" }
+          }
+        },
+        "secciones": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "etiqueta"],
+            "properties": {
+              "id": { "$ref": "#/$defs/identificador" },
+              "etiqueta": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "paneles": {
+          "type": "object",
+          "description": "Una entrada por seccion, con la misma clave que seccion.id. ATENCION: que exista un panel por cada seccion declarada es un invariante entre dos campos, y JSON Schema no puede expresarlo — las claves dependen de valores de otro array. Aqui solo se garantiza la forma de cada panel. La correspondencia la comprueba la vista al montar, que se detiene con un error nombrando la seccion sin panel, y le corresponde a H3 verificarla en CI junto al resto de invariantes de la seccion 12.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tarjetas"],
+            "properties": {
+              "dias": { "type": "array", "items": { "$ref": "#/$defs/dia" } },
+              "tarjetas": { "type": "array", "items": { "$ref": "#/$defs/tarjeta" } }
+            }
+          }
+        },
+        "pie": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "parrafo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["texto"],
+      "properties": {
+        "destacado": { "type": "string", "minLength": 1 },
+        "texto": { "type": "string" }
+      }
+    },
+
+    "dia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dia", "fecha", "etiqueta", "ancla"],
+      "properties": {
+        "dia": { "type": "string", "minLength": 1 },
+        "fecha": { "type": "string", "minLength": 1 },
+        "etiqueta": { "type": "string", "minLength": 1 },
+        "ancla": { "type": "string", "minLength": 1 },
+        "estilo": { "enum": ["base", "fuerza", "competencia"] }
+      }
+    },
+
+    "tarjeta": {
+      "type": "object",
+      "description": "Cada tipo exige los campos que el renderizador recorre sin comprobar. Un JSON que valida contra este esquema no puede romper la vista por una propiedad ausente.",
+      "required": ["tipo"],
+      "properties": {
+        "tipo": {
+          "enum": ["notas", "sesion", "programa", "objetivos", "competencia", "contexto", "argumentos", "mapa", "preguntas"]
+        },
+        "id": { "type": "string", "minLength": 1 },
+        "titulo": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "sesion" } } },
+          "then": { "$ref": "#/$defs/tarjetaSesion" }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "enum": ["notas", "objetivos", "competencia", "argumentos"] } } },
+          "then": {
+            "required": ["parrafos"],
+            "properties": {
+              "parrafos": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/parrafo" } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "contexto" } } },
+          "then": {
+            "required": ["items"],
+            "properties": {
+              "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/parrafo" } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "preguntas" } } },
+          "then": {
+            "required": ["items"],
+            "properties": {
+              "items": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "mapa" } } },
+          "then": {
+            "required": ["fases"],
+            "properties": {
+              "fases": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["numero", "titulo", "fechas", "texto"],
+                  "properties": {
+                    "numero": { "type": "string", "minLength": 1 },
+                    "titulo": { "type": "string", "minLength": 1 },
+                    "fechas": { "type": "string", "minLength": 1 },
+                    "texto": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "required": ["tipo"], "properties": { "tipo": { "const": "programa" } } },
+          "then": {
+            "description": "El renderizador comprueba intro, lista y destacado antes de usarlos, asi que ninguno es obligatorio. Lo que si se exige es que, si aparecen, tengan contenido: una tarjeta con una lista vacia se dibuja como un hueco.",
+            "properties": {
+              "intro": { "type": "string", "minLength": 1 },
+              "lista": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "destacado": { "$ref": "#/$defs/parrafo" }
+            }
+          }
+        }
+      ]
+    },
+
+    "tarjetaSesion": {
+      "type": "object",
+      "required": ["id", "etiqueta", "cuando", "ejercicios"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "etiqueta": { "type": "string", "minLength": 1 },
+        "cuando": { "type": "string", "minLength": 1 },
+        "abierta": { "type": "boolean" },
+        "calentamiento": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["titulo", "pasos"],
+          "properties": {
+            "titulo": { "type": "string", "minLength": 1 },
+            "pasos": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+            "nota": { "type": "string", "minLength": 1 }
+          }
+        },
+        "titulo_bloques": { "type": "string", "minLength": 1 },
+        "ejercicios": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ejercicio" } },
+        "nota_cierre": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "ejercicio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "codigo", "nombre", "programado"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "codigo": { "type": "string", "minLength": 1 },
+        "nombre": { "type": "string", "minLength": 1 },
+        "etiquetas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["texto", "estilo"],
+            "properties": {
+              "texto": { "type": "string", "minLength": 1 },
+              "estilo": { "enum": ["tolerancia", "precaucion", "opcional"] }
+            }
+          }
+        },
+        "programado": { "$ref": "#/$defs/programado" },
+        "precaucion": { "$ref": "#/$defs/parrafo" },
+        "detalles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["resumen", "cuerpo"],
+            "properties": {
+              "resumen": { "type": "string", "minLength": 1 },
+              "cuerpo": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "transicion": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "programado": {
+      "type": "object",
+      "description": "Lo que el entrenador prescribio. 'presentacion' es lo que se muestra en la ficha; 'por_serie' es lo que se compara contra lo ejecutado y define los campos de registro. Ambos los escribe el entrenador: el codigo no deriva uno del otro.",
+      "additionalProperties": false,
+      "required": ["series", "presentacion", "por_serie"],
+      "properties": {
+        "series": { "type": "integer", "minimum": 1 },
+        "presentacion": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["etiqueta", "valor"],
+            "properties": {
+              "etiqueta": { "type": "string", "minLength": 1 },
+              "valor": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "por_serie": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/campoPorSerie" }
+        }
+      }
+    },
+
+    "campoPorSerie": {
+      "type": "object",
+      "description": "Un campo que se registra por serie. Cuando 'prescrito' es false no hay valor de referencia y el motivo es explicito: la ausencia de prescripcion es un dato, no un hueco (principio 1.5).",
+      "required": ["campo", "etiqueta", "prescrito"],
+      "properties": {
+        "campo": { "type": "string", "minLength": 1 },
+        "etiqueta": { "type": "string", "minLength": 1 },
+        "prescrito": { "type": "boolean" }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "campo": true,
+            "etiqueta": true,
+            "prescrito": { "const": true },
+            "valor": { "type": "string", "minLength": 1 }
+          },
+          "required": ["valor"],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "campo": true,
+            "etiqueta": true,
+            "prescrito": { "const": false },
+            "motivo_no_prescrito": { "type": "string", "minLength": 1 }
+          },
+          "required": ["motivo_no_prescrito"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

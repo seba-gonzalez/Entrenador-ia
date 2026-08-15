@@ -1,0 +1,861 @@
+{
+  "id": "ejec-sesion-demo-001-20260815-144427",
+  "schema_version": 1,
+  "sesion_id": "sesion-demo-001",
+  "publicacion_ejecutada": 1,
+  "publicacion_hash": "sha256:a5fef354bf65618753fbd8c743f9cbec201df43d5ea4d9fe840f941870407d2b",
+  "check_in": {
+    "solicitado": false,
+    "motivo": "H1 no implementa check-in. No se solicito ninguno para esta sesion, de modo que no hay respuesta que registrar (D-020)."
+  },
+  "inicio": {
+    "registrado": false,
+    "motivo": "Esta vista no observa el inicio real de la sesion. Registrar la hora en que se abrio la pagina seria presentar una inferencia como un hecho."
+  },
+  "fin": {
+    "registrado": false,
+    "motivo": "Esta vista no observa el fin real de la sesion. La hora en que se copio el registro se guarda aparte, en generado_en."
+  },
+  "series": [
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Prensa de piernas",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "120",
+          "reps": "8",
+          "rir": "2"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Prensa de piernas",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "120",
+          "reps": "6"
+        },
+        "campos_sin_registrar": [
+          "rir"
+        ]
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Prensa de piernas",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-b",
+      "ejercicio_nombre": "Zancada hacia atras con mancuernas",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8/lado"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie se marco como realizada pero no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-b",
+      "ejercicio_nombre": "Zancada hacia atras con mancuernas",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8/lado"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Jalon al pecho",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Jalon al pecho",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Jalon al pecho",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-e",
+      "ejercicio_nombre": "Rotacion externa con banda",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "tension",
+          "etiqueta": "Tension banda",
+          "prescrito": false,
+          "motivo_no_prescrito": "se elige la banda mas liviana disponible; no hay carga objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "15"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-e",
+      "ejercicio_nombre": "Rotacion externa con banda",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "tension",
+          "etiqueta": "Tension banda",
+          "prescrito": false,
+          "motivo_no_prescrito": "se elige la banda mas liviana disponible; no hay carga objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "15"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-a",
+      "ejercicio_nombre": "Bulgara (peso en el talon del pie de apoyo)",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8/lado"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-a",
+      "ejercicio_nombre": "Bulgara (peso en el talon del pie de apoyo)",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8/lado"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-a",
+      "ejercicio_nombre": "Bulgara (peso en el talon del pie de apoyo)",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8/lado"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-b",
+      "ejercicio_nombre": "Peso muerto rumano con mancuernas",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-b",
+      "ejercicio_nombre": "Peso muerto rumano con mancuernas",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-b",
+      "ejercicio_nombre": "Peso muerto rumano con mancuernas",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-c",
+      "ejercicio_nombre": "Remo (maquina o mancuerna)",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-c",
+      "ejercicio_nombre": "Remo (maquina o mancuerna)",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-c",
+      "ejercicio_nombre": "Remo (maquina o mancuerna)",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "la elige el alumno para alcanzar el RIR objetivo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-d",
+      "ejercicio_nombre": "Flexiones de brazos",
+      "serie": 1,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10–12"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-d",
+      "ejercicio_nombre": "Flexiones de brazos",
+      "serie": 2,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10–12"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s2-d",
+      "ejercicio_nombre": "Flexiones de brazos",
+      "serie": 3,
+      "realizada": false,
+      "programado": [
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10–12"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "2–3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": false,
+        "motivo": "La serie no se marco como realizada y no se registro ningun valor."
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    }
+  ],
+  "resultado": "parcial",
+  "notas_de_ejecucion": {
+    "registrado": true,
+    "texto": "El tobillo avisó en la segunda serie de prensa, corté ahí."
+  },
+  "generado_por": "app/alumno",
+  "generado_en": "2026-08-15T14:44:27.502Z",
+  "demo": true,
+  "aviso_demo": "Caso demo anonimo. Todos los datos de este archivo son sinteticos: la persona, las fechas, el deporte, las molestias y las observaciones son inventados y no corresponden a ningun alumno real. Ningun dato de este archivo puede presentarse como evidencia de un alumno."
+}
