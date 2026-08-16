@@ -21,13 +21,20 @@ function leerJson(raiz, relativa) {
   }
 }
 
-export function cargar(raiz, config) {
-  const sesiones = buscarVarios(raiz, config.sesiones).map((r) => leerJson(raiz, r));
-  const indices = buscarVarios(raiz, config.indices).map((r) => leerJson(raiz, r));
-  const ejecuciones = buscarVarios(raiz, config.ejecuciones).map((r) => leerJson(raiz, r));
+/**
+ * Una familia publicada: indices que nombran artefactos con su hash.
+ *
+ * Hay dos —las sesiones publicadas y las devoluciones publicadas— y comparten
+ * forma exacta: indice con 'vigente', archivos numerados, un hash por archivo.
+ * Se cargan con el mismo codigo a proposito: el dia que una de las dos deje de
+ * comprobarse igual que la otra, sera porque alguien lo decidio, no porque se
+ * duplico la implementacion y solo se actualizo una copia.
+ */
+function cargarFamiliaPublicada(raiz, patrones) {
+  const indices = buscarVarios(raiz, patrones).map((r) => leerJson(raiz, r));
 
-  // Las publicaciones no se declaran: viven junto a su indice, que las nombra.
-  const publicaciones = [];
+  // Los artefactos no se declaran: viven junto a su indice, que los nombra.
+  const artefactos = [];
   for (const indice of indices) {
     if (!indice.datos) continue;
     const carpeta = dirname(indice.ruta);
@@ -35,32 +42,49 @@ export function cargar(raiz, config) {
       if (!entrada.archivo) continue;
       const relativa = `${carpeta}/${entrada.archivo}`;
       try {
-        publicaciones.push({ ...leerJson(raiz, relativa), entrada, indice });
+        artefactos.push({ ...leerJson(raiz, relativa), entrada, indice });
       } catch {
         // El archivo que el indice nombra no existe. Lo registra 'estructura'.
-        publicaciones.push({ ruta: relativa, bytes: null, datos: null, entrada, indice });
+        artefactos.push({ ruta: relativa, bytes: null, datos: null, entrada, indice });
       }
     }
   }
 
   // Archivos que viven en una carpeta de publicaciones, para detectar huerfanos.
-  const carpetasDePublicacion = new Map();
+  const carpetas = new Map();
   for (const indice of indices) {
     const carpeta = dirname(indice.ruta);
-    carpetasDePublicacion.set(
-      carpeta,
-      archivosDe(raiz, carpeta).filter((n) => n !== 'indice.json')
-    );
+    carpetas.set(carpeta, archivosDe(raiz, carpeta).filter((n) => n !== 'indice.json'));
   }
+
+  return { indices, artefactos, carpetas };
+}
+
+export function cargar(raiz, config) {
+  const sesiones = buscarVarios(raiz, config.sesiones).map((r) => leerJson(raiz, r));
+  const ejecuciones = buscarVarios(raiz, config.ejecuciones).map((r) => leerJson(raiz, r));
+  const alumnos = buscarVarios(raiz, config.alumnos).map((r) => leerJson(raiz, r));
+  const feedback = buscarVarios(raiz, config.feedback).map((r) => leerJson(raiz, r));
+
+  const sesionesPublicadas = cargarFamiliaPublicada(raiz, config.indices);
+  const devolucionesPublicadas = cargarFamiliaPublicada(raiz, config.indices_devolucion);
 
   return {
     raiz,
     config,
     sesiones,
-    indices,
     ejecuciones,
-    publicaciones,
-    carpetasDePublicacion,
+    alumnos,
+    feedback,
+
+    indices: sesionesPublicadas.indices,
+    publicaciones: sesionesPublicadas.artefactos,
+    carpetasDePublicacion: sesionesPublicadas.carpetas,
+
+    indicesDevolucion: devolucionesPublicadas.indices,
+    devoluciones: devolucionesPublicadas.artefactos,
+    carpetasDeDevolucion: devolucionesPublicadas.carpetas,
+
     porSesionId: new Map(sesiones.filter((s) => s.datos).map((s) => [s.datos.id, s])),
   };
 }

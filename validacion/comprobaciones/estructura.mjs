@@ -7,13 +7,36 @@
  */
 
 import { existsSync } from 'node:fs';
-import { join, dirname, basename } from 'node:path';
+import { join, dirname } from 'node:path';
 
 const F = 'estructura';
 const D = 'demo';
 
 export function comprobarEstructura(datos, informe) {
-  for (const indice of datos.indices) {
+  comprobarFamilia(datos, informe, {
+    indices: datos.indices,
+    carpetas: datos.carpetasDePublicacion,
+    artefactos: datos.publicaciones,
+    // Solo las sesiones tienen un documento interno que tambien declara cual
+    // publicacion rige. Las devoluciones no, y exigirselo seria inventarles una
+    // entidad que no existe.
+    contrastaConDocumento: true,
+    revisarContenido: true,
+  });
+
+  comprobarFamilia(datos, informe, {
+    indices: datos.indicesDevolucion,
+    carpetas: datos.carpetasDeDevolucion,
+    artefactos: datos.devoluciones,
+    contrastaConDocumento: false,
+    revisarContenido: false,
+  });
+
+  if (datos.config.publico === true) comprobarMarcaDemo(datos, informe);
+}
+
+function comprobarFamilia(datos, informe, familia) {
+  for (const indice of familia.indices) {
     if (!indice.datos) continue;
     const entradas = indice.datos.publicaciones || [];
 
@@ -41,18 +64,19 @@ export function comprobarEstructura(datos, informe) {
 
     // Y ningun archivo publicado se queda fuera del indice.
     const nombrados = new Set(entradas.map((e) => e.archivo));
-    for (const archivo of datos.carpetasDePublicacion.get(carpeta) || []) {
+    for (const archivo of familia.carpetas.get(carpeta) || []) {
       informe.exigir(F, nombrados.has(archivo), `${carpeta}/${archivo}`,
         'Hay un archivo publicado que el indice no registra.',
         'Un artefacto sin entrada en el indice no tiene hash declarado y nadie puede acreditarlo.');
     }
 
-    // El documento del entrenador y el indice no pueden discrepar sobre cual rige.
+    // Todo indice pertenece a una sesion que existe, sea de la familia que sea.
     const sesion = datos.porSesionId.get(indice.datos.sesion_id);
     informe.exigir(F, !!sesion, indice.ruta,
       `El indice dice pertenecer a la sesion "${indice.datos.sesion_id}", que no existe.`);
 
-    if (sesion?.datos?.publicaciones) {
+    // El documento del entrenador y el indice no pueden discrepar sobre cual rige.
+    if (familia.contrastaConDocumento && sesion?.datos?.publicaciones) {
       const vigenteEnDocumento = sesion.datos.publicaciones.find((p) => p.vigente === true);
       if (vigenteEnDocumento) {
         informe.exigir(F, vigenteEnDocumento.p === indice.datos.vigente, indice.ruta,
@@ -62,17 +86,15 @@ export function comprobarEstructura(datos, informe) {
     }
   }
 
-  for (const publicacion of datos.publicaciones) {
-    if (!publicacion.datos) continue;
+  for (const artefacto of familia.artefactos) {
+    if (!artefacto.datos) continue;
 
-    informe.exigir(F, publicacion.datos.publicacion?.p === publicacion.entrada.p, publicacion.ruta,
+    informe.exigir(F, artefacto.datos.publicacion?.p === artefacto.entrada.p, artefacto.ruta,
       'El archivo dice ser una publicacion distinta de la que el indice registra.',
-      `archivo: ${publicacion.datos.publicacion?.p} · indice: ${publicacion.entrada.p}`);
+      `archivo: ${artefacto.datos.publicacion?.p} · indice: ${artefacto.entrada.p}`);
 
-    comprobarSeccionesYPaneles(publicacion, informe);
+    if (familia.revisarContenido) comprobarSeccionesYPaneles(artefacto, informe);
   }
-
-  if (datos.config.publico === true) comprobarMarcaDemo(datos, informe);
 }
 
 /**
@@ -100,15 +122,18 @@ function comprobarSeccionesYPaneles(publicacion, informe) {
 
 /**
  * En un repositorio publico, toda entidad que pueda representar a una persona
- * lleva su marca. Se aplica solo a sesiones, publicaciones y ejecuciones: los
- * esquemas, la configuracion y cualquier otro metadato quedan fuera porque no
- * estan en los conjuntos que la configuracion declara.
+ * lleva su marca. Se aplica a las entidades que la configuracion declara —lo que
+ * incluye la ficha del alumno, su feedback y las devoluciones— y deja fuera los
+ * esquemas, la configuracion y cualquier otro metadato.
  */
 function comprobarMarcaDemo(datos, informe) {
   const revisar = [
     ...datos.sesiones.map((a) => [a, 'sesion']),
     ...datos.publicaciones.map((a) => [a, 'publicacion']),
     ...datos.ejecuciones.map((a) => [a, 'ejecucion']),
+    ...datos.alumnos.map((a) => [a, 'ficha de alumno']),
+    ...datos.feedback.map((a) => [a, 'respuesta de feedback']),
+    ...datos.devoluciones.map((a) => [a, 'devolucion']),
   ];
 
   for (const [archivo, tipo] of revisar) {

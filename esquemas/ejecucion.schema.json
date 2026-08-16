@@ -53,6 +53,12 @@
       "items": { "$ref": "#/$defs/serie" }
     },
 
+    "sensaciones": {
+      "type": "array",
+      "description": "Como se sintio cada bloque, segun el alumno y en el momento. Es la capa SENSACION: no es lo ejecutado ni una interpretacion de nadie, y no dispara ninguna adaptacion automatica. Alguien la lee despues y decide.",
+      "items": { "$ref": "#/$defs/sensacion" }
+    },
+
     "resultado": {
       "enum": ["completada", "parcial", "pospuesta", "omitida"],
       "description": "Posponer y omitir son resultados legitimos y registrables, no fallos. Lo elige una persona: ningun proceso lo deduce."
@@ -98,6 +104,34 @@
               "description": "Estado de la respuesta de la persona. 'sin_respuesta' afirma que se pregunto y no contesto; nunca se lee como conformidad."
             },
             "ref": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+
+    "sensacion": {
+      "type": "object",
+      "description": "Un bloque no marcado se declara sin registrar, con su motivo. No marcar no significa 'adecuado' (principio 1.5).",
+      "required": ["bloque_id", "etiqueta", "registrado"],
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["bloque_id", "etiqueta", "registrado", "percepcion"],
+          "properties": {
+            "bloque_id": { "type": "string", "minLength": 1 },
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "registrado": { "const": true },
+            "percepcion": { "enum": ["muy_facil", "adecuado", "muy_exigente", "molestia_dolor"] }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["bloque_id", "etiqueta", "registrado", "motivo"],
+          "properties": {
+            "bloque_id": { "type": "string", "minLength": 1 },
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "registrado": { "const": false },
+            "motivo": { "type": "string", "minLength": 1 }
           }
         }
       ]

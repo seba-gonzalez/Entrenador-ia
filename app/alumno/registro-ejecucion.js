@@ -42,6 +42,7 @@ const MOTIVOS = {
   serieMarcadaSinValores: 'La serie se marco como realizada pero no se registro ningun valor.',
   sinMotivoPorSerie: 'Esta vista no captura un motivo por serie.',
   sinNotas: 'No se escribio ninguna nota.',
+  sinSensacion: 'No se marco ninguna percepcion para este bloque.',
 };
 
 function el(etiqueta, clase, texto) {
@@ -69,9 +70,9 @@ export class ContradiccionDeRegistro extends Error {
  * casilla porque hay numeros, o descartar los numeros porque no esta marcada,
  * serian las dos formas de que el sistema decida algo que no le toca (1.4).
  */
-export function detectarContradicciones(registros) {
+export function detectarContradicciones(ejercicios) {
   const conflictos = [];
-  registros.forEach((registro) => {
+  ejercicios.forEach((registro) => {
     registro.filas.forEach((fila) => {
       const hayValores = registro.por_serie.some(
         (campo) => fila.entradas[campo.campo].value.trim() !== ''
@@ -129,16 +130,16 @@ function leerFila(registro, fila) {
   };
 }
 
-export function construirEjecucion({ publicacion, registros, resultado, notas, ahora }) {
+export function construirEjecucion({ publicacion, registro, resultado, notas, ahora }) {
   // Se comprueba aqui y no solo en la interfaz: ningun camino —incluido el de
   // otro programa que importe esta funcion— puede producir un registro a partir
   // de un estado contradictorio.
-  const conflictos = detectarContradicciones(registros);
+  const conflictos = detectarContradicciones(registro.ejercicios);
   if (conflictos.length) throw new ContradiccionDeRegistro(conflictos);
 
   const series = [];
-  registros.forEach((registro) => {
-    registro.filas.forEach((fila) => series.push(leerFila(registro, fila)));
+  registro.ejercicios.forEach((ejercicio) => {
+    ejercicio.filas.forEach((fila) => series.push(leerFila(ejercicio, fila)));
   });
 
   const ejecucion = {
@@ -156,6 +157,14 @@ export function construirEjecucion({ publicacion, registros, resultado, notas, a
     fin: { registrado: false, motivo: MOTIVOS.sinFin },
 
     series,
+
+    // No marcar un bloque no significa "adecuado": significa que no lo marco.
+    sensaciones: registro.sensaciones.map((s) =>
+      s.elegida
+        ? { bloque_id: s.bloque_id, etiqueta: s.etiqueta, registrado: true, percepcion: s.elegida }
+        : { bloque_id: s.bloque_id, etiqueta: s.etiqueta, registrado: false, motivo: MOTIVOS.sinSensacion }
+    ),
+
     resultado,
     notas_de_ejecucion: notas
       ? { registrado: true, texto: notas }
@@ -176,7 +185,7 @@ export function construirEjecucion({ publicacion, registros, resultado, notas, a
   return ejecucion;
 }
 
-export function montarCierre({ publicacion, registros, esquema }) {
+export function montarCierre({ publicacion, registro, esquema }) {
   const card = el('div', 'card');
   card.id = 'cierre';
   card.appendChild(el('h2', null, ETIQUETAS.titulo));
@@ -225,7 +234,7 @@ export function montarCierre({ publicacion, registros, esquema }) {
     try {
       ejecucion = construirEjecucion({
         publicacion,
-        registros,
+        registro,
         resultado: select.value,
         notas: textarea.value.trim(),
         ahora: new Date().toISOString(),

@@ -1,0 +1,100 @@
+{
+  "sesion_id": "sesion-piloto-001",
+  "schema_version": 1,
+  "demo": true,
+  "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real.",
+  "publicacion": {
+    "p": 1,
+    "fecha": "2027-04-08T20:15:00-04:00"
+  },
+  "contenido": {
+    "titulo": "Despues de tu primera sesion",
+    "dijo": {
+      "verbatim": "La fuerza estuvo demasiado facil. Agregue una serie. El circuito estuvo bien.",
+      "sensaciones": [
+        {
+          "etiqueta": "Fuerza",
+          "percepcion": "muy_facil"
+        },
+        {
+          "etiqueta": "Acondicionamiento",
+          "percepcion": "adecuado"
+        }
+      ],
+      "fuente": "casos/piloto-001/feedback/sesion-piloto-001.json"
+    },
+    "entendido": {
+      "texto": "Que la dosis de fuerza se quedo corta para donde estas hoy, y que el acondicionamiento cayo en el punto. Lo que si se con certeza es lo que quedo anotado: 70 kg por 8 repeticiones, tres series, y las dos primeras con 3 repeticiones en reserva. Eso es una carga comoda, no un limite. Tambien me dices que hiciste una cuarta serie: no quedo registrada porque la ficha solo traia tres casillas, asi que la tengo por lo que me cuentas y no por el registro. Me lo apunto como algo a arreglar en la ficha, no en ti.",
+      "autor": "entrenador",
+      "es_interpretacion": true,
+      "fecha": "2027-04-08T20:10:00-04:00"
+    },
+    "para_la_proxima": [
+      {
+        "punto": "Subir el volumen de sentadilla de 3 a 4 series y la carga a 75 kg, manteniendo RIR 2-3",
+        "tipo": "decision"
+      },
+      {
+        "punto": "Partir el press y el remo desde las cargas de ayer (14 kg y 40 kg) en vez de volver a buscarlas",
+        "tipo": "decision"
+      },
+      {
+        "punto": "Dejar el bloque de acondicionamiento igual: dijiste que estuvo bien y no hay motivo para tocarlo",
+        "tipo": "decision"
+      },
+      {
+        "punto": "Si la fuerza vuelve a quedarse corta con 4 series, el problema es la carga y no el volumen. Lo miro la proxima",
+        "tipo": "observar"
+      },
+      {
+        "punto": "Anadir casillas de serie extra en la ficha, para que lo que hagas de mas quede registrado y no dependa de que lo cuentes",
+        "tipo": "observar"
+      }
+    ],
+    "referencias": [
+      {
+        "texto": "Sentadilla con barra 70 kg × 8 → RIR 3 en las dos primeras series y 2 en la tercera. Bien tolerada, sin molestias.",
+        "derivado_de": {
+          "ejecucion": "casos/piloto-001/ejecuciones/sesion-piloto-001.json",
+          "ejercicio_id": "s1-a",
+          "series": [
+            1,
+            2,
+            3
+          ]
+        }
+      },
+      {
+        "texto": "Press banca con mancuernas 14 kg por lado × 10 → RIR 3. Punto de partida razonable.",
+        "derivado_de": {
+          "ejecucion": "casos/piloto-001/ejecuciones/sesion-piloto-001.json",
+          "ejercicio_id": "s1-b",
+          "series": [
+            1,
+            2,
+            3
+          ]
+        }
+      },
+      {
+        "texto": "Remo en maquina 40 kg × 10 → RIR 3 en las tres series. Consistente.",
+        "derivado_de": {
+          "ejecucion": "casos/piloto-001/ejecuciones/sesion-piloto-001.json",
+          "ejercicio_id": "s1-c",
+          "series": [
+            1,
+            2,
+            3
+          ]
+        }
+      },
+      {
+        "texto": "La lumbar no aparecio en toda la sesion, incluida la sentadilla cargada. Sigue siendo un tema de estar sentada, no de entrenar.",
+        "derivado_de": {
+          "ejecucion": "casos/piloto-001/ejecuciones/sesion-piloto-001.json",
+          "ejercicio_id": "s1-a"
+        }
+      }
+    ]
+  }
+}

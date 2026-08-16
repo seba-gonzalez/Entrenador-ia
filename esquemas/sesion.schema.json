@@ -310,8 +310,38 @@
           "then": {
             "required": ["items"],
             "properties": {
-              "items": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+              "items": { "type": "array", "minItems": 1 },
+              "respondible": {
+                "type": "boolean",
+                "description": "Si es true, el alumno puede contestar desde la pagina y emitir su feedback. Si no, la tarjeta solo muestra las preguntas."
+              }
             }
+          }
+        },
+        {
+          "title": "Una pregunta que se puede contestar necesita id; una que solo se lee, no",
+          "if": {
+            "required": ["tipo", "respondible"],
+            "properties": { "tipo": { "const": "preguntas" }, "respondible": { "const": true } }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "texto"],
+                  "properties": {
+                    "id": { "type": "string", "minLength": 1 },
+                    "texto": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "if": { "required": ["tipo"], "properties": { "tipo": { "const": "preguntas" } } },
+            "then": { "properties": { "items": { "items": { "type": "string", "minLength": 1 } } } }
           }
         },
         {
@@ -370,6 +400,25 @@
           }
         },
         "titulo_bloques": { "type": "string", "minLength": 1 },
+        "bloques": {
+          "type": "array",
+          "description": "Opcional. Agrupa los ejercicios por proposito para poder preguntar como se sintio cada bloque. Sin bloques la sesion se dibuja como una lista, que es como estaba antes de existir esto.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "etiqueta"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "etiqueta": { "type": "string", "minLength": 1 },
+              "pregunta_sensacion": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Si esta, se le pregunta al alumno como se sintio este bloque. Si no esta, no se le pregunta."
+              }
+            }
+          }
+        },
         "ejercicios": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ejercicio" } },
         "nota_cierre": { "type": "string", "minLength": 1 }
       }
@@ -383,6 +432,11 @@
         "id": { "type": "string", "minLength": 1 },
         "codigo": { "type": "string", "minLength": 1 },
         "nombre": { "type": "string", "minLength": 1 },
+        "bloque": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Opcional. Id de un bloque declarado en la tarjeta de sesion."
+        },
         "etiquetas": {
           "type": "array",
           "items": {

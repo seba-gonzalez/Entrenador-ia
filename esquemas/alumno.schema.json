@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/seba-gonzalez/entrenador-ia/esquemas/alumno.schema.json",
+  "title": "alumno",
+  "description": "Identidad y datos de partida de un alumno. Cada dato lleva su estado epistemico (principio 1.4, D-004): saber que algo se desconoce es tan importante como saberlo. ESTO NO ES H6: no hay versionado ni vista de perfil. Es una instantanea inicial con la forma correcta, para no nacer torcido.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "schema_version", "nombre", "fecha", "campos"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "schema_version": { "type": "integer", "const": 1 },
+    "nombre": { "type": "string", "minLength": 1 },
+    "fecha": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "demo": { "type": "boolean" },
+    "aviso_demo": { "type": "string", "minLength": 1 },
+    "campos": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/campo" }
+    }
+  },
+
+  "$defs": {
+    "campo": {
+      "type": "object",
+      "description": "Un dato y lo que se sabe sobre el. 'confirmado' exige fuente: si nadie puede decir de donde salio, no esta confirmado. 'desconocido' es un valor legitimo y no se rellena con nada plausible (principio 1.4).",
+      "required": ["estado"],
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["valor", "estado", "fuente"],
+          "properties": {
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "valor": { "not": { "type": "null" } },
+            "estado": { "enum": ["confirmado", "inferido"] },
+            "fuente": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["estado", "por_que_se_desconoce"],
+          "properties": {
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "estado": { "const": "desconocido" },
+            "por_que_se_desconoce": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Que falta para saberlo. Sin esto, 'desconocido' es indistinguible de 'nadie lo escribio'."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

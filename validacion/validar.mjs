@@ -51,8 +51,9 @@ const datos = cargar(raiz, config);
 
 console.log(`Validando ${raiz}`);
 console.log(
-  `  ${datos.sesiones.length} sesion(es) · ${datos.publicaciones.length} publicacion(es) · ` +
-  `${datos.ejecuciones.length} ejecucion(es)\n`
+  `  ${datos.alumnos.length} ficha(s) · ${datos.sesiones.length} sesion(es) · ` +
+  `${datos.publicaciones.length} publicacion(es) · ${datos.ejecuciones.length} ejecucion(es) · ` +
+  `${datos.feedback.length} feedback · ${datos.devoluciones.length} devolucion(es)\n`
 );
 
 if (datos.sesiones.length === 0 && datos.ejecuciones.length === 0) {

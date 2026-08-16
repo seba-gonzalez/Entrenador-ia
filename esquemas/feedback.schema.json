@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/seba-gonzalez/entrenador-ia/esquemas/feedback.schema.json",
+  "title": "feedback",
+  "description": "Lo que el alumno reporta despues (ARQUITECTURA.md 5.6). Es su relato, en sus palabras: nadie lo edita, lo resume ni lo interpreta dentro de este archivo. La interpretacion vive en la devolucion, que es otra entidad y de otro autor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "schema_version", "sesion_id", "estado_respuesta", "fecha", "generado_por", "generado_en"],
+
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "integer", "const": 1 },
+    "sesion_id": { "type": "string", "minLength": 1 },
+    "demo": { "type": "boolean" },
+    "aviso_demo": { "type": "string", "minLength": 1 },
+
+    "estado_respuesta": {
+      "enum": ["respondido", "parcial", "sin_respuesta"],
+      "description": "Separado del contenido a proposito (5.6). No responder es un valor explicito, nunca se lee como conformidad."
+    },
+
+    "contenido": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["respuestas", "comentario_libre"],
+      "properties": {
+        "respuestas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["pregunta_id", "pregunta", "respuesta"],
+            "properties": {
+              "pregunta_id": { "type": "string", "minLength": 1 },
+              "pregunta": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Copia literal de la pregunta publicada. Sin ella, la respuesta se vuelve ilegible el dia que la pregunta cambie."
+              },
+              "respuesta": { "$ref": "#/$defs/campoOpcionalDeTexto" }
+            }
+          }
+        },
+        "comentario_libre": { "$ref": "#/$defs/campoOpcionalDeTexto" }
+      }
+    },
+
+    "fecha": { "$ref": "#/$defs/fechaISO" },
+    "generado_por": { "type": "string", "minLength": 1 },
+    "generado_en": { "$ref": "#/$defs/fechaISO" }
+  },
+
+  "allOf": [
+    {
+      "title": "Sin respuesta no hay contenido que guardar, y con respuesta tiene que haberlo",
+      "if": { "required": ["estado_respuesta"], "properties": { "estado_respuesta": { "const": "sin_respuesta" } } },
+      "then": { "not": { "required": ["contenido"] } },
+      "else": { "required": ["contenido"] }
+    }
+  ],
+
+  "$defs": {
+    "fechaISO": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "campoOpcionalDeTexto": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["registrado", "motivo"],
+          "properties": {
+            "registrado": { "const": false },
+            "motivo": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["registrado", "texto"],
+          "properties": {
+            "registrado": { "const": true },
+            "texto": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -242,3 +242,56 @@ GitHub Pages sobre HTTPS (§2); `localhost` sigue sirviendo para desarrollo.
 **Complementario, no alternativo:** H3 añadirá la misma comprobación en CI. El
 runtime detecta un artefacto alterado aunque haya llegado a servirse; CI lo
 detecta antes de que llegue. Ninguna de las dos sustituye a la otra.
+
+### D-026 · La devolución es una entidad publicada aparte, no una republicación de la sesión
+Lo que el entrenador responde después de una ejecución se publica como artefacto
+propio, con su carpeta, su índice, su numeración y su hash, y reutiliza el mismo
+mecanismo de integridad que una sesión.
+**Por qué:** §6.2 exige cero publicaciones vigentes en cuanto la ejecución
+empieza, así que publicar la respuesta como una versión más de la sesión sería
+contradecir esa regla o volver a poner vigente algo que ya se ejecutó. Además son
+dos actos con fechas y autores distintos, y forzarlos en un archivo obligaría a
+elegir cuál fecha vale.
+**Fallo cerrado también aquí:** una devolución cuyo hash no cuadra no se muestra,
+y detiene la vista entera. Una devolución alterada pone en boca del alumno
+palabras que no dijo, que es un daño peor que no ver la respuesta hoy.
+**Ausencia normal:** que no exista devolución no es un error. Entre que el alumno
+entrena y el entrenador responde pasa tiempo, y la vista lo trata como el estado
+corriente que es.
+
+### D-027 · Las tres capas de la devolución se guardan y se muestran separadas
+`dijo` (verbatim del alumno), `entendido` (lectura del entrenador) y
+`para_la_proxima` (qué se hará o se mirará) son tres campos distintos. `entendido`
+lleva `es_interpretacion` con valor constante `true`: el esquema no admite
+marcarlo como hecho. En `para_la_proxima`, cada punto declara si es `decision` o
+algo a `observar`.
+**Por qué:** juntarlas produce el error que el principio 1.4 prohíbe — lo que el
+alumno cree que causó algo pasando a leerse como verdad factual. Separarlas
+permite que el alumno lea sus propias palabras sin filtrar y pueda decir «no era
+eso», que es lo más valioso que puede aportar ahí.
+**Consecuencia de presentación:** la cita va antes que la interpretación en la
+pantalla. El orden no es estético: leer primero la lectura del entrenador
+contamina el recuerdo de lo que uno dijo.
+
+### D-028 · La sensación por bloque se captura, no adapta nada
+Cuatro opciones (`muy_facil`, `adecuado`, `muy_exigente`, `molestia_dolor`), sin
+preselección, una por bloque declarado. Marcar una no cambia ninguna carga, ni
+hoy ni en la sesión siguiente.
+**Por qué:** derivar una progresión de un botón sería meter una regla
+metodológica en el código (principio 1.2) y decidir por el entrenador con menos
+contexto del que él tiene. La sensación es un dato que alguien lee.
+**No marcar no es «adecuado»:** un bloque sin respuesta se emite como
+`registrado: false` con su motivo, nunca como el valor del medio.
+
+### D-029 · Un desconocido no se rellena con un valor plausible, ni siquiera apoyado en uno real
+Cuando no hay referencia actual de una carga, el campo se publica como
+`prescrito: false` con su motivo y la sesión explica cómo encontrarla. La
+referencia nace de la ejecución.
+**Por qué:** rellenar un desconocido con algo plausible es peor que un error, es
+convertir una suposición en dato: nadie vuelve a cuestionar un número que ya está
+escrito. Y la forma difícil de ver es la segunda: partir de una carga real y
+sumarle un incremento que nadie decidió sigue siendo inventar. Que el punto de
+partida sea verdadero no convierte el salto en un dato.
+**Dónde se comprueba:** en ningún sitio automáticamente. Es un juicio, y por eso
+vive en las observaciones del entrenador con familia `dato_inventado`, no en el
+validador (principio 1.2).

@@ -10,8 +10,13 @@
  * es presentacion, y es exactamente lo que H1 quiere separar del dato.
  */
 
-import { obtenerPublicacionVigente, obtenerEsquemaEjecucion } from '../repositorio.js';
+import {
+  obtenerPublicacionVigente,
+  obtenerDevolucionVigente,
+  obtenerEsquemaEjecucion,
+} from '../repositorio.js';
 import { montarCierre } from './registro-ejecucion.js';
+import { montarFeedback } from './registro-feedback.js';
 
 const CASO_POR_DEFECTO = 'demo-001';
 
@@ -52,7 +57,7 @@ const CLASE_DIA = {
 
 /* ---------- ejercicio ---------- */
 
-function pintarEjercicio(ejercicio, registros) {
+function pintarEjercicio(ejercicio, registro) {
   const art = el('article', 'ex');
 
   const top = el('div', 'ex-top');
@@ -114,7 +119,7 @@ function pintarEjercicio(ejercicio, registros) {
   }
   art.appendChild(conjunto);
 
-  registros.push({
+  registro.ejercicios.push({
     ejercicio_id: ejercicio.id,
     ejercicio_nombre: ejercicio.nombre,
     por_serie: porSerie,
@@ -133,6 +138,72 @@ function pintarEjercicio(ejercicio, registros) {
   }
 
   return art;
+}
+
+function pintarEnCuerpo(ejercicio, cuerpo, registro) {
+  cuerpo.appendChild(pintarEjercicio(ejercicio, registro));
+  if (ejercicio.transicion) {
+    cuerpo.appendChild(el('p', 'transition', ejercicio.transicion));
+  }
+}
+
+/**
+ * Cuatro opciones, ninguna preseleccionada, y una vez marcada se puede cambiar.
+ *
+ * Lo que NO hace: nada. Marcar "muy exigente" no baja la carga de mañana. La
+ * sensacion se registra y alguien la lee. Convertirla en una adaptacion
+ * automatica seria meter una regla de entrenamiento en el codigo (principio 1.2)
+ * y ademas decidir por el entrenador con menos contexto del que el tiene.
+ */
+const PERCEPCIONES = [
+  { valor: 'muy_facil', etiqueta: 'Muy fácil' },
+  { valor: 'adecuado', etiqueta: 'Adecuado' },
+  { valor: 'muy_exigente', etiqueta: 'Muy exigente' },
+  { valor: 'molestia_dolor', etiqueta: 'Molestia o dolor' },
+];
+
+function pintarSensacion(bloque, sensaciones) {
+  const caja = el('div', 'sensacion');
+  caja.appendChild(el('span', 'sf-l', bloque.pregunta_sensacion));
+
+  const fila = el('div', 'sensacion-opciones');
+  const estado = { bloque_id: bloque.id, etiqueta: bloque.etiqueta, elegida: null };
+
+  PERCEPCIONES.forEach((opcion) => {
+    const boton = el('button', 'sens-btn', opcion.etiqueta);
+    boton.type = 'button';
+    boton.dataset.valor = opcion.valor;
+    boton.addEventListener('click', () => {
+      fila.querySelectorAll('.sens-btn').forEach((b) => b.classList.remove('elegida'));
+      boton.classList.add('elegida');
+      estado.elegida = opcion.valor;
+    });
+    fila.appendChild(boton);
+  });
+
+  caja.appendChild(fila);
+  sensaciones.push(estado);
+  return caja;
+}
+
+function pintarPorBloques(tarjeta, cuerpo, registro) {
+  const sinBloque = tarjeta.ejercicios.filter((e) => !e.bloque);
+  if (sinBloque.length) {
+    if (tarjeta.titulo_bloques) cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
+    sinBloque.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+  }
+
+  tarjeta.bloques.forEach((bloque) => {
+    const suyos = tarjeta.ejercicios.filter((e) => e.bloque === bloque.id);
+    if (!suyos.length) {
+      throw new Error(`La publicacion declara el bloque "${bloque.id}" pero ningun ejercicio le pertenece.`);
+    }
+    cuerpo.appendChild(el('h3', 'block-title', bloque.etiqueta));
+    suyos.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+    if (bloque.pregunta_sensacion) {
+      cuerpo.appendChild(pintarSensacion(bloque, registro.sensaciones));
+    }
+  });
 }
 
 /* ---------- tarjetas ---------- */
@@ -211,15 +282,21 @@ const TARJETAS = {
     return card;
   },
 
-  preguntas(tarjeta) {
+  preguntas(tarjeta, registro) {
     const card = tarjetaBase(tarjeta, 'feedback');
+
+    if (tarjeta.respondible) {
+      registro.preguntas.push({ tarjeta, card });
+      return card;
+    }
+
     const lista = el('ul');
     tarjeta.items.forEach((item) => lista.appendChild(el('li', null, item)));
     card.appendChild(lista);
     return card;
   },
 
-  sesion(tarjeta, registros) {
+  sesion(tarjeta, registro) {
     const card = el('div', 'card');
     card.id = tarjeta.id;
 
@@ -245,16 +322,17 @@ const TARJETAS = {
       }
     }
 
-    if (tarjeta.titulo_bloques) {
-      cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
-    }
-
-    tarjeta.ejercicios.forEach((ejercicio) => {
-      cuerpo.appendChild(pintarEjercicio(ejercicio, registros));
-      if (ejercicio.transicion) {
-        cuerpo.appendChild(el('p', 'transition', ejercicio.transicion));
+    // Con bloques declarados, cada uno lleva su titulo y su pregunta de
+    // sensacion al final. Sin bloques, la sesion se dibuja como una lista —
+    // que es exactamente como se dibujaba antes de que los bloques existieran.
+    if (tarjeta.bloques && tarjeta.bloques.length) {
+      pintarPorBloques(tarjeta, cuerpo, registro);
+    } else {
+      if (tarjeta.titulo_bloques) {
+        cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
       }
-    });
+      tarjeta.ejercicios.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+    }
 
     if (tarjeta.nota_cierre) {
       cuerpo.appendChild(el('div', 'note-inline', tarjeta.nota_cierre));
@@ -265,6 +343,80 @@ const TARJETAS = {
     return card;
   },
 };
+
+/* ---------- devolucion ---------- */
+
+const PERCEPCION_LEGIBLE = {
+  muy_facil: 'muy fácil',
+  adecuado: 'adecuado',
+  muy_exigente: 'muy exigente',
+  molestia_dolor: 'molestia o dolor',
+};
+
+/**
+ * Las tres capas, en tarjetas separadas y en este orden: primero lo que dijo el
+ * alumno, despues lo que se entendio, despues lo que se hara.
+ *
+ * El orden no es estetico. Poner la interpretacion antes que la cita haria que
+ * el alumno leyera sus propias palabras ya filtradas por las del entrenador, y
+ * entonces no podria decir "no era eso" — que es justo lo mas valioso que puede
+ * decir aqui.
+ */
+function pintarDevolucion(contenido) {
+  const panel = document.querySelector('.card.feedback')?.closest('main');
+  if (!panel) {
+    throw new Error('Hay una devolucion publicada pero la sesion no trae panel de feedback donde mostrarla.');
+  }
+
+  const bloque = document.createDocumentFragment();
+
+  const dijo = el('div', 'card');
+  dijo.appendChild(el('h2', null, 'Lo que contaste'));
+  if (contenido.dijo.verbatim) {
+    dijo.appendChild(el('p', 'cita', contenido.dijo.verbatim));
+  }
+  (contenido.dijo.sensaciones || []).forEach((s) => {
+    dijo.appendChild(parrafo('p', 'objective', {
+      destacado: `${s.etiqueta}:`,
+      texto: ` ${PERCEPCION_LEGIBLE[s.percepcion] || s.percepcion}`,
+    }));
+  });
+  bloque.appendChild(dijo);
+
+  const entendido = el('div', 'card');
+  entendido.appendChild(el('h2', null, 'Lo que entendí'));
+  // Rotulado como lectura, no como hecho. Es una interpretacion y el alumno
+  // tiene que poder discutirla (principio 1.4).
+  entendido.appendChild(el('div', 'note-inline',
+    'Esto es mi lectura de lo que me contaste, no un hecho. Si me equivoqué, dímelo.'));
+  entendido.appendChild(el('p', null, contenido.entendido.texto));
+  bloque.appendChild(entendido);
+
+  const proxima = el('div', 'card');
+  proxima.appendChild(el('h2', null, 'Para la próxima'));
+  const lista = el('ul', 'context-list');
+  contenido.para_la_proxima.forEach((p) => {
+    lista.appendChild(parrafo('li', null, {
+      destacado: p.tipo === 'decision' ? 'Decidido: ' : 'A mirar: ',
+      texto: p.punto,
+    }));
+  });
+  proxima.appendChild(lista);
+  bloque.appendChild(proxima);
+
+  if (contenido.referencias && contenido.referencias.length) {
+    const memoria = el('div', 'card');
+    memoria.appendChild(el('h2', null, 'Lo que vamos sabiendo de ti'));
+    const refs = el('ul', 'context-list');
+    contenido.referencias.forEach((r) => refs.appendChild(el('li', null, r.texto)));
+    memoria.appendChild(refs);
+    bloque.appendChild(memoria);
+  }
+
+  // Antes de las preguntas: lo primero que ve al abrir la pestaña es la
+  // respuesta a lo que escribio, no un formulario en blanco otra vez.
+  panel.prepend(bloque);
+}
 
 /* ---------- montaje ---------- */
 
@@ -292,7 +444,7 @@ function pintarDias(dias) {
   return rail;
 }
 
-function pintarPaneles(contenido, registros) {
+function pintarPaneles(contenido, registro) {
   const barra = document.getElementById('tabbar');
   const zona = document.getElementById('paneles');
   let panelConSesiones = null;
@@ -324,7 +476,7 @@ function pintarPaneles(contenido, registros) {
       if (!pintar) {
         throw new Error(`La publicacion usa un tipo de tarjeta que la vista no sabe dibujar: "${tarjeta.tipo}".`);
       }
-      cuerpo.appendChild(pintar(tarjeta, registros));
+      cuerpo.appendChild(pintar(tarjeta, registro));
       if (tarjeta.tipo === 'sesion' && !panelConSesiones) panelConSesiones = cuerpo;
     });
 
@@ -357,18 +509,26 @@ async function montar() {
 
     document.title = contenido.titulo_documento;
 
-    const registros = [];
+    const registro = { ejercicios: [], sensaciones: [], preguntas: [] };
     pintarCabecera(contenido.cabecera);
-    const panelConSesiones = pintarPaneles(contenido, registros);
+    const panelConSesiones = pintarPaneles(contenido, registro);
 
     const pie = document.getElementById('pie');
     pie.appendChild(el('p', null, contenido.pie));
     pie.hidden = false;
 
-    if (registros.length && panelConSesiones) {
+    if (registro.ejercicios.length && panelConSesiones) {
       const esquema = await obtenerEsquemaEjecucion();
-      panelConSesiones.appendChild(montarCierre({ publicacion, registros, esquema }));
+      panelConSesiones.appendChild(montarCierre({ publicacion, registro, esquema }));
     }
+
+    registro.preguntas.forEach(({ tarjeta, card }) =>
+      montarFeedback({ publicacion, tarjeta, card })
+    );
+
+    // La devolucion llega despues, y muchas veces no ha llegado todavia.
+    const devolucion = await obtenerDevolucionVigente(caso, publicacion.sesion_id);
+    if (devolucion) pintarDevolucion(devolucion.contenido);
 
     aviso.remove();
   } catch (error) {

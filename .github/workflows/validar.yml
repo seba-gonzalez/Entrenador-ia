@@ -88,6 +88,11 @@ jobs:
       - name: Probar la vista
         run: node validacion/pruebas/navegador.mjs
 
+      # Suite aparte: la de arriba vigila demo-001 y no debe cambiar por el
+      # piloto. Que las dos pasen sin tocarse es parte de lo que se comprueba.
+      - name: Probar el circuito del piloto
+        run: node validacion/pruebas/navegador-piloto.mjs
+
       - name: El repositorio quedó como estaba
         run: |
           git diff --exit-code || {

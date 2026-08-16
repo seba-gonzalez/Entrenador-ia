@@ -1,0 +1,80 @@
+{
+  "id": "piloto-001",
+  "schema_version": 1,
+  "nombre": "Marta Ruiz",
+  "fecha": "2027-04-06T18:30:00-04:00",
+  "demo": true,
+  "aviso_demo": "Alumna ficticia. Marta Ruiz no existe: todos sus datos son inventados para probar el circuito completo del sistema. Ninguno puede presentarse como evidencia de una persona.",
+
+  "campos": {
+    "edad": {
+      "etiqueta": "Edad",
+      "valor": 34,
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "objetivo": {
+      "etiqueta": "Objetivo",
+      "valor": "Volver a entrenar fuerza de forma constante despues de dos años parada. Sentirse mas fuerte en el dia a dia.",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "experiencia": {
+      "etiqueta": "Experiencia entrenando",
+      "valor": "Tres años de gimnasio hasta 2024. Conoce sentadilla, press y remo. Nunca siguio un programa escrito.",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "disponibilidad": {
+      "etiqueta": "Disponibilidad",
+      "valor": "3 dias por semana",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "duracion_sesion": {
+      "etiqueta": "Duracion por sesion",
+      "valor": "50-60 minutos",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "equipamiento": {
+      "etiqueta": "Equipamiento",
+      "valor": "Gimnasio comercial completo",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "preferencias": {
+      "etiqueta": "Preferencias",
+      "valor": "Le gusta el trabajo de piernas. No quiere clases dirigidas ni correr.",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+    "molestia_lumbar": {
+      "etiqueta": "Molestia lumbar",
+      "valor": "Molestia en la zona lumbar al final del dia tras muchas horas sentada. Nunca durante el entrenamiento.",
+      "estado": "confirmado",
+      "fuente": "onboarding 2027-04-06"
+    },
+
+    "carga_sentadilla": {
+      "etiqueta": "Carga de trabajo en sentadilla",
+      "estado": "desconocido",
+      "por_que_se_desconoce": "Lleva dos años sin entrenar de forma constante y no hay ninguna referencia actual. La ultima vez que cargo una barra fue en 2024, y ese numero ya no dice nada sobre hoy. Se encuentra entrenando, no preguntando."
+    },
+    "carga_press_banca": {
+      "etiqueta": "Carga de trabajo en press banca",
+      "estado": "desconocido",
+      "por_que_se_desconoce": "Mismo motivo que la sentadilla: sin referencia actual."
+    },
+    "carga_remo": {
+      "etiqueta": "Carga de trabajo en remo",
+      "estado": "desconocido",
+      "por_que_se_desconoce": "Mismo motivo que la sentadilla: sin referencia actual."
+    },
+    "tolerancia_a_la_frecuencia": {
+      "etiqueta": "Tolerancia a 3 sesiones por semana",
+      "estado": "desconocido",
+      "por_que_se_desconoce": "Dice que puede tres dias, pero lleva dos años sin sostener una rutina. Se sabra despues de las primeras semanas, no antes."
+    }
+  }
+}

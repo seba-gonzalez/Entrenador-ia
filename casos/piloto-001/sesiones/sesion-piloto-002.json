@@ -1,0 +1,323 @@
+{
+  "id": "sesion-piloto-002",
+  "schema_version": 1,
+  "alumno_id": "piloto-001",
+  "plan_id": "plan-piloto-001",
+  "demo": true,
+  "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real.",
+  "estado": "borrador",
+  "generador_version": "piloto-h1-0",
+
+  "versiones": [
+    {
+      "v": 1,
+      "autor": "sistema",
+      "fecha": "2027-04-09T08:05:00-04:00",
+      "contenido": {
+        "titulo_documento": "Marta — segunda sesion",
+        "cabecera": {
+          "eyebrow": "Marta — vuelta a la fuerza",
+          "titulo": "Tu segunda sesion",
+          "mensaje": {
+            "destacado": "Esta ya no empieza a ciegas.",
+            "texto": " Las cargas de hoy salen de lo que anotaste el martes, no de una estimacion."
+          },
+          "nota": {
+            "texto": "Si algo se siente distinto a como lo describo aqui, gana lo que sientas: parate y cuentamelo."
+          }
+        },
+        "secciones": [
+          { "id": "rutina", "etiqueta": "Rutina" },
+          { "id": "informacion", "etiqueta": "Informacion" },
+          { "id": "feedback", "etiqueta": "Feedback" }
+        ],
+        "paneles": {
+          "rutina": {
+            "tarjetas": [
+              {
+                "tipo": "notas",
+                "id": "antes",
+                "titulo": "Antes de empezar",
+                "parrafos": [
+                  {
+                    "destacado": "RIR 2-3:",
+                    "texto": " terminas la serie sintiendo que te quedaban dos o tres repeticiones buenas. Es un punto mas exigente que el martes, y es a proposito."
+                  },
+                  {
+                    "destacado": "Hoy si hay numeros.",
+                    "texto": " Vienen de tus series del martes. Si alguno se siente mal puesto, cambialo y anotalo: el numero esta al servicio de la sesion, no al reves."
+                  }
+                ]
+              },
+              {
+                "tipo": "sesion",
+                "id": "s2",
+                "etiqueta": "Sesion A",
+                "cuando": "Cuerpo completo — 55 min",
+                "abierta": true,
+                "calentamiento": {
+                  "titulo": "Calentamiento (8 min)",
+                  "pasos": [
+                    "5 min de bici o eliptica suave, hasta entrar en calor de verdad.",
+                    "Sentadilla con tu propio peso, 2 × 10, sin prisa.",
+                    "Puente de gluteo, 2 × 12.",
+                    "Rotacion de hombro con banda liviana, 2 × 15."
+                  ],
+                  "nota": "Antes de la primera serie de trabajo, sube en dos o tres escalones hasta 75 kg. Esas aproximaciones no se registran: no son series de trabajo."
+                },
+                "bloques": [
+                  {
+                    "id": "fuerza",
+                    "etiqueta": "Fuerza",
+                    "pregunta_sensacion": "¿Como se sintio el bloque de fuerza con las cargas nuevas?"
+                  },
+                  {
+                    "id": "acondicionamiento",
+                    "etiqueta": "Acondicionamiento",
+                    "pregunta_sensacion": "¿Y el bloque final, igual que la vez pasada?"
+                  }
+                ],
+                "ejercicios": [
+                  {
+                    "id": "s2-a",
+                    "codigo": "A",
+                    "nombre": "Sentadilla con barra",
+                    "bloque": "fuerza",
+                    "programado": {
+                      "series": 4,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "4" },
+                        { "etiqueta": "Reps", "valor": "8" },
+                        { "etiqueta": "Carga", "valor": "75 kg" },
+                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
+                        { "etiqueta": "Descanso", "valor": "2min" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "75 kg" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                      ]
+                    },
+                    "detalles": [
+                      {
+                        "resumen": "De donde sale este numero",
+                        "cuerpo": "El martes hiciste 70 kg × 8 tres veces, con 3 repeticiones en reserva en las dos primeras y 2 en la tercera. Eso quedo registrado y es una carga comoda, no un limite. 75 kg es mi decision a partir de ahi: un escalon corto, porque una sola sesion no me dice todavia a que ritmo puedes subir."
+                      }
+                    ],
+                    "transicion": "Cuando termines, pasas al banco."
+                  },
+                  {
+                    "id": "s2-b",
+                    "codigo": "B",
+                    "nombre": "Press banca con mancuernas",
+                    "bloque": "fuerza",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "Carga", "valor": "16 kg" },
+                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "16 kg" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                      ]
+                    },
+                    "detalles": [
+                      {
+                        "resumen": "De donde sale este numero",
+                        "cuerpo": "El martes trabajaste con 14 kg por lado y llegaste a RIR 2 en la ultima serie."
+                      }
+                    ]
+                  },
+                  {
+                    "id": "s2-c",
+                    "codigo": "C",
+                    "nombre": "Remo en maquina",
+                    "bloque": "fuerza",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10" },
+                        { "etiqueta": "Carga", "valor": "45 kg" },
+                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
+                        { "etiqueta": "Descanso", "valor": "90s" }
+                      ],
+                      "por_serie": [
+                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "45 kg" },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
+                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                      ]
+                    },
+                    "detalles": [
+                      {
+                        "resumen": "De donde sale este numero",
+                        "cuerpo": "El martes hiciste las tres series con 40 kg y RIR 3 en todas. Fue el ejercicio mas parejo de la sesion."
+                      }
+                    ]
+                  },
+                  {
+                    "id": "s2-d",
+                    "codigo": "D",
+                    "nombre": "Paseo del granjero",
+                    "bloque": "acondicionamiento",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Distancia", "valor": "30 m" },
+                        { "etiqueta": "Descanso", "valor": "60s" }
+                      ],
+                      "por_serie": [
+                        {
+                          "campo": "carga",
+                          "etiqueta": "Carga",
+                          "prescrito": false,
+                          "motivo_no_prescrito": "el bloque queda igual que la sesion anterior, y ahi la elegiste tu"
+                        },
+                        { "campo": "distancia", "etiqueta": "Distancia", "prescrito": true, "valor": "30 m" }
+                      ]
+                    },
+                    "detalles": [
+                      {
+                        "resumen": "Por que este bloque no cambia",
+                        "cuerpo": "Dijiste que el circuito estuvo bien y lo marcaste como adecuado. No hay nada que arreglar, asi que no lo toco."
+                      }
+                    ]
+                  },
+                  {
+                    "id": "s2-e",
+                    "codigo": "E",
+                    "nombre": "Subida al cajon",
+                    "bloque": "acondicionamiento",
+                    "programado": {
+                      "series": 3,
+                      "presentacion": [
+                        { "etiqueta": "Series", "valor": "3" },
+                        { "etiqueta": "Reps", "valor": "10/lado" },
+                        { "etiqueta": "Descanso", "valor": "60s" }
+                      ],
+                      "por_serie": [
+                        {
+                          "campo": "carga",
+                          "etiqueta": "Carga",
+                          "prescrito": false,
+                          "motivo_no_prescrito": "el bloque queda igual que la sesion anterior; con tu peso corporal esta bien"
+                        },
+                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10/lado" }
+                      ]
+                    }
+                  }
+                ],
+                "nota_cierre": "Si la fuerza vuelve a quedarse corta con cuatro series, no añadas una quinta: escribelo en el feedback. Con dos sesiones cortas seguidas el problema es la carga, y eso se arregla subiendo kilos, no series."
+              }
+            ]
+          },
+          "informacion": {
+            "tarjetas": [
+              {
+                "tipo": "argumentos",
+                "id": "que-cambia",
+                "titulo": "Que cambia respecto al martes, y por que",
+                "parrafos": [
+                  {
+                    "destacado": "La sentadilla pasa de 3 a 4 series y de peso libre a 75 kg:",
+                    "texto": " el martes anotaste 70 kg × 8 con RIR 3, 3 y 2. Con esa reserva la dosis se quedo corta, y tu me lo confirmaste. Sube el volumen y la carga a la vez porque venias de cero referencia: quiero ver cual de los dos cambios se nota."
+                  },
+                  {
+                    "destacado": "El press y el remo ya no se buscan:",
+                    "texto": " el martes existian como incognita y hoy existen como numero, porque los registraste. El protocolo de aproximacion desaparece de la sesion: ya cumplio su trabajo."
+                  },
+                  {
+                    "destacado": "El acondicionamiento no cambia nada:",
+                    "texto": " lo marcaste como adecuado y lo dijiste con tus palabras. Un bloque que funciona no se toca para que parezca que hay progreso."
+                  },
+                  {
+                    "destacado": "La sentadilla ya no lleva advertencia lumbar:",
+                    "texto": " el martes cargaste 70 kg y la molestia no aparecio en toda la sesion. Eso confirma lo que ya sospechabamos, y por eso tampoco vuelve aqui."
+                  },
+                  {
+                    "destacado": "Hiciste una cuarta serie de sentadilla que no estaba escrita:",
+                    "texto": " hoy esa cuarta serie ya viene programada, asi que queda registrada como las demas."
+                  }
+                ]
+              },
+              {
+                "tipo": "contexto",
+                "id": "donde",
+                "titulo": "Donde estamos",
+                "items": [
+                  {
+                    "destacado": "Objetivo:",
+                    "texto": " volver a entrenar fuerza de forma constante, y notarlo en el dia a dia."
+                  },
+                  {
+                    "destacado": "Frecuencia:",
+                    "texto": " 3 dias por semana, 50-60 minutos. Seguimos con cuerpo completo."
+                  },
+                  {
+                    "destacado": "Lo que ya sabemos:",
+                    "texto": " con cuanto peso trabajas en sentadilla, press y remo. Es la diferencia entera entre esta sesion y la anterior."
+                  },
+                  {
+                    "destacado": "Lo que seguimos sin saber:",
+                    "texto": " como aguantas tres sesiones en la misma semana. Llevas una. Eso se sabe entrenando, no calculandolo."
+                  },
+                  {
+                    "destacado": "Tu lumbar:",
+                    "texto": " sigue siendo un tema de estar sentada. No aparecio entrenando el martes, y no condiciona esta sesion."
+                  }
+                ]
+              }
+            ]
+          },
+          "feedback": {
+            "tarjetas": [
+              {
+                "tipo": "preguntas",
+                "id": "post",
+                "titulo": "Despues de entrenar, cuentame",
+                "respondible": true,
+                "items": [
+                  { "id": "p1", "texto": "¿Como se sintieron 75 kg comparados con los 70 del martes?" },
+                  { "id": "p2", "texto": "¿La cuarta serie de sentadilla cambio algo, o paso desapercibida?" },
+                  { "id": "p3", "texto": "¿Alguna carga te quedo claramente mal puesta, por arriba o por abajo?" },
+                  { "id": "p4", "texto": "¿Aparecio alguna molestia durante la sesion?" }
+                ]
+              }
+            ]
+          }
+        },
+        "pie": "Segunda de la semana. · Caso piloto: alumna ficticia, datos sinteticos."
+      }
+    }
+  ],
+
+  "observaciones": [
+    {
+      "sobre_version": 1,
+      "familia": "dato_inventado",
+      "tipo": "pendiente",
+      "observacion": "La v1 prescribe 16 kg en press y 45 kg en remo. La devolucion decidio partir desde 14 kg y 40 kg, que son las cargas registradas; no decidio ningun incremento. Los saltos de 2 kg y 5 kg no salen de la ejecucion ni de la devolucion: los puso el generador.",
+      "motivo": "Es la misma familia de error que la v1 de la sesion anterior, en una forma mas dificil de ver: el numero ya no es un invento completo, es un invento apoyado en un dato real. Que tenga un punto de partida verdadero no convierte el incremento en un dato. Hay que decidirlo o quitarlo, no heredarlo."
+    },
+    {
+      "sobre_version": 1,
+      "familia": "evidencia_no_registrada",
+      "tipo": "pendiente",
+      "observacion": "La tarjeta 'Que cambia respecto al martes' afirma que Marta hizo una cuarta serie de sentadilla. El registro de ejecucion tiene tres series. La cuarta existe solo en el comentario libre de Marta y en la devolucion, donde va marcada como interpretacion del entrenador.",
+      "motivo": "Escrito asi, en la sesion aparece como un hecho registrado. Es lo que ella cuenta, y hay que decirlo con esas palabras. La ficha no tenia donde anotar una serie de mas, y ese es el problema a arreglar: no se tapa dandole a lo contado el estatus de lo medido (1.4)."
+    },
+    {
+      "sobre_version": 1,
+      "familia": "decision_no_justificada",
+      "tipo": "pendiente",
+      "observacion": "La v1 sube volumen y carga en la sentadilla en la misma sesion, y el propio texto reconoce que quiere ver cual de los dos cambios se nota. Con dos variables moviendose a la vez, el feedback de esta sesion no va a poder atribuir el efecto a ninguna.",
+      "motivo": "La devolucion decidio ambos cambios, asi que la v1 no se los invento. Pero la decision tiene un coste de lectura que nadie escribio: si el resultado sale raro, no habra forma de saber por que. O se acepta el coste a proposito, o se mueve una sola variable."
+    }
+  ]
+}

@@ -66,6 +66,71 @@ export function comprobarReferencias(datos, informe) {
       comprobarEjercicios(e, publicacion, ejecucion.ruta, informe);
     }
   }
+
+  for (const archivo of datos.feedback) {
+    if (!archivo.datos) continue;
+    informe.exigir(F, datos.porSesionId.has(archivo.datos.sesion_id), archivo.ruta,
+      `Referencia la sesion "${archivo.datos.sesion_id}", que no existe.`);
+  }
+
+  comprobarDevoluciones(datos, informe);
+}
+
+/**
+ * Una devolucion cita al alumno y se apoya en su ejecucion. Las dos cosas tienen
+ * que poder comprobarse, porque son justamente las que no se pueden reconstruir
+ * si se pierden: si la cita apunta a un archivo que no existe, o una referencia
+ * dice salir de un ejercicio que nunca se ejecuto, lo que queda es la opinion
+ * del entrenador con aspecto de evidencia.
+ */
+function comprobarDevoluciones(datos, informe) {
+  const porRuta = new Map(datos.ejecuciones.filter((e) => e.datos).map((e) => [e.ruta, e]));
+
+  for (const archivo of datos.devoluciones) {
+    if (!archivo.datos) continue;
+    const d = archivo.datos;
+
+    if (!informe.exigir(F, datos.porSesionId.has(d.sesion_id), archivo.ruta,
+      `Referencia la sesion "${d.sesion_id}", que no existe.`)) continue;
+
+    // El indice y el archivo no pueden discrepar sobre de quien es esta devolucion.
+    informe.exigir(F, d.sesion_id === archivo.indice.datos?.sesion_id, archivo.ruta,
+      'La devolucion y su indice no coinciden en a que sesion pertenecen.',
+      `archivo: ${d.sesion_id} · indice (${archivo.indice.ruta}): ${archivo.indice.datos?.sesion_id}`);
+
+    const fuente = d.contenido?.dijo?.fuente;
+    if (fuente !== undefined) {
+      informe.exigir(F, datos.feedback.some((f) => f.ruta === fuente), archivo.ruta,
+        `La cita del alumno dice salir de "${fuente}", que no esta entre el feedback de este repositorio.`,
+        'Sin el archivo original no hay forma de comprobar que la cita sea literal.');
+    }
+
+    for (const [i, referencia] of (d.contenido?.referencias || []).entries()) {
+      const { ejecucion: ruta, ejercicio_id: ejercicioId, series } = referencia.derivado_de;
+
+      const ejecucion = porRuta.get(ruta);
+      if (!informe.exigir(F, !!ejecucion, archivo.ruta,
+        `La referencia ${i + 1} deriva de "${ruta}", que no existe o no es una ejecucion valida.`
+      )) continue;
+
+      informe.exigir(F, ejecucion.datos.sesion_id === d.sesion_id, archivo.ruta,
+        `La referencia ${i + 1} deriva de una ejecucion de otra sesion.`,
+        `devolucion: ${d.sesion_id} · ejecucion: ${ejecucion.datos.sesion_id}`);
+
+      const registradas = (ejecucion.datos.series || []).filter((s) => s.ejercicio_id === ejercicioId);
+      if (!informe.exigir(F, registradas.length > 0, archivo.ruta,
+        `La referencia ${i + 1} deriva del ejercicio "${ejercicioId}", que esa ejecucion no registra.`,
+        `ejercicios registrados: ${[...new Set((ejecucion.datos.series || []).map((s) => s.ejercicio_id))].join(', ') || 'ninguno'}`
+      )) continue;
+
+      const numeros = new Set(registradas.map((s) => s.serie));
+      for (const serie of series || []) {
+        informe.exigir(F, numeros.has(serie), archivo.ruta,
+          `La referencia ${i + 1} cita la serie ${serie} de "${ejercicioId}", que no esta registrada.`,
+          `series registradas: ${[...numeros].sort((a, b) => a - b).join(', ')}`);
+      }
+    }
+  }
 }
 
 /** Una ejecucion no puede registrar un ejercicio que no se publico. */
