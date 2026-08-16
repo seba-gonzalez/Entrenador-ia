@@ -1,0 +1,97 @@
+name: Validación
+
+# Las comprobaciones estructurales corren en cada push: son lectura de archivos
+# y ajv, y tardan segundos. El navegador corre solo en pull request, porque
+# necesita Chromium y es la parte más lenta y más frágil.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  estructura:
+    name: Estructura, esquemas e integridad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # La comprobación de inmutabilidad compara con la rama base, así que
+          # necesita historia, no solo el último commit.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          # Fijada a propósito: el entorno tiene que ser reproducible, no
+          # heredar el que Actions traiga por defecto ese mes.
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: validacion/package-lock.json
+
+      - name: Instalar dependencias de la validación
+        working-directory: validacion
+        run: npm ci
+
+      - name: Validar los datos del repositorio
+        run: node validacion/validar.mjs
+
+      - name: Comprobar que las publicaciones no se modifican
+        if: github.event_name == 'pull_request'
+        run: node validacion/validar.mjs --base ${{ github.event.pull_request.base.sha }}
+
+      - name: Probar los contratos
+        working-directory: validacion
+        run: npm run pruebas
+
+      - name: El producto no puede tener dependencias
+        run: |
+          if [ -e app/package.json ] || [ -e app/node_modules ]; then
+            echo "/app/ ganó una dependencia. El producto es HTML y JS plano sin build step (D-001)."
+            exit 1
+          fi
+          echo "OK: /app/ sigue sin dependencias."
+
+  navegador:
+    name: La vista en un navegador real
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: validacion/package-lock.json
+
+      - name: Instalar dependencias de la validación
+        working-directory: validacion
+        run: npm ci
+
+      - name: Instalar Chromium
+        working-directory: validacion
+        run: npx playwright install --with-deps chromium
+
+      - name: Servir el repositorio
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory . &
+          for i in $(seq 1 20); do
+            curl -sf -o /dev/null http://127.0.0.1:4173/app/alumno/ && break
+            sleep 0.5
+          done
+
+      # Sin el artefacto visual de referencia —que contiene datos personales
+      # reales y no puede vivir aquí— la suite omite la comparación visual y lo
+      # dice por consola. Esa comprobación se hace en local.
+      - name: Probar la vista
+        run: node validacion/pruebas/navegador.mjs
+
+      - name: El repositorio quedó como estaba
+        run: |
+          git diff --exit-code || {
+            echo "Las pruebas dejaron el repositorio modificado. Restauran lo que tocan;"
+            echo "si esto falla, alguna se interrumpió a mitad."
+            exit 1
+          }
