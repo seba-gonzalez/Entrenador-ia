@@ -12,7 +12,7 @@
     {
       "v": 1,
       "autor": "sistema",
-      "fecha": "2027-04-09T08:05:00-04:00",
+      "fecha": "2026-08-17T21:05:00-04:00",
       "contenido": {
         "titulo_documento": "Marta — segunda sesion",
         "cabecera": {
@@ -20,7 +20,7 @@
           "titulo": "Tu segunda sesion",
           "mensaje": {
             "destacado": "Esta ya no empieza a ciegas.",
-            "texto": " Las cargas de hoy salen de lo que anotaste el martes, no de una estimacion."
+            "texto": " Las cargas de hoy salen de lo que anotaste el domingo, no de una estimacion."
           },
           "nota": {
             "texto": "Si algo se siente distinto a como lo describo aqui, gana lo que sientas: parate y cuentamelo."
@@ -41,11 +41,11 @@
                 "parrafos": [
                   {
                     "destacado": "RIR 2-3:",
-                    "texto": " terminas la serie sintiendo que te quedaban dos o tres repeticiones buenas. Es un punto mas exigente que el martes, y es a proposito."
+                    "texto": " terminas la serie sintiendo que te quedaban dos o tres repeticiones buenas. Es un punto mas exigente que el domingo, y es a proposito."
                   },
                   {
                     "destacado": "Hoy si hay numeros.",
-                    "texto": " Vienen de tus series del martes. Si alguno se siente mal puesto, cambialo y anotalo: el numero esta al servicio de la sesion, no al reves."
+                    "texto": " Vienen de tus series del domingo. Si alguno se siente mal puesto, cambialo y anotalo: el numero esta al servicio de la sesion, no al reves."
                   }
                 ]
               },
@@ -101,7 +101,7 @@
                     "detalles": [
                       {
                         "resumen": "De donde sale este numero",
-                        "cuerpo": "El martes hiciste 70 kg × 8 tres veces, con 3 repeticiones en reserva en las dos primeras y 2 en la tercera. Eso quedo registrado y es una carga comoda, no un limite. 75 kg es mi decision a partir de ahi: un escalon corto, porque una sola sesion no me dice todavia a que ritmo puedes subir."
+                        "cuerpo": "El domingo hiciste 70 kg × 8 tres veces, con 3 repeticiones en reserva en las dos primeras y 2 en la tercera. Eso quedo registrado y es una carga comoda, no un limite. 75 kg es mi decision a partir de ahi: un escalon corto, porque una sola sesion no me dice todavia a que ritmo puedes subir."
                       }
                     ],
                     "transicion": "Cuando termines, pasas al banco."
@@ -129,7 +129,7 @@
                     "detalles": [
                       {
                         "resumen": "De donde sale este numero",
-                        "cuerpo": "El martes trabajaste con 14 kg por lado y llegaste a RIR 2 en la ultima serie."
+                        "cuerpo": "El domingo trabajaste con 14 kg por lado y llegaste a RIR 2 en la ultima serie."
                       }
                     ]
                   },
@@ -156,7 +156,7 @@
                     "detalles": [
                       {
                         "resumen": "De donde sale este numero",
-                        "cuerpo": "El martes hiciste las tres series con 40 kg y RIR 3 en todas. Fue el ejercicio mas parejo de la sesion."
+                        "cuerpo": "El domingo hiciste las tres series con 40 kg y RIR 3 en todas. Fue el ejercicio mas parejo de la sesion."
                       }
                     ]
                   },
@@ -222,15 +222,15 @@
               {
                 "tipo": "argumentos",
                 "id": "que-cambia",
-                "titulo": "Que cambia respecto al martes, y por que",
+                "titulo": "Que cambia respecto al domingo, y por que",
                 "parrafos": [
                   {
                     "destacado": "La sentadilla pasa de 3 a 4 series y de peso libre a 75 kg:",
-                    "texto": " el martes anotaste 70 kg × 8 con RIR 3, 3 y 2. Con esa reserva la dosis se quedo corta, y tu me lo confirmaste. Sube el volumen y la carga a la vez porque venias de cero referencia: quiero ver cual de los dos cambios se nota."
+                    "texto": " el domingo anotaste 70 kg × 8 con RIR 3, 3 y 2. Con esa reserva la dosis se quedo corta, y tu me lo confirmaste. Sube el volumen y la carga a la vez porque venias de cero referencia: quiero ver cual de los dos cambios se nota."
                   },
                   {
                     "destacado": "El press y el remo ya no se buscan:",
-                    "texto": " el martes existian como incognita y hoy existen como numero, porque los registraste. El protocolo de aproximacion desaparece de la sesion: ya cumplio su trabajo."
+                    "texto": " el domingo existian como incognita y hoy existen como numero, porque los registraste. El protocolo de aproximacion desaparece de la sesion: ya cumplio su trabajo."
                   },
                   {
                     "destacado": "El acondicionamiento no cambia nada:",
@@ -238,7 +238,7 @@
                   },
                   {
                     "destacado": "La sentadilla ya no lleva advertencia lumbar:",
-                    "texto": " el martes cargaste 70 kg y la molestia no aparecio en toda la sesion. Eso confirma lo que ya sospechabamos, y por eso tampoco vuelve aqui."
+                    "texto": " el domingo cargaste 70 kg y la molestia no aparecio en toda la sesion. Eso confirma lo que ya sospechabamos, y por eso tampoco vuelve aqui."
                   },
                   {
                     "destacado": "Hiciste una cuarta serie de sentadilla que no estaba escrita:",
@@ -269,7 +269,7 @@
                   },
                   {
                     "destacado": "Tu lumbar:",
-                    "texto": " sigue siendo un tema de estar sentada. No aparecio entrenando el martes, y no condiciona esta sesion."
+                    "texto": " sigue siendo un tema de estar sentada. No aparecio entrenando el domingo, y no condiciona esta sesion."
                   }
                 ]
               }
@@ -283,7 +283,7 @@
                 "titulo": "Despues de entrenar, cuentame",
                 "respondible": true,
                 "items": [
-                  { "id": "p1", "texto": "¿Como se sintieron 75 kg comparados con los 70 del martes?" },
+                  { "id": "p1", "texto": "¿Como se sintieron 75 kg comparados con los 70 del domingo?" },
                   { "id": "p2", "texto": "¿La cuarta serie de sentadilla cambio algo, o paso desapercibida?" },
                   { "id": "p3", "texto": "¿Alguna carga te quedo claramente mal puesta, por arriba o por abajo?" },
                   { "id": "p4", "texto": "¿Aparecio alguna molestia durante la sesion?" }
@@ -292,7 +292,7 @@
             ]
           }
         },
-        "pie": "Segunda de la semana. · Caso piloto: alumna ficticia, datos sinteticos."
+        "pie": "La segunda, y ya con numeros tuyos. · Caso piloto: alumna ficticia, datos sinteticos."
       }
     }
   ],
@@ -309,7 +309,7 @@
       "sobre_version": 1,
       "familia": "evidencia_no_registrada",
       "tipo": "pendiente",
-      "observacion": "La tarjeta 'Que cambia respecto al martes' afirma que Marta hizo una cuarta serie de sentadilla. El registro de ejecucion tiene tres series. La cuarta existe solo en el comentario libre de Marta y en la devolucion, donde va marcada como interpretacion del entrenador.",
+      "observacion": "La tarjeta 'Que cambia respecto al domingo' afirma que Marta hizo una cuarta serie de sentadilla. El registro de ejecucion tiene tres series. La cuarta existe solo en el comentario libre de Marta y en la devolucion, donde va marcada como interpretacion del entrenador.",
       "motivo": "Escrito asi, en la sesion aparece como un hecho registrado. Es lo que ella cuenta, y hay que decirlo con esas palabras. La ficha no tenia donde anotar una serie de mas, y ese es el problema a arreglar: no se tapa dandole a lo contado el estatus de lo medido (1.4)."
     },
     {

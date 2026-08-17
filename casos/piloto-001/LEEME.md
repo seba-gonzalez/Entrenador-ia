@@ -29,6 +29,24 @@ La ejecución y el feedback **no se escribieron a mano**: salieron de recorrer l
 vista en un navegador real y pegar lo que el botón copió. Es la única forma de
 que prueben algo.
 
+## Cuándo pasó cada cosa
+
+| Momento | Fecha |
+|---|---|
+| Ficha de la alumna (onboarding) | jueves 13 de agosto de 2026, 18:30 |
+| Sesión v1, escrita por el sistema | viernes 14, 08:45 |
+| Sesión v2, corregida por el entrenador | viernes 14, 09:15 |
+| Aprobación y publicación | viernes 14, 09:20 y 09:30 |
+| **Ejecución y feedback** | **domingo 16, 19:06** |
+| Lectura del entrenador y devolución publicada | lunes 17, 20:10 y 20:15 |
+| Borrador de la sesión 2 | lunes 17, 21:05 |
+
+Las dos fechas en negrita **no son ficticias**: son la hora real en que se
+recorrió la vista y se copiaron los archivos, y por eso están en UTC dentro del
+JSON. El resto de la cronología se construyó alrededor de ellas, no al revés.
+Falsear el momento en que se generó un registro sería el mismo error que
+rellenar una carga desconocida.
+
 ## Lo que este caso está demostrando
 
 ### 1. Un desconocido no se rellena con algo plausible

@@ -3,7 +3,7 @@
   "schema_version": 1,
   "sesion_id": "sesion-piloto-001",
   "publicacion_ejecutada": 1,
-  "publicacion_hash": "sha256:9062a8a0962ede76eca29bd51e7d143b9a31418dc1648a501482c2b934977420",
+  "publicacion_hash": "sha256:d54fbbf84a2aab95e40d1885b23864c1d74b64226870e4234a8d1bc097cbe12c",
   "check_in": {
     "solicitado": false,
     "motivo": "H1 no implementa check-in. No se solicito ninguno para esta sesion, de modo que no hay respuesta que registrar (D-020)."

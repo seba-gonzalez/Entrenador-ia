@@ -2,7 +2,7 @@
   "id": "piloto-001",
   "schema_version": 1,
   "nombre": "Marta Ruiz",
-  "fecha": "2027-04-06T18:30:00-04:00",
+  "fecha": "2026-08-13T18:30:00-04:00",
   "demo": true,
   "aviso_demo": "Alumna ficticia. Marta Ruiz no existe: todos sus datos son inventados para probar el circuito completo del sistema. Ninguno puede presentarse como evidencia de una persona.",
 
@@ -11,49 +11,49 @@
       "etiqueta": "Edad",
       "valor": 34,
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "objetivo": {
       "etiqueta": "Objetivo",
       "valor": "Volver a entrenar fuerza de forma constante despues de dos años parada. Sentirse mas fuerte en el dia a dia.",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "experiencia": {
       "etiqueta": "Experiencia entrenando",
       "valor": "Tres años de gimnasio hasta 2024. Conoce sentadilla, press y remo. Nunca siguio un programa escrito.",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "disponibilidad": {
       "etiqueta": "Disponibilidad",
       "valor": "3 dias por semana",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "duracion_sesion": {
       "etiqueta": "Duracion por sesion",
       "valor": "50-60 minutos",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "equipamiento": {
       "etiqueta": "Equipamiento",
       "valor": "Gimnasio comercial completo",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "preferencias": {
       "etiqueta": "Preferencias",
       "valor": "Le gusta el trabajo de piernas. No quiere clases dirigidas ni correr.",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
     "molestia_lumbar": {
       "etiqueta": "Molestia lumbar",
       "valor": "Molestia en la zona lumbar al final del dia tras muchas horas sentada. Nunca durante el entrenamiento.",
       "estado": "confirmado",
-      "fuente": "onboarding 2027-04-06"
+      "fuente": "onboarding 2026-08-13"
     },
 
     "carga_sentadilla": {

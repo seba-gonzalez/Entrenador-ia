@@ -9,13 +9,13 @@
   "generador_version": "piloto-h1-0",
   "version_aprobada": 2,
   "aprobada_por": "entrenador",
-  "fecha_aprobacion": "2027-04-07T09:20:00-04:00",
+  "fecha_aprobacion": "2026-08-14T09:20:00-04:00",
 
   "versiones": [
     {
       "v": 1,
       "autor": "sistema",
-      "fecha": "2027-04-07T08:45:00-04:00",
+      "fecha": "2026-08-14T08:45:00-04:00",
       "contenido": {
         "titulo_documento": "Marta — primera sesion",
         "cabecera": {
@@ -192,7 +192,7 @@
     {
       "v": 2,
       "autor": "entrenador",
-      "fecha": "2027-04-07T09:15:00-04:00",
+      "fecha": "2026-08-14T09:15:00-04:00",
       "deriva_de": 1,
       "contenido": {
         "titulo_documento": "Marta — primera sesion",
@@ -387,7 +387,7 @@
                 "parrafos": [
                   { "destacado": "Cuerpo completo y no rutina dividida:", "texto": " con 3 dias a la semana y volviendo despues de una pausa, tocar todo cada dia rinde mas que repartir." },
                   { "destacado": "Sin numeros de carga:", "texto": " no tengo una referencia tuya actual y prefiero decirlo a inventarla. El protocolo de aproximacion la encuentra hoy, y desde la proxima sesion ya trabajamos con datos." },
-                  { "destacado": "RIR 3 y no al fallo:", "texto": " la primera sesion de vuelta no se gana llegando al limite. Se gana volviendo el jueves." },
+                  { "destacado": "RIR 3 y no al fallo:", "texto": " la primera sesion de vuelta no se gana llegando al limite. Se gana volviendo el martes." },
                   { "destacado": "Acondicionamiento al final:", "texto": " cargar y caminar, que es fuerza aplicada. Nada de correr, que me dijiste que no lo quieres." }
                 ]
               }
@@ -484,8 +484,8 @@
     {
       "p": 1,
       "de_version": 2,
-      "fecha": "2027-04-07T09:30:00-04:00",
-      "hash": "sha256:9062a8a0962ede76eca29bd51e7d143b9a31418dc1648a501482c2b934977420",
+      "fecha": "2026-08-14T09:30:00-04:00",
+      "hash": "sha256:d54fbbf84a2aab95e40d1885b23864c1d74b64226870e4234a8d1bc097cbe12c",
       "vigente": true
     }
   ]
