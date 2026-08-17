@@ -35,6 +35,7 @@ const ETIQUETAS = {
   copiado: 'Copiado. Pegalo en el repositorio como un archivo nuevo.',
   sinPortapapeles: 'El navegador no dejo copiar. El registro quedo impreso en la consola para copiarlo a mano.',
   tituloPendientes: 'Quedo algo en blanco',
+  separarPregunta: 'A cada serie le paso algo distinto',
   hechaSinDatos: 'La hice, no anote los valores',
   noHecha: 'No la hice',
   sinRegistrar: 'sin registrar',
@@ -82,37 +83,123 @@ const vacia = (estado, fila) =>
   contratoDe(estado, fila).every((campo) => fila.entradas[campo.campo].value.trim() === '');
 
 /**
- * Las filas que quedaron en blanco, que son el unico caso que los datos no
- * resuelven: una fila vacia puede significar "no la hice" o "la hice y no anote
- * nada", y las dos registran cosas distintas.
+ * Las filas que quedaron en blanco, una por una.
  *
- * Devuelve una lista vacia cuando no hay nada que preguntar, que es lo normal.
+ * Es el unico caso que los datos no resuelven: una fila vacia puede significar
+ * "no la hice" o "la hice y no anote nada", y las dos registran cosas distintas.
+ * Cada fila necesita su respuesta en el archivo emitido, aunque la pregunta que
+ * se haga en pantalla cubra varias a la vez.
  */
-export function pendientesDe(ejercicios) {
-  const pendientes = [];
+export function clavesEnBlanco(ejercicios) {
+  const claves = [];
   ejercicios.forEach((estado) => {
     if (estado.modo === 'compacto') {
       if (vacia(estado, estado.compacta)) {
-        pendientes.push({
+        claves.push({
           clave: `${estado.ejercicio_id}#conjunto`,
-          ejercicio_nombre: estado.ejercicio_nombre,
-          descripcion: estado.series === 1
-            ? 'la serie quedo en blanco'
-            : `las ${estado.series} series quedaron en blanco`,
+          estado,
+          series: estado.series,
+          anadida: false,
         });
       }
       return;
     }
     estado.filas.forEach((fila) => {
       if (!vacia(estado, fila)) return;
-      pendientes.push({
+      claves.push({
         clave: `${estado.ejercicio_id}#${fila.serie}`,
-        ejercicio_nombre: estado.ejercicio_nombre,
-        descripcion: `la serie ${fila.serie} quedo en blanco`,
+        estado,
+        serie: fila.serie,
+        anadida: fila.anadida,
       });
     });
   });
-  return pendientes;
+  return claves;
+}
+
+/** "la serie 3", "las series 2 y 3", "las series 1, 2 y 4". */
+function listaDeSeries(numeros) {
+  if (numeros.length === 1) return `la serie ${numeros[0]}`;
+  const ultimo = numeros[numeros.length - 1];
+  return `las series ${numeros.slice(0, -1).join(', ')} y ${ultimo}`;
+}
+
+/**
+ * Las preguntas que se muestran en pantalla.
+ *
+ * Se agrupa cuando una sola respuesta representa fielmente lo ocurrido: si un
+ * ejercicio entero quedo en blanco, preguntarlo tres veces no aporta nada y solo
+ * cansa. Se detalla cuando puede haber diferencias — y como el codigo no puede
+ * saber si las hay, la separacion la pide la persona: cada grupo de mas de una
+ * serie ofrece responderlas por separado.
+ *
+ * Agrupar es una decision de pantalla. El archivo emitido sigue guardando una
+ * respuesta por serie: 'claves' es la lista a la que se escribe la respuesta.
+ */
+export function pendientesDe(ejercicios, separados = new Set()) {
+  const porEjercicio = new Map();
+  clavesEnBlanco(ejercicios).forEach((c) => {
+    const lista = porEjercicio.get(c.estado.ejercicio_id) || [];
+    lista.push(c);
+    porEjercicio.set(c.estado.ejercicio_id, lista);
+  });
+
+  const preguntas = [];
+  porEjercicio.forEach((enBlanco, ejercicioId) => {
+    const { estado } = enBlanco[0];
+
+    // Una serie anadida no pertenece al grupo de las programadas: no estaba
+    // prevista, y meterla en la misma respuesta seria decidir por el alumno que
+    // le paso lo mismo que a las demas.
+    const anadidas = enBlanco.filter((c) => c.anadida);
+    const programadas = enBlanco.filter((c) => !c.anadida);
+
+    if (programadas.length) {
+      const primera = programadas[0];
+      const todoElEjercicio = primera.series !== undefined || programadas.length === estado.series;
+      const describe = () => {
+        if (primera.series !== undefined) {
+          return primera.series === 1 ? 'la serie quedo en blanco' : `las ${primera.series} series quedaron en blanco`;
+        }
+        const numeros = programadas.map((c) => c.serie);
+        return todoElEjercicio && numeros.length > 1
+          ? `las ${numeros.length} series quedaron en blanco`
+          : `${listaDeSeries(numeros)} quedo${numeros.length > 1 ? 'aron' : ''} en blanco`;
+      };
+
+      if (programadas.length > 1 && separados.has(ejercicioId)) {
+        programadas.forEach((c) => preguntas.push({
+          clave: c.clave,
+          claves: [c.clave],
+          ejercicio_id: ejercicioId,
+          ejercicio_nombre: estado.ejercicio_nombre,
+          descripcion: `la serie ${c.serie} quedo en blanco`,
+        }));
+      } else {
+        preguntas.push({
+          clave: programadas.map((c) => c.clave).join('+'),
+          claves: programadas.map((c) => c.clave),
+          ejercicio_id: ejercicioId,
+          ejercicio_nombre: estado.ejercicio_nombre,
+          descripcion: describe(),
+          // Solo tiene sentido separar lo que esta agrupado y viene de filas
+          // distintas. La fila compacta es una sola: no hay nada que separar
+          // sin abrir antes el detalle del ejercicio.
+          separable: programadas.length > 1 && primera.series === undefined,
+        });
+      }
+    }
+
+    anadidas.forEach((c) => preguntas.push({
+      clave: c.clave,
+      claves: [c.clave],
+      ejercicio_id: ejercicioId,
+      ejercicio_nombre: estado.ejercicio_nombre,
+      descripcion: `la serie ${c.serie} (anadida) quedo en blanco`,
+    }));
+  });
+
+  return preguntas;
 }
 
 /**
@@ -193,7 +280,7 @@ export function construirEjecucion({ publicacion, registro, resultado, notas, ah
   // Se comprueba aqui y no solo en la interfaz: ningun camino —incluido el de
   // otro programa que importe esta funcion— puede producir un registro con una
   // fila en blanco sin resolver.
-  const pendientes = pendientesDe(registro.ejercicios).filter((p) => !respuestas[p.clave]);
+  const pendientes = clavesEnBlanco(registro.ejercicios).filter((c) => !respuestas[c.clave]);
   if (pendientes.length) throw new RegistroIncompleto(pendientes);
 
   const series = [];
@@ -278,7 +365,7 @@ export function resumenDe(registro, respuestas = {}) {
 
 /* ---------- interfaz ---------- */
 
-function pintarPendientes(zona, pendientes, respuestas, alResponder) {
+function pintarPendientes(zona, pendientes, respuestas, alResponder, alSeparar) {
   zona.replaceChildren();
   if (!pendientes.length) return;
 
@@ -294,17 +381,29 @@ function pintarPendientes(zona, pendientes, respuestas, alResponder) {
         const boton = el('button', 'sens-btn', texto);
         boton.type = 'button';
         boton.dataset.respuesta = valor;
-        if (respuestas[p.clave] === valor) boton.classList.add('elegida');
+        if (p.claves.every((clave) => respuestas[clave] === valor)) boton.classList.add('elegida');
         boton.addEventListener('click', () => {
           fila.querySelectorAll('.sens-btn').forEach((b) => b.classList.remove('elegida'));
           boton.classList.add('elegida');
-          respuestas[p.clave] = valor;
+          // Una pregunta agrupada responde por todas las series que cubre. El
+          // archivo sigue guardando una respuesta por serie.
+          p.claves.forEach((clave) => { respuestas[clave] = valor; });
           alResponder();
         });
         fila.appendChild(boton);
       });
 
     caja.appendChild(fila);
+
+    // Agrupar es fiel mientras a todas las series les haya pasado lo mismo.
+    // El codigo no puede saberlo, asi que lo ofrece y decide la persona.
+    if (p.separable) {
+      const separar = el('button', 'btn-quitar', ETIQUETAS.separarPregunta);
+      separar.type = 'button';
+      separar.addEventListener('click', () => alSeparar(p.ejercicio_id));
+      caja.appendChild(separar);
+    }
+
     zona.appendChild(caja);
   });
 }
@@ -371,6 +470,7 @@ export function montarCierre({ publicacion, registro, esquema }) {
   card.appendChild(estado);
 
   const respuestas = {};
+  const separados = new Set();
 
   function ocultarResumen() {
     zonaResumen.hidden = true;
@@ -400,10 +500,13 @@ export function montarCierre({ publicacion, registro, esquema }) {
       return;
     }
 
-    const pendientes = pendientesDe(registro.ejercicios);
-    pintarPendientes(zonaPendientes, pendientes, respuestas, revisarAhora);
+    const pendientes = pendientesDe(registro.ejercicios, separados);
+    pintarPendientes(zonaPendientes, pendientes, respuestas, revisarAhora, (id) => {
+      separados.add(id);
+      revisarAhora();
+    });
 
-    const sinResponder = pendientes.filter((p) => !respuestas[p.clave]);
+    const sinResponder = clavesEnBlanco(registro.ejercicios).filter((c) => !respuestas[c.clave]);
     if (sinResponder.length) {
       estado.textContent = ETIQUETAS.faltaResponder;
       estado.classList.add('error');

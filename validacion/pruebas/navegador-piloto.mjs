@@ -416,6 +416,83 @@ for (const ancho of [320, 390]) {
   ok('BL: y sin inventarle ningun campo', remo.every((s) => !('campos' in s.ejecutado)));
 }
 
+
+/* ---------- AG: se agrupa cuando una respuesta representa lo ocurrido ---------- */
+{
+  const p = await ctx.newPage();
+  await p.goto(VISTA, { waitUntil: 'networkidle' });
+  const ex = p.locator('article.ex');
+
+  // Sentadilla: abierta por serie y entera en blanco -> una sola pregunta.
+  await ex.nth(0).getByRole('button', { name: 'Registrar series por separado' }).click();
+  // Press: abierto por serie, con las dos primeras registradas -> solo falta la 3.
+  await ex.nth(1).getByRole('button', { name: 'Registrar series por separado' }).click();
+  for (const n of [0, 1]) {
+    const f = ex.nth(1).locator('.serie-row').nth(n);
+    await f.locator('.sf-i').nth(0).fill('14');
+    await f.locator('.sf-i').nth(1).fill('10');
+    await f.locator('.sf-i').nth(2).fill('3');
+  }
+  // Remo: compacto y en blanco. Los dos ultimos, registrados.
+  for (const [i, v] of [[3, ['2×16 kg', '30 m']], [4, ['peso corporal', '10/lado']]]) {
+    for (let j = 0; j < v.length; j += 1) await ex.nth(i).locator('.sf-i').nth(j).fill(v[j]);
+  }
+
+  await p.selectOption('#cierre .sf-s', 'parcial');
+  await p.locator('#cierre .btn-emitir').first().click();
+
+  const agrupado = await p.evaluate(() => ({
+    preguntas: [...document.querySelectorAll('.zona-pendientes .sf-l')].map((n) => n.textContent),
+    separables: document.querySelectorAll('.zona-pendientes .btn-quitar').length,
+  }));
+  ok('AG: tres ejercicios en blanco -> tres preguntas, no siete',
+    agrupado.preguntas.length === 3, `=${agrupado.preguntas.length}`);
+  ok('AG: un ejercicio entero abierto por serie se pregunta una sola vez',
+    /Sentadilla.*las 3 series quedaron en blanco/.test(agrupado.preguntas[0]), agrupado.preguntas[0]);
+  ok('AG: si solo falta una serie, se pregunta por esa',
+    /Press.*la serie 3 quedo en blanco/.test(agrupado.preguntas[1]), agrupado.preguntas[1]);
+  ok('AG: un ejercicio compacto en blanco sigue siendo una pregunta',
+    /Remo.*las 3 series quedaron en blanco/.test(agrupado.preguntas[2]), agrupado.preguntas[2]);
+  ok('AG: solo se ofrece separar donde hay mas de una serie agrupada',
+    agrupado.separables === 1, `=${agrupado.separables}`);
+
+  // Separar cuando a cada serie le paso algo distinto.
+  await p.locator('.zona-pendientes .btn-quitar').first().click();
+  const separado = await p.evaluate(() =>
+    [...document.querySelectorAll('.zona-pendientes .sf-l')].map((n) => n.textContent));
+  ok('AG: separar abre una pregunta por serie', separado.length === 5, `=${separado.length}`);
+  ok('AG: y solo del ejercicio que se separo',
+    separado.filter((s) => /Sentadilla/.test(s)).length === 3
+    && separado.filter((s) => /Remo/.test(s)).length === 1,
+    separado.join(' / '));
+
+  // Se responden distinto, que es para lo que sirve separarlas.
+  const cajas = p.locator('.zona-pendientes .sensacion');
+  await cajas.nth(0).locator('.sens-btn[data-respuesta=hecha_sin_datos]').click();
+  await cajas.nth(1).locator('.sens-btn[data-respuesta=hecha_sin_datos]').click();
+  await cajas.nth(2).locator('.sens-btn[data-respuesta=no_hecha]').click();
+  await cajas.nth(3).locator('.sens-btn[data-respuesta=no_hecha]').click();
+  await cajas.nth(4).locator('.sens-btn[data-respuesta=hecha_sin_datos]').click();
+  await p.locator('#cierre .btn-emitir').nth(1).click();
+  await p.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
+  const e = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
+  await p.close();
+
+  const sent = e.series.filter((s) => s.ejercicio_id === 's1-a');
+  ok('AGJ: el JSON guarda una respuesta por serie, no una por pregunta',
+    sent.map((s) => s.realizada).join(',') === 'true,true,false',
+    sent.map((s) => s.realizada).join(','));
+  ok('AGJ: cada una con su motivo, no con uno comun',
+    /no anoto ningun valor/i.test(sent[0].ejecutado.motivo) && /No la hizo/.test(sent[2].ejecutado.motivo),
+    `${sent[0].ejecutado.motivo.slice(0, 30)} | ${sent[2].ejecutado.motivo.slice(0, 30)}`);
+  const remo = e.series.filter((s) => s.ejercicio_id === 's1-c');
+  ok('AGJ: una respuesta agrupada se escribe en las 3 series que cubria',
+    remo.length === 3 && remo.every((s) => s.realizada === true && s.ejecutado.registrado === false));
+  ok('AGJ: las 15 series siguen estando', e.series.length === 15, `=${e.series.length}`);
+  ok('AGJ: y el press conserva las dos que si se registraron',
+    e.series.filter((s) => s.ejercicio_id === 's1-b' && s.ejecutado.registrado).length === 2);
+}
+
 /* ---------- FEEDBACK: no responder no es responder ---------- */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
 await page.click('.tab-btn:nth-child(3)');

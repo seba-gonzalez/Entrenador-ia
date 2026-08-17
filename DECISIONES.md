@@ -384,3 +384,20 @@ evalúe. El margen se conserva para que una persona compare después lo autoriza
 con lo ocurrido.
 **Su ausencia no es ni prohibido ni ilimitado:** es que todavía no se declaró, y
 conviene que se note.
+
+### D-036 · Se pregunta una vez por lo que una sola respuesta resuelve
+Cuando quedan series sin registrar, la pantalla de cierre agrupa: si todas las
+series programadas de un ejercicio están en blanco, se pregunta una vez por el
+ejercicio; si sólo faltan algunas, se pregunta por esas. Cada grupo de más de una
+serie ofrece **«A cada serie le pasó algo distinto»**, que las separa en
+preguntas individuales.
+**Por qué:** repetir la misma pregunta tres veces no aporta información y cansa,
+que es justo lo que este bloque de trabajo vino a corregir. Pero el código no
+puede saber si a las tres series les pasó lo mismo, así que agrupa por defecto
+—que es lo más probable— y deja que la persona lo separe cuando no lo fue.
+**Agrupar es una decisión de pantalla, no del dato.** El archivo sigue guardando
+una respuesta por serie: la respuesta agrupada se escribe en todas las series que
+la pregunta cubría. Ni `realizada` ni el motivo cambian de forma.
+**Una serie añadida nunca entra en el grupo.** No estaba prevista, y meterla en
+la misma respuesta sería decidir por el alumno que le pasó lo mismo que a las
+programadas.

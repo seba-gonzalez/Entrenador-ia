@@ -16,7 +16,7 @@ node validacion/validar.mjs --base origin/main     # añade la comprobación de 
 
 cd validacion && npm run pruebas                   # contratos (20 + 21 + 12 + 47)
 node validacion/pruebas/navegador.mjs              # la vista sobre demo-001 (94), necesita el repo servido
-node validacion/pruebas/navegador-piloto.mjs       # el circuito del piloto (109), ídem
+node validacion/pruebas/navegador-piloto.mjs       # el circuito del piloto (121), ídem
 ```
 
 ## Cómo encuentra los datos
