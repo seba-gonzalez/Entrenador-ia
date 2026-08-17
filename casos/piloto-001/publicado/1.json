@@ -1,0 +1,427 @@
+{
+  "sesion_id": "sesion-piloto-001",
+  "schema_version": 1,
+  "demo": true,
+  "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real.",
+  "publicacion": {
+    "p": 1,
+    "de_version": 2,
+    "fecha": "2026-08-14T09:30:00-04:00"
+  },
+  "contenido": {
+    "titulo_documento": "Marta — primera sesion",
+    "cabecera": {
+      "eyebrow": "Marta — vuelta a la fuerza",
+      "titulo": "Tu primera sesion",
+      "mensaje": {
+        "destacado": "Hoy no buscamos tu maximo: buscamos tu punto de partida.",
+        "texto": " Vas a encontrar tus cargas entrenando, y con eso armamos lo que viene."
+      },
+      "nota": {
+        "texto": "Si algo te molesta, para y cuentamelo. Nada de lo de hoy vale la pena forzarlo — es la primera sesion de una temporada larga."
+      }
+    },
+    "secciones": [
+      {
+        "id": "rutina",
+        "etiqueta": "Rutina"
+      },
+      {
+        "id": "informacion",
+        "etiqueta": "Informacion"
+      },
+      {
+        "id": "feedback",
+        "etiqueta": "Feedback"
+      }
+    ],
+    "paneles": {
+      "rutina": {
+        "tarjetas": [
+          {
+            "tipo": "notas",
+            "id": "antes",
+            "titulo": "Antes de empezar",
+            "parrafos": [
+              {
+                "destacado": "RIR 3:",
+                "texto": " terminas la serie sintiendo que todavia podrias hacer 3 repeticiones buenas. Si acabas la serie con la sensacion de que no podias ni una mas, te pasaste — baja la proxima."
+              }
+            ]
+          },
+          {
+            "tipo": "programa",
+            "id": "protocolo",
+            "titulo": "Como encontrar tu carga hoy",
+            "intro": "No te doy un numero de kilos, y quiero explicarte por que: llevas dos años sin entrenar de forma constante y no tengo ninguna referencia actual tuya. Cualquier peso que te pusiera hoy seria un invento mio. Asi que lo buscamos entre las dos, y a partir de hoy ya tenemos un dato real.",
+            "lista": [
+              "Empieza con la barra sola (o mancuernas muy livianas) y haz 8 repeticiones.",
+              "Sube en saltos comodos —10 kg si va facil, 5 si ya cuesta— y haz 3 a 5 repeticiones en cada escalon.",
+              "Para de subir cuando calcules que te quedan unas 3 repeticiones buenas en el tanque. Esa es tu carga de hoy.",
+              "Desde ahi haz las series de trabajo que te indico abajo."
+            ],
+            "destacado": {
+              "destacado": "Anota el peso de cada serie.",
+              "texto": " Eso es lo mas util que puedes darme hoy: con esos numeros la proxima sesion ya no empieza a ciegas."
+            }
+          },
+          {
+            "tipo": "sesion",
+            "id": "s1",
+            "etiqueta": "Sesion A",
+            "cuando": "Cuerpo completo — 55 min",
+            "abierta": true,
+            "calentamiento": {
+              "titulo": "Calentamiento (8 min)",
+              "pasos": [
+                "5 min de bici o eliptica suave, hasta entrar en calor de verdad.",
+                "Sentadilla con tu propio peso, 2 × 10, sin prisa.",
+                "Puente de gluteo, 2 × 12.",
+                "Rotacion de hombro con banda liviana, 2 × 15."
+              ],
+              "nota": "Las series de aproximacion de la sentadilla cuentan como parte del calentamiento: no hace falta que hagas nada extra antes de ellas."
+            },
+            "bloques": [
+              {
+                "id": "fuerza",
+                "etiqueta": "Fuerza",
+                "pregunta_sensacion": "¿Como se sintio el bloque de fuerza?"
+              },
+              {
+                "id": "acondicionamiento",
+                "etiqueta": "Acondicionamiento",
+                "pregunta_sensacion": "¿Y el bloque final?"
+              }
+            ],
+            "ejercicios": [
+              {
+                "id": "s1-a",
+                "codigo": "A",
+                "nombre": "Sentadilla con barra",
+                "bloque": "fuerza",
+                "programado": {
+                  "series": 3,
+                  "presentacion": [
+                    {
+                      "etiqueta": "Series",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Reps",
+                      "valor": "8"
+                    },
+                    {
+                      "etiqueta": "RIR objetivo",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Descanso",
+                      "valor": "2min"
+                    }
+                  ],
+                  "por_serie": [
+                    {
+                      "campo": "carga",
+                      "etiqueta": "Carga",
+                      "prescrito": false,
+                      "motivo_no_prescrito": "no hay referencia actual: se encuentra con el protocolo de arriba y queda registrada aqui"
+                    },
+                    {
+                      "campo": "reps",
+                      "etiqueta": "Reps",
+                      "prescrito": true,
+                      "valor": "8"
+                    },
+                    {
+                      "campo": "rir",
+                      "etiqueta": "RIR real",
+                      "prescrito": true,
+                      "valor": "3"
+                    }
+                  ]
+                },
+                "detalles": [
+                  {
+                    "resumen": "Quiero entender este ejercicio",
+                    "cuerpo": "Objetivo: es el patron principal de la sesion y el que mas nos va a decir sobre donde estas. Por eso va primero, con la cabeza fresca."
+                  }
+                ],
+                "transicion": "Cuando termines, pasas al banco."
+              },
+              {
+                "id": "s1-b",
+                "codigo": "B",
+                "nombre": "Press banca con mancuernas",
+                "bloque": "fuerza",
+                "programado": {
+                  "series": 3,
+                  "presentacion": [
+                    {
+                      "etiqueta": "Series",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Reps",
+                      "valor": "10"
+                    },
+                    {
+                      "etiqueta": "RIR objetivo",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Descanso",
+                      "valor": "90s"
+                    }
+                  ],
+                  "por_serie": [
+                    {
+                      "campo": "carga",
+                      "etiqueta": "Carga",
+                      "prescrito": false,
+                      "motivo_no_prescrito": "no hay referencia actual: mismo protocolo que la sentadilla"
+                    },
+                    {
+                      "campo": "reps",
+                      "etiqueta": "Reps",
+                      "prescrito": true,
+                      "valor": "10"
+                    },
+                    {
+                      "campo": "rir",
+                      "etiqueta": "RIR real",
+                      "prescrito": true,
+                      "valor": "3"
+                    }
+                  ]
+                },
+                "detalles": [
+                  {
+                    "resumen": "Quiero entender este ejercicio",
+                    "cuerpo": "Objetivo: empuje horizontal. Con mancuernas y no con barra porque hoy nos interesa que puedas soltar sin drama si te pasas de peso."
+                  }
+                ]
+              },
+              {
+                "id": "s1-c",
+                "codigo": "C",
+                "nombre": "Remo en maquina",
+                "bloque": "fuerza",
+                "programado": {
+                  "series": 3,
+                  "presentacion": [
+                    {
+                      "etiqueta": "Series",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Reps",
+                      "valor": "10"
+                    },
+                    {
+                      "etiqueta": "RIR objetivo",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Descanso",
+                      "valor": "90s"
+                    }
+                  ],
+                  "por_serie": [
+                    {
+                      "campo": "carga",
+                      "etiqueta": "Carga",
+                      "prescrito": false,
+                      "motivo_no_prescrito": "no hay referencia actual: mismo protocolo"
+                    },
+                    {
+                      "campo": "reps",
+                      "etiqueta": "Reps",
+                      "prescrito": true,
+                      "valor": "10"
+                    },
+                    {
+                      "campo": "rir",
+                      "etiqueta": "RIR real",
+                      "prescrito": true,
+                      "valor": "3"
+                    }
+                  ]
+                },
+                "detalles": [
+                  {
+                    "resumen": "Quiero entender este ejercicio",
+                    "cuerpo": "Objetivo: traccion horizontal, para equilibrar el empuje del banco."
+                  }
+                ]
+              },
+              {
+                "id": "s1-d",
+                "codigo": "D",
+                "nombre": "Paseo del granjero",
+                "bloque": "acondicionamiento",
+                "programado": {
+                  "series": 3,
+                  "presentacion": [
+                    {
+                      "etiqueta": "Series",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Distancia",
+                      "valor": "30 m"
+                    },
+                    {
+                      "etiqueta": "Descanso",
+                      "valor": "60s"
+                    }
+                  ],
+                  "por_serie": [
+                    {
+                      "campo": "carga",
+                      "etiqueta": "Carga",
+                      "prescrito": false,
+                      "motivo_no_prescrito": "un peso que puedas sostener 30 m sin que se te caiga"
+                    },
+                    {
+                      "campo": "distancia",
+                      "etiqueta": "Distancia",
+                      "prescrito": true,
+                      "valor": "30 m"
+                    }
+                  ]
+                },
+                "detalles": [
+                  {
+                    "resumen": "Quiero entender este ejercicio",
+                    "cuerpo": "Objetivo: sostener peso caminando. Es lo mas parecido a cargar la compra, que es donde quieres notar la diferencia."
+                  }
+                ]
+              },
+              {
+                "id": "s1-e",
+                "codigo": "E",
+                "nombre": "Subida al cajon",
+                "bloque": "acondicionamiento",
+                "programado": {
+                  "series": 3,
+                  "presentacion": [
+                    {
+                      "etiqueta": "Series",
+                      "valor": "3"
+                    },
+                    {
+                      "etiqueta": "Reps",
+                      "valor": "10/lado"
+                    },
+                    {
+                      "etiqueta": "Descanso",
+                      "valor": "60s"
+                    }
+                  ],
+                  "por_serie": [
+                    {
+                      "campo": "carga",
+                      "etiqueta": "Carga",
+                      "prescrito": false,
+                      "motivo_no_prescrito": "con tu peso corporal esta bien para hoy; si te sobra, coges mancuernas"
+                    },
+                    {
+                      "campo": "reps",
+                      "etiqueta": "Reps",
+                      "prescrito": true,
+                      "valor": "10/lado"
+                    }
+                  ]
+                }
+              }
+            ],
+            "nota_cierre": "Si al terminar sientes que te sobro energia, no añadas nada hoy: anotalo en el feedback y lo subimos la proxima con criterio."
+          }
+        ]
+      },
+      "informacion": {
+        "tarjetas": [
+          {
+            "tipo": "contexto",
+            "id": "donde",
+            "titulo": "Donde estamos",
+            "items": [
+              {
+                "destacado": "Objetivo:",
+                "texto": " volver a entrenar fuerza de forma constante, y notarlo en el dia a dia."
+              },
+              {
+                "destacado": "Frecuencia:",
+                "texto": " 3 dias por semana, 50-60 minutos. Empezamos con cuerpo completo."
+              },
+              {
+                "destacado": "Lo que sabemos:",
+                "texto": " entrenaste tres años y conoces los movimientos. Eso nos ahorra la fase de aprender la tecnica desde cero."
+              },
+              {
+                "destacado": "Lo que NO sabemos:",
+                "texto": " con cuanto peso trabajas hoy. Esta sesion existe en buena parte para averiguarlo."
+              },
+              {
+                "destacado": "Tu lumbar:",
+                "texto": " la molestia aparece al final del dia despues de muchas horas sentada, no entrenando. Asi que no condiciona los ejercicios de hoy. Si algun dia aparece durante la sesion, eso si es informacion nueva y quiero saberlo."
+              }
+            ]
+          },
+          {
+            "tipo": "argumentos",
+            "id": "porque",
+            "titulo": "Por que esta armada asi",
+            "parrafos": [
+              {
+                "destacado": "Cuerpo completo y no rutina dividida:",
+                "texto": " con 3 dias a la semana y volviendo despues de una pausa, tocar todo cada dia rinde mas que repartir."
+              },
+              {
+                "destacado": "Sin numeros de carga:",
+                "texto": " no tengo una referencia tuya actual y prefiero decirlo a inventarla. El protocolo de aproximacion la encuentra hoy, y desde la proxima sesion ya trabajamos con datos."
+              },
+              {
+                "destacado": "RIR 3 y no al fallo:",
+                "texto": " la primera sesion de vuelta no se gana llegando al limite. Se gana volviendo el domingo."
+              },
+              {
+                "destacado": "Acondicionamiento al final:",
+                "texto": " cargar y caminar, que es fuerza aplicada. Nada de correr, que me dijiste que no lo quieres."
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "tarjetas": [
+          {
+            "tipo": "preguntas",
+            "id": "post",
+            "titulo": "Despues de entrenar, cuentame",
+            "respondible": true,
+            "items": [
+              {
+                "id": "p1",
+                "texto": "¿Que carga terminaste usando en cada ejercicio, y como la sentiste?"
+              },
+              {
+                "id": "p2",
+                "texto": "¿Hubo algo que te costara mas o menos de lo que esperabas?"
+              },
+              {
+                "id": "p3",
+                "texto": "¿Aparecio alguna molestia durante la sesion?"
+              },
+              {
+                "id": "p4",
+                "texto": "¿Cambiaste algo de lo que estaba escrito? Si lo hiciste, esta bien — solo cuentame que y por que."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "pie": "Con lo que anotes hoy armo la siguiente. · Caso piloto: alumna ficticia, datos sinteticos."
+  }
+}

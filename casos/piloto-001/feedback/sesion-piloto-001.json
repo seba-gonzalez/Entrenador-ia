@@ -1,0 +1,51 @@
+{
+  "id": "fb-sesion-piloto-001-20260816-230652",
+  "schema_version": 1,
+  "sesion_id": "sesion-piloto-001",
+  "estado_respuesta": "respondido",
+  "contenido": {
+    "respuestas": [
+      {
+        "pregunta_id": "p1",
+        "pregunta": "¿Que carga terminaste usando en cada ejercicio, y como la sentiste?",
+        "respuesta": {
+          "registrado": true,
+          "texto": "Sentadilla 70 kg, press 14 kg por mancuerna, remo 40 kg. La sentadilla la senti comoda."
+        }
+      },
+      {
+        "pregunta_id": "p2",
+        "pregunta": "¿Hubo algo que te costara mas o menos de lo que esperabas?",
+        "respuesta": {
+          "registrado": true,
+          "texto": "La fuerza me costo menos de lo que esperaba. El bloque final me dejo bien cansada."
+        }
+      },
+      {
+        "pregunta_id": "p3",
+        "pregunta": "¿Aparecio alguna molestia durante la sesion?",
+        "respuesta": {
+          "registrado": true,
+          "texto": "Ninguna. La espalda no me molesto en ningun momento."
+        }
+      },
+      {
+        "pregunta_id": "p4",
+        "pregunta": "¿Cambiaste algo de lo que estaba escrito? Si lo hiciste, esta bien — solo cuentame que y por que.",
+        "respuesta": {
+          "registrado": true,
+          "texto": "Si: hice una cuarta serie de sentadilla porque las tres se me hicieron faciles."
+        }
+      }
+    ],
+    "comentario_libre": {
+      "registrado": true,
+      "texto": "La fuerza estuvo demasiado facil. Agregue una serie. El circuito estuvo bien."
+    }
+  },
+  "fecha": "2026-08-16T23:06:52.302Z",
+  "generado_por": "app/alumno",
+  "generado_en": "2026-08-16T23:06:52.302Z",
+  "demo": true,
+  "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real."
+}

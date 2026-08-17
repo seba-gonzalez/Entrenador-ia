@@ -3,13 +3,17 @@
 
   "publico": true,
 
-  "sesiones": ["casos/*/sesion.json"],
+  "alumnos": ["casos/*/alumno.json"],
+  "sesiones": ["casos/*/sesion.json", "casos/*/sesiones/*.json"],
   "indices": ["casos/*/publicado/indice.json"],
   "ejecuciones": ["casos/*/ejecuciones/*.json"],
+  "feedback": ["casos/*/feedback/*.json"],
+  "indices_devolucion": ["casos/*/devoluciones/*/indice.json"],
 
   "notas": {
-    "publico": "true exige que toda sesion, publicacion y ejecucion lleve 'demo: true'. No aplica a esquemas, configuracion ni ningun otro metadato: solo a las entidades que pueden representar a una persona.",
-    "relacion": "Las sesiones, los indices y las ejecuciones se relacionan por 'sesion_id', nunca por su ubicacion. Por eso las rutas pueden cambiar sin tocar el validador.",
-    "publicaciones": "No se declaran: se descubren desde cada indice, que nombra sus archivos y vive junto a ellos."
+    "publico": "true exige que toda sesion, publicacion, ejecucion, ficha de alumno, feedback y devolucion lleve 'demo: true'. No aplica a esquemas, configuracion ni ningun otro metadato: solo a las entidades que pueden representar a una persona.",
+    "relacion": "Las sesiones, los indices, las ejecuciones, el feedback y las devoluciones se relacionan por 'sesion_id', nunca por su ubicacion. Por eso las rutas pueden cambiar sin tocar el validador.",
+    "publicaciones": "No se declaran: se descubren desde cada indice, que nombra sus archivos y vive junto a ellos. Vale igual para las sesiones publicadas y para las devoluciones publicadas.",
+    "sesiones": "Dos patrones porque conviven dos disposiciones: demo-001 guarda una sesion unica en 'sesion.json' y piloto-001 guarda varias en 'sesiones/'. El validador no prefiere ninguna; solo necesita saber donde mirar."
   }
 }

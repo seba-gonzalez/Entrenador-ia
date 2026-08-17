@@ -1,0 +1,587 @@
+{
+  "id": "ejec-sesion-piloto-001-20260816-230652",
+  "schema_version": 1,
+  "sesion_id": "sesion-piloto-001",
+  "publicacion_ejecutada": 1,
+  "publicacion_hash": "sha256:d54fbbf84a2aab95e40d1885b23864c1d74b64226870e4234a8d1bc097cbe12c",
+  "check_in": {
+    "solicitado": false,
+    "motivo": "H1 no implementa check-in. No se solicito ninguno para esta sesion, de modo que no hay respuesta que registrar (D-020)."
+  },
+  "inicio": {
+    "registrado": false,
+    "motivo": "Esta vista no observa el inicio real de la sesion. Registrar la hora en que se abrio la pagina seria presentar una inferencia como un hecho."
+  },
+  "fin": {
+    "registrado": false,
+    "motivo": "Esta vista no observa el fin real de la sesion. La hora en que se copio el registro se guarda aparte, en generado_en."
+  },
+  "series": [
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Sentadilla con barra",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: se encuentra con el protocolo de arriba y queda registrada aqui"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "70",
+          "reps": "8",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Sentadilla con barra",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: se encuentra con el protocolo de arriba y queda registrada aqui"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "70",
+          "reps": "8",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-a",
+      "ejercicio_nombre": "Sentadilla con barra",
+      "serie": 3,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: se encuentra con el protocolo de arriba y queda registrada aqui"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "8"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "70",
+          "reps": "8",
+          "rir": "2"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-b",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo que la sentadilla"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "14",
+          "reps": "10",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-b",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo que la sentadilla"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "14",
+          "reps": "10",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-b",
+      "ejercicio_nombre": "Press banca con mancuernas",
+      "serie": 3,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo que la sentadilla"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "14",
+          "reps": "10",
+          "rir": "2"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Remo en maquina",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "40",
+          "reps": "10",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Remo en maquina",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "40",
+          "reps": "10",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-c",
+      "ejercicio_nombre": "Remo en maquina",
+      "serie": 3,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "no hay referencia actual: mismo protocolo"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10"
+        },
+        {
+          "campo": "rir",
+          "etiqueta": "RIR real",
+          "prescrito": true,
+          "valor": "3"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "40",
+          "reps": "10",
+          "rir": "3"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Paseo del granjero",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "un peso que puedas sostener 30 m sin que se te caiga"
+        },
+        {
+          "campo": "distancia",
+          "etiqueta": "Distancia",
+          "prescrito": true,
+          "valor": "30 m"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "2×16 kg",
+          "distancia": "30 m"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Paseo del granjero",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "un peso que puedas sostener 30 m sin que se te caiga"
+        },
+        {
+          "campo": "distancia",
+          "etiqueta": "Distancia",
+          "prescrito": true,
+          "valor": "30 m"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "2×16 kg",
+          "distancia": "30 m"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-d",
+      "ejercicio_nombre": "Paseo del granjero",
+      "serie": 3,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "un peso que puedas sostener 30 m sin que se te caiga"
+        },
+        {
+          "campo": "distancia",
+          "etiqueta": "Distancia",
+          "prescrito": true,
+          "valor": "30 m"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "2×16 kg",
+          "distancia": "30 m"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-e",
+      "ejercicio_nombre": "Subida al cajon",
+      "serie": 1,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "con tu peso corporal esta bien para hoy; si te sobra, coges mancuernas"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10/lado"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "peso corporal",
+          "reps": "10/lado"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-e",
+      "ejercicio_nombre": "Subida al cajon",
+      "serie": 2,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "con tu peso corporal esta bien para hoy; si te sobra, coges mancuernas"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10/lado"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "peso corporal",
+          "reps": "10/lado"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    },
+    {
+      "ejercicio_id": "s1-e",
+      "ejercicio_nombre": "Subida al cajon",
+      "serie": 3,
+      "realizada": true,
+      "programado": [
+        {
+          "campo": "carga",
+          "etiqueta": "Carga",
+          "prescrito": false,
+          "motivo_no_prescrito": "con tu peso corporal esta bien para hoy; si te sobra, coges mancuernas"
+        },
+        {
+          "campo": "reps",
+          "etiqueta": "Reps",
+          "prescrito": true,
+          "valor": "10/lado"
+        }
+      ],
+      "ejecutado": {
+        "registrado": true,
+        "campos": {
+          "carga": "peso corporal",
+          "reps": "10/lado"
+        },
+        "campos_sin_registrar": []
+      },
+      "motivo_diferencia": {
+        "registrado": false,
+        "motivo": "Esta vista no captura un motivo por serie."
+      }
+    }
+  ],
+  "sensaciones": [
+    {
+      "bloque_id": "fuerza",
+      "etiqueta": "Fuerza",
+      "registrado": true,
+      "percepcion": "muy_facil"
+    },
+    {
+      "bloque_id": "acondicionamiento",
+      "etiqueta": "Acondicionamiento",
+      "registrado": true,
+      "percepcion": "adecuado"
+    }
+  ],
+  "resultado": "completada",
+  "notas_de_ejecucion": {
+    "registrado": true,
+    "texto": "La fuerza me quedo corta: hice una cuarta serie de sentadilla a 70 kg que no estaba escrita."
+  },
+  "generado_por": "app/alumno",
+  "generado_en": "2026-08-16T23:06:52.155Z",
+  "demo": true,
+  "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real."
+}

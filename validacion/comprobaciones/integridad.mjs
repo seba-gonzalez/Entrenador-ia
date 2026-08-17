@@ -22,19 +22,25 @@ function sha256(bytes) {
 }
 
 export function comprobarIntegridad(datos, informe) {
-  for (const publicacion of datos.publicaciones) {
-    if (!publicacion.bytes) continue; // la ausencia del archivo la reporta 'estructura'
+  // Las devoluciones se acreditan igual que las sesiones y por el mismo motivo:
+  // una devolucion alterada pone en boca del alumno palabras que no dijo.
+  for (const artefacto of [...datos.publicaciones, ...datos.devoluciones]) {
+    if (!artefacto.bytes) continue; // la ausencia del archivo la reporta 'estructura'
 
+    informe.exigir(F, artefacto.entrada.hash === sha256(artefacto.bytes), artefacto.ruta,
+      'El hash declarado en el indice no corresponde al archivo.',
+      `declarado en el indice: ${artefacto.entrada.hash}\n` +
+      `hash real del archivo:  ${sha256(artefacto.bytes)}\n` +
+      'Si el cambio del archivo es intencionado, este es el hash que hay que escribir.');
+  }
+
+  for (const publicacion of datos.publicaciones) {
+    if (!publicacion.bytes) continue;
     const real = sha256(publicacion.bytes);
 
-    // Declaracion 1: el indice.
-    informe.exigir(F, publicacion.entrada.hash === real, publicacion.ruta,
-      'El hash declarado en el indice no corresponde al archivo.',
-      `declarado en el indice: ${publicacion.entrada.hash}\n` +
-      `hash real del archivo:  ${real}\n` +
-      'Si el cambio del archivo es intencionado, este es el hash que hay que escribir.');
-
-    // Declaracion 2: el documento del entrenador, si registra esa publicacion.
+    // Segunda declaracion, solo para las sesiones: el documento del entrenador,
+    // si registra esa publicacion. Las devoluciones no tienen documento interno
+    // que las registre, asi que ahi no hay nada que contrastar.
     const sesion = datos.porSesionId.get(publicacion.datos?.sesion_id);
     const registro = sesion?.datos?.publicaciones?.find((p) => p.p === publicacion.entrada.p);
     if (!registro) continue;

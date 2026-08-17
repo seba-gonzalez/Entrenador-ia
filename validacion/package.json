@@ -7,7 +7,7 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "validar": "node validar.mjs --raiz ..",
-    "pruebas": "node pruebas/esquema-sesion.mjs && node pruebas/tarjetas.mjs && node pruebas/rechazos.mjs"
+    "pruebas": "node pruebas/esquema-sesion.mjs && node pruebas/tarjetas.mjs && node pruebas/rechazos.mjs && node pruebas/piloto.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1"

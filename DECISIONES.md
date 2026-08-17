@@ -242,3 +242,162 @@ GitHub Pages sobre HTTPS (§2); `localhost` sigue sirviendo para desarrollo.
 **Complementario, no alternativo:** H3 añadirá la misma comprobación en CI. El
 runtime detecta un artefacto alterado aunque haya llegado a servirse; CI lo
 detecta antes de que llegue. Ninguna de las dos sustituye a la otra.
+
+### D-026 · La devolución es una entidad publicada aparte, no una republicación de la sesión
+Lo que el entrenador responde después de una ejecución se publica como artefacto
+propio, con su carpeta, su índice, su numeración y su hash, y reutiliza el mismo
+mecanismo de integridad que una sesión.
+**Por qué:** §6.2 exige cero publicaciones vigentes en cuanto la ejecución
+empieza, así que publicar la respuesta como una versión más de la sesión sería
+contradecir esa regla o volver a poner vigente algo que ya se ejecutó. Además son
+dos actos con fechas y autores distintos, y forzarlos en un archivo obligaría a
+elegir cuál fecha vale.
+**Fallo cerrado también aquí:** una devolución cuyo hash no cuadra no se muestra,
+y detiene la vista entera. Una devolución alterada pone en boca del alumno
+palabras que no dijo, que es un daño peor que no ver la respuesta hoy.
+**Ausencia normal:** que no exista devolución no es un error. Entre que el alumno
+entrena y el entrenador responde pasa tiempo, y la vista lo trata como el estado
+corriente que es.
+
+### D-027 · Las tres capas de la devolución se guardan y se muestran separadas
+`dijo` (verbatim del alumno), `entendido` (lectura del entrenador) y
+`para_la_proxima` (qué se hará o se mirará) son tres campos distintos. `entendido`
+lleva `es_interpretacion` con valor constante `true`: el esquema no admite
+marcarlo como hecho. En `para_la_proxima`, cada punto declara si es `decision` o
+algo a `observar`.
+**Por qué:** juntarlas produce el error que el principio 1.4 prohíbe — lo que el
+alumno cree que causó algo pasando a leerse como verdad factual. Separarlas
+permite que el alumno lea sus propias palabras sin filtrar y pueda decir «no era
+eso», que es lo más valioso que puede aportar ahí.
+**Consecuencia de presentación:** la cita va antes que la interpretación en la
+pantalla. El orden no es estético: leer primero la lectura del entrenador
+contamina el recuerdo de lo que uno dijo.
+
+### D-028 · La sensación por bloque se captura, no adapta nada
+Cuatro opciones (`muy_facil`, `adecuado`, `muy_exigente`, `molestia_dolor`), sin
+preselección, una por bloque declarado. Marcar una no cambia ninguna carga, ni
+hoy ni en la sesión siguiente.
+**Por qué:** derivar una progresión de un botón sería meter una regla
+metodológica en el código (principio 1.2) y decidir por el entrenador con menos
+contexto del que él tiene. La sensación es un dato que alguien lee.
+**No marcar no es «adecuado»:** un bloque sin respuesta se emite como
+`registrado: false` con su motivo, nunca como el valor del medio.
+
+### D-029 · Un desconocido no se rellena con un valor plausible, ni siquiera apoyado en uno real
+Cuando no hay referencia actual de una carga, el campo se publica como
+`prescrito: false` con su motivo y la sesión explica cómo encontrarla. La
+referencia nace de la ejecución.
+**Por qué:** rellenar un desconocido con algo plausible es peor que un error, es
+convertir una suposición en dato: nadie vuelve a cuestionar un número que ya está
+escrito. Y la forma difícil de ver es la segunda: partir de una carga real y
+sumarle un incremento que nadie decidió sigue siendo inventar. Que el punto de
+partida sea verdadero no convierte el salto en un dato.
+**Dónde se comprueba:** en ningún sitio automáticamente. Es un juicio, y por eso
+vive en las observaciones del entrenador con familia `dato_inventado`, no en el
+validador (principio 1.2).
+
+### D-030 · Una serie que no estaba programada se registra, y se distingue
+La vista ofrece «+ Agregar serie» bajo cada ejercicio. La fila añadida registra
+los mismos campos que las programadas y viaja marcada con
+`anadida_en_ejecucion: true`, con todos sus campos declarados no prescritos y
+con su motivo.
+**Por qué:** el alumno a veces se desvía, y sin esta opción lo que hizo de más
+sólo podía llegar contado en texto libre. Es exactamente como se perdió la cuarta
+sentadilla del piloto: la devolución tuvo que decir «la tengo por lo que me
+cuentas y no por el registro».
+**Lo que el botón NO significa:** no recomienda hacer más series ni sugiere que
+falten. Sólo deja constancia de lo que ya ocurrió.
+**Sin tope, a propósito:** limitar cuántas series se pueden añadir sería una
+regla de entrenamiento escrita en el código (principio 1.2), y el código no sabe
+cuánto es demasiado para esta persona en este día.
+**Se puede quitar sólo mientras esté vacía.** Con datos escritos, borrarla sería
+destruir un registro sin dejar constancia (principio 1.3).
+
+### D-031 · Una sesión ya ejecutada no se reescribe: la corrección viaja a la siguiente
+Cuando se detecta un problema de contenido en una sesión que ya se publicó y ya
+se entrenó, no se corrige ahí. Queda como observación pendiente sobre la versión
+publicada, con su motivo, y el criterio se aplica en la sesión siguiente.
+**Por qué:** §6.2 no permite una publicación nueva desde que empieza la
+ejecución. Reescribirla haría que el alumno abriera hoy algo distinto de lo que
+tuvo delante cuando entrenó, y toda la evidencia posterior pasaría a apuntar a un
+contenido que nadie ejecutó.
+**Lo que sí se puede corregir:** la devolución, publicando una nueva y
+conservando la anterior. Corregir crea; no reemplaza (D-007).
+**Coste asumido:** el alumno sigue viendo la redacción vieja de esa sesión. Es
+preferible a que su historial diga algo que no ocurrió.
+
+### D-032 · Una sesión sin molestia es una referencia, no una conclusión
+Que un síntoma no aparezca durante una sesión se registra como observación
+positiva y como algo que se sigue mirando. No se escribe como si estableciera
+cómo responde el cuerpo del alumno.
+**Por qué:** «la lumbar no apareció hoy» es un hecho; «la lumbar no es un tema de
+entrenar» es una inferencia a partir de una sola sesión, presentada como hecho
+—justo lo que el principio 1.4 prohíbe—. Y es la clase de frase que después nadie
+vuelve a cuestionar, porque ya está escrita en la ficha del alumno.
+**Cómo se dice:** qué se observó, que es buena señal, y que se sigue observando.
+
+### D-033 · Los datos de ejecución son la evidencia; no se confirman dos veces
+Se eliminó la casilla «serie realizada». Si una serie tiene valores escritos,
+ocurrió. Una fila en blanco se resuelve **al cerrar la sesión**, con dos
+opciones —«la hice, no anoté los valores» y «no la hice»— y sólo para las filas
+que de verdad quedaron en blanco.
+**Por qué:** la casilla sólo llevaba información en un caso, el de la fila
+vacía, y cobraba una confirmación por serie para resolverlo. En las quince
+series de una sesión eso son quince confirmaciones de algo ya demostrado.
+**Qué se conserva:** los cuatro estados siguen distinguiéndose —programado,
+realizado con datos, realizado sin anotar, no realizado— con el mismo campo
+`realizada` y el mismo motivo escrito. Cambia de dónde sale el dato, no qué se
+registra.
+**La contradicción que protegía desaparece por construcción:** «datos escritos
+en una serie sin marcar» no puede existir si los datos son la marca.
+**Lo que la sustituye como red:** un resumen de lo que se va a guardar, con los
+valores a la vista, y una sola confirmación. Un `700` donde iban `70` se ve ahí.
+**Un riesgo que la casilla nunca cubrió y sigue sin cubrirse:** registrar sin
+haber entrenado. Ninguna interfaz puede.
+
+### D-034 · El registro se abre compacto, y el archivo dice cómo se capturó
+Por defecto se registra una entrada por ejercicio, que aplica a todas sus
+series. «Registrar series por separado» abre las filas individuales prellenadas
+con esos valores. Se puede volver al compacto **sólo si las filas siguen siendo
+iguales y no hay series añadidas**; en cualquier otro caso se explica por qué no,
+en vez de elegir qué valor sobrevive.
+**Por qué:** registrar quince series idénticas costaba 54 interacciones y
+convertía la sesión en una planilla. La prueba manual se volvió tediosa cerca de
+la serie 11.
+**Lo que NO se simplifica es el dato:** el archivo sigue conteniendo una serie
+por serie ejecutada. La interfaz se compacta; el registro no.
+**Y se dice cómo se observó:** cada serie lleva `capturado` en `en_conjunto` o
+`por_serie`. Declarar «las tres iguales» y anotar cada una son dos evidencias
+distintas, y leer la primera como si fuera la segunda sería presentar un
+recuerdo del conjunto como observación individual (principio 1.4).
+
+### D-035 · El margen de series extra lo escribe el entrenador; el código lo muestra y lo conserva
+Un ejercicio puede declarar un margen en texto —«puedes añadir 1 serie si
+terminas muy fácil y mantienes RIR ≥ 2»—. La vista lo muestra junto a «agregar
+serie» y lo copia literal a cada serie añadida.
+**Lo que el código NO hace:** contar series, comprobar el RIR, avisar o
+bloquear. En cuanto verificara la condición tendríamos un motor metodológico
+dentro del código (principio 1.2), y el código no sabe qué es demasiado para
+esta persona hoy.
+**Por qué en texto y no en un número:** un número invita a que alguien lo
+evalúe. El margen se conserva para que una persona compare después lo autorizado
+con lo ocurrido.
+**Su ausencia no es ni prohibido ni ilimitado:** es que todavía no se declaró, y
+conviene que se note.
+
+### D-036 · Se pregunta una vez por lo que una sola respuesta resuelve
+Cuando quedan series sin registrar, la pantalla de cierre agrupa: si todas las
+series programadas de un ejercicio están en blanco, se pregunta una vez por el
+ejercicio; si sólo faltan algunas, se pregunta por esas. Cada grupo de más de una
+serie ofrece **«A cada serie le pasó algo distinto»**, que las separa en
+preguntas individuales.
+**Por qué:** repetir la misma pregunta tres veces no aporta información y cansa,
+que es justo lo que este bloque de trabajo vino a corregir. Pero el código no
+puede saber si a las tres series les pasó lo mismo, así que agrupa por defecto
+—que es lo más probable— y deja que la persona lo separe cuando no lo fue.
+**Agrupar es una decisión de pantalla, no del dato.** El archivo sigue guardando
+una respuesta por serie: la respuesta agrupada se escribe en todas las series que
+la pregunta cubría. Ni `realizada` ni el motivo cambian de forma.
+**Una serie añadida nunca entra en el grupo.** No estaba prevista, y meterla en
+la misma respuesta sería decidir por el alumno que le pasó lo mismo que a las
+programadas.

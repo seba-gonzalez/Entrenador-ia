@@ -1,0 +1,13 @@
+{
+  "sesion_id": "sesion-piloto-001",
+  "vigente": 1,
+  "publicaciones": [
+    {
+      "p": 1,
+      "archivo": "1.json",
+      "fecha": "2026-08-14T09:30:00-04:00",
+      "hash": "sha256:d54fbbf84a2aab95e40d1885b23864c1d74b64226870e4234a8d1bc097cbe12c",
+      "vigente": true
+    }
+  ]
+}

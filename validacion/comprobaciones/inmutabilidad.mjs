@@ -15,7 +15,12 @@ import { dirname } from 'node:path';
 const F = 'inmutabilidad';
 
 export function comprobarInmutabilidad(datos, informe, base) {
-  const carpetas = [...datos.carpetasDePublicacion.keys()];
+  // Las devoluciones tambien: una vez que el alumno la leyo, reescribirla es
+  // cambiar lo que se le dijo sin que quede constancia de que se cambio.
+  const carpetas = [
+    ...datos.carpetasDePublicacion.keys(),
+    ...datos.carpetasDeDevolucion.keys(),
+  ];
   if (carpetas.length === 0) return;
 
   let salida;

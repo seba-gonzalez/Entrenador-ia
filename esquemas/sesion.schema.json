@@ -310,8 +310,38 @@
           "then": {
             "required": ["items"],
             "properties": {
-              "items": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+              "items": { "type": "array", "minItems": 1 },
+              "respondible": {
+                "type": "boolean",
+                "description": "Si es true, el alumno puede contestar desde la pagina y emitir su feedback. Si no, la tarjeta solo muestra las preguntas."
+              }
             }
+          }
+        },
+        {
+          "title": "Una pregunta que se puede contestar necesita id; una que solo se lee, no",
+          "if": {
+            "required": ["tipo", "respondible"],
+            "properties": { "tipo": { "const": "preguntas" }, "respondible": { "const": true } }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "texto"],
+                  "properties": {
+                    "id": { "type": "string", "minLength": 1 },
+                    "texto": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "if": { "required": ["tipo"], "properties": { "tipo": { "const": "preguntas" } } },
+            "then": { "properties": { "items": { "items": { "type": "string", "minLength": 1 } } } }
           }
         },
         {
@@ -344,7 +374,8 @@
             "properties": {
               "intro": { "type": "string", "minLength": 1 },
               "lista": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
-              "destacado": { "$ref": "#/$defs/parrafo" }
+              "destacado": { "$ref": "#/$defs/parrafo" },
+              "detalles": { "$ref": "#/$defs/detalles" }
             }
           }
         }
@@ -370,6 +401,25 @@
           }
         },
         "titulo_bloques": { "type": "string", "minLength": 1 },
+        "bloques": {
+          "type": "array",
+          "description": "Opcional. Agrupa los ejercicios por proposito para poder preguntar como se sintio cada bloque. Sin bloques la sesion se dibuja como una lista, que es como estaba antes de existir esto.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "etiqueta"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "etiqueta": { "type": "string", "minLength": 1 },
+              "pregunta_sensacion": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Si esta, se le pregunta al alumno como se sintio este bloque. Si no esta, no se le pregunta."
+              }
+            }
+          }
+        },
         "ejercicios": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/ejercicio" } },
         "nota_cierre": { "type": "string", "minLength": 1 }
       }
@@ -383,6 +433,11 @@
         "id": { "type": "string", "minLength": 1 },
         "codigo": { "type": "string", "minLength": 1 },
         "nombre": { "type": "string", "minLength": 1 },
+        "bloque": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Opcional. Id de un bloque declarado en la tarjeta de sesion."
+        },
         "etiquetas": {
           "type": "array",
           "items": {
@@ -397,19 +452,29 @@
         },
         "programado": { "$ref": "#/$defs/programado" },
         "precaucion": { "$ref": "#/$defs/parrafo" },
-        "detalles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["resumen", "cuerpo"],
-            "properties": {
-              "resumen": { "type": "string", "minLength": 1 },
-              "cuerpo": { "type": "string", "minLength": 1 }
-            }
-          }
+        "margen": {
+          "type": "object",
+          "description": "Hasta donde puede desviarse el alumno por su cuenta, escrito por el entrenador. La vista lo muestra junto a 'agregar serie' y lo copia al registro; no cuenta series ni comprueba ninguna condicion. El margen es metodologia y la escribe una persona (principio 1.2). Su ausencia no significa ni prohibido ni ilimitado: significa que todavia no se declaro.",
+          "additionalProperties": false,
+          "required": ["texto"],
+          "properties": { "texto": { "type": "string", "minLength": 1 } }
         },
+        "detalles": { "$ref": "#/$defs/detalles" },
         "transicion": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "detalles": {
+      "type": "array",
+      "description": "Bloques plegados. Sirven para que una explicacion larga no se interponga entre el alumno y lo que tiene que hacer: lo accionable queda visible y el porque queda a un toque. No es esconderlo — quien quiera leerlo lo abre.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resumen", "cuerpo"],
+        "properties": {
+          "resumen": { "type": "string", "minLength": 1 },
+          "cuerpo": { "type": "string", "minLength": 1 }
+        }
       }
     },
 

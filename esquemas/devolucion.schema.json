@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/seba-gonzalez/entrenador-ia/esquemas/devolucion.schema.json",
+  "title": "devolucion",
+  "description": "Lo que el entrenador entendio del feedback, y que hara con ello. Artefacto publicado, con el mismo mecanismo de integridad que una sesion, pero NO es una publicacion de la sesion: mezclar 'esto vas a entrenar' con 'esto entendi de lo que entrenaste' rompe el ciclo de vida de 6.2 y confunde dos cosas distintas.\n\nLas tres capas viven en campos separados porque son de autores distintos y tienen estatus distinto: lo que dijo el alumno es literal, lo que entendio el entrenador es una interpretacion y se rotula como tal, y lo que se hara es una decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sesion_id", "schema_version", "publicacion", "contenido"],
+
+  "properties": {
+    "sesion_id": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "integer", "const": 1 },
+    "demo": { "type": "boolean" },
+    "aviso_demo": { "type": "string", "minLength": 1 },
+
+    "publicacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p", "fecha"],
+      "properties": {
+        "p": { "type": "integer", "minimum": 1 },
+        "fecha": { "$ref": "#/$defs/fechaISO" }
+      }
+    },
+
+    "contenido": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["titulo", "dijo", "entendido", "para_la_proxima"],
+      "properties": {
+        "titulo": { "type": "string", "minLength": 1 },
+
+        "dijo": {
+          "type": "object",
+          "description": "Capa A. Las palabras del alumno, sin tocar. Si esto se edita, se pierde lo unico que no se puede reconstruir.",
+          "additionalProperties": false,
+          "required": ["fuente"],
+          "properties": {
+            "verbatim": { "type": "string", "minLength": 1 },
+            "sensaciones": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["etiqueta", "percepcion"],
+                "properties": {
+                  "etiqueta": { "type": "string", "minLength": 1 },
+                  "percepcion": { "enum": ["muy_facil", "adecuado", "muy_exigente", "molestia_dolor"] }
+                }
+              }
+            },
+            "fuente": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Ruta del archivo de feedback del que sale esta cita."
+            }
+          }
+        },
+
+        "entendido": {
+          "type": "object",
+          "description": "Capa B. La lectura del entrenador. 'es_interpretacion' es constante true a proposito: no existe forma valida de marcar esto como un hecho (principio 1.4). Puede escribirse como parrafo, como puntos, o ambos; lo que no puede es no decir nada, y por eso se exige al menos uno de los dos.",
+          "additionalProperties": false,
+          "required": ["autor", "es_interpretacion", "fecha"],
+          "anyOf": [{ "required": ["texto"] }, { "required": ["puntos"] }],
+          "properties": {
+            "texto": { "type": "string", "minLength": 1 },
+            "puntos": {
+              "type": "array",
+              "minItems": 1,
+              "description": "La misma lectura, en piezas que se recorren con la vista. Un parrafo largo obliga a leerlo entero para descubrir si hay algo que corregir, y lo que mas interesa aqui es que el alumno pueda decir 'eso no fue asi'.",
+              "items": { "$ref": "#/$defs/parrafo" }
+            },
+            "autor": { "type": "string", "minLength": 1 },
+            "es_interpretacion": { "const": true },
+            "fecha": { "$ref": "#/$defs/fechaISO" }
+          }
+        },
+
+        "para_la_proxima": {
+          "type": "array",
+          "description": "Capa C. Lo que se hara o se mirara. Una decision ya tomada y un punto a observar no son lo mismo y no se cuentan juntos.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["punto", "tipo"],
+            "properties": {
+              "punto": { "type": "string", "minLength": 1 },
+              "tipo": { "enum": ["decision", "observar"] }
+            }
+          }
+        },
+
+        "referencias": {
+          "type": "array",
+          "description": "Memoria util. No solo problemas: tambien lo que funciono. Cada referencia exige de que ejecucion sale — una referencia sin respaldo es una impresion, y una impresion no es una referencia.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["texto", "derivado_de"],
+            "properties": {
+              "texto": { "type": "string", "minLength": 1 },
+              "derivado_de": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["ejecucion", "ejercicio_id"],
+                "properties": {
+                  "ejecucion": { "type": "string", "minLength": 1 },
+                  "ejercicio_id": { "type": "string", "minLength": 1 },
+                  "series": { "type": "array", "items": { "type": "integer", "minimum": 1 } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "parrafo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["texto"],
+      "properties": {
+        "destacado": { "type": "string", "minLength": 1 },
+        "texto": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "fechaISO": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

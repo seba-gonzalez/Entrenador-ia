@@ -10,8 +10,13 @@
  * es presentacion, y es exactamente lo que H1 quiere separar del dato.
  */
 
-import { obtenerPublicacionVigente, obtenerEsquemaEjecucion } from '../repositorio.js';
+import {
+  obtenerPublicacionVigente,
+  obtenerDevolucionVigente,
+  obtenerEsquemaEjecucion,
+} from '../repositorio.js';
 import { montarCierre } from './registro-ejecucion.js';
+import { montarFeedback } from './registro-feedback.js';
 
 const CASO_POR_DEFECTO = 'demo-001';
 
@@ -52,7 +57,222 @@ const CLASE_DIA = {
 
 /* ---------- ejercicio ---------- */
 
-function pintarEjercicio(ejercicio, registros) {
+const ETIQUETAS_SERIE = {
+  anadir: '+ Agregar serie',
+  separar: 'Registrar series por separado',
+  volver: 'Volver a registro compacto',
+  quitar: 'Quitar',
+  marca: 'añadida',
+  conjunta: (n) => (n === 1 ? 'la serie' : `así fueron las ${n} series`),
+  noSePuedeVolver:
+    'Las series ya no son iguales entre si. Volver al registro compacto obligaria a elegir ' +
+    'cual de los valores vale por todas, y eso seria borrar lo que registraste. Si te ' +
+    'equivocaste, corrige la fila que sobra.',
+  motivoNoPrescrito:
+    'Esta serie no estaba programada: la anadio el alumno durante la sesion, asi que no hay ' +
+    'nada prescrito contra que compararla.',
+};
+
+/**
+ * Dibuja una fila de registro.
+ *
+ * Ya no hay casilla de "realizada". Si hay datos escritos, la serie ocurrio:
+ * los datos SON la evidencia, y pedir ademas una marca era confirmar dos veces
+ * lo mismo. El unico caso que los datos no resuelven —una fila en blanco— se
+ * pregunta al cerrar, y solo cuando existe.
+ *
+ * La misma funcion sirve para la fila compacta, las filas por serie y las
+ * anadidas, porque las tres registran el mismo tipo de dato. Lo que cambia es
+ * a cuantas series representa cada una, y eso viaja en el registro emitido.
+ */
+function pintarFila(contrato, numero, opciones = {}) {
+  const { anadida = false, compacta = false, series = 1 } = opciones;
+  const clases = ['serie-row'];
+  if (anadida) clases.push('anadida');
+  if (compacta) clases.push('compacta');
+  const fila = el('div', clases.join(' '));
+
+  const cabecera = el('div', 'serie-head');
+  cabecera.appendChild(el('span', null, compacta ? ETIQUETAS_SERIE.conjunta(series) : `Serie ${numero}`));
+  if (anadida) cabecera.appendChild(el('span', 'serie-marca', ETIQUETAS_SERIE.marca));
+  fila.appendChild(cabecera);
+
+  const campos = el('div', contrato.length === 2 ? 'serie-fields f2' : 'serie-fields');
+  const entradas = {};
+  contrato.forEach((campo) => {
+    const celda = el('div');
+    celda.appendChild(el('span', 'sf-l', campo.etiqueta));
+    const entrada = document.createElement('input');
+    entrada.className = 'sf-i';
+    entrada.type = 'text';
+    entrada.placeholder = '—';
+    // Nada de correccion automatica: aqui se escriben cosas como "2×16 kg" o
+    // "peso corporal", y el teclado del movil las "arregla" hasta dejarlas
+    // irreconocibles.
+    entrada.autocapitalize = 'off';
+    entrada.autocomplete = 'off';
+    entrada.spellcheck = false;
+    celda.appendChild(entrada);
+    campos.appendChild(celda);
+    entradas[campo.campo] = entrada;
+  });
+  fila.appendChild(campos);
+
+  return { nodo: fila, fila: { serie: numero, entradas, anadida, nodo: fila } };
+}
+
+const valoresDe = (fila) =>
+  Object.entries(fila.entradas).map(([k, e]) => `${k}=${e.value.trim()}`).join('|');
+
+const filaVacia = (fila) => Object.values(fila.entradas).every((e) => e.value.trim() === '');
+
+/**
+ * El registro de un ejercicio, que empieza compacto y puede abrirse por serie.
+ *
+ * Compacto por defecto porque es lo que ocurre casi siempre: las series salen
+ * iguales. Registrar 15 series identicas costaba 54 interacciones, y hacia que
+ * la sesion se pareciera a rellenar una planilla.
+ */
+function montarRegistroDeEjercicio(art, ejercicio) {
+  const porSerie = ejercicio.programado.por_serie;
+  const series = ejercicio.programado.series;
+
+  // Lo que estaba prescrito para una serie anadida: nada, y con su motivo. No
+  // se copian los valores de las programadas, porque nadie los prescribio para
+  // esta.
+  const sinPrescribir = porSerie.map((campo) => ({
+    campo: campo.campo,
+    etiqueta: campo.etiqueta,
+    prescrito: false,
+    motivo_no_prescrito: ETIQUETAS_SERIE.motivoNoPrescrito,
+  }));
+
+  const conjunto = el('div', 'serieset');
+  art.appendChild(conjunto);
+
+  const estado = {
+    ejercicio_id: ejercicio.id,
+    ejercicio_nombre: ejercicio.nombre,
+    por_serie: porSerie,
+    por_serie_anadida: sinPrescribir,
+    series,
+    margen: ejercicio.margen ? ejercicio.margen.texto : undefined,
+    modo: 'compacto',
+    compacta: null,
+    filas: [],
+  };
+
+  const compacta = pintarFila(porSerie, null, { compacta: true, series });
+  conjunto.appendChild(compacta.nodo);
+  estado.compacta = compacta.fila;
+
+  const controles = el('div', 'fila-anadir');
+  const separar = el('button', 'btn-anadir', ETIQUETAS_SERIE.separar);
+  const volver = el('button', 'btn-anadir', ETIQUETAS_SERIE.volver);
+  const anadir = el('button', 'btn-anadir', ETIQUETAS_SERIE.anadir);
+  [separar, volver, anadir].forEach((b) => { b.type = 'button'; controles.appendChild(b); });
+  volver.hidden = true;
+  art.appendChild(controles);
+
+  const aviso = el('p', 'emitir-estado');
+  art.appendChild(aviso);
+
+  function refrescarControles() {
+    const detalle = estado.modo === 'detalle';
+    separar.hidden = detalle;
+    volver.hidden = !detalle;
+  }
+
+  /** Abre el detalle prellenando cada fila con lo que ya se escribio arriba. */
+  function expandir() {
+    if (estado.modo === 'detalle') return;
+    const valores = {};
+    Object.entries(estado.compacta.entradas).forEach(([k, e]) => { valores[k] = e.value; });
+
+    estado.compacta.nodo.remove();
+    estado.compacta = null;
+    estado.filas = [];
+
+    for (let n = 1; n <= series; n += 1) {
+      const { nodo, fila } = pintarFila(porSerie, n);
+      // Prellenado: nadie deberia escribir tres veces lo mismo para corregir
+      // una sola serie.
+      Object.entries(valores).forEach(([k, v]) => { fila.entradas[k].value = v; });
+      conjunto.appendChild(nodo);
+      estado.filas.push(fila);
+    }
+    estado.modo = 'detalle';
+    refrescarControles();
+  }
+
+  separar.addEventListener('click', () => { aviso.textContent = ''; expandir(); });
+
+  volver.addEventListener('click', () => {
+    aviso.classList.remove('error');
+    // Solo se puede volver si no hay nada que perder: mismas filas, sin
+    // anadidas. En cualquier otro caso, compactar borraria informacion (1.3).
+    const distintas = new Set(estado.filas.map(valoresDe)).size > 1;
+    if (distintas || estado.filas.some((f) => f.anadida)) {
+      aviso.textContent = ETIQUETAS_SERIE.noSePuedeVolver;
+      aviso.classList.add('error');
+      return;
+    }
+    const valores = {};
+    Object.entries(estado.filas[0].entradas).forEach(([k, e]) => { valores[k] = e.value; });
+    estado.filas.forEach((f) => f.nodo.remove());
+    estado.filas = [];
+
+    const nueva = pintarFila(porSerie, null, { compacta: true, series });
+    Object.entries(valores).forEach(([k, v]) => { nueva.fila.entradas[k].value = v; });
+    conjunto.appendChild(nueva.nodo);
+    estado.compacta = nueva.fila;
+    estado.modo = 'compacto';
+    aviso.textContent = '';
+    refrescarControles();
+  });
+
+  /**
+   * "+ Agregar serie" no recomienda hacer mas series ni sugiere que falten.
+   * Existe porque el alumno a veces se desvia, y sin el, lo que hizo de mas
+   * solo podia llegar contado en texto libre — que es como se perdio la cuarta
+   * sentadilla del piloto.
+   *
+   * El margen lo escribe el entrenador en la sesion; el codigo lo muestra y lo
+   * conserva, no lo evalua ni lo bloquea. Contar series y comprobar el RIR
+   * seria meter una regla de entrenamiento en el codigo (principio 1.2).
+   */
+  if (estado.margen) controles.before(el('div', 'note-inline', estado.margen));
+
+  anadir.addEventListener('click', () => {
+    aviso.textContent = '';
+    // Una serie anadida es, por definicion, distinta de las programadas: no
+    // tiene sentido decir "asi fueron las 3" y colgarle una cuarta aparte.
+    expandir();
+
+    const numero = estado.filas.length + 1;
+    const { nodo, fila } = pintarFila(sinPrescribir, numero, { anadida: true });
+
+    // Quitar solo mientras la fila siga vacia. Con datos escritos, borrarla
+    // seria destruir un registro sin dejar constancia (1.3).
+    const quitar = el('button', 'btn-quitar', ETIQUETAS_SERIE.quitar);
+    quitar.type = 'button';
+    quitar.addEventListener('click', () => {
+      if (!filaVacia(fila)) return;
+      nodo.remove();
+      estado.filas.splice(estado.filas.indexOf(fila), 1);
+    });
+    nodo.querySelector('.serie-head').appendChild(quitar);
+
+    conjunto.appendChild(nodo);
+    estado.filas.push(fila);
+    nodo.querySelector('.sf-i').focus();
+  });
+
+  refrescarControles();
+  return estado;
+}
+
+function pintarEjercicio(ejercicio, registro) {
   const art = el('article', 'ex');
 
   const top = el('div', 'ex-top');
@@ -77,62 +297,97 @@ function pintarEjercicio(ejercicio, registros) {
     art.appendChild(parrafo('p', 'caution-text', ejercicio.precaucion));
   }
 
-  // Registro por serie. Las filas se generan desde programado.por_serie: los
-  // campos que se registran son los que el entrenador declaro, no una lista
-  // fija del codigo.
-  const porSerie = ejercicio.programado.por_serie;
-  const conjunto = el('div', 'serieset');
-  const filas = [];
+  // Los campos que se registran son los que el entrenador declaro en
+  // programado.por_serie, no una lista fija del codigo.
+  registro.ejercicios.push(montarRegistroDeEjercicio(art, ejercicio));
 
-  for (let n = 1; n <= ejercicio.programado.series; n += 1) {
-    const fila = el('div', 'serie-row');
-
-    const cabecera = el('label', 'serie-head');
-    const marca = document.createElement('input');
-    marca.type = 'checkbox';
-    cabecera.appendChild(marca);
-    cabecera.appendChild(el('span', null, `Serie ${n}`));
-    fila.appendChild(cabecera);
-
-    const campos = el('div', porSerie.length === 2 ? 'serie-fields f2' : 'serie-fields');
-    const entradas = {};
-    porSerie.forEach((campo) => {
-      const celda = el('div');
-      celda.appendChild(el('span', 'sf-l', campo.etiqueta));
-      const entrada = document.createElement('input');
-      entrada.className = 'sf-i';
-      entrada.type = 'text';
-      entrada.placeholder = '—';
-      celda.appendChild(entrada);
-      campos.appendChild(celda);
-      entradas[campo.campo] = entrada;
-    });
-    fila.appendChild(campos);
-
-    conjunto.appendChild(fila);
-    filas.push({ serie: n, marca, entradas });
-  }
-  art.appendChild(conjunto);
-
-  registros.push({
-    ejercicio_id: ejercicio.id,
-    ejercicio_nombre: ejercicio.nombre,
-    por_serie: porSerie,
-    filas,
-  });
-
-  if (ejercicio.detalles && ejercicio.detalles.length) {
-    const toggles = el('div', 'ex-toggles');
-    ejercicio.detalles.forEach((detalle) => {
-      const det = el('details', 'micro');
-      det.appendChild(el('summary', null, detalle.resumen));
-      det.appendChild(el('div', 'micro-body', detalle.cuerpo));
-      toggles.appendChild(det);
-    });
-    art.appendChild(toggles);
-  }
+  const plegables = pintarDetalles(ejercicio.detalles);
+  if (plegables) art.appendChild(plegables);
 
   return art;
+}
+
+/**
+ * Bloques plegados: lo accionable queda a la vista y el porque a un toque.
+ * Lo usan los ejercicios y las tarjetas de programa, con el mismo aspecto,
+ * porque para el alumno es el mismo gesto.
+ */
+function pintarDetalles(detalles) {
+  if (!detalles || !detalles.length) return null;
+  const toggles = el('div', 'ex-toggles');
+  detalles.forEach((detalle) => {
+    const det = el('details', 'micro');
+    det.appendChild(el('summary', null, detalle.resumen));
+    det.appendChild(el('div', 'micro-body', detalle.cuerpo));
+    toggles.appendChild(det);
+  });
+  return toggles;
+}
+
+function pintarEnCuerpo(ejercicio, cuerpo, registro) {
+  cuerpo.appendChild(pintarEjercicio(ejercicio, registro));
+  if (ejercicio.transicion) {
+    cuerpo.appendChild(el('p', 'transition', ejercicio.transicion));
+  }
+}
+
+/**
+ * Cuatro opciones, ninguna preseleccionada, y una vez marcada se puede cambiar.
+ *
+ * Lo que NO hace: nada. Marcar "muy exigente" no baja la carga de mañana. La
+ * sensacion se registra y alguien la lee. Convertirla en una adaptacion
+ * automatica seria meter una regla de entrenamiento en el codigo (principio 1.2)
+ * y ademas decidir por el entrenador con menos contexto del que el tiene.
+ */
+const PERCEPCIONES = [
+  { valor: 'muy_facil', etiqueta: 'Muy fácil' },
+  { valor: 'adecuado', etiqueta: 'Adecuado' },
+  { valor: 'muy_exigente', etiqueta: 'Muy exigente' },
+  { valor: 'molestia_dolor', etiqueta: 'Molestia o dolor' },
+];
+
+function pintarSensacion(bloque, sensaciones) {
+  const caja = el('div', 'sensacion');
+  caja.appendChild(el('span', 'sf-l', bloque.pregunta_sensacion));
+
+  const fila = el('div', 'sensacion-opciones');
+  const estado = { bloque_id: bloque.id, etiqueta: bloque.etiqueta, elegida: null };
+
+  PERCEPCIONES.forEach((opcion) => {
+    const boton = el('button', 'sens-btn', opcion.etiqueta);
+    boton.type = 'button';
+    boton.dataset.valor = opcion.valor;
+    boton.addEventListener('click', () => {
+      fila.querySelectorAll('.sens-btn').forEach((b) => b.classList.remove('elegida'));
+      boton.classList.add('elegida');
+      estado.elegida = opcion.valor;
+    });
+    fila.appendChild(boton);
+  });
+
+  caja.appendChild(fila);
+  sensaciones.push(estado);
+  return caja;
+}
+
+function pintarPorBloques(tarjeta, cuerpo, registro) {
+  const sinBloque = tarjeta.ejercicios.filter((e) => !e.bloque);
+  if (sinBloque.length) {
+    if (tarjeta.titulo_bloques) cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
+    sinBloque.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+  }
+
+  tarjeta.bloques.forEach((bloque) => {
+    const suyos = tarjeta.ejercicios.filter((e) => e.bloque === bloque.id);
+    if (!suyos.length) {
+      throw new Error(`La publicacion declara el bloque "${bloque.id}" pero ningun ejercicio le pertenece.`);
+    }
+    cuerpo.appendChild(el('h3', 'block-title', bloque.etiqueta));
+    suyos.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+    if (bloque.pregunta_sensacion) {
+      cuerpo.appendChild(pintarSensacion(bloque, registro.sensaciones));
+    }
+  });
 }
 
 /* ---------- tarjetas ---------- */
@@ -179,6 +434,8 @@ const TARJETAS = {
     if (tarjeta.destacado) {
       card.appendChild(parrafo('div', 'highlight-rest', tarjeta.destacado));
     }
+    const plegables = pintarDetalles(tarjeta.detalles);
+    if (plegables) card.appendChild(plegables);
     return card;
   },
 
@@ -211,15 +468,21 @@ const TARJETAS = {
     return card;
   },
 
-  preguntas(tarjeta) {
+  preguntas(tarjeta, registro) {
     const card = tarjetaBase(tarjeta, 'feedback');
+
+    if (tarjeta.respondible) {
+      registro.preguntas.push({ tarjeta, card });
+      return card;
+    }
+
     const lista = el('ul');
     tarjeta.items.forEach((item) => lista.appendChild(el('li', null, item)));
     card.appendChild(lista);
     return card;
   },
 
-  sesion(tarjeta, registros) {
+  sesion(tarjeta, registro) {
     const card = el('div', 'card');
     card.id = tarjeta.id;
 
@@ -245,16 +508,17 @@ const TARJETAS = {
       }
     }
 
-    if (tarjeta.titulo_bloques) {
-      cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
-    }
-
-    tarjeta.ejercicios.forEach((ejercicio) => {
-      cuerpo.appendChild(pintarEjercicio(ejercicio, registros));
-      if (ejercicio.transicion) {
-        cuerpo.appendChild(el('p', 'transition', ejercicio.transicion));
+    // Con bloques declarados, cada uno lleva su titulo y su pregunta de
+    // sensacion al final. Sin bloques, la sesion se dibuja como una lista —
+    // que es exactamente como se dibujaba antes de que los bloques existieran.
+    if (tarjeta.bloques && tarjeta.bloques.length) {
+      pintarPorBloques(tarjeta, cuerpo, registro);
+    } else {
+      if (tarjeta.titulo_bloques) {
+        cuerpo.appendChild(el('h3', 'block-title', tarjeta.titulo_bloques));
       }
-    });
+      tarjeta.ejercicios.forEach((ejercicio) => pintarEnCuerpo(ejercicio, cuerpo, registro));
+    }
 
     if (tarjeta.nota_cierre) {
       cuerpo.appendChild(el('div', 'note-inline', tarjeta.nota_cierre));
@@ -265,6 +529,120 @@ const TARJETAS = {
     return card;
   },
 };
+
+/* ---------- devolucion ---------- */
+
+const PERCEPCION_LEGIBLE = {
+  muy_facil: 'muy fácil',
+  adecuado: 'adecuado',
+  muy_exigente: 'muy exigente',
+  molestia_dolor: 'molestia o dolor',
+};
+
+/**
+ * Las tres capas, en tarjetas separadas y en este orden: primero lo que dijo el
+ * alumno, despues lo que se entendio, despues lo que se hara.
+ *
+ * El orden no es estetico. Poner la interpretacion antes que la cita haria que
+ * el alumno leyera sus propias palabras ya filtradas por las del entrenador, y
+ * entonces no podria decir "no era eso" — que es justo lo mas valioso que puede
+ * decir aqui.
+ */
+const HITOS = {
+  historial: 'Tu historial · respuesta del entrenador',
+  ahora: 'Cuentame como fue hoy',
+};
+
+/**
+ * Un rotulo con una linea, para separar dos cosas que viven en la misma
+ * pestana. Sin el, la respuesta que el alumno ya recibio y el formulario que
+ * tiene que rellenar se leen como una sola pantalla larga y no queda claro que
+ * es lo que hay que contestar.
+ */
+function pintarHito(texto, fecha) {
+  const hito = el('div', 'hito');
+  hito.appendChild(el('span', 'hito-texto', texto));
+  hito.appendChild(el('span', 'hito-linea'));
+  if (fecha) hito.appendChild(el('span', 'hito-fecha', fecha));
+  return hito;
+}
+
+/** Solo la fecha, sin hora: al alumno le importa el dia, no el minuto. */
+function soloFecha(iso) {
+  return typeof iso === 'string' ? iso.slice(0, 10) : undefined;
+}
+
+function pintarDevolucion(contenido) {
+  const panel = document.querySelector('.card.feedback')?.closest('main');
+  if (!panel) {
+    throw new Error('Hay una devolucion publicada pero la sesion no trae panel de feedback donde mostrarla.');
+  }
+
+  const bloque = document.createDocumentFragment();
+  bloque.appendChild(pintarHito(HITOS.historial, soloFecha(contenido.entendido.fecha)));
+
+  const dijo = el('div', 'card');
+  dijo.appendChild(el('h2', null, 'Lo que contaste'));
+  if (contenido.dijo.verbatim) {
+    dijo.appendChild(el('p', 'cita', contenido.dijo.verbatim));
+  }
+  (contenido.dijo.sensaciones || []).forEach((s) => {
+    dijo.appendChild(parrafo('p', 'objective', {
+      destacado: `${s.etiqueta}:`,
+      texto: ` ${PERCEPCION_LEGIBLE[s.percepcion] || s.percepcion}`,
+    }));
+  });
+  bloque.appendChild(dijo);
+
+  const entendido = el('div', 'card');
+  entendido.appendChild(el('h2', null, 'Lo que entendí'));
+  // Rotulado como lectura, no como hecho. Es una interpretacion y el alumno
+  // tiene que poder discutirla (principio 1.4).
+  entendido.appendChild(el('div', 'note-inline',
+    'Esto es mi lectura de lo que me contaste, no un hecho. Si me equivoqué, dímelo.'));
+  if (contenido.entendido.texto) {
+    entendido.appendChild(el('p', null, contenido.entendido.texto));
+  }
+  // En puntos y no en un parrafo largo: para poder decir "eso no fue asi" hay
+  // que poder encontrar primero la frase con la que no se esta de acuerdo.
+  if (contenido.entendido.puntos && contenido.entendido.puntos.length) {
+    const lista = el('ul', 'puntos');
+    contenido.entendido.puntos.forEach((p) => lista.appendChild(parrafo('li', null, p)));
+    entendido.appendChild(lista);
+  }
+  bloque.appendChild(entendido);
+
+  const proxima = el('div', 'card');
+  proxima.appendChild(el('h2', null, 'Para la próxima'));
+  const lista = el('ul', 'context-list');
+  contenido.para_la_proxima.forEach((p) => {
+    lista.appendChild(parrafo('li', null, {
+      destacado: p.tipo === 'decision' ? 'Decidido: ' : 'A mirar: ',
+      texto: p.punto,
+    }));
+  });
+  proxima.appendChild(lista);
+  bloque.appendChild(proxima);
+
+  if (contenido.referencias && contenido.referencias.length) {
+    const memoria = el('div', 'card');
+    memoria.appendChild(el('h2', null, 'Lo que vamos sabiendo de ti'));
+    const refs = el('ul', 'context-list');
+    contenido.referencias.forEach((r) => refs.appendChild(el('li', null, r.texto)));
+    memoria.appendChild(refs);
+    bloque.appendChild(memoria);
+  }
+
+  // Antes de las preguntas: lo primero que ve al abrir la pestaña es la
+  // respuesta a lo que escribio, no un formulario en blanco otra vez.
+  panel.prepend(bloque);
+
+  // Y el corte entre lo que ya pasó y lo que toca ahora. Solo se dibuja cuando
+  // hay devolución: sin ella no hay dos cosas que separar, y un rótulo sobre la
+  // única tarjeta de la pantalla sería ruido.
+  const formulario = panel.querySelector('.card.feedback');
+  if (formulario) formulario.before(pintarHito(HITOS.ahora));
+}
 
 /* ---------- montaje ---------- */
 
@@ -292,7 +670,7 @@ function pintarDias(dias) {
   return rail;
 }
 
-function pintarPaneles(contenido, registros) {
+function pintarPaneles(contenido, registro) {
   const barra = document.getElementById('tabbar');
   const zona = document.getElementById('paneles');
   let panelConSesiones = null;
@@ -324,7 +702,7 @@ function pintarPaneles(contenido, registros) {
       if (!pintar) {
         throw new Error(`La publicacion usa un tipo de tarjeta que la vista no sabe dibujar: "${tarjeta.tipo}".`);
       }
-      cuerpo.appendChild(pintar(tarjeta, registros));
+      cuerpo.appendChild(pintar(tarjeta, registro));
       if (tarjeta.tipo === 'sesion' && !panelConSesiones) panelConSesiones = cuerpo;
     });
 
@@ -357,18 +735,26 @@ async function montar() {
 
     document.title = contenido.titulo_documento;
 
-    const registros = [];
+    const registro = { ejercicios: [], sensaciones: [], preguntas: [] };
     pintarCabecera(contenido.cabecera);
-    const panelConSesiones = pintarPaneles(contenido, registros);
+    const panelConSesiones = pintarPaneles(contenido, registro);
 
     const pie = document.getElementById('pie');
     pie.appendChild(el('p', null, contenido.pie));
     pie.hidden = false;
 
-    if (registros.length && panelConSesiones) {
+    if (registro.ejercicios.length && panelConSesiones) {
       const esquema = await obtenerEsquemaEjecucion();
-      panelConSesiones.appendChild(montarCierre({ publicacion, registros, esquema }));
+      panelConSesiones.appendChild(montarCierre({ publicacion, registro, esquema }));
     }
+
+    registro.preguntas.forEach(({ tarjeta, card }) =>
+      montarFeedback({ publicacion, tarjeta, card })
+    );
+
+    // La devolucion llega despues, y muchas veces no ha llegado todavia.
+    const devolucion = await obtenerDevolucionVigente(caso, publicacion.sesion_id);
+    if (devolucion) pintarDevolucion(devolucion.contenido);
 
     aviso.remove();
   } catch (error) {

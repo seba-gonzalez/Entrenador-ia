@@ -72,10 +72,12 @@ const conteos = await page.evaluate(() => ({
   aviso: !!document.getElementById('aviso'),
 }));
 ok('render: 9 ejercicios', conteos.ejercicios === 9, `=${conteos.ejercicios}`);
-ok('render: 25 filas de serie', conteos.series === 25, `=${conteos.series}`);
+// Nueve filas para veinticinco series: el registro se abre compacto, una fila
+// por ejercicio. Las 25 series siguen existiendo en el JSON emitido.
+ok('render: 9 filas de registro para 9 ejercicios', conteos.series === 9, `=${conteos.series}`);
 ok('render: 11 chips de dia', conteos.chips === 11, `=${conteos.chips}`);
 ok('render: 3 pestanas', conteos.tabs === 3, `=${conteos.tabs}`);
-ok('render: grillas f2 (2 campos)', conteos.f2 === 5, `=${conteos.f2}`);
+ok('render: grillas f2 (2 campos)', conteos.f2 === 2, `=${conteos.f2}`);
 ok('render: sin errores de carga', conteos.aviso === false);
 ok('render: title desde el dato', conteos.titulo.includes('Alumno demo'), conteos.titulo);
 
@@ -122,29 +124,101 @@ ok('P1: cambiar el JSON cambia la vista (valor)', traeCambio.reps);
 ok('P1: la sesion se renderiza entera tras republicar', traeCambio.ejercicios === 9, `=${traeCambio.ejercicios}`);
 ok('P1: el HTML/CSS/JS no se tocaron para lograrlo', sha(PUB) === shaAntes);
 
-/* ---------- ejecucion parcial ---------- */
+/* ---------- ejecucion: compacto por defecto, detalle cuando hace falta ----------
+   Ya no hay casilla por serie. Si hay datos, la serie ocurrio: los datos son la
+   evidencia. La unica ambiguedad real —una fila en blanco— se resuelve al
+   cerrar, y solo por las filas que quedaron en blanco.                        */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
 
-const filas = page.locator('.serie-row');
-// s1-a serie 1: completa
-await filas.nth(0).locator('input[type=checkbox]').check();
-await filas.nth(0).locator('.sf-i').nth(0).fill('120');
-await filas.nth(0).locator('.sf-i').nth(1).fill('8');
-await filas.nth(0).locator('.sf-i').nth(2).fill('2');
-// s1-a serie 2: menos reps que lo programado, RIR en blanco
-await filas.nth(1).locator('input[type=checkbox]').check();
-await filas.nth(1).locator('.sf-i').nth(0).fill('120');
-await filas.nth(1).locator('.sf-i').nth(1).fill('6');
-// s1-a serie 3: intacta
-// s1-b serie 1 (fila 3): marcada, sin ningun valor
-await filas.nth(3).locator('input[type=checkbox]').check();
+const arranque = await page.evaluate(() => ({
+  casillas: document.querySelectorAll('.serie-row input[type=checkbox]').length,
+  filas: document.querySelectorAll('.serie-row').length,
+  compactas: document.querySelectorAll('.serie-row.compacta').length,
+  campos: document.querySelectorAll('.serie-row .sf-i').length,
+}));
+ok('R: no queda ninguna casilla por serie', arranque.casillas === 0, `=${arranque.casillas}`);
+ok('R: se abre compacto, una fila por ejercicio', arranque.filas === 9 && arranque.compactas === 9,
+  `filas=${arranque.filas} compactas=${arranque.compactas}`);
+ok('R: 25 series se registran con 25 campos, no 65', arranque.campos === 25, `=${arranque.campos}`);
+
+const ejercicios = page.locator('article.ex');
+
+// s1-a se abre por serie, que es el caso en que las series NO fueron iguales.
+await ejercicios.nth(0).getByRole('button', { name: 'Registrar series por separado' }).click();
+const prellenado = await ejercicios.nth(0).evaluate((art) => ({
+  filas: art.querySelectorAll('.serie-row').length,
+  compactas: art.querySelectorAll('.serie-row.compacta').length,
+}));
+ok('D: abrir el detalle crea una fila por serie', prellenado.filas === 3 && prellenado.compactas === 0,
+  `filas=${prellenado.filas}`);
+
+const filasA = ejercicios.nth(0).locator('.serie-row');
+for (const n of [0, 1]) {
+  await filasA.nth(n).locator('.sf-i').nth(0).fill('120');
+}
+await filasA.nth(0).locator('.sf-i').nth(1).fill('8');
+await filasA.nth(0).locator('.sf-i').nth(2).fill('2');
+await filasA.nth(1).locator('.sf-i').nth(1).fill('6');   // menos reps, RIR en blanco
+// la serie 3 queda entera en blanco, a proposito
+
+// s1-b queda entero en blanco. El resto se registra compacto.
+const compactos = [null, null, ['30', '10', '2'], ['45', '10', '2'], ['media', '15'],
+  ['12', '10', '2'], ['16', '10', '2'], ['40', '10', '2'], ['12', '2']];
+for (let i = 2; i < compactos.length; i += 1) {
+  const v = compactos[i];
+  for (let j = 0; j < v.length; j += 1) await ejercicios.nth(i).locator('.sf-i').nth(j).fill(v[j]);
+}
 
 await page.selectOption('#cierre .sf-s', 'parcial');
 await page.fill('#cierre .sf-t', 'El tobillo avisó en la segunda serie de prensa, corté ahí.');
 
+// --- primer intento: hay filas en blanco sin resolver ---
 const shaPrevio = sha(PUB);
-await page.click('#cierre .btn-emitir');
-await page.waitForFunction(() => document.querySelector('#cierre .emitir-estado').textContent.length > 0);
+await page.evaluate(() => navigator.clipboard.writeText('PORTAPAPELES-INTACTO'));
+await page.locator('#cierre .btn-emitir').first().click();
+
+const enBlanco = await page.evaluate(() => ({
+  mensaje: document.querySelector('#cierre .emitir-estado').textContent,
+  preguntas: [...document.querySelectorAll('.zona-pendientes .sf-l')].map((n) => n.textContent),
+  resumenVisible: !document.querySelector('.zona-resumen').hidden,
+  papel: null,
+}));
+const papelTrasPendientes = await page.evaluate(() => navigator.clipboard.readText());
+ok('P: no se emite nada mientras haya filas en blanco sin resolver',
+  papelTrasPendientes === 'PORTAPAPELES-INTACTO');
+ok('P: pregunta solo por lo que quedo en blanco', enBlanco.preguntas.length === 2,
+  enBlanco.preguntas.join(' / '));
+ok('P: nombra el ejercicio y que quedo en blanco',
+  /Prensa de piernas/.test(enBlanco.preguntas[0]) && /serie 3/.test(enBlanco.preguntas[0]),
+  enBlanco.preguntas[0]);
+ok('P: un ejercicio compacto entero en blanco se pregunta una sola vez',
+  /Zancada/.test(enBlanco.preguntas[1]) && /2 series/.test(enBlanco.preguntas[1]),
+  enBlanco.preguntas[1]);
+ok('P: no lo resuelve por el usuario', /no lo elijo por ti/.test(enBlanco.mensaje), enBlanco.mensaje.slice(0, 80));
+ok('P: no muestra resumen hasta que este resuelto', enBlanco.resumenVisible === false);
+
+// --- se responden las dos, una de cada tipo ---
+const cajas = page.locator('.zona-pendientes .sensacion');
+await cajas.nth(0).locator('.sens-btn[data-respuesta=no_hecha]').click();
+await cajas.nth(1).locator('.sens-btn[data-respuesta=hecha_sin_datos]').click();
+
+const resumen = await page.evaluate(() => ({
+  visible: !document.querySelector('.zona-resumen').hidden,
+  lineas: [...document.querySelectorAll('.zona-resumen li')].map((n) => n.textContent),
+  botones: [...document.querySelectorAll('#cierre .btn-emitir')].filter((b) => !b.hidden).length,
+}));
+ok('S: al resolverlo aparece el resumen', resumen.visible === true);
+ok('S: el resumen lista los nueve ejercicios', resumen.lineas.length === 9, `=${resumen.lineas.length}`);
+ok('S: muestra los valores, para que un dedazo se vea',
+  /120 · 8 · 2/.test(resumen.lineas[0]), resumen.lineas[0].slice(0, 90));
+ok('S: dice cual serie no se hizo', /serie 3.*sin registrar.*no la hice/i.test(resumen.lineas[0]),
+  resumen.lineas[0].slice(0, 140));
+ok('S: y cual se hizo sin anotar', /sin registrar.*no anot/i.test(resumen.lineas[1]),
+  resumen.lineas[1].slice(0, 120));
+ok('S: se confirma una sola vez', resumen.botones === 2, `=${resumen.botones}`);
+
+await page.locator('#cierre .btn-emitir').nth(1).click();
+await page.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
 
 const estadoTexto = await page.textContent('#cierre .emitir-estado');
 const portapapeles = await page.evaluate(() => navigator.clipboard.readText());
@@ -166,28 +240,38 @@ ok('P3: programado != ejecutado y ambos sobreviven',
 ok('P3: campo en blanco de una serie hecha queda nombrado',
   a2.ejecutado.campos_sin_registrar.includes('rir') && !('rir' in a2.ejecutado.campos));
 ok('P3: resultado parcial tal como se eligio', eje.resultado === 'parcial');
-ok('P3: total de series registradas = 25', eje.series.length === 25);
+ok('P3: total de series registradas = 25', eje.series.length === 25, `=${eje.series.length}`);
 
 /* ---------- PRUEBA 4: nada se rellena ---------- */
 const a3 = s('s1-a', 3);
-ok('P4: serie intacta -> realizada=false', a3.realizada === false);
-ok('P4: serie intacta -> ejecutado.registrado=false', a3.ejecutado.registrado === false);
-ok('P4: serie intacta -> sin campos', !('campos' in a3.ejecutado));
-ok('P4: serie intacta -> motivo explicito', typeof a3.ejecutado.motivo === 'string' && a3.ejecutado.motivo.length > 0);
+ok('P4: serie en blanco declarada no hecha -> realizada=false', a3.realizada === false);
+ok('P4: serie en blanco -> ejecutado.registrado=false', a3.ejecutado.registrado === false);
+ok('P4: serie en blanco -> sin campos', !('campos' in a3.ejecutado));
+ok('P4: serie en blanco -> motivo explicito',
+  typeof a3.ejecutado.motivo === 'string' && /No la hizo/.test(a3.ejecutado.motivo), a3.ejecutado.motivo);
 const b1 = s('s1-b', 1);
-ok('P4: marcada pero vacia -> realizada=true y registrado=false',
+ok('P4: hecha sin anotar -> realizada=true y registrado=false',
   b1.realizada === true && b1.ejecutado.registrado === false);
-ok('P4: marcada pero vacia -> no copia lo programado', !('campos' in b1.ejecutado));
+ok('P4: hecha sin anotar -> no copia lo programado', !('campos' in b1.ejecutado));
+ok('P4: y su motivo dice que no anoto valores', /no anoto ningun valor/i.test(b1.ejecutado.motivo), b1.ejecutado.motivo);
 // ningun cero inventado en todo el archivo
 const ceros = eje.series.filter((x) => x.ejecutado.registrado && Object.values(x.ejecutado.campos).includes('0'));
 ok('P4: ningun cero inventado', ceros.length === 0);
-// ninguna serie sin registrar copio el valor programado
-const copiados = eje.series.filter((x) => {
-  if (!x.ejecutado.registrado) return false;
-  return x.programado.some((c) => c.prescrito && x.ejecutado.campos[c.campo] === c.valor && !['s1-a'].includes(x.ejercicio_id));
-});
-ok('P4: ninguna serie no tocada trae valores', eje.series.filter((x) => x.ejecutado.registrado).length === 2,
+// 25 series menos las 3 que quedaron en blanco: la 3 de la prensa y las 2 de
+// la zancada. Ninguna de esas tres trae valores.
+ok('P4: ninguna serie sin datos trae valores',
+  eje.series.filter((x) => x.ejecutado.registrado).length === 22,
   `series con registro=${eje.series.filter((x) => x.ejecutado.registrado).length}`);
+
+/* ---------- CAPTURA: como se observo cada serie ---------- */
+ok('CAP: cada serie declara como se capturo',
+  eje.series.every((x) => x.capturado === 'por_serie' || x.capturado === 'en_conjunto'));
+ok('CAP: las de s1-a se anotaron una a una',
+  eje.series.filter((x) => x.ejercicio_id === 's1-a').every((x) => x.capturado === 'por_serie'));
+ok('CAP: las demas se declararon en conjunto',
+  eje.series.filter((x) => x.ejercicio_id === 's1-c').every((x) => x.capturado === 'en_conjunto'));
+ok('CAP: registrar en conjunto no pierde series',
+  eje.series.filter((x) => x.ejercicio_id === 's1-c').length === 3);
 
 /* ---------- PRUEBA 5: referencia exacta a la publicacion ---------- */
 const indice = JSON.parse(readFileSync(`${REPO}/casos/demo-001/publicado/indice.json`, 'utf8'));
@@ -209,52 +293,44 @@ ok('check-in: sin estado_respuesta', !('estado_respuesta' in eje.check_in));
 ok('check-in: sin null en ninguna parte del JSON', !portapapeles.includes('null'));
 ok('demo: la ejecucion queda marcada como demo', eje.demo === true);
 
-/* ---------- CONTRADICCION: datos escritos sin marcar la serie ---------- */
-await page.goto(VISTA, { waitUntil: 'networkidle' });
-const filas2 = page.locator('.serie-row');
-// serie con datos pero SIN marcar la casilla
-await filas2.nth(0).locator('.sf-i').nth(0).fill('100');
-await filas2.nth(0).locator('.sf-i').nth(1).fill('8');
-// una segunda, para comprobar que se listan todas
-await filas2.nth(5).locator('.sf-i').nth(1).fill('10');
-await page.selectOption('#cierre .sf-s', 'completada');
+/* ---------- VOLVER: compactar no puede borrar lo registrado ---------- */
+{
+  await page.goto(VISTA, { waitUntil: 'networkidle' });
+  const ex0 = page.locator('article.ex').first();
+  await ex0.locator('.sf-i').nth(0).fill('120');
+  await ex0.locator('.sf-i').nth(1).fill('8');
+  await ex0.locator('.sf-i').nth(2).fill('2');
+  await ex0.getByRole('button', { name: 'Registrar series por separado' }).click();
 
-// dejo una marca reconocible en el portapapeles para saber si se sobrescribio
-await page.evaluate(() => navigator.clipboard.writeText('PORTAPAPELES-INTACTO'));
-await page.click('#cierre .btn-emitir');
-await page.waitForFunction(() => document.querySelector('#cierre .emitir-estado').textContent.length > 0);
+  const heredado = await ex0.evaluate((art) =>
+    [...art.querySelectorAll('.serie-row')].map((f) =>
+      [...f.querySelectorAll('.sf-i')].map((i) => i.value).join('/')));
+  ok('V: el detalle llega prellenado con lo del compacto',
+    heredado.length === 3 && heredado.every((v) => v === '120/8/2'), heredado.join(' | '));
 
-const msj = await page.textContent('#cierre .emitir-estado');
-const papelDespues = await page.evaluate(() => navigator.clipboard.readText());
-const esError = await page.evaluate(() => document.querySelector('#cierre .emitir-estado').classList.contains('error'));
+  await ex0.getByRole('button', { name: 'Volver a registro compacto' }).click();
+  ok('V: si las series son iguales, se puede volver',
+    await ex0.locator('.serie-row.compacta').count() === 1);
 
-ok('C: se detiene y no emite nada', papelDespues === 'PORTAPAPELES-INTACTO', `portapapeles="${papelDespues.slice(0, 30)}"`);
-ok('C: avisa de la contradiccion', /no marcaste como realizadas/.test(msj));
-ok('C: nombra las series en conflicto', /Prensa de piernas · serie 1/.test(msj) && /serie 1/.test(msj), msj.slice(0, 120));
-ok('C: lista ambas series, no solo la primera', (msj.match(/serie \d/g) || []).length === 2, `=${(msj.match(/serie \d/g) || []).length}`);
-ok('C: no resuelve por el usuario', /No lo resuelvo por ti/.test(msj));
-ok('C: se marca como error', esError === true);
-// no marcó la casilla por su cuenta
-const marcadaSola = await filas2.nth(0).locator('input[type=checkbox]').isChecked();
-ok('C: no marca la casilla automaticamente', marcadaSola === false);
-// ni borró los valores
-const valorIntacto = await filas2.nth(0).locator('.sf-i').nth(0).inputValue();
-ok('C: no borra los valores automaticamente', valorIntacto === '100', `="${valorIntacto}"`);
-
-// resuelta por el usuario -> ahora si emite
-await filas2.nth(0).locator('input[type=checkbox]').check();
-await filas2.nth(5).locator('input[type=checkbox]').check();
-await page.click('#cierre .btn-emitir');
-await page.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
-const tras = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()));
-const conf = tras.series.find((x) => x.ejercicio_id === 's1-a' && x.serie === 1);
-ok('C: resuelta por el usuario, emite', tras.schema_version === 1);
-ok('C: la serie resuelta queda coherente', conf.realizada === true && conf.ejecutado.registrado === true);
-ok('C: ninguna serie queda realizada=false con registro', !tras.series.some((x) => !x.realizada && x.ejecutado.registrado));
+  await ex0.getByRole('button', { name: 'Registrar series por separado' }).click();
+  await ex0.locator('.serie-row').nth(2).locator('.sf-i').nth(2).fill('1');
+  await ex0.getByRole('button', { name: 'Volver a registro compacto' }).click();
+  const bloqueo = await ex0.evaluate((art) => ({
+    compactas: art.querySelectorAll('.serie-row.compacta').length,
+    filas: art.querySelectorAll('.serie-row').length,
+    aviso: art.querySelector('.emitir-estado')?.textContent || '',
+    ultimoRir: art.querySelectorAll('.serie-row')[2].querySelectorAll('.sf-i')[2].value,
+  }));
+  ok('V: si ya difieren, no se compacta', bloqueo.compactas === 0 && bloqueo.filas === 3,
+    `compactas=${bloqueo.compactas} filas=${bloqueo.filas}`);
+  ok('V: y explica por que en vez de elegir un valor', /borrar lo que registraste/.test(bloqueo.aviso),
+    bloqueo.aviso.slice(0, 90));
+  ok('V: no se pierde el dato que hacia distinta la serie', bloqueo.ultimoRir === '1', bloqueo.ultimoRir);
+}
 
 /* ---------- resultado no se autocompleta ---------- */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
-await page.click('#cierre .btn-emitir');
+await page.locator('#cierre .btn-emitir').first().click();
 const sinResultado = await page.textContent('#cierre .emitir-estado');
 ok('el resultado no tiene valor por defecto', /Elige primero/.test(sinResultado), sinResultado);
 

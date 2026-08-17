@@ -23,11 +23,14 @@ function resumirErrores(errores) {
 export function comprobarEsquemas(datos, informe, rutaEsquemas = ESQUEMAS) {
   const ajv = new Ajv({ allErrors: true, strict: false });
 
-  const esqSesion = JSON.parse(readFileSync(join(rutaEsquemas, 'sesion.schema.json'), 'utf8'));
-  const esqEjecucion = JSON.parse(readFileSync(join(rutaEsquemas, 'ejecucion.schema.json'), 'utf8'));
+  const leer = (nombre) => JSON.parse(readFileSync(join(rutaEsquemas, nombre), 'utf8'));
+  const esqSesion = leer('sesion.schema.json');
 
   const validarSesion = ajv.compile(esqSesion);
-  const validarEjecucion = ajv.compile(esqEjecucion);
+  const validarEjecucion = ajv.compile(leer('ejecucion.schema.json'));
+  const validarAlumno = ajv.compile(leer('alumno.schema.json'));
+  const validarFeedback = ajv.compile(leer('feedback.schema.json'));
+  const validarDevolucion = ajv.compile(leer('devolucion.schema.json'));
   const validarContenido = ajv.compile({
     $schema: esqSesion.$schema,
     ...esqSesion.$defs.contenido,
@@ -36,7 +39,15 @@ export function comprobarEsquemas(datos, informe, rutaEsquemas = ESQUEMAS) {
 
   const F = 'esquema';
 
-  for (const grupo of [datos.sesiones, datos.ejecuciones, datos.publicaciones]) {
+  const grupos = [
+    [datos.sesiones, validarSesion, 'sesion.schema.json'],
+    [datos.ejecuciones, validarEjecucion, 'ejecucion.schema.json'],
+    [datos.alumnos, validarAlumno, 'alumno.schema.json'],
+    [datos.feedback, validarFeedback, 'feedback.schema.json'],
+    [datos.devoluciones, validarDevolucion, 'devolucion.schema.json'],
+  ];
+
+  for (const grupo of [...grupos.map(([g]) => g), datos.publicaciones]) {
     for (const archivo of grupo) {
       if (archivo.errorDeFormato) {
         informe.fallo(F, archivo.ruta, 'No es JSON valido.', archivo.errorDeFormato);
@@ -44,16 +55,12 @@ export function comprobarEsquemas(datos, informe, rutaEsquemas = ESQUEMAS) {
     }
   }
 
-  for (const sesion of datos.sesiones) {
-    if (!sesion.datos) continue;
-    informe.exigir(F, validarSesion(sesion.datos), sesion.ruta,
-      'No valida contra sesion.schema.json.', resumirErrores(validarSesion.errors));
-  }
-
-  for (const ejecucion of datos.ejecuciones) {
-    if (!ejecucion.datos) continue;
-    informe.exigir(F, validarEjecucion(ejecucion.datos), ejecucion.ruta,
-      'No valida contra ejecucion.schema.json.', resumirErrores(validarEjecucion.errors));
+  for (const [grupo, validar, nombre] of grupos) {
+    for (const archivo of grupo) {
+      if (!archivo.datos) continue;
+      informe.exigir(F, validar(archivo.datos), archivo.ruta,
+        `No valida contra ${nombre}.`, resumirErrores(validar.errors));
+    }
   }
 
   for (const publicacion of datos.publicaciones) {

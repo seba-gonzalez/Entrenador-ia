@@ -14,8 +14,9 @@ node validacion/validar.mjs                        # desde la raíz del reposito
 node validacion/validar.mjs --raiz /otro/repo      # contra otro repositorio de datos
 node validacion/validar.mjs --base origin/main     # añade la comprobación de inmutabilidad
 
-cd validacion && npm run pruebas                   # contratos (20 + 21 + 12)
-node validacion/pruebas/navegador.mjs              # la vista (80), necesita el repo servido
+cd validacion && npm run pruebas                   # contratos (20 + 21 + 12 + 47)
+node validacion/pruebas/navegador.mjs              # la vista sobre demo-001 (94), necesita el repo servido
+node validacion/pruebas/navegador-piloto.mjs       # el circuito del piloto (121), ídem
 ```
 
 ## Cómo encuentra los datos
@@ -24,21 +25,28 @@ node validacion/pruebas/navegador.mjs              # la vista (80), necesita el 
 `validacion.config.json` dónde vive cada cosa. El público apunta a `casos/*/…`;
 el privado apuntará a `alumnos/*/…`. El validador no sabe cuál es cuál.
 
-Las sesiones, los índices y las ejecuciones se relacionan **por `sesion_id`,
-nunca por su ubicación**. Por eso las rutas pueden cambiar sin tocar una línea
-de código. Las publicaciones no se declaran: se descubren desde cada índice, que
-las nombra y vive junto a ellas.
+Las sesiones, los índices, las ejecuciones, el feedback y las devoluciones se
+relacionan **por `sesion_id`, nunca por su ubicación**. Por eso las rutas pueden
+cambiar sin tocar una línea de código. Las publicaciones no se declaran: se
+descubren desde cada índice, que las nombra y vive junto a ellas.
+
+Hay **dos familias publicadas** y se cargan con el mismo código: las sesiones
+(`indices`) y las devoluciones (`indices_devolucion`). Tienen forma idéntica
+—índice con una vigente, archivos numerados, un hash por archivo— y comparten
+implementación a propósito: el día que una deje de comprobarse como la otra,
+será porque alguien lo decidió y no porque se duplicó el código y se actualizó
+una sola copia.
 
 ## Qué comprueba
 
 | Familia | Qué |
 |---|---|
-| `esquema` | Todo dato valida contra su contrato; el contenido publicado contra `$defs/contenido` |
-| `integridad del hash` | El sha256 de los **bytes** del archivo coincide con lo que declaran el índice y `sesion.json` |
+| `esquema` | Todo dato valida contra su contrato —sesión, ejecución, alumno, feedback, devolución— y el contenido publicado contra `$defs/contenido` |
+| `integridad del hash` | El sha256 de los **bytes** del archivo coincide con lo que declaran el índice y `sesion.json`. Las devoluciones se acreditan igual: sólo contra su índice, porque no tienen documento interno que las registre |
 | `estructura` | Una sola publicación vigente; índice y documento de acuerdo; sin archivos huérfanos ni índices que nombren lo que no existe; cada sección con su panel |
-| `demo` | En un repositorio público, toda sesión, publicación y ejecución lleva `demo: true` |
-| `referencias` | Ninguna referencia apunta al vacío: versiones, publicaciones, ejercicios de una ejecución |
-| `inmutabilidad` | Una publicación ya servida no se modifica ni se borra; republicar es añadir (solo en PR) |
+| `demo` | En un repositorio público, toda sesión, publicación, ejecución, ficha de alumno, feedback y devolución lleva `demo: true` |
+| `referencias` | Ninguna referencia apunta al vacío: versiones, publicaciones, ejercicios de una ejecución, la sesión que nombra un feedback, y de qué ejecución y qué series sale cada referencia de una devolución |
+| `inmutabilidad` | Una publicación o devolución ya servida no se modifica ni se borra; republicar es añadir (solo en PR) |
 
 ### Dos reglas que no son negociables
 
@@ -82,6 +90,11 @@ Los esquemas viajan con el validador, no con los datos: el contrato es uno solo.
 `comprobaciones/` valida **datos reales**. `pruebas/` valida **los contratos y
 el producto** contra mutaciones sintéticas: que el esquema rechace lo que debe y
 que la vista se comporte.
+
+Las suites de navegador van separadas por caso. `navegador.mjs` vigila
+`demo-001` y `navegador-piloto.mjs` vigila `piloto-001`; que la primera siga
+pasando **sin haber sido tocada** es la evidencia de que el piloto no cambió lo
+que ya funcionaba.
 
 ## La comparación visual se queda fuera de CI
 

@@ -114,6 +114,44 @@ export async function obtenerPublicacionVigente(casoId) {
 }
 
 /**
+ * Devuelve la devolucion publicada de una sesion, o null si todavia no hay.
+ *
+ * Que no exista es lo normal: entre que el alumno entrena y el entrenador le
+ * responde pasa tiempo. Por eso la ausencia no es un error. Lo que si es un
+ * error es que exista y no cuadre: ahi se aplica el mismo fallo cerrado que a
+ * la sesion (D-025), porque una devolucion alterada pone en boca del alumno
+ * palabras que no dijo.
+ */
+export async function obtenerDevolucionVigente(casoId, sesionId) {
+  const base = `casos/${casoId}/devoluciones/${sesionId}/`;
+
+  let indice;
+  try {
+    indice = await leerJson(`${base}indice.json`);
+  } catch {
+    return null;
+  }
+
+  const entrada = indice.publicaciones.find((p) => p.p === indice.vigente);
+  if (!entrada) {
+    throw new Error(`El indice de devoluciones de ${sesionId} declara vigente la ${indice.vigente}, que no existe.`);
+  }
+
+  const bytes = await leerBytes(`${base}${entrada.archivo}`);
+  const hashReal = await sha256(bytes);
+
+  if (hashReal !== entrada.hash) {
+    throw new IntegridadNoAcreditada(
+      'La devolucion de esta sesion no coincide con lo que el registro dice que se publico. ' +
+      'No se muestra: podria atribuirte palabras que no dijiste. Avisa a tu entrenador.'
+    );
+  }
+
+  const devolucion = JSON.parse(new TextDecoder().decode(bytes));
+  return { ...devolucion, hash: entrada.hash };
+}
+
+/**
  * Devuelve el esquema de ejecucion.
  *
  * La vista lo carga en lugar de repetir sus valores: los resultados posibles de

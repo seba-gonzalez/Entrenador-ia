@@ -31,3 +31,5 @@ for (const [nombre, dato, esperado] of pruebas) {
   console.log(`${bien ? 'PASA ' : 'FALLA'} ${nombre}  ->  ${ok ? 'valida' : 'rechaza'}`);
 }
 console.log(mal === 0 ? `\n${pruebas.length}/${pruebas.length} correctas` : `\n${mal} incorrectas`);
+// Sin esto, una prueba en rojo se imprimia y CI seguia en verde.
+process.exitCode = mal === 0 ? 0 : 1;

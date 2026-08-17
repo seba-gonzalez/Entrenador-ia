@@ -53,6 +53,12 @@
       "items": { "$ref": "#/$defs/serie" }
     },
 
+    "sensaciones": {
+      "type": "array",
+      "description": "Como se sintio cada bloque, segun el alumno y en el momento. Es la capa SENSACION: no es lo ejecutado ni una interpretacion de nadie, y no dispara ninguna adaptacion automatica. Alguien la lee despues y decide.",
+      "items": { "$ref": "#/$defs/sensacion" }
+    },
+
     "resultado": {
       "enum": ["completada", "parcial", "pospuesta", "omitida"],
       "description": "Posponer y omitir son resultados legitimos y registrables, no fallos. Lo elige una persona: ningun proceso lo deduce."
@@ -103,15 +109,74 @@
       ]
     },
 
+    "sensacion": {
+      "type": "object",
+      "description": "Un bloque no marcado se declara sin registrar, con su motivo. No marcar no significa 'adecuado' (principio 1.5).",
+      "required": ["bloque_id", "etiqueta", "registrado"],
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["bloque_id", "etiqueta", "registrado", "percepcion"],
+          "properties": {
+            "bloque_id": { "type": "string", "minLength": 1 },
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "registrado": { "const": true },
+            "percepcion": { "enum": ["muy_facil", "adecuado", "muy_exigente", "molestia_dolor"] }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["bloque_id", "etiqueta", "registrado", "motivo"],
+          "properties": {
+            "bloque_id": { "type": "string", "minLength": 1 },
+            "etiqueta": { "type": "string", "minLength": 1 },
+            "registrado": { "const": false },
+            "motivo": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+
     "serie": {
       "type": "object",
       "additionalProperties": false,
       "required": ["ejercicio_id", "ejercicio_nombre", "serie", "realizada", "programado", "ejecutado", "motivo_diferencia"],
+
+      "allOf": [
+        {
+          "title": "Una serie que no estaba programada no puede declarar nada prescrito",
+          "if": { "required": ["anadida_en_ejecucion"] },
+          "then": {
+            "properties": {
+              "programado": {
+                "items": {
+                  "required": ["campo", "etiqueta", "prescrito", "motivo_no_prescrito"],
+                  "properties": { "prescrito": { "const": false } }
+                }
+              }
+            }
+          }
+        }
+      ],
+
       "properties": {
         "ejercicio_id": { "type": "string", "minLength": 1 },
         "ejercicio_nombre": { "type": "string", "minLength": 1 },
         "serie": { "type": "integer", "minimum": 1 },
         "realizada": { "type": "boolean" },
+        "capturado": {
+          "enum": ["por_serie", "en_conjunto"],
+          "description": "Como se observo esta serie. 'en_conjunto' significa que el alumno declaro un solo juego de valores para todas las series del ejercicio; 'por_serie', que anoto esta en particular. Las dos cosas producen el mismo numero de series, pero no son el mismo tipo de evidencia, y confundirlas seria leer como observacion individual lo que fue un recuerdo del conjunto (principio 1.4). Su ausencia solo aparece en registros anteriores a esta captura."
+        },
+        "margen_declarado": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Copia literal del margen que la sesion mostraba junto a 'agregar serie'. Se conserva para poder comparar despues lo autorizado con lo ocurrido. El codigo no lo evalua: quien decide si una serie extra estuvo dentro del margen es una persona."
+        },
+        "anadida_en_ejecucion": {
+          "const": true,
+          "description": "La serie no estaba en la publicacion: la anadio el alumno mientras entrenaba. Solo aparece cuando es cierto, y su ausencia significa que la serie estaba programada — que es comprobable mirando la publicacion, no una suposicion. No existe el valor false: una serie programada no necesita declarar que no fue anadida."
+        },
         "programado": {
           "type": "array",
           "minItems": 1,
