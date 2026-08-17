@@ -219,3 +219,18 @@
   .puntos li{font-size:14px;line-height:1.5;color:var(--muted);padding-left:15px;position:relative;}
   .puntos li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700;}
   .puntos strong{color:var(--text);font-weight:600;}
+
+/* ============================================================
+   ANEXO REGISTRO COMPACTO Y RESUMEN.
+   La fila compacta representa varias series a la vez y se distingue de una
+   fila suelta. El resumen sustituye a la casilla por serie: en vez de
+   confirmar quince veces algo ya demostrado, se confirma una vez lo que va a
+   quedar escrito.
+   ============================================================ */
+  .serie-row.compacta{border-left:3px solid var(--border);}
+  .serie-head{color:var(--text);}
+  .fila-anadir{flex-wrap:wrap;}
+  .btn-anadir{flex:1 1 46%;}
+  .zona-pendientes:empty{display:none;}
+  .zona-resumen{margin:14px 0 10px;}
+  .resumen-linea{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:4px;}

@@ -452,6 +452,13 @@
         },
         "programado": { "$ref": "#/$defs/programado" },
         "precaucion": { "$ref": "#/$defs/parrafo" },
+        "margen": {
+          "type": "object",
+          "description": "Hasta donde puede desviarse el alumno por su cuenta, escrito por el entrenador. La vista lo muestra junto a 'agregar serie' y lo copia al registro; no cuenta series ni comprueba ninguna condicion. El margen es metodologia y la escribe una persona (principio 1.2). Su ausencia no significa ni prohibido ni ilimitado: significa que todavia no se declaro.",
+          "additionalProperties": false,
+          "required": ["texto"],
+          "properties": { "texto": { "type": "string", "minLength": 1 } }
+        },
         "detalles": { "$ref": "#/$defs/detalles" },
         "transicion": { "type": "string", "minLength": 1 }
       }

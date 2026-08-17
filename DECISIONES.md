@@ -335,3 +335,52 @@ entrenar» es una inferencia a partir de una sola sesión, presentada como hecho
 —justo lo que el principio 1.4 prohíbe—. Y es la clase de frase que después nadie
 vuelve a cuestionar, porque ya está escrita en la ficha del alumno.
 **Cómo se dice:** qué se observó, que es buena señal, y que se sigue observando.
+
+### D-033 · Los datos de ejecución son la evidencia; no se confirman dos veces
+Se eliminó la casilla «serie realizada». Si una serie tiene valores escritos,
+ocurrió. Una fila en blanco se resuelve **al cerrar la sesión**, con dos
+opciones —«la hice, no anoté los valores» y «no la hice»— y sólo para las filas
+que de verdad quedaron en blanco.
+**Por qué:** la casilla sólo llevaba información en un caso, el de la fila
+vacía, y cobraba una confirmación por serie para resolverlo. En las quince
+series de una sesión eso son quince confirmaciones de algo ya demostrado.
+**Qué se conserva:** los cuatro estados siguen distinguiéndose —programado,
+realizado con datos, realizado sin anotar, no realizado— con el mismo campo
+`realizada` y el mismo motivo escrito. Cambia de dónde sale el dato, no qué se
+registra.
+**La contradicción que protegía desaparece por construcción:** «datos escritos
+en una serie sin marcar» no puede existir si los datos son la marca.
+**Lo que la sustituye como red:** un resumen de lo que se va a guardar, con los
+valores a la vista, y una sola confirmación. Un `700` donde iban `70` se ve ahí.
+**Un riesgo que la casilla nunca cubrió y sigue sin cubrirse:** registrar sin
+haber entrenado. Ninguna interfaz puede.
+
+### D-034 · El registro se abre compacto, y el archivo dice cómo se capturó
+Por defecto se registra una entrada por ejercicio, que aplica a todas sus
+series. «Registrar series por separado» abre las filas individuales prellenadas
+con esos valores. Se puede volver al compacto **sólo si las filas siguen siendo
+iguales y no hay series añadidas**; en cualquier otro caso se explica por qué no,
+en vez de elegir qué valor sobrevive.
+**Por qué:** registrar quince series idénticas costaba 54 interacciones y
+convertía la sesión en una planilla. La prueba manual se volvió tediosa cerca de
+la serie 11.
+**Lo que NO se simplifica es el dato:** el archivo sigue conteniendo una serie
+por serie ejecutada. La interfaz se compacta; el registro no.
+**Y se dice cómo se observó:** cada serie lleva `capturado` en `en_conjunto` o
+`por_serie`. Declarar «las tres iguales» y anotar cada una son dos evidencias
+distintas, y leer la primera como si fuera la segunda sería presentar un
+recuerdo del conjunto como observación individual (principio 1.4).
+
+### D-035 · El margen de series extra lo escribe el entrenador; el código lo muestra y lo conserva
+Un ejercicio puede declarar un margen en texto —«puedes añadir 1 serie si
+terminas muy fácil y mantienes RIR ≥ 2»—. La vista lo muestra junto a «agregar
+serie» y lo copia literal a cada serie añadida.
+**Lo que el código NO hace:** contar series, comprobar el RIR, avisar o
+bloquear. En cuanto verificara la condición tendríamos un motor metodológico
+dentro del código (principio 1.2), y el código no sabe qué es demasiado para
+esta persona hoy.
+**Por qué en texto y no en un número:** un número invita a que alguien lo
+evalúe. El margen se conserva para que una persona compare después lo autorizado
+con lo ocurrido.
+**Su ausencia no es ni prohibido ni ilimitado:** es que todavía no se declaró, y
+conviene que se note.

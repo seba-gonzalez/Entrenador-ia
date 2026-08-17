@@ -14,9 +14,9 @@ node validacion/validar.mjs                        # desde la raíz del reposito
 node validacion/validar.mjs --raiz /otro/repo      # contra otro repositorio de datos
 node validacion/validar.mjs --base origin/main     # añade la comprobación de inmutabilidad
 
-cd validacion && npm run pruebas                   # contratos (20 + 21 + 12 + 30)
-node validacion/pruebas/navegador.mjs              # la vista sobre demo-001 (80), necesita el repo servido
-node validacion/pruebas/navegador-piloto.mjs       # el circuito del piloto (51), ídem
+cd validacion && npm run pruebas                   # contratos (20 + 21 + 12 + 47)
+node validacion/pruebas/navegador.mjs              # la vista sobre demo-001 (94), necesita el repo servido
+node validacion/pruebas/navegador-piloto.mjs       # el circuito del piloto (109), ídem
 ```
 
 ## Cómo encuentra los datos

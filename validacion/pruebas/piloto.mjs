@@ -138,10 +138,40 @@ const pruebas = [
     e.series[0].anadida_en_ejecucion = false;
   }), false],
 
+  // --- como se capturo cada serie, y el margen ---
+  [validarEjecucion, 'acepta declarar que una serie se anoto en conjunto', con(ejecucion, (e) => {
+    e.series.forEach((s) => { s.capturado = 'en_conjunto'; });
+  }), true],
+  [validarEjecucion, 'acepta declarar que se anoto serie a serie', con(ejecucion, (e) => {
+    e.series.forEach((s) => { s.capturado = 'por_serie'; });
+  }), true],
+  [validarEjecucion, 'rechaza una forma de captura que no existe', con(ejecucion, (e) => {
+    e.series[0].capturado = 'de_memoria';
+  }), false],
+  [validarEjecucion, 'acepta el margen copiado en una serie anadida', con(ejecucion, (e) => {
+    const s = serieAnadida();
+    s.margen_declarado = 'Puedes anadir 1 serie si terminas muy facil.';
+    e.series.push(s);
+  }), true],
+  [validarEjecucion, 'rechaza un margen vacio', con(ejecucion, (e) => {
+    const s = serieAnadida();
+    s.margen_declarado = '';
+    e.series.push(s);
+  }), false],
+
   // --- sesiones del piloto: bloques, preguntas respondibles y estado borrador ---
   [validarSesion, 'acepta la sesion 1 publicada', sesion1, true],
   [validarSesion, 'acepta el borrador de la sesion 2', sesion2, true],
   [validarSesion, 'acepta una tarjeta de programa con su porque plegado', sesion2, true],
+  [validarSesion, 'acepta un margen de series extra escrito por el entrenador', sesion2, true],
+  [validarSesion, 'rechaza un margen sin texto', con(sesion2, (s) => {
+    const ses = s.versiones[0].contenido.paneles.rutina.tarjetas.find((x) => x.tipo === 'sesion');
+    ses.ejercicios[0].margen = {};
+  }), false],
+  [validarSesion, 'rechaza un margen con un numero que el codigo tendria que evaluar', con(sesion2, (s) => {
+    const ses = s.versiones[0].contenido.paneles.rutina.tarjetas.find((x) => x.tipo === 'sesion');
+    ses.ejercicios[0].margen = { texto: 'una serie', series_extra: 1 };
+  }), false],
   [validarSesion, 'rechaza un plegable sin resumen', con(sesion2, (s) => {
     const t2 = s.versiones[0].contenido.paneles.rutina.tarjetas.find((x) => x.id === 'aproximacion');
     delete t2.detalles[0].resumen;

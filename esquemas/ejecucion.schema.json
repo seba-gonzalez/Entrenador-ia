@@ -164,6 +164,15 @@
         "ejercicio_nombre": { "type": "string", "minLength": 1 },
         "serie": { "type": "integer", "minimum": 1 },
         "realizada": { "type": "boolean" },
+        "capturado": {
+          "enum": ["por_serie", "en_conjunto"],
+          "description": "Como se observo esta serie. 'en_conjunto' significa que el alumno declaro un solo juego de valores para todas las series del ejercicio; 'por_serie', que anoto esta en particular. Las dos cosas producen el mismo numero de series, pero no son el mismo tipo de evidencia, y confundirlas seria leer como observacion individual lo que fue un recuerdo del conjunto (principio 1.4). Su ausencia solo aparece en registros anteriores a esta captura."
+        },
+        "margen_declarado": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Copia literal del margen que la sesion mostraba junto a 'agregar serie'. Se conserva para poder comparar despues lo autorizado con lo ocurrido. El codigo no lo evalua: quien decide si una serie extra estuvo dentro del margen es una persona."
+        },
         "anadida_en_ejecucion": {
           "const": true,
           "description": "La serie no estaba en la publicacion: la anadio el alumno mientras entrenaba. Solo aparece cuando es cierto, y su ausencia significa que la serie estaba programada — que es comprobable mirando la publicacion, no una suposicion. No existe el valor false: una serie programada no necesita declarar que no fue anadida."

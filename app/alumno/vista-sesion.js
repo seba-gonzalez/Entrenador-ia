@@ -59,33 +59,47 @@ const CLASE_DIA = {
 
 const ETIQUETAS_SERIE = {
   anadir: '+ Agregar serie',
+  separar: 'Registrar series por separado',
+  volver: 'Volver a registro compacto',
   quitar: 'Quitar',
   marca: 'añadida',
-  motivoNoPrescrito: 'Esta serie no estaba programada: la anadio el alumno durante la sesion, asi que no hay nada prescrito contra que compararla.',
+  conjunta: (n) => (n === 1 ? 'la serie' : `así fueron las ${n} series`),
+  noSePuedeVolver:
+    'Las series ya no son iguales entre si. Volver al registro compacto obligaria a elegir ' +
+    'cual de los valores vale por todas, y eso seria borrar lo que registraste. Si te ' +
+    'equivocaste, corrige la fila que sobra.',
+  motivoNoPrescrito:
+    'Esta serie no estaba programada: la anadio el alumno durante la sesion, asi que no hay ' +
+    'nada prescrito contra que compararla.',
 };
 
 /**
- * Dibuja una fila de registro por serie.
+ * Dibuja una fila de registro.
  *
- * Las series programadas y las anadidas usan esta misma funcion, y no por
- * ahorrar codigo: se registran con los mismos campos porque son el mismo tipo
- * de dato. Lo unico que cambia es que la anadida no tiene nada prescrito
- * detras, y eso se dice en el propio registro en vez de deducirse despues.
+ * Ya no hay casilla de "realizada". Si hay datos escritos, la serie ocurrio:
+ * los datos SON la evidencia, y pedir ademas una marca era confirmar dos veces
+ * lo mismo. El unico caso que los datos no resuelven —una fila en blanco— se
+ * pregunta al cerrar, y solo cuando existe.
+ *
+ * La misma funcion sirve para la fila compacta, las filas por serie y las
+ * anadidas, porque las tres registran el mismo tipo de dato. Lo que cambia es
+ * a cuantas series representa cada una, y eso viaja en el registro emitido.
  */
-function pintarFila(porSerie, numero, anadida) {
-  const fila = el('div', anadida ? 'serie-row anadida' : 'serie-row');
+function pintarFila(contrato, numero, opciones = {}) {
+  const { anadida = false, compacta = false, series = 1 } = opciones;
+  const clases = ['serie-row'];
+  if (anadida) clases.push('anadida');
+  if (compacta) clases.push('compacta');
+  const fila = el('div', clases.join(' '));
 
-  const cabecera = el('label', 'serie-head');
-  const marca = document.createElement('input');
-  marca.type = 'checkbox';
-  cabecera.appendChild(marca);
-  cabecera.appendChild(el('span', null, `Serie ${numero}`));
+  const cabecera = el('div', 'serie-head');
+  cabecera.appendChild(el('span', null, compacta ? ETIQUETAS_SERIE.conjunta(series) : `Serie ${numero}`));
   if (anadida) cabecera.appendChild(el('span', 'serie-marca', ETIQUETAS_SERIE.marca));
   fila.appendChild(cabecera);
 
-  const campos = el('div', porSerie.length === 2 ? 'serie-fields f2' : 'serie-fields');
+  const campos = el('div', contrato.length === 2 ? 'serie-fields f2' : 'serie-fields');
   const entradas = {};
-  porSerie.forEach((campo) => {
+  contrato.forEach((campo) => {
     const celda = el('div');
     celda.appendChild(el('span', 'sf-l', campo.etiqueta));
     const entrada = document.createElement('input');
@@ -104,7 +118,158 @@ function pintarFila(porSerie, numero, anadida) {
   });
   fila.appendChild(campos);
 
-  return { nodo: fila, registro: { serie: numero, marca, entradas, anadida } };
+  return { nodo: fila, fila: { serie: numero, entradas, anadida, nodo: fila } };
+}
+
+const valoresDe = (fila) =>
+  Object.entries(fila.entradas).map(([k, e]) => `${k}=${e.value.trim()}`).join('|');
+
+const filaVacia = (fila) => Object.values(fila.entradas).every((e) => e.value.trim() === '');
+
+/**
+ * El registro de un ejercicio, que empieza compacto y puede abrirse por serie.
+ *
+ * Compacto por defecto porque es lo que ocurre casi siempre: las series salen
+ * iguales. Registrar 15 series identicas costaba 54 interacciones, y hacia que
+ * la sesion se pareciera a rellenar una planilla.
+ */
+function montarRegistroDeEjercicio(art, ejercicio) {
+  const porSerie = ejercicio.programado.por_serie;
+  const series = ejercicio.programado.series;
+
+  // Lo que estaba prescrito para una serie anadida: nada, y con su motivo. No
+  // se copian los valores de las programadas, porque nadie los prescribio para
+  // esta.
+  const sinPrescribir = porSerie.map((campo) => ({
+    campo: campo.campo,
+    etiqueta: campo.etiqueta,
+    prescrito: false,
+    motivo_no_prescrito: ETIQUETAS_SERIE.motivoNoPrescrito,
+  }));
+
+  const conjunto = el('div', 'serieset');
+  art.appendChild(conjunto);
+
+  const estado = {
+    ejercicio_id: ejercicio.id,
+    ejercicio_nombre: ejercicio.nombre,
+    por_serie: porSerie,
+    por_serie_anadida: sinPrescribir,
+    series,
+    margen: ejercicio.margen ? ejercicio.margen.texto : undefined,
+    modo: 'compacto',
+    compacta: null,
+    filas: [],
+  };
+
+  const compacta = pintarFila(porSerie, null, { compacta: true, series });
+  conjunto.appendChild(compacta.nodo);
+  estado.compacta = compacta.fila;
+
+  const controles = el('div', 'fila-anadir');
+  const separar = el('button', 'btn-anadir', ETIQUETAS_SERIE.separar);
+  const volver = el('button', 'btn-anadir', ETIQUETAS_SERIE.volver);
+  const anadir = el('button', 'btn-anadir', ETIQUETAS_SERIE.anadir);
+  [separar, volver, anadir].forEach((b) => { b.type = 'button'; controles.appendChild(b); });
+  volver.hidden = true;
+  art.appendChild(controles);
+
+  const aviso = el('p', 'emitir-estado');
+  art.appendChild(aviso);
+
+  function refrescarControles() {
+    const detalle = estado.modo === 'detalle';
+    separar.hidden = detalle;
+    volver.hidden = !detalle;
+  }
+
+  /** Abre el detalle prellenando cada fila con lo que ya se escribio arriba. */
+  function expandir() {
+    if (estado.modo === 'detalle') return;
+    const valores = {};
+    Object.entries(estado.compacta.entradas).forEach(([k, e]) => { valores[k] = e.value; });
+
+    estado.compacta.nodo.remove();
+    estado.compacta = null;
+    estado.filas = [];
+
+    for (let n = 1; n <= series; n += 1) {
+      const { nodo, fila } = pintarFila(porSerie, n);
+      // Prellenado: nadie deberia escribir tres veces lo mismo para corregir
+      // una sola serie.
+      Object.entries(valores).forEach(([k, v]) => { fila.entradas[k].value = v; });
+      conjunto.appendChild(nodo);
+      estado.filas.push(fila);
+    }
+    estado.modo = 'detalle';
+    refrescarControles();
+  }
+
+  separar.addEventListener('click', () => { aviso.textContent = ''; expandir(); });
+
+  volver.addEventListener('click', () => {
+    aviso.classList.remove('error');
+    // Solo se puede volver si no hay nada que perder: mismas filas, sin
+    // anadidas. En cualquier otro caso, compactar borraria informacion (1.3).
+    const distintas = new Set(estado.filas.map(valoresDe)).size > 1;
+    if (distintas || estado.filas.some((f) => f.anadida)) {
+      aviso.textContent = ETIQUETAS_SERIE.noSePuedeVolver;
+      aviso.classList.add('error');
+      return;
+    }
+    const valores = {};
+    Object.entries(estado.filas[0].entradas).forEach(([k, e]) => { valores[k] = e.value; });
+    estado.filas.forEach((f) => f.nodo.remove());
+    estado.filas = [];
+
+    const nueva = pintarFila(porSerie, null, { compacta: true, series });
+    Object.entries(valores).forEach(([k, v]) => { nueva.fila.entradas[k].value = v; });
+    conjunto.appendChild(nueva.nodo);
+    estado.compacta = nueva.fila;
+    estado.modo = 'compacto';
+    aviso.textContent = '';
+    refrescarControles();
+  });
+
+  /**
+   * "+ Agregar serie" no recomienda hacer mas series ni sugiere que falten.
+   * Existe porque el alumno a veces se desvia, y sin el, lo que hizo de mas
+   * solo podia llegar contado en texto libre — que es como se perdio la cuarta
+   * sentadilla del piloto.
+   *
+   * El margen lo escribe el entrenador en la sesion; el codigo lo muestra y lo
+   * conserva, no lo evalua ni lo bloquea. Contar series y comprobar el RIR
+   * seria meter una regla de entrenamiento en el codigo (principio 1.2).
+   */
+  if (estado.margen) controles.before(el('div', 'note-inline', estado.margen));
+
+  anadir.addEventListener('click', () => {
+    aviso.textContent = '';
+    // Una serie anadida es, por definicion, distinta de las programadas: no
+    // tiene sentido decir "asi fueron las 3" y colgarle una cuarta aparte.
+    expandir();
+
+    const numero = estado.filas.length + 1;
+    const { nodo, fila } = pintarFila(sinPrescribir, numero, { anadida: true });
+
+    // Quitar solo mientras la fila siga vacia. Con datos escritos, borrarla
+    // seria destruir un registro sin dejar constancia (1.3).
+    const quitar = el('button', 'btn-quitar', ETIQUETAS_SERIE.quitar);
+    quitar.type = 'button';
+    quitar.addEventListener('click', () => {
+      if (!filaVacia(fila)) return;
+      nodo.remove();
+      estado.filas.splice(estado.filas.indexOf(fila), 1);
+    });
+    nodo.querySelector('.serie-head').appendChild(quitar);
+
+    conjunto.appendChild(nodo);
+    estado.filas.push(fila);
+    nodo.querySelector('.sf-i').focus();
+  });
+
+  refrescarControles();
+  return estado;
 }
 
 function pintarEjercicio(ejercicio, registro) {
@@ -132,73 +297,9 @@ function pintarEjercicio(ejercicio, registro) {
     art.appendChild(parrafo('p', 'caution-text', ejercicio.precaucion));
   }
 
-  // Registro por serie. Las filas se generan desde programado.por_serie: los
-  // campos que se registran son los que el entrenador declaro, no una lista
-  // fija del codigo.
-  const porSerie = ejercicio.programado.por_serie;
-  const conjunto = el('div', 'serieset');
-  const filas = [];
-
-  for (let n = 1; n <= ejercicio.programado.series; n += 1) {
-    const { nodo, registro: fila } = pintarFila(porSerie, n, false);
-    conjunto.appendChild(nodo);
-    filas.push(fila);
-  }
-  art.appendChild(conjunto);
-
-  // Lo que estaba prescrito para una serie anadida: nada, y con su motivo. No
-  // se copian los valores de las series programadas, porque nadie los prescribio
-  // para esta.
-  const sinPrescribir = porSerie.map((campo) => ({
-    campo: campo.campo,
-    etiqueta: campo.etiqueta,
-    prescrito: false,
-    motivo_no_prescrito: ETIQUETAS_SERIE.motivoNoPrescrito,
-  }));
-
-  /**
-   * "+ Agregar serie" no recomienda hacer mas series ni sugiere que falten.
-   * Existe porque el alumno a veces se desvia, y sin este boton lo que hizo de
-   * mas solo podia llegar contado en texto libre — que es exactamente como se
-   * perdio la cuarta sentadilla del piloto.
-   *
-   * Tampoco hay tope de series anadidas. Un limite seria una regla de
-   * entrenamiento escrita en el codigo (principio 1.2), y el codigo no sabe
-   * cuanto es demasiado para esta persona en este dia.
-   */
-  const zonaAnadir = el('div', 'fila-anadir');
-  const anadir = el('button', 'btn-anadir', ETIQUETAS_SERIE.anadir);
-  anadir.type = 'button';
-  anadir.addEventListener('click', () => {
-    const numero = filas.length + 1;
-    const { nodo, registro: fila } = pintarFila(sinPrescribir, numero, true);
-
-    // Quitar solo esta disponible mientras la fila siga vacia. Con datos
-    // escritos, borrarla seria destruir un registro sin dejar constancia (1.3).
-    const quitar = el('button', 'btn-quitar', ETIQUETAS_SERIE.quitar);
-    quitar.type = 'button';
-    quitar.addEventListener('click', () => {
-      const hayAlgo = Object.values(fila.entradas).some((e) => e.value.trim() !== '');
-      if (hayAlgo || fila.marca.checked) return;
-      nodo.remove();
-      filas.splice(filas.indexOf(fila), 1);
-    });
-    nodo.querySelector('.serie-head').appendChild(quitar);
-
-    conjunto.appendChild(nodo);
-    filas.push(fila);
-    nodo.querySelector('.sf-i').focus();
-  });
-  zonaAnadir.appendChild(anadir);
-  art.appendChild(zonaAnadir);
-
-  registro.ejercicios.push({
-    ejercicio_id: ejercicio.id,
-    ejercicio_nombre: ejercicio.nombre,
-    por_serie: porSerie,
-    por_serie_anadida: sinPrescribir,
-    filas,
-  });
+  // Los campos que se registran son los que el entrenador declaro en
+  // programado.por_serie, no una lista fija del codigo.
+  registro.ejercicios.push(montarRegistroDeEjercicio(art, ejercicio));
 
   const plegables = pintarDetalles(ejercicio.detalles);
   if (plegables) art.appendChild(plegables);

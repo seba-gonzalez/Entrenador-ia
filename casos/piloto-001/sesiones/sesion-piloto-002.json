@@ -163,7 +163,10 @@
                         "cuerpo": "El domingo hiciste 70 kg × 8 tres veces, con 3 repeticiones en reserva en las dos primeras y 2 en la tercera. Eso quedo registrado y es una carga comoda, no un limite. 75 kg es mi decision a partir de ahi: un escalon corto, porque una sola sesion no me dice todavia a que ritmo puedes subir."
                       }
                     ],
-                    "transicion": "Cuando termines, pasas al banco."
+                    "transicion": "Cuando termines, pasas al banco.",
+                    "margen": {
+                      "texto": "Puedes anadir 1 serie si terminas el bloque muy facil y mantienes RIR ≥ 2. Mas alla de eso, prefiero decidirlo yo con lo que me cuentes."
+                    }
                   },
                   {
                     "id": "s2-b",
@@ -476,6 +479,13 @@
       "tipo": "pendiente",
       "observacion": "La v1 sube volumen y carga en la sentadilla en la misma sesion, y el propio texto reconoce que quiere ver cual de los dos cambios se nota. Con dos variables moviendose a la vez, el feedback de esta sesion no va a poder atribuir el efecto a ninguna.",
       "motivo": "La devolucion decidio ambos cambios, asi que la v1 no se los invento. Pero la decision tiene un coste de lectura que nadie escribio: si el resultado sale raro, no habra forma de saber por que. O se acepta el coste a proposito, o se mueve una sola variable."
+    },
+    {
+      "sobre_version": 1,
+      "familia": "margen_no_declarado",
+      "tipo": "pendiente",
+      "observacion": "Solo la sentadilla declara margen de series extra. Los otros cuatro ejercicios no dicen nada, y la vista tampoco muestra nada junto al boton.",
+      "motivo": "No declarar margen no es lo mismo que no permitir ni que permitir todo: es que el entrenador todavia no lo escribio. Se deja visible como pendiente en vez de rellenarlo con un valor por defecto, que es justo lo que este caso existe para no hacer."
     }
   ]
 }

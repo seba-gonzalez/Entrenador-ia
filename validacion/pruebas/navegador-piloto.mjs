@@ -41,6 +41,7 @@ await cdp.send('Network.enable');
 await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
 
 const shaDevolucion = sha(DEV);
+const shaPublicacion = sha(`${CASO}/publicado/1.json`);
 
 /* ---------- B: bloques y sensaciones ---------- */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
@@ -53,12 +54,17 @@ const base = await page.evaluate(() => ({
   sensaciones: document.querySelectorAll('.sensacion').length,
   opciones: document.querySelectorAll('.sensacion .sens-btn').length,
   elegidas: document.querySelectorAll('.sens-btn.elegida').length,
+  casillas: document.querySelectorAll('.serie-row input[type=checkbox]').length,
+  campos: document.querySelectorAll('.serie-row .sf-i').length,
   aviso: document.getElementById('aviso')?.textContent || '',
   cuerpo: document.body.innerText,
 }));
 
 ok('B: 5 ejercicios', base.ejercicios === 5, `=${base.ejercicios}`);
-ok('B: 15 filas de serie', base.series === 15, `=${base.series}`);
+// Cinco filas para quince series: el registro se abre compacto.
+ok('B: 5 filas de registro, una por ejercicio', base.series === 5, `=${base.series}`);
+ok('B: sin ninguna casilla que marcar', base.casillas === 0, `=${base.casillas}`);
+ok('B: 13 campos en lugar de 39 + 15 casillas', base.campos === 13, `=${base.campos}`);
 ok('B: 3 pestanas', base.pestanas === 3, `=${base.pestanas}`);
 ok('B: los bloques se dibujan con su titulo',
   base.bloques.join('|') === 'Calentamiento (8 min)|Fuerza|Acondicionamiento', base.bloques.join('|'));
@@ -79,20 +85,31 @@ const sentadilla = await page.evaluate(() => {
 });
 ok('K: la sentadilla no muestra una carga prescrita',
   !sentadilla.presentacion.includes('Carga'), sentadilla.presentacion.join(','));
+// Una sola vez, porque el registro se abre compacto: esa entrada representa
+// las tres series.
 ok('K: pero si tiene donde registrar la carga',
-  sentadilla.etiquetasDeSerie.filter((e) => e === 'Carga').length === 3,
+  sentadilla.etiquetasDeSerie.filter((e) => e === 'Carga').length === 1,
   sentadilla.etiquetasDeSerie.join(','));
 ok('K: los campos de carga llegan vacios, sin sugerencia',
   sentadilla.valoresDeSerie.every((v) => v === ''));
 ok('K: la sesion explica como encontrarla', /Como encontrar tu carga hoy/.test(base.cuerpo));
 
 /* ---------- EJECUCION: la carga nace de la sesion ---------- */
-const filas = page.locator('.serie-row');
-for (const [i, rir] of [['0', '3'], ['1', '3'], ['2', '2']]) {
-  await filas.nth(Number(i)).locator('input[type=checkbox]').check();
-  await filas.nth(Number(i)).locator('.sf-i').nth(0).fill('70');
-  await filas.nth(Number(i)).locator('.sf-i').nth(1).fill('8');
-  await filas.nth(Number(i)).locator('.sf-i').nth(2).fill(rir);
+const ejercicios = page.locator('article.ex');
+
+// La sentadilla se abre por serie porque el RIR de la tercera fue distinto.
+await ejercicios.nth(0).locator('.sf-i').nth(0).fill('70');
+await ejercicios.nth(0).locator('.sf-i').nth(1).fill('8');
+await ejercicios.nth(0).locator('.sf-i').nth(2).fill('3');
+await ejercicios.nth(0).getByRole('button', { name: 'Registrar series por separado' }).click();
+await ejercicios.nth(0).locator('.serie-row').nth(2).locator('.sf-i').nth(2).fill('2');
+
+// El resto salio parejo: una entrada por ejercicio.
+const compactos = [null, ['14', '10', '3'], ['40', '10', '3'], ['2×16 kg', '30 m'], ['peso corporal', '10/lado']];
+for (let i = 1; i < compactos.length; i += 1) {
+  for (let j = 0; j < compactos[i].length; j += 1) {
+    await ejercicios.nth(i).locator('.sf-i').nth(j).fill(compactos[i][j]);
+  }
 }
 
 // Solo el primer bloque recibe sensacion: el segundo queda sin marcar a proposito.
@@ -103,26 +120,51 @@ const trasElegir = await page.evaluate(() => ({
   cargas: [...document.querySelectorAll('article.ex .serie-row .sf-i')].filter((i) => i.value !== '').length,
 }));
 ok('S: marcar una sensacion la deja marcada', trasElegir.elegidas === 1, `=${trasElegir.elegidas}`);
-ok('S: marcar "muy facil" no cambia ningun valor programado ni registrado',
-  trasElegir.cargas === 9, `campos con valor=${trasElegir.cargas}`);
+ok('S: marcar "muy facil" no cambia ningun valor registrado',
+  trasElegir.cargas === 19, `campos con valor=${trasElegir.cargas}`);
 
 await page.selectOption('#cierre .sf-s', 'completada');
 await page.fill('#cierre .sf-t', 'La fuerza me quedo corta: hice una cuarta serie de sentadilla a 70 kg que no estaba escrita.');
-await page.click('#cierre .btn-emitir');
+await page.locator('#cierre .btn-emitir').first().click();
+
+const sinPendientes = await page.evaluate(() => ({
+  preguntas: document.querySelectorAll('.zona-pendientes .sensacion').length,
+  resumen: !document.querySelector('.zona-resumen').hidden,
+}));
+ok('C: sin filas en blanco no se pregunta nada', sinPendientes.preguntas === 0, `=${sinPendientes.preguntas}`);
+ok('C: se pasa directo al resumen', sinPendientes.resumen === true);
+
+await page.locator('#cierre .btn-emitir').nth(1).click();
 await page.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
 
 const eje = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()));
 
 ok('E: se registran las 15 series', eje.series.length === 15, `=${eje.series.length}`);
-const sentadillas = eje.series.filter((s) => s.ejercicio_id === 's2a' || s.ejercicio_id === 's1-a');
+const sentadillas = eje.series.filter((s) => s.ejercicio_id === 's1-a');
 ok('E: la carga registrada es la que se escribio',
   sentadillas.every((s) => s.ejecutado.campos?.carga === '70'));
+ok('E: el detalle conserva el RIR distinto de la tercera',
+  sentadillas.map((s) => s.ejecutado.campos.rir).join(',') === '3,3,2',
+  sentadillas.map((s) => s.ejecutado.campos.rir).join(','));
 ok('E: lo programado conserva que la carga NO estaba prescrita',
   sentadillas.every((s) => s.programado.find((c) => c.campo === 'carga').prescrito === false));
 ok('E: y conserva por que no lo estaba',
   sentadillas.every((s) => typeof s.programado.find((c) => c.campo === 'carga').motivo_no_prescrito === 'string'));
 ok('E: ninguna serie inventa una carga que no se escribio',
   eje.series.every((s) => !s.ejecutado.registrado || 'carga' in s.ejecutado.campos || s.ejecutado.campos_sin_registrar.includes('carga')));
+ok('E: sin casilla, los datos bastan como evidencia',
+  eje.series.every((s) => s.realizada === true));
+
+/* ---------- CAP: como se observo cada serie ---------- */
+ok('CAP: la sentadilla se anoto serie a serie',
+  sentadillas.every((s) => s.capturado === 'por_serie'));
+ok('CAP: el remo se declaro en conjunto',
+  eje.series.filter((s) => s.ejercicio_id === 's1-c').every((s) => s.capturado === 'en_conjunto'));
+ok('CAP: declarar en conjunto no pierde series',
+  eje.series.filter((s) => s.ejercicio_id === 's1-c').length === 3);
+ok('CAP: y no se lee como si cada una se hubiera observado',
+  eje.series.filter((s) => s.capturado === 'en_conjunto').length === 12,
+  `=${eje.series.filter((s) => s.capturado === 'en_conjunto').length}`);
 
 ok('E: se emiten las dos sensaciones', eje.sensaciones.length === 2, `=${eje.sensaciones.length}`);
 const marcada = eje.sensaciones.find((s) => s.registrado === true);
@@ -137,20 +179,19 @@ ok('E: cada sensacion nombra su bloque',
 ok('E: la ejecucion queda marcada como demo', eje.demo === true);
 ok('E: sin ningun null', !JSON.stringify(eje).includes('null'));
 
-
 /* ---------- A: agregar una serie durante la ejecucion ---------- */
 {
   const p = await ctx.newPage();
   await p.goto(VISTA, { waitUntil: 'networkidle' });
 
   const antes = await p.evaluate(() => ({
-    botones: document.querySelectorAll('.btn-anadir').length,
+    botones: [...document.querySelectorAll('.btn-anadir')].filter((b) => b.textContent.startsWith('+')).length,
     filas: document.querySelectorAll('.serie-row').length,
   }));
   ok('A: hay un "agregar serie" por ejercicio', antes.botones === 5, `=${antes.botones}`);
 
   const sentadilla = p.locator('article.ex').first();
-  await sentadilla.locator('.btn-anadir').click();
+  await sentadilla.getByRole('button', { name: '+ Agregar serie' }).click();
 
   const tras = await p.evaluate(() => {
     const nueva = document.querySelector('.serie-row.anadida');
@@ -164,7 +205,9 @@ ok('E: sin ningun null', !JSON.stringify(eje).includes('null'));
       quitar: nueva.querySelectorAll('.btn-quitar').length,
     };
   });
-  ok('A: la fila nueva aparece al final del ejercicio', tras.filas === antes.filas + 1, `=${tras.filas}`);
+  // Anadir abre el detalle: no tiene sentido decir "asi fueron las 3" y colgarle
+  // una cuarta distinta. 5 compactas -> 3 de la sentadilla + 1 anadida + 4 compactas.
+  ok('A: agregar abre el detalle del ejercicio', tras.filas === 8, `=${tras.filas}`);
   ok('A: y se distingue de las programadas', tras.anadidas === 1 && /anadida|añadida/.test(tras.rotulo), tras.rotulo);
   ok('A: continua la numeracion', tras.numero === 'Serie 4', tras.numero);
   ok('A: permite registrar carga, reps y RIR', tras.campos.join(',') === 'Carga,Reps,RIR real', tras.campos.join(','));
@@ -180,14 +223,27 @@ ok('E: sin ningun null', !JSON.stringify(eje).includes('null'));
   ok('A: vacia si se puede quitar', await p.locator('.serie-row.anadida').count() === 0);
 
   // y ahora se registra de verdad
-  await sentadilla.locator('.btn-anadir').click();
+  await sentadilla.getByRole('button', { name: '+ Agregar serie' }).click();
   const fila = p.locator('.serie-row.anadida');
-  await fila.locator('input[type=checkbox]').check();
   await fila.locator('.sf-i').nth(0).fill('70');
   await fila.locator('.sf-i').nth(1).fill('8');
   await fila.locator('.sf-i').nth(2).fill('2');
+  // el resto de la sentadilla, que quedo abierta al anadir
+  for (const n of [0, 1, 2]) {
+    const f = sentadilla.locator('.serie-row').nth(n);
+    await f.locator('.sf-i').nth(0).fill('70');
+    await f.locator('.sf-i').nth(1).fill('8');
+    await f.locator('.sf-i').nth(2).fill('3');
+  }
+  const resto = [null, ['14', '10', '3'], ['40', '10', '3'], ['2×16 kg', '30 m'], ['peso corporal', '10/lado']];
+  for (let i = 1; i < resto.length; i += 1) {
+    for (let j = 0; j < resto[i].length; j += 1) {
+      await p.locator('article.ex').nth(i).locator('.sf-i').nth(j).fill(resto[i][j]);
+    }
+  }
   await p.selectOption('#cierre .sf-s', 'completada');
-  await p.click('#cierre .btn-emitir');
+  await p.locator('#cierre .btn-emitir').first().click();
+  await p.locator('#cierre .btn-emitir').nth(1).click();
   await p.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
   const eje2 = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
   await p.close();
@@ -201,6 +257,8 @@ ok('E: sin ningun null', !JSON.stringify(eje).includes('null'));
   ok('AE: las series programadas no se marcan como anadidas',
     eje2.series.filter((s) => s.anadida_en_ejecucion).length === 1);
   ok('AE: el total sube en una', eje2.series.length === 16, `=${eje2.series.length}`);
+  ok('AE: la serie anadida se anota por serie, nunca en conjunto',
+    extra?.capturado === 'por_serie', extra?.capturado);
 }
 
 /* ---------- M: comodo en una pantalla pequena ---------- */
@@ -219,7 +277,6 @@ for (const ancho of [320, 390]) {
       altoCampo: i.getBoundingClientRect().height,
       altoBotonSensacion: document.querySelector('.sens-btn').getBoundingClientRect().height,
       altoAnadir: document.querySelector('.btn-anadir').getBoundingClientRect().height,
-      casilla: document.querySelector('.serie-head input').getBoundingClientRect().width,
       autocorrige: i.getAttribute('autocapitalize') !== 'off',
     };
   });
@@ -230,12 +287,134 @@ for (const ancho of [320, 390]) {
   ok(`M(${ancho}): los campos no disparan el zoom de Safari`, m.fuenteCampo >= 16 && m.fuenteArea >= 16,
     `campo ${m.fuenteCampo}px area ${m.fuenteArea}px`);
   ok(`M(${ancho}): se pueden tocar sin apuntar`,
-    m.altoCampo >= 44 && m.altoBotonSensacion >= 44 && m.altoAnadir >= 44 && m.casilla >= 22,
-    `campo ${Math.round(m.altoCampo)} sens ${Math.round(m.altoBotonSensacion)} anadir ${Math.round(m.altoAnadir)} casilla ${Math.round(m.casilla)}`);
+    m.altoCampo >= 44 && m.altoBotonSensacion >= 44 && m.altoAnadir >= 44,
+    `campo ${Math.round(m.altoCampo)} sens ${Math.round(m.altoBotonSensacion)} anadir ${Math.round(m.altoAnadir)}`);
   ok(`M(${ancho}): el teclado no corrige lo que se escribe`, m.autocorrige === false);
 }
 
 /* ---------- FEEDBACK: la devolucion corregida ---------- */
+
+
+/* ---------- MG: el margen lo escribe el entrenador; el codigo lo muestra ----------
+   La sesion 2 lo declara, pero es borrador y no se renderiza. Para probar el
+   camino de codigo se republica temporalmente la sesion 1 con el margen puesto
+   y se restaura al terminar: no queda nada tocado en el repositorio.        */
+{
+  const PUB = `${CASO}/publicado/1.json`;
+  const IND = `${CASO}/publicado/indice.json`;
+  const pubOriginal = readFileSync(PUB, 'utf8');
+  const indOriginal = readFileSync(IND, 'utf8');
+  const MARGEN = 'Puedes anadir 1 serie si terminas el bloque muy facil y mantienes RIR ≥ 2.';
+
+  const j = JSON.parse(pubOriginal);
+  for (const tarjeta of j.contenido.paneles.rutina.tarjetas) {
+    for (const e of tarjeta.ejercicios || []) if (e.id === 's1-a') e.margen = { texto: MARGEN };
+  }
+  writeFileSync(PUB, JSON.stringify(j, null, 2) + '\n');
+  const indice = JSON.parse(indOriginal);
+  indice.publicaciones.find((x) => x.p === indice.vigente).hash =
+    `sha256:${crypto.createHash('sha256').update(readFileSync(PUB)).digest('hex')}`;
+  writeFileSync(IND, JSON.stringify(indice, null, 2) + '\n');
+
+  let visto;
+  let emitido;
+  try {
+    const p = await ctx.newPage();
+    const c = await ctx.newCDPSession(p);
+    await c.send('Network.enable');
+    await c.send('Network.setCacheDisabled', { cacheDisabled: true });
+    await p.goto(VISTA, { waitUntil: 'networkidle' });
+
+    const primero = p.locator('article.ex').first();
+    visto = await p.evaluate((texto) => ({
+      enSentadilla: [...document.querySelectorAll('article.ex')][0].innerText.includes(texto),
+      enOtros: [...document.querySelectorAll('article.ex')].slice(1).some((a) => a.innerText.includes(texto)),
+      bloquea: document.querySelector('article.ex .btn-anadir').disabled,
+    }), MARGEN);
+
+    await primero.getByRole('button', { name: '+ Agregar serie' }).click();
+    await primero.getByRole('button', { name: '+ Agregar serie' }).click();
+    for (const n of [0, 1, 2, 3, 4]) {
+      const f = primero.locator('.serie-row').nth(n);
+      await f.locator('.sf-i').nth(0).fill('70');
+      await f.locator('.sf-i').nth(1).fill('8');
+      await f.locator('.sf-i').nth(2).fill('3');
+    }
+    const resto = [null, ['14', '10', '3'], ['40', '10', '3'], ['2×16 kg', '30 m'], ['peso corporal', '10/lado']];
+    for (let i = 1; i < resto.length; i += 1) {
+      for (let k = 0; k < resto[i].length; k += 1) {
+        await p.locator('article.ex').nth(i).locator('.sf-i').nth(k).fill(resto[i][k]);
+      }
+    }
+    await p.selectOption('#cierre .sf-s', 'completada');
+    await p.locator('#cierre .btn-emitir').first().click();
+    await p.locator('#cierre .btn-emitir').nth(1).click();
+    await p.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
+    emitido = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
+    await p.close();
+  } finally {
+    writeFileSync(PUB, pubOriginal);
+    writeFileSync(IND, indOriginal);
+  }
+
+  ok('MG: el margen aparece junto al ejercicio que lo declara', visto.enSentadilla === true);
+  ok('MG: y no aparece donde no se declaro', visto.enOtros === false);
+  ok('MG: el codigo no bloquea al llegar al margen', visto.bloquea === false);
+  const anadidas = emitido.series.filter((s) => s.anadida_en_ejecucion);
+  ok('MG: se pueden anadir mas series de las autorizadas — el codigo registra, no decide',
+    anadidas.length === 2, `=${anadidas.length}`);
+  ok('MG: y cada una conserva el margen declarado, literal',
+    anadidas.every((s) => s.margen_declarado === MARGEN),
+    anadidas.map((s) => s.margen_declarado).join(' | ').slice(0, 60));
+  ok('MG: las programadas no llevan margen', emitido.series.filter((s) => !s.anadida_en_ejecucion)
+    .every((s) => !('margen_declarado' in s)));
+  ok('MG: la publicacion quedo restaurada', sha(`${CASO}/publicado/1.json`) === shaPublicacion);
+}
+
+/* ---------- BL: una fila en blanco se pregunta, y solo esa ---------- */
+{
+  const p = await ctx.newPage();
+  await p.goto(VISTA, { waitUntil: 'networkidle' });
+  const ex = p.locator('article.ex');
+
+  // Todo registrado menos el remo, que queda entero en blanco.
+  const v = [['70', '8', '3'], ['14', '10', '3'], null, ['2×16 kg', '30 m'], ['peso corporal', '10/lado']];
+  for (let i = 0; i < v.length; i += 1) {
+    if (!v[i]) continue;
+    for (let k = 0; k < v[i].length; k += 1) await ex.nth(i).locator('.sf-i').nth(k).fill(v[i][k]);
+  }
+  await p.selectOption('#cierre .sf-s', 'parcial');
+  await p.evaluate(() => navigator.clipboard.writeText('PORTAPAPELES-INTACTO'));
+  await p.locator('#cierre .btn-emitir').first().click();
+
+  const estado1 = await p.evaluate(() => ({
+    preguntas: [...document.querySelectorAll('.zona-pendientes .sf-l')].map((n) => n.textContent),
+    resumen: !document.querySelector('.zona-resumen').hidden,
+    mensaje: document.querySelector('#cierre .emitir-estado').textContent,
+  }));
+  const papel1 = await p.evaluate(() => navigator.clipboard.readText());
+  ok('BL: pregunta solo por el ejercicio en blanco', estado1.preguntas.length === 1,
+    estado1.preguntas.join(' / '));
+  ok('BL: y lo nombra con cuantas series cubre',
+    /Remo/.test(estado1.preguntas[0]) && /3 series/.test(estado1.preguntas[0]), estado1.preguntas[0]);
+  ok('BL: no emite nada mientras no se responda', papel1 === 'PORTAPAPELES-INTACTO');
+  ok('BL: no muestra resumen todavia', estado1.resumen === false);
+  ok('BL: dice que no lo decide por el alumno', /no lo elijo por ti/.test(estado1.mensaje));
+
+  await p.locator('.zona-pendientes .sens-btn[data-respuesta=hecha_sin_datos]').click();
+  await p.locator('#cierre .btn-emitir').nth(1).click();
+  await p.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
+  const e = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
+  await p.close();
+
+  const remo = e.series.filter((s) => s.ejercicio_id === 's1-c');
+  ok('BL: las 3 series del remo siguen existiendo', remo.length === 3, `=${remo.length}`);
+  ok('BL: "la hice sin anotar" -> realizada, sin datos',
+    remo.every((s) => s.realizada === true && s.ejecutado.registrado === false));
+  ok('BL: con su motivo, no en blanco',
+    remo.every((s) => /no anoto ningun valor/i.test(s.ejecutado.motivo)), remo[0].ejecutado.motivo);
+  ok('BL: y sin inventarle ningun campo', remo.every((s) => !('campos' in s.ejecutado)));
+}
 
 /* ---------- FEEDBACK: no responder no es responder ---------- */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
