@@ -295,3 +295,43 @@ partida sea verdadero no convierte el salto en un dato.
 **Dónde se comprueba:** en ningún sitio automáticamente. Es un juicio, y por eso
 vive en las observaciones del entrenador con familia `dato_inventado`, no en el
 validador (principio 1.2).
+
+### D-030 · Una serie que no estaba programada se registra, y se distingue
+La vista ofrece «+ Agregar serie» bajo cada ejercicio. La fila añadida registra
+los mismos campos que las programadas y viaja marcada con
+`anadida_en_ejecucion: true`, con todos sus campos declarados no prescritos y
+con su motivo.
+**Por qué:** el alumno a veces se desvía, y sin esta opción lo que hizo de más
+sólo podía llegar contado en texto libre. Es exactamente como se perdió la cuarta
+sentadilla del piloto: la devolución tuvo que decir «la tengo por lo que me
+cuentas y no por el registro».
+**Lo que el botón NO significa:** no recomienda hacer más series ni sugiere que
+falten. Sólo deja constancia de lo que ya ocurrió.
+**Sin tope, a propósito:** limitar cuántas series se pueden añadir sería una
+regla de entrenamiento escrita en el código (principio 1.2), y el código no sabe
+cuánto es demasiado para esta persona en este día.
+**Se puede quitar sólo mientras esté vacía.** Con datos escritos, borrarla sería
+destruir un registro sin dejar constancia (principio 1.3).
+
+### D-031 · Una sesión ya ejecutada no se reescribe: la corrección viaja a la siguiente
+Cuando se detecta un problema de contenido en una sesión que ya se publicó y ya
+se entrenó, no se corrige ahí. Queda como observación pendiente sobre la versión
+publicada, con su motivo, y el criterio se aplica en la sesión siguiente.
+**Por qué:** §6.2 no permite una publicación nueva desde que empieza la
+ejecución. Reescribirla haría que el alumno abriera hoy algo distinto de lo que
+tuvo delante cuando entrenó, y toda la evidencia posterior pasaría a apuntar a un
+contenido que nadie ejecutó.
+**Lo que sí se puede corregir:** la devolución, publicando una nueva y
+conservando la anterior. Corregir crea; no reemplaza (D-007).
+**Coste asumido:** el alumno sigue viendo la redacción vieja de esa sesión. Es
+preferible a que su historial diga algo que no ocurrió.
+
+### D-032 · Una sesión sin molestia es una referencia, no una conclusión
+Que un síntoma no aparezca durante una sesión se registra como observación
+positiva y como algo que se sigue mirando. No se escribe como si estableciera
+cómo responde el cuerpo del alumno.
+**Por qué:** «la lumbar no apareció hoy» es un hecho; «la lumbar no es un tema de
+entrenar» es una inferencia a partir de una sola sesión, presentada como hecho
+—justo lo que el principio 1.4 prohíbe—. Y es la clase de frase que después nadie
+vuelve a cuestionar, porque ya está escrita en la ficha del alumno.
+**Cómo se dice:** qué se observó, que es buena señal, y que se sigue observando.

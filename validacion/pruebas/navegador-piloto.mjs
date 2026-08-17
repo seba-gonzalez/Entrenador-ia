@@ -16,7 +16,7 @@ import crypto from 'crypto';
 const REPO = process.env.REPO || new URL('../../', import.meta.url).pathname.replace(/\/$/, '');
 const PUERTO = process.env.PUERTO || '4173';
 const CASO = `${REPO}/casos/piloto-001`;
-const DEV = `${CASO}/devoluciones/sesion-piloto-001/1.json`;
+const DEV = `${CASO}/devoluciones/sesion-piloto-001/2.json`;
 const VISTA = `http://127.0.0.1:${PUERTO}/app/alumno/?caso=piloto-001`;
 const VISTA_DEMO = `http://127.0.0.1:${PUERTO}/app/alumno/`;
 
@@ -137,6 +137,106 @@ ok('E: cada sensacion nombra su bloque',
 ok('E: la ejecucion queda marcada como demo', eje.demo === true);
 ok('E: sin ningun null', !JSON.stringify(eje).includes('null'));
 
+
+/* ---------- A: agregar una serie durante la ejecucion ---------- */
+{
+  const p = await ctx.newPage();
+  await p.goto(VISTA, { waitUntil: 'networkidle' });
+
+  const antes = await p.evaluate(() => ({
+    botones: document.querySelectorAll('.btn-anadir').length,
+    filas: document.querySelectorAll('.serie-row').length,
+  }));
+  ok('A: hay un "agregar serie" por ejercicio', antes.botones === 5, `=${antes.botones}`);
+
+  const sentadilla = p.locator('article.ex').first();
+  await sentadilla.locator('.btn-anadir').click();
+
+  const tras = await p.evaluate(() => {
+    const nueva = document.querySelector('.serie-row.anadida');
+    return {
+      filas: document.querySelectorAll('.serie-row').length,
+      anadidas: document.querySelectorAll('.serie-row.anadida').length,
+      rotulo: nueva?.querySelector('.serie-marca')?.textContent || '',
+      numero: nueva?.querySelector('.serie-head span')?.textContent || '',
+      campos: [...nueva.querySelectorAll('.sf-l')].map((n) => n.textContent),
+      vacios: [...nueva.querySelectorAll('.sf-i')].every((i) => i.value === ''),
+      quitar: nueva.querySelectorAll('.btn-quitar').length,
+    };
+  });
+  ok('A: la fila nueva aparece al final del ejercicio', tras.filas === antes.filas + 1, `=${tras.filas}`);
+  ok('A: y se distingue de las programadas', tras.anadidas === 1 && /anadida|añadida/.test(tras.rotulo), tras.rotulo);
+  ok('A: continua la numeracion', tras.numero === 'Serie 4', tras.numero);
+  ok('A: permite registrar carga, reps y RIR', tras.campos.join(',') === 'Carga,Reps,RIR real', tras.campos.join(','));
+  ok('A: llega vacia, sin copiar lo programado', tras.vacios === true);
+
+  // se puede quitar mientras este vacia, y deja de poder quitarse en cuanto hay dato
+  await sentadilla.locator('.serie-row.anadida .sf-i').first().fill('70');
+  await p.locator('.serie-row.anadida .btn-quitar').click();
+  ok('A: con datos escritos, quitar no borra la fila',
+    await p.locator('.serie-row.anadida').count() === 1);
+  await sentadilla.locator('.serie-row.anadida .sf-i').first().fill('');
+  await p.locator('.serie-row.anadida .btn-quitar').click();
+  ok('A: vacia si se puede quitar', await p.locator('.serie-row.anadida').count() === 0);
+
+  // y ahora se registra de verdad
+  await sentadilla.locator('.btn-anadir').click();
+  const fila = p.locator('.serie-row.anadida');
+  await fila.locator('input[type=checkbox]').check();
+  await fila.locator('.sf-i').nth(0).fill('70');
+  await fila.locator('.sf-i').nth(1).fill('8');
+  await fila.locator('.sf-i').nth(2).fill('2');
+  await p.selectOption('#cierre .sf-s', 'completada');
+  await p.click('#cierre .btn-emitir');
+  await p.waitForFunction(() => /Copiado/.test(document.querySelector('#cierre .emitir-estado').textContent));
+  const eje2 = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
+  await p.close();
+
+  const extra = eje2.series.find((s) => s.anadida_en_ejecucion);
+  ok('AE: la serie anadida llega al registro', !!extra);
+  ok('AE: con lo que se escribio', extra?.ejecutado.campos.carga === '70' && extra?.ejecutado.campos.rir === '2');
+  ok('AE: declarando que no estaba programada', extra?.anadida_en_ejecucion === true);
+  ok('AE: y que nada estaba prescrito para ella',
+    extra?.programado.every((c) => c.prescrito === false && c.motivo_no_prescrito));
+  ok('AE: las series programadas no se marcan como anadidas',
+    eje2.series.filter((s) => s.anadida_en_ejecucion).length === 1);
+  ok('AE: el total sube en una', eje2.series.length === 16, `=${eje2.series.length}`);
+}
+
+/* ---------- M: comodo en una pantalla pequena ---------- */
+for (const ancho of [320, 390]) {
+  const ctxM = await navegador.newContext({ viewport: { width: ancho, height: 900 } });
+  const p = await ctxM.newPage();
+  await p.goto(VISTA, { waitUntil: 'networkidle' });
+  const m = await p.evaluate(() => {
+    const doc = document.documentElement;
+    const i = document.querySelector('.sf-i');
+    const px = (n, prop) => parseFloat(getComputedStyle(n)[prop]);
+    return {
+      desborda: doc.scrollWidth > doc.clientWidth,
+      fuenteCampo: px(i, 'fontSize'),
+      fuenteArea: px(document.querySelector('.sf-t'), 'fontSize'),
+      altoCampo: i.getBoundingClientRect().height,
+      altoBotonSensacion: document.querySelector('.sens-btn').getBoundingClientRect().height,
+      altoAnadir: document.querySelector('.btn-anadir').getBoundingClientRect().height,
+      casilla: document.querySelector('.serie-head input').getBoundingClientRect().width,
+      autocorrige: i.getAttribute('autocapitalize') !== 'off',
+    };
+  });
+  await ctxM.close();
+  ok(`M(${ancho}): la pagina no se desplaza a lo ancho`, m.desborda === false);
+  // Safari hace zoom al enfocar cualquier campo de menos de 16px, y tras el zoom
+  // ya no cabe: por eso esta es LA comprobacion del desplazamiento horizontal.
+  ok(`M(${ancho}): los campos no disparan el zoom de Safari`, m.fuenteCampo >= 16 && m.fuenteArea >= 16,
+    `campo ${m.fuenteCampo}px area ${m.fuenteArea}px`);
+  ok(`M(${ancho}): se pueden tocar sin apuntar`,
+    m.altoCampo >= 44 && m.altoBotonSensacion >= 44 && m.altoAnadir >= 44 && m.casilla >= 22,
+    `campo ${Math.round(m.altoCampo)} sens ${Math.round(m.altoBotonSensacion)} anadir ${Math.round(m.altoAnadir)} casilla ${Math.round(m.casilla)}`);
+  ok(`M(${ancho}): el teclado no corrige lo que se escribe`, m.autocorrige === false);
+}
+
+/* ---------- FEEDBACK: la devolucion corregida ---------- */
+
 /* ---------- FEEDBACK: no responder no es responder ---------- */
 await page.goto(VISTA, { waitUntil: 'networkidle' });
 await page.click('.tab-btn:nth-child(3)');
@@ -205,6 +305,47 @@ ok('D: las decisiones y lo que solo se observa no se mezclan',
 ok('D: la memoria incluye lo que funciono, no solo problemas',
   devolucion.titulos.includes('Lo que vamos sabiendo de ti'));
 
+/* ---------- H: el historial y el formulario no se confunden ---------- */
+const hitos = await page.evaluate(() => {
+  const nodos = [...document.querySelectorAll('#tab-feedback .hito, #tab-feedback .card')];
+  return {
+    rotulos: [...document.querySelectorAll('#tab-feedback .hito-texto')].map((n) => n.textContent),
+    fecha: document.querySelector('#tab-feedback .hito-fecha')?.textContent || '',
+    orden: nodos.map((n) => n.classList.contains('hito')
+      ? `HITO:${n.querySelector('.hito-texto').textContent}`
+      : `tarjeta:${n.querySelector('h2')?.textContent || '?'}`),
+    puntos: [...document.querySelectorAll('#tab-feedback .puntos li')].map((n) => n.textContent),
+    parrafosLargos: [...document.querySelectorAll('#tab-feedback .card p')]
+      .filter((n) => !n.classList.contains('cita') && n.textContent.length > 400).length,
+  };
+});
+ok('H: la pestana separa el historial del formulario de hoy',
+  hitos.rotulos.length === 2 && /historial/i.test(hitos.rotulos[0]) && /hoy/i.test(hitos.rotulos[1]),
+  hitos.rotulos.join(' | '));
+ok('H: el historial va primero y el formulario despues',
+  hitos.orden.indexOf('HITO:' + hitos.rotulos[0]) === 0
+  && hitos.orden.indexOf('HITO:' + hitos.rotulos[1]) === hitos.orden.length - 2,
+  hitos.orden.join(' > '));
+ok('H: el historial dice de cuando es', /^\d{4}-\d{2}-\d{2}$/.test(hitos.fecha), hitos.fecha);
+
+/* ---------- L: la lectura del entrenador se puede recorrer con la vista ---------- */
+ok('L: "Lo que entendi" viene en puntos', hitos.puntos.length >= 3, `=${hitos.puntos.length}`);
+ok('L: ningun punto es un parrafo disfrazado', hitos.puntos.every((p) => p.length < 260),
+  `mas largo=${Math.max(...hitos.puntos.map((p) => p.length))}`);
+ok('L: no queda ningun muro de texto en la pestana', hitos.parrafosLargos === 0, `=${hitos.parrafosLargos}`);
+ok('L: sigue diciendo que la cuarta serie no quedo registrada',
+  hitos.puntos.some((p) => /cuarta serie/i.test(p) && /no la tengo registrada|no quedo registrada/i.test(p)),
+  hitos.puntos.find((p) => /cuarta serie/i.test(p))?.slice(0, 70) || '(no aparece)');
+
+/* ---------- LUMBAR: una sesion sin molestia no es una conclusion ---------- */
+{
+  const texto = await page.evaluate(() => document.body.innerText);
+  ok('LU: no se afirma que la lumbar sea "un tema de estar sentada, no de entrenar"',
+    !/no de entrenar/i.test(texto));
+  ok('LU: se dice que no aparecio y que se sigue observando',
+    /no aparecio durante esta sesion/i.test(texto) && /seguimos observando/i.test(texto));
+}
+
 /* ---------- la ausencia de devolucion no es un error ---------- */
 {
   const p = await ctx.newPage();
@@ -260,6 +401,7 @@ ok('D: la memoria incluye lo que funciono, no solo problemas',
     `${CASO}/publicado/1.json`,
     `${CASO}/ejecuciones/sesion-piloto-001.json`,
     `${CASO}/feedback/sesion-piloto-001.json`,
+    `${CASO}/devoluciones/sesion-piloto-001/1.json`,
     DEV,
     `${REPO}/app/alumno/registro-feedback.js`,
   ];
@@ -270,11 +412,11 @@ ok('D: la memoria incluye lo que funciono, no solo problemas',
   }
   ok('P8: el piloto no arrastra datos del caso real', encontrados.length === 0, encontrados.join(' '));
 
-  const marcados = archivos.slice(0, 7).filter((f) => {
+  const marcados = archivos.slice(0, 8).filter((f) => {
     const j = JSON.parse(readFileSync(f, 'utf8'));
     return j.demo === true && typeof j.aviso_demo === 'string';
   });
-  ok('P8: los siete archivos del caso se declaran ficticios', marcados.length === 7, `=${marcados.length}`);
+  ok('P8: los ocho archivos del caso se declaran ficticios', marcados.length === 8, `=${marcados.length}`);
   ok('P8: y el aviso dice que la alumna no existe',
     JSON.parse(readFileSync(`${CASO}/alumno.json`, 'utf8')).aviso_demo.includes('no existe'));
 }

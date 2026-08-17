@@ -19,14 +19,34 @@ const validarAlumno = esquema('alumno');
 const validarFeedback = esquema('feedback');
 const validarDevolucion = esquema('devolucion');
 const validarSesion = esquema('sesion');
+const validarEjecucion = esquema('ejecucion');
 
 const alumno = caso('alumno.json');
 const feedback = caso('feedback/sesion-piloto-001.json');
 const devolucion = caso('devoluciones/sesion-piloto-001/1.json');
+const devolucion2 = caso('devoluciones/sesion-piloto-001/2.json');
 const sesion1 = caso('sesiones/sesion-piloto-001.json');
 const sesion2 = caso('sesiones/sesion-piloto-002.json');
 
+const ejecucion = caso('ejecuciones/sesion-piloto-001.json');
+
 const clon = (o) => JSON.parse(JSON.stringify(o));
+
+/** Una cuarta serie de sentadilla que no estaba en la publicacion. */
+const serieAnadida = () => ({
+  ejercicio_id: 's1-a',
+  ejercicio_nombre: 'Sentadilla con barra',
+  serie: 4,
+  realizada: true,
+  anadida_en_ejecucion: true,
+  programado: [
+    { campo: 'carga', etiqueta: 'Carga', prescrito: false, motivo_no_prescrito: 'no estaba programada' },
+    { campo: 'reps', etiqueta: 'Reps', prescrito: false, motivo_no_prescrito: 'no estaba programada' },
+    { campo: 'rir', etiqueta: 'RIR real', prescrito: false, motivo_no_prescrito: 'no estaba programada' },
+  ],
+  ejecutado: { registrado: true, campos: { carga: '70', reps: '8', rir: '2' }, campos_sin_registrar: [] },
+  motivo_diferencia: { registrado: false, motivo: 'Esta vista no captura un motivo por serie.' },
+});
 const con = (base, cambiar) => { const c = clon(base); cambiar(c); return c; };
 
 const pruebas = [
@@ -71,6 +91,13 @@ const pruebas = [
 
   // --- devolucion: la interpretacion no puede disfrazarse de hecho ---
   [validarDevolucion, 'acepta la devolucion real publicada', devolucion, true],
+  [validarDevolucion, 'acepta la devolucion corregida, escrita en puntos', devolucion2, true],
+  [validarDevolucion, 'rechaza una lectura que no dice nada, ni texto ni puntos', con(devolucion2, (d) => {
+    delete d.contenido.entendido.puntos;
+  }), false],
+  [validarDevolucion, 'rechaza un punto de la lectura sin texto', con(devolucion2, (d) => {
+    d.contenido.entendido.puntos[0] = { destacado: 'Solo el titular:' };
+  }), false],
   [validarDevolucion, 'rechaza declarar la lectura del entrenador como no interpretacion', con(devolucion, (d) => {
     d.contenido.entendido.es_interpretacion = false;
   }), false],
@@ -93,9 +120,32 @@ const pruebas = [
     d.contenido.dijo.sensaciones[0].percepcion = 'regular';
   }), false],
 
+  // --- serie anadida durante la ejecucion ---
+  [validarEjecucion, 'acepta una serie anadida sin nada prescrito', con(ejecucion, (e) => {
+    e.series.push(serieAnadida());
+  }), true],
+  [validarEjecucion, 'rechaza una serie anadida que dice traer algo prescrito', con(ejecucion, (e) => {
+    const s = serieAnadida();
+    s.programado[0] = { campo: 'carga', etiqueta: 'Carga', prescrito: true, valor: '70 kg' };
+    e.series.push(s);
+  }), false],
+  [validarEjecucion, 'rechaza una serie anadida sin decir por que no habia nada prescrito', con(ejecucion, (e) => {
+    const s = serieAnadida();
+    delete s.programado[0].motivo_no_prescrito;
+    e.series.push(s);
+  }), false],
+  [validarEjecucion, 'rechaza declarar anadida_en_ejecucion en false', con(ejecucion, (e) => {
+    e.series[0].anadida_en_ejecucion = false;
+  }), false],
+
   // --- sesiones del piloto: bloques, preguntas respondibles y estado borrador ---
   [validarSesion, 'acepta la sesion 1 publicada', sesion1, true],
   [validarSesion, 'acepta el borrador de la sesion 2', sesion2, true],
+  [validarSesion, 'acepta una tarjeta de programa con su porque plegado', sesion2, true],
+  [validarSesion, 'rechaza un plegable sin resumen', con(sesion2, (s) => {
+    const t2 = s.versiones[0].contenido.paneles.rutina.tarjetas.find((x) => x.id === 'aproximacion');
+    delete t2.detalles[0].resumen;
+  }), false],
   [validarSesion, 'rechaza un borrador que ya trae version aprobada', con(sesion2, (s) => {
     s.version_aprobada = 1;
   }), false],
@@ -106,7 +156,8 @@ const pruebas = [
     s.checklist_aprobacion = clon(sesion1.checklist_aprobacion);
   }), false],
   [validarSesion, 'rechaza un bloque sin etiqueta', con(sesion2, (s) => {
-    delete s.versiones[0].contenido.paneles.rutina.tarjetas[1].bloques[0].etiqueta;
+    const t2 = s.versiones[0].contenido.paneles.rutina.tarjetas.find((x) => x.tipo === 'sesion');
+    delete t2.bloques[0].etiqueta;
   }), false],
   [validarSesion, 'rechaza preguntas respondibles escritas como texto suelto', con(sesion1, (s) => {
     s.versiones[1].contenido.paneles.feedback.tarjetas[0].items = ['¿Como te fue?'];

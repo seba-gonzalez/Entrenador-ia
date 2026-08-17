@@ -141,11 +141,33 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["ejercicio_id", "ejercicio_nombre", "serie", "realizada", "programado", "ejecutado", "motivo_diferencia"],
+
+      "allOf": [
+        {
+          "title": "Una serie que no estaba programada no puede declarar nada prescrito",
+          "if": { "required": ["anadida_en_ejecucion"] },
+          "then": {
+            "properties": {
+              "programado": {
+                "items": {
+                  "required": ["campo", "etiqueta", "prescrito", "motivo_no_prescrito"],
+                  "properties": { "prescrito": { "const": false } }
+                }
+              }
+            }
+          }
+        }
+      ],
+
       "properties": {
         "ejercicio_id": { "type": "string", "minLength": 1 },
         "ejercicio_nombre": { "type": "string", "minLength": 1 },
         "serie": { "type": "integer", "minimum": 1 },
         "realizada": { "type": "boolean" },
+        "anadida_en_ejecucion": {
+          "const": true,
+          "description": "La serie no estaba en la publicacion: la anadio el alumno mientras entrenaba. Solo aparece cuando es cierto, y su ausencia significa que la serie estaba programada — que es comprobable mirando la publicacion, no una suposicion. No existe el valor false: una serie programada no necesita declarar que no fue anadida."
+        },
         "programado": {
           "type": "array",
           "minItems": 1,

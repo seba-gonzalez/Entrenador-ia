@@ -167,3 +167,55 @@
   .sens-btn.elegida{background:var(--accent);border-color:var(--accent);color:var(--surface);}
   .sens-btn:focus-visible{outline:2px solid var(--accent-soft);outline-offset:1px;}
   .cita{font-size:14.5px;line-height:1.6;color:var(--text);border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;padding:12px 14px;margin:0 0 10px;}
+
+/* ============================================================
+   ANEXO EJECUCIÓN EN EL MÓVIL.
+   La página nunca desbordó a lo ancho: cabe a 320 px. El desplazamiento
+   horizontal que aparecía en el iPad lo provoca Safari, que hace zoom solo al
+   enfocar un campo con letra menor de 16 px, y después de ese zoom ya no cabe.
+   Por eso 16px aquí no es una preferencia estética: es lo que evita el zoom.
+   Lo demás es tamaño de toque — 44 px es el mínimo con el que se acierta un
+   campo de pie, con las manos ocupadas y sin mirar mucho.
+   ============================================================ */
+  .sf-i,.sf-s,.sf-t{font-size:16px;}
+  .sf-i{min-height:44px;padding:8px 6px;}
+  .sf-s{min-height:44px;}
+  .sf-l{font-size:10px;margin-bottom:4px;}
+  .serie-row{padding:10px;}
+  .serie-head{min-height:32px;font-size:13px;}
+  .serie-head input[type=checkbox]{width:22px;height:22px;}
+  .serie-fields{gap:8px;margin-top:8px;}
+  .sens-btn{min-height:44px;font-size:13px;}
+  .btn-emitir{min-height:48px;font-size:15px;}
+
+/* ============================================================
+   ANEXO SERIE AÑADIDA.
+   Una serie que no estaba programada se registra igual que las demás, pero se
+   ve distinta: nadie debe confundir después lo que se pidió con lo que se hizo
+   de más. El botón no sugiere hacer más series — solo deja constancia si ya se
+   hicieron.
+   ============================================================ */
+  .serie-row.anadida{border-left:3px solid var(--accent-soft);}
+  .serie-marca{font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-soft);}
+  .fila-anadir{display:flex;gap:8px;align-items:center;margin:-4px 0 10px;}
+  .btn-anadir{font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;color:var(--accent-soft);background:transparent;border:1px dashed var(--border);border-radius:8px;padding:10px 14px;min-height:44px;cursor:pointer;flex:1;}
+  .btn-anadir:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-anadir:focus-visible{outline:2px solid var(--accent-soft);outline-offset:1px;}
+  .btn-quitar{font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:var(--muted);background:transparent;border:none;padding:6px 8px;min-height:32px;cursor:pointer;margin-left:auto;}
+  .btn-quitar:hover{color:var(--caution);}
+
+/* ============================================================
+   ANEXO FEEDBACK — qué ya pasó y qué toca ahora.
+   Dos cosas distintas viven en la misma pestaña: la respuesta que ya recibió y
+   el formulario que tiene delante. Sin una separación explícita se leen como
+   una sola pantalla y no se sabe qué hay que contestar.
+   ============================================================ */
+  .hito{display:flex;align-items:center;gap:10px;margin:22px 0 12px;}
+  .hito:first-child{margin-top:2px;}
+  .hito-texto{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.10em;color:var(--accent-soft);white-space:nowrap;}
+  .hito-linea{flex:1;height:1px;background:var(--border);}
+  .hito-fecha{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .puntos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .puntos li{font-size:14px;line-height:1.5;color:var(--muted);padding-left:15px;position:relative;}
+  .puntos li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .puntos strong{color:var(--text);font-weight:600;}

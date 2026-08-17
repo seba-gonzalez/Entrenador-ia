@@ -57,6 +57,56 @@ const CLASE_DIA = {
 
 /* ---------- ejercicio ---------- */
 
+const ETIQUETAS_SERIE = {
+  anadir: '+ Agregar serie',
+  quitar: 'Quitar',
+  marca: 'añadida',
+  motivoNoPrescrito: 'Esta serie no estaba programada: la anadio el alumno durante la sesion, asi que no hay nada prescrito contra que compararla.',
+};
+
+/**
+ * Dibuja una fila de registro por serie.
+ *
+ * Las series programadas y las anadidas usan esta misma funcion, y no por
+ * ahorrar codigo: se registran con los mismos campos porque son el mismo tipo
+ * de dato. Lo unico que cambia es que la anadida no tiene nada prescrito
+ * detras, y eso se dice en el propio registro en vez de deducirse despues.
+ */
+function pintarFila(porSerie, numero, anadida) {
+  const fila = el('div', anadida ? 'serie-row anadida' : 'serie-row');
+
+  const cabecera = el('label', 'serie-head');
+  const marca = document.createElement('input');
+  marca.type = 'checkbox';
+  cabecera.appendChild(marca);
+  cabecera.appendChild(el('span', null, `Serie ${numero}`));
+  if (anadida) cabecera.appendChild(el('span', 'serie-marca', ETIQUETAS_SERIE.marca));
+  fila.appendChild(cabecera);
+
+  const campos = el('div', porSerie.length === 2 ? 'serie-fields f2' : 'serie-fields');
+  const entradas = {};
+  porSerie.forEach((campo) => {
+    const celda = el('div');
+    celda.appendChild(el('span', 'sf-l', campo.etiqueta));
+    const entrada = document.createElement('input');
+    entrada.className = 'sf-i';
+    entrada.type = 'text';
+    entrada.placeholder = '—';
+    // Nada de correccion automatica: aqui se escriben cosas como "2×16 kg" o
+    // "peso corporal", y el teclado del movil las "arregla" hasta dejarlas
+    // irreconocibles.
+    entrada.autocapitalize = 'off';
+    entrada.autocomplete = 'off';
+    entrada.spellcheck = false;
+    celda.appendChild(entrada);
+    campos.appendChild(celda);
+    entradas[campo.campo] = entrada;
+  });
+  fila.appendChild(campos);
+
+  return { nodo: fila, registro: { serie: numero, marca, entradas, anadida } };
+}
+
 function pintarEjercicio(ejercicio, registro) {
   const art = el('article', 'ex');
 
@@ -90,54 +140,87 @@ function pintarEjercicio(ejercicio, registro) {
   const filas = [];
 
   for (let n = 1; n <= ejercicio.programado.series; n += 1) {
-    const fila = el('div', 'serie-row');
-
-    const cabecera = el('label', 'serie-head');
-    const marca = document.createElement('input');
-    marca.type = 'checkbox';
-    cabecera.appendChild(marca);
-    cabecera.appendChild(el('span', null, `Serie ${n}`));
-    fila.appendChild(cabecera);
-
-    const campos = el('div', porSerie.length === 2 ? 'serie-fields f2' : 'serie-fields');
-    const entradas = {};
-    porSerie.forEach((campo) => {
-      const celda = el('div');
-      celda.appendChild(el('span', 'sf-l', campo.etiqueta));
-      const entrada = document.createElement('input');
-      entrada.className = 'sf-i';
-      entrada.type = 'text';
-      entrada.placeholder = '—';
-      celda.appendChild(entrada);
-      campos.appendChild(celda);
-      entradas[campo.campo] = entrada;
-    });
-    fila.appendChild(campos);
-
-    conjunto.appendChild(fila);
-    filas.push({ serie: n, marca, entradas });
+    const { nodo, registro: fila } = pintarFila(porSerie, n, false);
+    conjunto.appendChild(nodo);
+    filas.push(fila);
   }
   art.appendChild(conjunto);
+
+  // Lo que estaba prescrito para una serie anadida: nada, y con su motivo. No
+  // se copian los valores de las series programadas, porque nadie los prescribio
+  // para esta.
+  const sinPrescribir = porSerie.map((campo) => ({
+    campo: campo.campo,
+    etiqueta: campo.etiqueta,
+    prescrito: false,
+    motivo_no_prescrito: ETIQUETAS_SERIE.motivoNoPrescrito,
+  }));
+
+  /**
+   * "+ Agregar serie" no recomienda hacer mas series ni sugiere que falten.
+   * Existe porque el alumno a veces se desvia, y sin este boton lo que hizo de
+   * mas solo podia llegar contado en texto libre — que es exactamente como se
+   * perdio la cuarta sentadilla del piloto.
+   *
+   * Tampoco hay tope de series anadidas. Un limite seria una regla de
+   * entrenamiento escrita en el codigo (principio 1.2), y el codigo no sabe
+   * cuanto es demasiado para esta persona en este dia.
+   */
+  const zonaAnadir = el('div', 'fila-anadir');
+  const anadir = el('button', 'btn-anadir', ETIQUETAS_SERIE.anadir);
+  anadir.type = 'button';
+  anadir.addEventListener('click', () => {
+    const numero = filas.length + 1;
+    const { nodo, registro: fila } = pintarFila(sinPrescribir, numero, true);
+
+    // Quitar solo esta disponible mientras la fila siga vacia. Con datos
+    // escritos, borrarla seria destruir un registro sin dejar constancia (1.3).
+    const quitar = el('button', 'btn-quitar', ETIQUETAS_SERIE.quitar);
+    quitar.type = 'button';
+    quitar.addEventListener('click', () => {
+      const hayAlgo = Object.values(fila.entradas).some((e) => e.value.trim() !== '');
+      if (hayAlgo || fila.marca.checked) return;
+      nodo.remove();
+      filas.splice(filas.indexOf(fila), 1);
+    });
+    nodo.querySelector('.serie-head').appendChild(quitar);
+
+    conjunto.appendChild(nodo);
+    filas.push(fila);
+    nodo.querySelector('.sf-i').focus();
+  });
+  zonaAnadir.appendChild(anadir);
+  art.appendChild(zonaAnadir);
 
   registro.ejercicios.push({
     ejercicio_id: ejercicio.id,
     ejercicio_nombre: ejercicio.nombre,
     por_serie: porSerie,
+    por_serie_anadida: sinPrescribir,
     filas,
   });
 
-  if (ejercicio.detalles && ejercicio.detalles.length) {
-    const toggles = el('div', 'ex-toggles');
-    ejercicio.detalles.forEach((detalle) => {
-      const det = el('details', 'micro');
-      det.appendChild(el('summary', null, detalle.resumen));
-      det.appendChild(el('div', 'micro-body', detalle.cuerpo));
-      toggles.appendChild(det);
-    });
-    art.appendChild(toggles);
-  }
+  const plegables = pintarDetalles(ejercicio.detalles);
+  if (plegables) art.appendChild(plegables);
 
   return art;
+}
+
+/**
+ * Bloques plegados: lo accionable queda a la vista y el porque a un toque.
+ * Lo usan los ejercicios y las tarjetas de programa, con el mismo aspecto,
+ * porque para el alumno es el mismo gesto.
+ */
+function pintarDetalles(detalles) {
+  if (!detalles || !detalles.length) return null;
+  const toggles = el('div', 'ex-toggles');
+  detalles.forEach((detalle) => {
+    const det = el('details', 'micro');
+    det.appendChild(el('summary', null, detalle.resumen));
+    det.appendChild(el('div', 'micro-body', detalle.cuerpo));
+    toggles.appendChild(det);
+  });
+  return toggles;
 }
 
 function pintarEnCuerpo(ejercicio, cuerpo, registro) {
@@ -250,6 +333,8 @@ const TARJETAS = {
     if (tarjeta.destacado) {
       card.appendChild(parrafo('div', 'highlight-rest', tarjeta.destacado));
     }
+    const plegables = pintarDetalles(tarjeta.detalles);
+    if (plegables) card.appendChild(plegables);
     return card;
   },
 
@@ -362,6 +447,30 @@ const PERCEPCION_LEGIBLE = {
  * entonces no podria decir "no era eso" — que es justo lo mas valioso que puede
  * decir aqui.
  */
+const HITOS = {
+  historial: 'Tu historial · respuesta del entrenador',
+  ahora: 'Cuentame como fue hoy',
+};
+
+/**
+ * Un rotulo con una linea, para separar dos cosas que viven en la misma
+ * pestana. Sin el, la respuesta que el alumno ya recibio y el formulario que
+ * tiene que rellenar se leen como una sola pantalla larga y no queda claro que
+ * es lo que hay que contestar.
+ */
+function pintarHito(texto, fecha) {
+  const hito = el('div', 'hito');
+  hito.appendChild(el('span', 'hito-texto', texto));
+  hito.appendChild(el('span', 'hito-linea'));
+  if (fecha) hito.appendChild(el('span', 'hito-fecha', fecha));
+  return hito;
+}
+
+/** Solo la fecha, sin hora: al alumno le importa el dia, no el minuto. */
+function soloFecha(iso) {
+  return typeof iso === 'string' ? iso.slice(0, 10) : undefined;
+}
+
 function pintarDevolucion(contenido) {
   const panel = document.querySelector('.card.feedback')?.closest('main');
   if (!panel) {
@@ -369,6 +478,7 @@ function pintarDevolucion(contenido) {
   }
 
   const bloque = document.createDocumentFragment();
+  bloque.appendChild(pintarHito(HITOS.historial, soloFecha(contenido.entendido.fecha)));
 
   const dijo = el('div', 'card');
   dijo.appendChild(el('h2', null, 'Lo que contaste'));
@@ -389,7 +499,16 @@ function pintarDevolucion(contenido) {
   // tiene que poder discutirla (principio 1.4).
   entendido.appendChild(el('div', 'note-inline',
     'Esto es mi lectura de lo que me contaste, no un hecho. Si me equivoqué, dímelo.'));
-  entendido.appendChild(el('p', null, contenido.entendido.texto));
+  if (contenido.entendido.texto) {
+    entendido.appendChild(el('p', null, contenido.entendido.texto));
+  }
+  // En puntos y no en un parrafo largo: para poder decir "eso no fue asi" hay
+  // que poder encontrar primero la frase con la que no se esta de acuerdo.
+  if (contenido.entendido.puntos && contenido.entendido.puntos.length) {
+    const lista = el('ul', 'puntos');
+    contenido.entendido.puntos.forEach((p) => lista.appendChild(parrafo('li', null, p)));
+    entendido.appendChild(lista);
+  }
   bloque.appendChild(entendido);
 
   const proxima = el('div', 'card');
@@ -416,6 +535,12 @@ function pintarDevolucion(contenido) {
   // Antes de las preguntas: lo primero que ve al abrir la pestaña es la
   // respuesta a lo que escribio, no un formulario en blanco otra vez.
   panel.prepend(bloque);
+
+  // Y el corte entre lo que ya pasó y lo que toca ahora. Solo se dibuja cuando
+  // hay devolución: sin ella no hay dos cosas que separar, y un rótulo sobre la
+  // única tarjeta de la pantalla sería ruido.
+  const formulario = panel.querySelector('.card.feedback');
+  if (formulario) formulario.before(pintarHito(HITOS.ahora));
 }
 
 /* ---------- montaje ---------- */

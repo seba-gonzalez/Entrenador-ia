@@ -451,6 +451,20 @@
       "modificacion": "Se hicieron respondibles y se reescribieron para pedir lo que esta sesion necesita saber: que carga uso, que la sorprendio y que cambio de lo escrito.",
       "motivo": "'¿Como te sentiste?' se contesta con 'bien' y no informa nada. La pregunta tiene que pedir el dato que falta.",
       "resuelta_en": 2
+    },
+    {
+      "sobre_version": 2,
+      "familia": "explicacion_larga",
+      "tipo": "pendiente",
+      "observacion": "La tarjeta 'Como encontrar tu carga hoy' pone cuatro lineas de justificacion antes del primer paso accionable. Leida en el telefono, de pie y antes de entrenar, obliga a atravesar el porque para llegar al que hago.",
+      "motivo": "El argumento es correcto y vale la pena que este; el problema es el orden. Lo accionable tiene que estar visible y la explicacion a un toque. Detectado despues de publicar y de ejecutar, asi que NO se corrige aqui: esta sesion ya se entreno y reescribirla cambiaria lo que Marta tuvo delante. La forma compacta se aplica desde la sesion 2."
+    },
+    {
+      "sobre_version": 2,
+      "familia": "calentamiento_ambiguo",
+      "tipo": "pendiente",
+      "observacion": "El calentamiento prescribe '2 × 10' y '2 × 15' sin decir que pasa entre series ni entre ejercicios, ni para que sirve cada uno. El desarrollo si declara descansos; el calentamiento no.",
+      "motivo": "Lo que no esta escrito lo interpreta el alumno, y dos personas ejecutan el mismo calentamiento de dos maneras distintas. Mismo caso que el anterior: la sesion ya se ejecuto y no se reescribe. Corregido en el calentamiento de la sesion 2, con pausas explicitas donde tienen funcion y sin anadir volumen."
     }
   ],
 

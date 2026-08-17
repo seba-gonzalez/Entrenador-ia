@@ -7,7 +7,6 @@
   "aviso_demo": "Caso piloto con alumna ficticia. Marta Ruiz no existe y ningun dato de este archivo describe a una persona real.",
   "estado": "borrador",
   "generador_version": "piloto-h1-0",
-
   "versiones": [
     {
       "v": 1,
@@ -27,9 +26,18 @@
           }
         },
         "secciones": [
-          { "id": "rutina", "etiqueta": "Rutina" },
-          { "id": "informacion", "etiqueta": "Informacion" },
-          { "id": "feedback", "etiqueta": "Feedback" }
+          {
+            "id": "rutina",
+            "etiqueta": "Rutina"
+          },
+          {
+            "id": "informacion",
+            "etiqueta": "Informacion"
+          },
+          {
+            "id": "feedback",
+            "etiqueta": "Feedback"
+          }
         ],
         "paneles": {
           "rutina": {
@@ -50,6 +58,26 @@
                 ]
               },
               {
+                "tipo": "programa",
+                "id": "aproximacion",
+                "titulo": "Como llegar a tus 75 kg",
+                "lista": [
+                  "Barra sola × 5.",
+                  "Alrededor de 50 kg × 3, y alrededor de 65 kg × 2.",
+                  "75 kg: empieza la primera serie de trabajo."
+                ],
+                "destacado": {
+                  "destacado": "Pausa 60-90 s entre escalones.",
+                  "texto": " Estas subidas no se registran: no son series de trabajo."
+                },
+                "detalles": [
+                  {
+                    "resumen": "¿Por que subo en escalones?",
+                    "cuerpo": "Porque ir directo al peso de trabajo se siente mas pesado de lo que es, y porque los escalones te dan informacion antes de que importe: si 65 kg ya se sienten duros hoy, lo sabes con una serie corta y no con la primera serie de ocho. Los numeros salen de los 75 kg que decidimos, no son referencias tuyas: son el camino hasta ahi."
+                  }
+                ]
+              },
+              {
                 "tipo": "sesion",
                 "id": "s2",
                 "etiqueta": "Sesion A",
@@ -58,12 +86,13 @@
                 "calentamiento": {
                   "titulo": "Calentamiento (8 min)",
                   "pasos": [
-                    "5 min de bici o eliptica suave, hasta entrar en calor de verdad.",
-                    "Sentadilla con tu propio peso, 2 × 10, sin prisa.",
-                    "Puente de gluteo, 2 × 12.",
-                    "Rotacion de hombro con banda liviana, 2 × 15."
+                    "1 · Bici o eliptica, 5 min suave. Terminas con calor y respirando algo mas fuerte, no cansada. Pasas al 2 sin pausa: el calor no se aprovecha si te enfrias esperando.",
+                    "2 · Sentadilla con tu peso corporal, 2 × 10, bajando despacio. Pausa 20 s entre series, solo para reacomodarte. Es el patron que vas a cargar primero.",
+                    "3 · Puente de gluteo, 2 × 12, apretando arriba 1 segundo. Pausa 20 s entre series. Despierta el gluteo antes de que la sentadilla se lo pida con 75 kg.",
+                    "4 · Rotacion externa de hombro con banda liviana, 2 × 15 por lado. Cambias de lado sin pausa y descansas 15 s entre series. Es lo unico que prepara el press.",
+                    "5 · Pausa de 60 s y montas la barra."
                   ],
-                  "nota": "Antes de la primera serie de trabajo, sube en dos o tres escalones hasta 75 kg. Esas aproximaciones no se registran: no son series de trabajo."
+                  "nota": "El bloque final no lleva calentamiento propio: llegas a el con la fuerza ya hecha, y anadir trabajo antes solo te restaria para lo que importa."
                 },
                 "bloques": [
                   {
@@ -86,16 +115,46 @@
                     "programado": {
                       "series": 4,
                       "presentacion": [
-                        { "etiqueta": "Series", "valor": "4" },
-                        { "etiqueta": "Reps", "valor": "8" },
-                        { "etiqueta": "Carga", "valor": "75 kg" },
-                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
-                        { "etiqueta": "Descanso", "valor": "2min" }
+                        {
+                          "etiqueta": "Series",
+                          "valor": "4"
+                        },
+                        {
+                          "etiqueta": "Reps",
+                          "valor": "8"
+                        },
+                        {
+                          "etiqueta": "Carga",
+                          "valor": "75 kg"
+                        },
+                        {
+                          "etiqueta": "RIR objetivo",
+                          "valor": "2-3"
+                        },
+                        {
+                          "etiqueta": "Descanso",
+                          "valor": "2min"
+                        }
                       ],
                       "por_serie": [
-                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "75 kg" },
-                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "8" },
-                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                        {
+                          "campo": "carga",
+                          "etiqueta": "Carga",
+                          "prescrito": true,
+                          "valor": "75 kg"
+                        },
+                        {
+                          "campo": "reps",
+                          "etiqueta": "Reps",
+                          "prescrito": true,
+                          "valor": "8"
+                        },
+                        {
+                          "campo": "rir",
+                          "etiqueta": "RIR real",
+                          "prescrito": true,
+                          "valor": "2-3"
+                        }
                       ]
                     },
                     "detalles": [
@@ -114,16 +173,46 @@
                     "programado": {
                       "series": 3,
                       "presentacion": [
-                        { "etiqueta": "Series", "valor": "3" },
-                        { "etiqueta": "Reps", "valor": "10" },
-                        { "etiqueta": "Carga", "valor": "16 kg" },
-                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
-                        { "etiqueta": "Descanso", "valor": "90s" }
+                        {
+                          "etiqueta": "Series",
+                          "valor": "3"
+                        },
+                        {
+                          "etiqueta": "Reps",
+                          "valor": "10"
+                        },
+                        {
+                          "etiqueta": "Carga",
+                          "valor": "16 kg"
+                        },
+                        {
+                          "etiqueta": "RIR objetivo",
+                          "valor": "2-3"
+                        },
+                        {
+                          "etiqueta": "Descanso",
+                          "valor": "90s"
+                        }
                       ],
                       "por_serie": [
-                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "16 kg" },
-                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
-                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                        {
+                          "campo": "carga",
+                          "etiqueta": "Carga",
+                          "prescrito": true,
+                          "valor": "16 kg"
+                        },
+                        {
+                          "campo": "reps",
+                          "etiqueta": "Reps",
+                          "prescrito": true,
+                          "valor": "10"
+                        },
+                        {
+                          "campo": "rir",
+                          "etiqueta": "RIR real",
+                          "prescrito": true,
+                          "valor": "2-3"
+                        }
                       ]
                     },
                     "detalles": [
@@ -141,16 +230,46 @@
                     "programado": {
                       "series": 3,
                       "presentacion": [
-                        { "etiqueta": "Series", "valor": "3" },
-                        { "etiqueta": "Reps", "valor": "10" },
-                        { "etiqueta": "Carga", "valor": "45 kg" },
-                        { "etiqueta": "RIR objetivo", "valor": "2-3" },
-                        { "etiqueta": "Descanso", "valor": "90s" }
+                        {
+                          "etiqueta": "Series",
+                          "valor": "3"
+                        },
+                        {
+                          "etiqueta": "Reps",
+                          "valor": "10"
+                        },
+                        {
+                          "etiqueta": "Carga",
+                          "valor": "45 kg"
+                        },
+                        {
+                          "etiqueta": "RIR objetivo",
+                          "valor": "2-3"
+                        },
+                        {
+                          "etiqueta": "Descanso",
+                          "valor": "90s"
+                        }
                       ],
                       "por_serie": [
-                        { "campo": "carga", "etiqueta": "Carga", "prescrito": true, "valor": "45 kg" },
-                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10" },
-                        { "campo": "rir", "etiqueta": "RIR real", "prescrito": true, "valor": "2-3" }
+                        {
+                          "campo": "carga",
+                          "etiqueta": "Carga",
+                          "prescrito": true,
+                          "valor": "45 kg"
+                        },
+                        {
+                          "campo": "reps",
+                          "etiqueta": "Reps",
+                          "prescrito": true,
+                          "valor": "10"
+                        },
+                        {
+                          "campo": "rir",
+                          "etiqueta": "RIR real",
+                          "prescrito": true,
+                          "valor": "2-3"
+                        }
                       ]
                     },
                     "detalles": [
@@ -168,9 +287,18 @@
                     "programado": {
                       "series": 3,
                       "presentacion": [
-                        { "etiqueta": "Series", "valor": "3" },
-                        { "etiqueta": "Distancia", "valor": "30 m" },
-                        { "etiqueta": "Descanso", "valor": "60s" }
+                        {
+                          "etiqueta": "Series",
+                          "valor": "3"
+                        },
+                        {
+                          "etiqueta": "Distancia",
+                          "valor": "30 m"
+                        },
+                        {
+                          "etiqueta": "Descanso",
+                          "valor": "60s"
+                        }
                       ],
                       "por_serie": [
                         {
@@ -179,7 +307,12 @@
                           "prescrito": false,
                           "motivo_no_prescrito": "el bloque queda igual que la sesion anterior, y ahi la elegiste tu"
                         },
-                        { "campo": "distancia", "etiqueta": "Distancia", "prescrito": true, "valor": "30 m" }
+                        {
+                          "campo": "distancia",
+                          "etiqueta": "Distancia",
+                          "prescrito": true,
+                          "valor": "30 m"
+                        }
                       ]
                     },
                     "detalles": [
@@ -197,9 +330,18 @@
                     "programado": {
                       "series": 3,
                       "presentacion": [
-                        { "etiqueta": "Series", "valor": "3" },
-                        { "etiqueta": "Reps", "valor": "10/lado" },
-                        { "etiqueta": "Descanso", "valor": "60s" }
+                        {
+                          "etiqueta": "Series",
+                          "valor": "3"
+                        },
+                        {
+                          "etiqueta": "Reps",
+                          "valor": "10/lado"
+                        },
+                        {
+                          "etiqueta": "Descanso",
+                          "valor": "60s"
+                        }
                       ],
                       "por_serie": [
                         {
@@ -208,7 +350,12 @@
                           "prescrito": false,
                           "motivo_no_prescrito": "el bloque queda igual que la sesion anterior; con tu peso corporal esta bien"
                         },
-                        { "campo": "reps", "etiqueta": "Reps", "prescrito": true, "valor": "10/lado" }
+                        {
+                          "campo": "reps",
+                          "etiqueta": "Reps",
+                          "prescrito": true,
+                          "valor": "10/lado"
+                        }
                       ]
                     }
                   }
@@ -237,8 +384,8 @@
                     "texto": " lo marcaste como adecuado y lo dijiste con tus palabras. Un bloque que funciona no se toca para que parezca que hay progreso."
                   },
                   {
-                    "destacado": "La sentadilla ya no lleva advertencia lumbar:",
-                    "texto": " el domingo cargaste 70 kg y la molestia no aparecio en toda la sesion. Eso confirma lo que ya sospechabamos, y por eso tampoco vuelve aqui."
+                    "destacado": "La sentadilla sigue sin advertencia lumbar:",
+                    "texto": " el domingo cargaste 70 kg y la molestia no aparecio en toda la sesion. Es una referencia positiva, no una conclusion: con una sesion no alcanza para saber como responde tu espalda al entrenar. Si aparece alguna vez, quiero saberlo el mismo dia."
                   },
                   {
                     "destacado": "Hiciste una cuarta serie de sentadilla que no estaba escrita:",
@@ -269,7 +416,7 @@
                   },
                   {
                     "destacado": "Tu lumbar:",
-                    "texto": " sigue siendo un tema de estar sentada. No aparecio entrenando el domingo, y no condiciona esta sesion."
+                    "texto": " no aparecio durante la sesion del domingo, ni siquiera con la sentadilla cargada. Lo anoto como buena señal y seguimos observando. Todavia no se puede afirmar que entrenar no la afecte: una sesion no es evidencia suficiente."
                   }
                 ]
               }
@@ -283,10 +430,22 @@
                 "titulo": "Despues de entrenar, cuentame",
                 "respondible": true,
                 "items": [
-                  { "id": "p1", "texto": "¿Como se sintieron 75 kg comparados con los 70 del domingo?" },
-                  { "id": "p2", "texto": "¿La cuarta serie de sentadilla cambio algo, o paso desapercibida?" },
-                  { "id": "p3", "texto": "¿Alguna carga te quedo claramente mal puesta, por arriba o por abajo?" },
-                  { "id": "p4", "texto": "¿Aparecio alguna molestia durante la sesion?" }
+                  {
+                    "id": "p1",
+                    "texto": "¿Como se sintieron 75 kg comparados con los 70 del domingo?"
+                  },
+                  {
+                    "id": "p2",
+                    "texto": "¿La cuarta serie de sentadilla cambio algo, o paso desapercibida?"
+                  },
+                  {
+                    "id": "p3",
+                    "texto": "¿Alguna carga te quedo claramente mal puesta, por arriba o por abajo?"
+                  },
+                  {
+                    "id": "p4",
+                    "texto": "¿Aparecio alguna molestia durante la sesion?"
+                  }
                 ]
               }
             ]
@@ -296,7 +455,6 @@
       }
     }
   ],
-
   "observaciones": [
     {
       "sobre_version": 1,

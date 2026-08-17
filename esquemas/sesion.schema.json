@@ -374,7 +374,8 @@
             "properties": {
               "intro": { "type": "string", "minLength": 1 },
               "lista": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
-              "destacado": { "$ref": "#/$defs/parrafo" }
+              "destacado": { "$ref": "#/$defs/parrafo" },
+              "detalles": { "$ref": "#/$defs/detalles" }
             }
           }
         }
@@ -451,19 +452,22 @@
         },
         "programado": { "$ref": "#/$defs/programado" },
         "precaucion": { "$ref": "#/$defs/parrafo" },
-        "detalles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["resumen", "cuerpo"],
-            "properties": {
-              "resumen": { "type": "string", "minLength": 1 },
-              "cuerpo": { "type": "string", "minLength": 1 }
-            }
-          }
-        },
+        "detalles": { "$ref": "#/$defs/detalles" },
         "transicion": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "detalles": {
+      "type": "array",
+      "description": "Bloques plegados. Sirven para que una explicacion larga no se interponga entre el alumno y lo que tiene que hacer: lo accionable queda visible y el porque queda a un toque. No es esconderlo — quien quiera leerlo lo abre.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resumen", "cuerpo"],
+        "properties": {
+          "resumen": { "type": "string", "minLength": 1 },
+          "cuerpo": { "type": "string", "minLength": 1 }
+        }
       }
     },
 

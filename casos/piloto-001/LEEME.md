@@ -22,7 +22,7 @@ datos del alumno → sesión → revisión → publicación → vista alumno
 | `publicado/1.json` + `indice.json` | El artefacto que ve la alumna, con su hash | Extracción manual |
 | `ejecuciones/sesion-piloto-001.json` | Lo que realmente pasó, copiado desde la vista | La alumna, en el navegador |
 | `feedback/sesion-piloto-001.json` | Lo que ella cuenta después, en sus palabras | La alumna, en el navegador |
-| `devoluciones/sesion-piloto-001/1.json` + `indice.json` | La respuesta del entrenador, en tres capas, publicada y con hash | Entrenador |
+| `devoluciones/sesion-piloto-001/1.json` y `2.json` + `indice.json` | La respuesta del entrenador, en tres capas, publicada y con hash. La **2 es la vigente**: corrige una afirmación de la 1 sobre la lumbar. La 1 se conserva sin tocar | Entrenador |
 | `sesiones/sesion-piloto-002.json` | **Borrador** de la sesión 2, construido después de la devolución | Sistema, sin revisar aún |
 
 La ejecución y el feedback **no se escribieron a mano**: salieron de recorrer la
@@ -39,6 +39,7 @@ que prueben algo.
 | Aprobación y publicación | viernes 14, 09:20 y 09:30 |
 | **Ejecución y feedback** | **domingo 16, 19:06** |
 | Lectura del entrenador y devolución publicada | lunes 17, 20:10 y 20:15 |
+| Devolución corregida y republicada (la 2) | lunes 17, 20:35 y 20:40 |
 | Borrador de la sesión 2 | lunes 17, 21:05 |
 
 Las dos fechas en negrita **no son ficticias**: son la hora real en que se
@@ -117,6 +118,28 @@ error de la sesión 1 en una forma más difícil de ver: la devolución decidió
 partir de 14 kg y 40 kg, pero **no decidió ningún incremento**, y el generador
 puso 16 y 45 por su cuenta. Que el punto de partida sea real no convierte el
 salto en un dato.
+
+### 6. Corregir crea, no reemplaza
+
+La devolución 1 decía de la lumbar: «sigue siendo un tema de estar sentada, no de
+entrenar». Eso es una conclusión, y la evidencia sólo daba para una observación:
+una sesión sin molestia no prueba que entrenar no la afecte.
+
+La corrección **no editó la devolución 1**. Se publicó la **2**, que pasa a ser la
+vigente; la 1 queda en su carpeta, con su hash, tal como Marta la leyó. Quien
+quiera saber qué se le dijo aquel lunes puede comprobarlo.
+
+### 7. Lo que ya se entrenó no se reescribe
+
+En la revisión aparecieron dos problemas de redacción en la sesión 1: la tarjeta
+para encontrar la carga es demasiado larga antes del primer paso accionable, y su
+calentamiento no dice qué pasa entre series.
+
+**No se corrigieron ahí.** Esa sesión ya se publicó y ya se entrenó, y §6.2 no
+permite darle una publicación nueva: cambiarla haría que Marta abriera hoy algo
+distinto de lo que tuvo delante el domingo. Quedan como dos observaciones
+pendientes sobre la versión 2 —con su motivo y diciendo por qué no se corrigen
+aquí— y el criterio se aplica desde la sesión 2, que todavía es borrador.
 
 ## Qué cambió en la sesión 2 por evidencia de la sesión 1
 

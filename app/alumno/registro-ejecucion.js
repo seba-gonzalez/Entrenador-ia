@@ -70,11 +70,19 @@ export class ContradiccionDeRegistro extends Error {
  * casilla porque hay numeros, o descartar los numeros porque no esta marcada,
  * serian las dos formas de que el sistema decida algo que no le toca (1.4).
  */
+/**
+ * Los campos que se registran en una fila. Una serie anadida durante la sesion
+ * tiene los mismos campos que las programadas, pero ninguno prescrito.
+ */
+function contratoDe(registro, fila) {
+  return fila.anadida ? registro.por_serie_anadida : registro.por_serie;
+}
+
 export function detectarContradicciones(ejercicios) {
   const conflictos = [];
   ejercicios.forEach((registro) => {
     registro.filas.forEach((fila) => {
-      const hayValores = registro.por_serie.some(
+      const hayValores = contratoDe(registro, fila).some(
         (campo) => fila.entradas[campo.campo].value.trim() !== ''
       );
       if (hayValores && !fila.marca.checked) {
@@ -97,8 +105,9 @@ export function detectarContradicciones(ejercicios) {
 function leerFila(registro, fila) {
   const campos = {};
   const sinRegistrar = [];
+  const contrato = contratoDe(registro, fila);
 
-  registro.por_serie.forEach((campo) => {
+  contrato.forEach((campo) => {
     const valor = fila.entradas[campo.campo].value.trim();
     if (valor === '') sinRegistrar.push(campo.campo);
     else campos[campo.campo] = valor;
@@ -117,17 +126,23 @@ function leerFila(registro, fila) {
     };
   }
 
-  return {
+  const serie = {
     ejercicio_id: registro.ejercicio_id,
     ejercicio_nombre: registro.ejercicio_nombre,
     serie: fila.serie,
     realizada,
     // Copia literal de lo prescrito. No se recalcula, no se completa, no se
     // compara: la comparacion la hace quien lea el registro despues.
-    programado: registro.por_serie.map((campo) => ({ ...campo })),
+    programado: contrato.map((campo) => ({ ...campo })),
     ejecutado,
     motivo_diferencia: { registrado: false, motivo: MOTIVOS.sinMotivoPorSerie },
   };
+
+  // Solo se declara cuando es cierto. Una serie programada no necesita afirmar
+  // que no fue anadida: eso se comprueba mirando la publicacion.
+  if (fila.anadida) serie.anadida_en_ejecucion = true;
+
+  return serie;
 }
 
 export function construirEjecucion({ publicacion, registro, resultado, notas, ahora }) {
