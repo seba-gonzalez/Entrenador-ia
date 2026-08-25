@@ -45,6 +45,8 @@ if (form) {
     .signup-card select{width:100%;background:#111918;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:14px;font:inherit;outline:none}
     .signup-card select:focus{border-color:#10e7ef;box-shadow:0 0 0 3px rgba(16,231,239,.08)}
     .privacy-note{margin:16px 0 0!important;font-size:.76rem!important;line-height:1.45;color:#6f7e7e!important}
+    .selection-note{margin:9px 0 0!important;font-size:.78rem!important;color:#83a0a0!important}
+    .selection-note.limit{color:#6ff8fc!important;font-weight:750}
     @media(max-width:560px){.option-grid,.option-grid.compact{grid-template-columns:1fr 1fr}.option-pill{font-size:.84rem;min-height:46px}.signup-card{padding:22px!important}}
   `;
   document.head.appendChild(style);
@@ -92,15 +94,16 @@ if (form) {
     </div>
 
     <div id="trainsNo" class="conditional-group">
-      <div class="form-question">¿Qué sientes que te falta para empezar?<small>Puedes elegir lo que más se acerque a tu caso.</small></div>
+      <div class="form-question">¿Qué sientes que te falta para empezar?<small>Puedes elegir hasta 3 alternativas.</small></div>
       <div class="option-grid">
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Saber qué hacer" />Saber qué hacer</label>
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Tiempo" />Tiempo</label>
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Constancia / motivación" />Constancia</label>
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Acompañamiento" />Acompañamiento</label>
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Lugar / equipo" />Lugar / equipo</label>
-        <label class="option-pill"><input type="radio" name="startBarrier" value="Otro" />Otra cosa</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Saber qué hacer" />Saber qué hacer</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Tiempo" />Tiempo</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Constancia / motivación" />Constancia</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Acompañamiento" />Acompañamiento</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Lugar / equipo" />Lugar / equipo</label>
+        <label class="option-pill"><input type="checkbox" name="startBarrier" value="Otro" />Otra cosa</label>
       </div>
+      <p id="barrierHint" class="selection-note">Elige una, dos o tres. La idea es entender tu realidad, no encasillarte.</p>
 
       <label>Si quieres, cuéntanos un poco más
         <textarea name="startComment" rows="3" placeholder="Opcional. Una línea basta."></textarea>
@@ -115,7 +118,27 @@ if (form) {
   const yesGroup = document.getElementById('trainsYes');
   const noGroup = document.getElementById('trainsNo');
   const status = document.getElementById('formStatus');
+  const barrierHint = document.getElementById('barrierHint');
   const trainRadios = Array.from(form.querySelectorAll('input[name="trainsNow"]'));
+  const startBarriers = Array.from(form.querySelectorAll('input[name="startBarrier"]'));
+
+  const selectedBarriers = () => startBarriers.filter((input) => input.checked);
+
+  const updateBarrierHint = () => {
+    const count = selectedBarriers().length;
+    barrierHint.classList.toggle('limit', count === 3);
+    barrierHint.textContent = count === 3
+      ? 'Ya elegiste 3. Si quieres cambiar una, desmárcala y elige otra.'
+      : `Puedes elegir hasta 3 alternativas${count ? ` · ${count} seleccionada${count === 1 ? '' : 's'}` : ''}.`;
+  };
+
+  startBarriers.forEach((input) => {
+    input.addEventListener('change', () => {
+      if (selectedBarriers().length > 3) input.checked = false;
+      updateBarrierHint();
+      status.textContent = '';
+    });
+  });
 
   const syncTrainingPath = () => {
     const selected = form.querySelector('input[name="trainsNow"]:checked')?.value || '';
@@ -124,11 +147,10 @@ if (form) {
 
     const trainingType = form.querySelector('[name="trainingType"]');
     const trainingSupport = Array.from(form.querySelectorAll('[name="trainingSupport"]'));
-    const startBarrier = Array.from(form.querySelectorAll('[name="startBarrier"]'));
 
     trainingType.required = selected === 'Sí';
     trainingSupport.forEach((input) => { input.required = selected === 'Sí'; });
-    startBarrier.forEach((input) => { input.required = selected === 'No'; });
+    status.textContent = '';
   };
 
   trainRadios.forEach((radio) => radio.addEventListener('change', syncTrainingPath));
@@ -138,6 +160,12 @@ if (form) {
     syncTrainingPath();
 
     if (!form.reportValidity()) return;
+
+    const trainsNow = form.querySelector('input[name="trainsNow"]:checked')?.value || '';
+    if (trainsNow === 'No' && selectedBarriers().length === 0) {
+      status.textContent = 'Elige al menos una de las cosas que hoy te faltan para empezar.';
+      return;
+    }
 
     const data = new FormData(form);
     const record = {
@@ -149,7 +177,7 @@ if (form) {
       trainingType: String(data.get('trainingType') || '').trim(),
       trainingSupport: String(data.get('trainingSupport') || '').trim(),
       trainingChallenge: String(data.get('trainingChallenge') || '').trim(),
-      startBarrier: String(data.get('startBarrier') || '').trim(),
+      startBarriers: data.getAll('startBarrier').map((value) => String(value)),
       startComment: String(data.get('startComment') || '').trim(),
       createdAt: new Date().toISOString(),
     };
@@ -162,5 +190,6 @@ if (form) {
     form.reset();
     yesGroup.classList.remove('is-visible');
     noGroup.classList.remove('is-visible');
+    updateBarrierHint();
   });
 }
