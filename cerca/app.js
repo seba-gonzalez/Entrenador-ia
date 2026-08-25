@@ -1,9 +1,29 @@
-const navCta = document.querySelector('.nav-cta');
-if (navCta) {
-  navCta.style.background = 'linear-gradient(90deg, #10e7ef, #38f2f1)';
-  navCta.style.color = '#041111';
-  navCta.style.border = '1px solid rgba(16,231,239,.55)';
-  navCta.style.boxShadow = '0 0 24px rgba(16,231,239,.12)';
+const conversation = document.querySelector('.conversation-card');
+if (conversation) {
+  const chatObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        conversation.classList.add('is-visible');
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.35 });
+  chatObserver.observe(conversation);
+}
+
+const loopSteps = Array.from(document.querySelectorAll('.loop-step'));
+const mobileLoop = document.querySelector('.mobile-loop');
+if (mobileLoop && loopSteps.length) {
+  const loopObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loopSteps.forEach((step, index) => {
+        window.setTimeout(() => step.classList.add('is-active'), index * 280);
+      });
+      observer.disconnect();
+    });
+  }, { threshold: 0.45 });
+  loopObserver.observe(mobileLoop);
 }
 
 const form = document.getElementById('signupForm');
