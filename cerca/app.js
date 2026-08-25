@@ -26,6 +26,9 @@ if (mobileLoop && loopSteps.length) {
   loopObserver.observe(mobileLoop);
 }
 
+const SUPABASE_URL = 'https://lggygnieziilvquvttby.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC';
+
 const form = document.getElementById('signupForm');
 
 if (form) {
@@ -44,9 +47,15 @@ if (form) {
     @keyframes formReveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
     .signup-card select{width:100%;background:#111918;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:14px;font:inherit;outline:none}
     .signup-card select:focus{border-color:#10e7ef;box-shadow:0 0 0 3px rgba(16,231,239,.08)}
-    .privacy-note{margin:16px 0 0!important;font-size:.76rem!important;line-height:1.45;color:#6f7e7e!important}
     .selection-note{margin:9px 0 0!important;font-size:.78rem!important;color:#83a0a0!important}
     .selection-note.limit{color:#6ff8fc!important;font-weight:750}
+    .consent-row{display:flex!important;align-items:flex-start;gap:10px;margin:20px 0 0!important;padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.025);color:#aebaba!important;font-size:.78rem!important;font-weight:500!important;line-height:1.45}
+    .consent-row input{width:18px!important;height:18px!important;min-width:18px;margin:1px 0 0!important;accent-color:#10e7ef}
+    .privacy-note{margin:12px 0 0!important;font-size:.74rem!important;line-height:1.45;color:#6f7e7e!important}
+    .form-status{min-height:24px}
+    .form-status.is-error{color:#ffb2b2!important}
+    .form-status.is-success{color:#75f8fb!important}
+    .signup-card button[disabled]{opacity:.55;cursor:wait}
     @media(max-width:560px){.option-grid,.option-grid.compact{grid-template-columns:1fr 1fr}.option-pill{font-size:.84rem;min-height:46px}.signup-card{padding:22px!important}}
   `;
   document.head.appendChild(style);
@@ -110,19 +119,31 @@ if (form) {
       </label>
     </div>
 
+    <label class="consent-row">
+      <input type="checkbox" name="consentContact" required />
+      <span>Acepto que CERCA guarde estas respuestas y mi correo para contactarme sobre el pre-lanzamiento y la beta.</span>
+    </label>
+
     <button class="btn btn-primary" type="submit">Quiero sumarme <span>→</span></button>
     <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-    <p class="privacy-note">Esta versión sigue siendo un preview. Antes de abrir el pre-lanzamiento públicamente conectaremos el registro a nuestra base y dejaremos clara la política de privacidad.</p>
+    <p class="privacy-note">Usaremos estos datos solo para gestionar el pre-lanzamiento de CERCA. Antes de la apertura pública incorporaremos la política de privacidad completa.</p>
   `;
 
   const yesGroup = document.getElementById('trainsYes');
   const noGroup = document.getElementById('trainsNo');
   const status = document.getElementById('formStatus');
+  const submitButton = form.querySelector('button[type="submit"]');
   const barrierHint = document.getElementById('barrierHint');
   const trainRadios = Array.from(form.querySelectorAll('input[name="trainsNow"]'));
   const startBarriers = Array.from(form.querySelectorAll('input[name="startBarrier"]'));
 
   const selectedBarriers = () => startBarriers.filter((input) => input.checked);
+
+  const setStatus = (message, type = '') => {
+    status.textContent = message;
+    status.classList.toggle('is-error', type === 'error');
+    status.classList.toggle('is-success', type === 'success');
+  };
 
   const updateBarrierHint = () => {
     const count = selectedBarriers().length;
@@ -136,7 +157,7 @@ if (form) {
     input.addEventListener('change', () => {
       if (selectedBarriers().length > 3) input.checked = false;
       updateBarrierHint();
-      status.textContent = '';
+      setStatus('');
     });
   });
 
@@ -150,12 +171,12 @@ if (form) {
 
     trainingType.required = selected === 'Sí';
     trainingSupport.forEach((input) => { input.required = selected === 'Sí'; });
-    status.textContent = '';
+    setStatus('');
   };
 
   trainRadios.forEach((radio) => radio.addEventListener('change', syncTrainingPath));
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     syncTrainingPath();
 
@@ -163,33 +184,57 @@ if (form) {
 
     const trainsNow = form.querySelector('input[name="trainsNow"]:checked')?.value || '';
     if (trainsNow === 'No' && selectedBarriers().length === 0) {
-      status.textContent = 'Elige al menos una de las cosas que hoy te faltan para empezar.';
+      setStatus('Elige al menos una de las cosas que hoy te faltan para empezar.', 'error');
       return;
     }
 
     const data = new FormData(form);
-    const record = {
+    const payload = {
       name: String(data.get('name') || '').trim(),
-      email: String(data.get('email') || '').trim(),
+      email: String(data.get('email') || '').trim().toLowerCase(),
       country: String(data.get('country') || '').trim(),
-      city: String(data.get('city') || '').trim(),
-      trainsNow: String(data.get('trainsNow') || '').trim(),
-      trainingType: String(data.get('trainingType') || '').trim(),
-      trainingSupport: String(data.get('trainingSupport') || '').trim(),
-      trainingChallenge: String(data.get('trainingChallenge') || '').trim(),
-      startBarriers: data.getAll('startBarrier').map((value) => String(value)),
-      startComment: String(data.get('startComment') || '').trim(),
-      createdAt: new Date().toISOString(),
+      city: String(data.get('city') || '').trim() || null,
+      trains_now: trainsNow === 'Sí',
+      training_type: trainsNow === 'Sí' ? String(data.get('trainingType') || '').trim() || null : null,
+      training_support: trainsNow === 'Sí' ? String(data.get('trainingSupport') || '').trim() || null : null,
+      training_challenge: trainsNow === 'Sí' ? String(data.get('trainingChallenge') || '').trim() || null : null,
+      start_barriers: trainsNow === 'No' ? data.getAll('startBarrier').map((value) => String(value)) : [],
+      start_comment: trainsNow === 'No' ? String(data.get('startComment') || '').trim() || null : null,
+      consent_contact: data.get('consentContact') === 'on',
+      source: 'landing_prelaunch'
     };
 
-    const existing = JSON.parse(localStorage.getItem('cerca-prelaunch-signups') || '[]');
-    existing.push(record);
-    localStorage.setItem('cerca-prelaunch-signups', JSON.stringify(existing));
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Guardando…';
+    setStatus('Enviando tu registro…');
 
-    status.textContent = 'Listo. Ya tenemos tu registro de prueba.';
-    form.reset();
-    yesGroup.classList.remove('is-visible');
-    noGroup.classList.remove('is-visible');
-    updateBarrierHint();
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/cerca_prelaunch_signups`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_PUBLISHABLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Signup failed with status ${response.status}`);
+      }
+
+      setStatus('¡Listo! Ya quedaste registrado para el pre-lanzamiento de CERCA.', 'success');
+      form.reset();
+      yesGroup.classList.remove('is-visible');
+      noGroup.classList.remove('is-visible');
+      updateBarrierHint();
+    } catch (error) {
+      console.error('CERCA signup error', error);
+      setStatus('No pudimos guardar tu registro. Inténtalo nuevamente en un momento.', 'error');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Quiero sumarme <span>→</span>';
+    }
   });
 }
