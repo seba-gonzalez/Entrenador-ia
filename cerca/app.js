@@ -26,6 +26,68 @@ if (mobileLoop && loopSteps.length) {
   loopObserver.observe(mobileLoop);
 }
 
+const heroCopy = document.querySelector('.hero-copy');
+if (heroCopy) {
+  const heroStyle = document.createElement('style');
+  heroStyle.textContent = `
+    .hero-signature,.hero-mobile-proof{display:none}
+    @media(max-width:560px){
+      .nav-cta{display:none!important}
+      .hero{position:relative;overflow:hidden;padding-top:18px!important}
+      .hero:before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;right:-155px;top:30px;background:radial-gradient(circle,rgba(16,231,239,.16),rgba(85,119,255,.06) 42%,transparent 70%);pointer-events:none;filter:blur(2px)}
+      .hero-copy{position:relative;z-index:1;padding-top:0!important}
+      .eyebrow-row{margin-bottom:15px!important}
+      .eyebrow-row>a{display:none}
+      .hero-signature{display:flex;align-items:center;gap:12px;margin:0 0 18px;padding:12px 14px;border:1px solid rgba(16,231,239,.17);border-radius:16px;background:linear-gradient(120deg,rgba(16,231,239,.065),rgba(85,119,255,.035));box-shadow:0 14px 34px rgba(0,0,0,.16);width:max-content;max-width:100%}
+      .hero-c-mark{position:relative;display:grid;place-items:center;width:43px;height:43px;border-radius:50%;border:1px solid rgba(16,231,239,.55);color:#eaffff;font-size:1.55rem;font-weight:500;box-shadow:inset 0 0 22px rgba(16,231,239,.07),0 0 25px rgba(16,231,239,.08)}
+      .hero-c-mark:after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;right:-3px;top:8px;background:#10e7ef;box-shadow:0 0 12px rgba(16,231,239,.8)}
+      .hero-signature-copy{display:grid;gap:1px}
+      .hero-signature-copy strong{font-size:.98rem;letter-spacing:.16em;color:#f5ffff}
+      .hero-signature-copy small{font-size:.61rem;letter-spacing:.12em;color:#78a3a3;font-weight:800}
+      .hero h1{font-size:clamp(2.72rem,12.8vw,3.85rem)!important;line-height:.93!important;margin-bottom:20px!important}
+      .lead{font-size:1.04rem!important;line-height:1.45!important;margin-bottom:14px!important;max-width:340px}
+      .hero-mobile-proof{display:grid;margin:18px 0 16px;border:1px solid rgba(16,231,239,.18);border-radius:16px;overflow:hidden;background:rgba(3,14,14,.78);box-shadow:0 15px 34px rgba(0,0,0,.18)}
+      .hero-proof-row{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;padding:12px 13px}
+      .hero-proof-row+ .hero-proof-row{border-top:1px solid rgba(255,255,255,.07)}
+      .hero-proof-row span{font-size:.62rem;letter-spacing:.14em;color:#758b8b;font-weight:900}
+      .hero-proof-row b{font-size:.78rem;letter-spacing:.035em;color:#dff7f7}
+      .hero-proof-row i{font-style:normal;color:#10e7ef;font-size:1rem}
+      .actions{display:grid!important;grid-template-columns:1fr;margin:16px 0 13px!important;gap:8px!important}
+      .actions .btn-primary{display:flex!important;width:100%;min-height:54px;font-size:.94rem}
+      .actions .btn-ghost{width:100%;min-height:46px!important;font-size:.86rem!important;border:1px solid rgba(255,255,255,.12)!important;background:rgba(7,16,16,.72)!important}
+      .mobile-quick{grid-template-columns:repeat(3,1fr)!important;margin:10px 0 24px!important;gap:7px!important}
+      .mobile-quick a{min-height:42px!important;font-size:.76rem!important;padding:6px!important;border-color:rgba(16,231,239,.16)!important;background:rgba(16,231,239,.022)!important}
+      .mobile-quick a:last-child{display:none!important}
+      .conversation-card{margin-top:0!important}
+    }
+  `;
+  document.head.appendChild(heroStyle);
+
+  const eyebrow = heroCopy.querySelector('.eyebrow-row');
+  if (eyebrow) {
+    const signature = document.createElement('div');
+    signature.className = 'hero-signature';
+    signature.setAttribute('aria-label', 'CERCA, entrenamiento que recuerda');
+    signature.innerHTML = `
+      <span class="hero-c-mark" aria-hidden="true">C</span>
+      <span class="hero-signature-copy"><strong>CERCA</strong><small>ENTRENAMIENTO QUE RECUERDA</small></span>
+    `;
+    eyebrow.insertAdjacentElement('afterend', signature);
+  }
+
+  const lead = heroCopy.querySelector('.lead');
+  if (lead) {
+    const proof = document.createElement('div');
+    proof.className = 'hero-mobile-proof';
+    proof.setAttribute('aria-label', 'Cómo acompaña CERCA entre sesiones');
+    proof.innerHTML = `
+      <div class="hero-proof-row"><span>HOY</span><b>NOS CUENTAS QUÉ PASÓ</b><i>↗</i></div>
+      <div class="hero-proof-row"><span>MAÑANA</span><b>CERCA ADAPTA LA DECISIÓN</b><i>✦</i></div>
+    `;
+    lead.insertAdjacentElement('afterend', proof);
+  }
+}
+
 const SUPABASE_URL = 'https://lggygnieziilvquvttby.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC';
 
