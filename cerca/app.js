@@ -1,3 +1,11 @@
+const navCta = document.querySelector('.nav-cta');
+if (navCta) {
+  navCta.style.background = 'linear-gradient(90deg, #10e7ef, #38f2f1)';
+  navCta.style.color = '#041111';
+  navCta.style.border = '1px solid rgba(16,231,239,.55)';
+  navCta.style.boxShadow = '0 0 24px rgba(16,231,239,.12)';
+}
+
 const form = document.getElementById('signupForm');
 const status = document.getElementById('formStatus');
 
