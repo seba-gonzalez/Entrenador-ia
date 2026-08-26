@@ -57,10 +57,15 @@ Idea diferencial protegida:
 La tecnología aumenta presencia, memoria, seguimiento y continuidad. La IA es el motor, no el héroe.
 
 ### AFINADO — El ciclo visible de la landing pasa a cuatro tiempos (2026-08-26)
-- Qué cambió: el ciclo de cinco tiempos registrado arriba **se mantiene como modelo interno**. Lo que la landing comunica son cuatro:
+- Qué cambió: el ciclo de cinco tiempos registrado arriba **se mantiene como descripción del ciclo post-sesión**. Lo que la landing comunica son cuatro:
   **ENTRENAS → NOS CUENTAS → RECORDAMOS → ADAPTAMOS**
 - Por qué: *interpretar* ocurre por dentro y no necesita ser un paso visible. Antes de este cambio, escritorio contaba tres pasos, móvil cuatro y el registro cinco.
-- La formulación de cinco tiempos no se elimina: sigue siendo válida como descripción del ciclo **post-sesión**. §9 la amplía con el acompañamiento **antes** y **durante**.
+- La formulación de cinco tiempos no se elimina. §9 la sitúa dentro de un acompañamiento más amplio, que incluye el **antes** y el **durante**.
+- Jerarquía de modelos, para que dos cosas distintas no compartan nombre:
+  - **4 tiempos** — loop visible simplificado de marketing.
+  - **5 tiempos** — descripción del ciclo post-sesión.
+  - **antes / durante / después** — los tres momentos amplios del acompañamiento (§9).
+  - **modelo interno completo** — el flujo operativo que conecta esos momentos (§9).
 
 ### AFINADO — La idea diferencial se amplía (2026-08-26)
 - Qué cambió: *"Personaliza la próxima decisión a partir de lo que pasó en la anterior"* describe solo la **memoria entre sesiones**. El acompañamiento de CERCA también incluye la **adaptación inmediata** (lo que pasa hoy puede cambiar lo de hoy) y el **aprendizaje acumulado**. Ver §9.
@@ -219,6 +224,20 @@ El modelo de producto es más amplio que el feedback post-sesión. CERCA puede a
 
 Regla: **la complejidad ocurre por dentro; la comunicación al usuario debe seguir siendo clara.**
 
+### APROBADO — Modelo interno completo de acompañamiento (2026-08-26)
+
+**CÓMO LLEGAS → DECIDIMOS → ENTRENAS → OBSERVAMOS / AJUSTAMOS → NOS CUENTAS → RECORDAMOS → LO USAMOS LA PRÓXIMA VEZ**
+
+Este modelo conecta el acompañamiento antes, durante y después. **No es una secuencia que deba mostrarse literalmente en la landing.** Su función es ayudar al equipo a entender dónde puede intervenir CERCA a lo largo del proceso.
+
+Relación con los otros modelos registrados:
+- **antes / durante / después** — momentos amplios.
+- **7 tiempos** — modelo interno operativo.
+- **5 tiempos** — ciclo post-sesión histórico (§3).
+- **4 tiempos** — comunicación simplificada de la landing (§3).
+
+> La complejidad ocurre por dentro; la persona recibe claridad.
+
 ### APROBADO — Tres capacidades de acompañamiento (2026-08-26)
 - **A. Adaptación inmediata** — lo que está pasando hoy puede cambiar lo que hacemos hoy.
 - **B. Memoria entre sesiones** — lo que pasó anteriormente puede influir en lo que hacemos hoy.
@@ -254,6 +273,8 @@ CERCA no debe convertir el conocimiento de la persona en un interrogatorio. No s
 La información también puede venir de contexto previo, feedback espontáneo, historial o una conversación natural.
 
 > Acompañar no es preguntar más. Es saber qué información importa y usarla bien.
+
+**Aclaración — la regla es contextual, no un calendario.** Este principio **no** establece que "antes no se pregunta" ni que "después siempre se pregunta". Preguntar es válido en cualquier momento cuando la respuesta puede cambiar una decisión, y es evitable en cualquier momento cuando la información ya está disponible o no cambiaría nada. La asimetría que hoy tiene la landing —*"tiene en cuenta cómo llegas"* antes, *"te pregunta cómo te fue"* al terminar— es una decisión de esa pieza, no una regla general del producto.
 
 **NO APROBADO** — la interpretación *"antes de entrenar contar es trámite y después es desahogo"* surgió en la discusión del 2026-08-26 y **no se registra como principio**: es demasiado absoluta. Queda anotada solo para que no vuelva a introducirse como regla.
 
