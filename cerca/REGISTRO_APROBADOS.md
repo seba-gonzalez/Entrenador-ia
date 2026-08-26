@@ -85,6 +85,27 @@ La tecnología aumenta presencia, memoria, seguimiento y continuidad. La IA es e
   - **No tienes que explicarte como experto.**
 - La conversación de marketing es una construcción inspirada en casos reales; no presentarla como cita literal histórica.
 
+### APROBADO — Criterio de tono y longitud (2026-08-25)
+- **Cercanía no significa más texto.** Una respuesta puede sentirse humana, tranquila y acompañante sin alargar el chat.
+- CERCA debe responder con fluidez conversacional, no como informe ni como lista de variables detectadas.
+- Evitar repetir literalmente lo que el usuario acaba de decir solo para demostrar comprensión.
+- La respuesta ideal hace tres cosas con pocas palabras: **reconoce → interpreta → propone**.
+- Puede usar lenguaje cercano y sereno como “ya, te entendí”, “lo ajustamos”, “vamos con esto”, “seguimos”, siempre sin impostar vulgaridad ni exceso de confianza.
+- No convertir cada feedback en un resumen estructurado de 3–5 puntos si eso rompe la conversación.
+
+### RECHAZADO — Exploración visual/post-entreno posterior del 2026-08-25
+Motivos:
+- Los chats se alargaron demasiado y perdieron naturalidad.
+- En una variante se repitió la información del usuario en forma de resumen antes de tomar una decisión, generando redundancia.
+- En la pieza central se introdujeron representaciones separadas de Ulises y del dragón con estilos distintos al logo maestro, rompiendo coherencia visual.
+- La tercera variante convirtió una idea simple en una conversación excesivamente larga.
+- La dirección anterior, más corta y visual, se considera mejor base.
+
+### REGLA VISUAL — ULISES + DRAGÓN
+- Si aparecen Ulises o el dragón como recurso gráfico, deben derivar del **mismo lenguaje lineal y delicado del logo maestro**.
+- No usar un Ulises holográfico de un estilo y un dragón de otro.
+- No inventar nuevas interpretaciones del símbolo para llenar espacio visual.
+
 ## 6. Cuestionario corto de pre-lanzamiento
 
 ### APROBADO — Estructura
@@ -155,3 +176,4 @@ Semáforo interno:
 - No reemplazar historia: si algo cambia, registrar qué cambió, cuándo y por qué.
 - Antes de diseñar una nueva versión de algo aprobado, revisar este archivo.
 - Si una imagen o logo tiene una referencia visual maestra, no reinterpretarlo de memoria: usar el activo aprobado.
+- Antes de presentar una nueva exploración, hacer una crítica interna mínima: claridad, coherencia con aprobados, redundancia, naturalidad y utilidad. No entregar una variante solo porque sea visualmente llamativa.
