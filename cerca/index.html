@@ -8,10 +8,7 @@
   <title>CERCA — Un entrenador que te acompaña</title>
   <link rel="stylesheet" href="./styles.css" />
   <style>
-    .chat-takeaway{margin-top:14px;padding:16px 18px;border:1px solid rgba(16,231,239,.35);border-radius:16px;background:linear-gradient(135deg,rgba(16,231,239,.11),rgba(85,119,255,.07));display:grid;gap:5px;box-shadow:0 0 28px rgba(16,231,239,.05)}
-    .chat-takeaway span{color:#6ff8fc;font-size:.72rem;font-weight:900;letter-spacing:.12em}
-    .chat-takeaway strong{color:#f5f7f7;font-size:1rem;line-height:1.35}
-    @media(max-width:560px){.language-band{padding-bottom:125px!important}.language-band .impact-inner{padding:0 8px}.language-band .impact-inner h2{font-size:2rem!important;line-height:1.03!important}.chat-takeaway{padding:15px;margin-top:13px}.chat-takeaway span{font-size:.68rem}.chat-takeaway strong{font-size:.94rem}}
+    @media(max-width:560px){.language-band{padding-bottom:125px!important}.language-band .impact-inner{padding:0 8px}.language-band .impact-inner h2{font-size:2rem!important;line-height:1.03!important}}
   </style>
 </head>
 <body>
@@ -65,10 +62,15 @@
         <div class="conversation-head"><span class="pulse"></span><b>DESPUÉS DE ENTRENAR</b><span>Hoy · 19:42</span></div>
         <div class="bubble bubble-muted chat-step">¿Cómo te fue hoy? Cuéntame qué salió bien y qué cambiarías.</div>
         <div class="bubble bubble-user chat-step">Bien. En press banca me sentí fuerte. En los vuelos laterales el hombro se me cargó un poco y al final no alcancé a terminar todo. Mañana tengo solo 40 minutos.</div>
-        <div class="bubble bubble-ai chat-step"><b>Entiendo.</b> Me quedo con tres cosas: el press banca respondió bien, los vuelos laterales cargaron más el hombro y hoy la sesión quedó larga.</div>
-        <div class="bubble bubble-ai chat-step"><b>Para mañana:</b> mantengo lo que funcionó, ajusto ese accesorio y te dejo una sesión que entre en tus 40 minutos.</div>
+        <div class="bubble bubble-ai chat-step"><b>Ya, te entendí.</b> El hombro pide bajarle a ese accesorio, no al press. Mañana te dejo una sesión de 40 minutos con lo que te está funcionando.</div>
         <div class="memory-line chat-step"><span class="memory-chip"></span><b>No tienes que explicarte como experto.</b></div>
-        <div class="chat-takeaway chat-step"><span>TÚ CUENTAS QUÉ PASÓ.</span><strong>CERCA entiende lo importante y te responde claro.</strong></div>
+        <div class="chat-triptych chat-step">
+          <div class="triptych-beats">
+            <b><i aria-hidden="true">1</i>TÚ CUENTAS</b><b><i aria-hidden="true">2</i>CERCA ENTIENDE</b><b><i aria-hidden="true">3</i>CERCA TE RESPONDE</b>
+          </div>
+          <p>Te respondemos claro y ajustamos lo que viene.</p>
+        </div>
+        <p class="chat-closing chat-step">MAÑANA NO PARTES DE CERO.</p>
       </div>
     </section>
 
@@ -109,9 +111,10 @@
         <div class="loop-step"><span>04</span><b>ADAPTAMOS</b></div>
       </div>
       <div class="steps desktop-steps">
-        <article class="step-card"><div class="step-num">01</div><h3>Le cuentas cómo te fue</h3><p>No necesitas términos técnicos. Cuéntalo como se lo contarías a tu entrenador: qué salió bien, qué costó y qué cambió durante el día.</p></article>
-        <article class="step-card"><div class="step-num">02</div><h3>CERCA entiende qué importa</h3><p>Interpreta lo que dijiste y lo cruza con tu contexto: tiempo, equipo, experiencia, historial y lo que venía pasando entre sesiones.</p></article>
-        <article class="step-card"><div class="step-num">03</div><h3>Te devuelve una decisión clara</h3><p>La siguiente sesión puede cambiar y CERCA te explica el porqué sin esconder una idea simple detrás de palabras complicadas.</p></article>
+        <article class="step-card"><div class="step-num">01</div><h3>Entrenas</h3><p>Haces tu sesión como cualquier otro día. Hasta aquí no cambia nada: CERCA no se mete en medio de tu entrenamiento.</p></article>
+        <article class="step-card"><div class="step-num">02</div><h3>Nos cuentas</h3><p>No necesitas términos técnicos. Cuéntalo como se lo contarías a tu entrenador: qué salió bien, qué costó y qué cambió durante el día.</p></article>
+        <article class="step-card"><div class="step-num">03</div><h3>Recordamos</h3><p>Lo que contaste no se queda en el chat. Sigue disponible cuando llegue el momento de decidir la próxima sesión.</p></article>
+        <article class="step-card"><div class="step-num">04</div><h3>Adaptamos</h3><p>La siguiente sesión puede cambiar y CERCA te explica el porqué sin esconder una idea simple detrás de palabras complicadas.</p></article>
       </div>
     </section>
 
