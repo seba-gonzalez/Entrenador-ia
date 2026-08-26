@@ -276,7 +276,7 @@ La información también puede venir de contexto previo, feedback espontáneo, h
 
 **Aclaración — la regla es contextual, no un calendario.** Este principio **no** establece que "antes no se pregunta" ni que "después siempre se pregunta". Preguntar es válido en cualquier momento cuando la respuesta puede cambiar una decisión, y es evitable en cualquier momento cuando la información ya está disponible o no cambiaría nada. La asimetría que hoy tiene la landing —*"tiene en cuenta cómo llegas"* antes, *"te pregunta cómo te fue"* al terminar— es una decisión de esa pieza, no una regla general del producto.
 
-**NO APROBADO** — la interpretación *"antes de entrenar contar es trámite y después es desahogo"* surgió en la discusión del 2026-08-26 y **no se registra como principio**: es demasiado absoluta. Queda anotada solo para que no vuelva a introducirse como regla.
+**NO GENERALIZAR** — La fricción de una pregunta depende del momento, el contexto y la necesidad. No asumir como regla que un check-in previo es trámite ni que el feedback posterior siempre se vive como desahogo. Esta simplificación surgió durante la discusión del 2026-08-26 y fue descartada como principio operativo.
 
 ### APROBADO — La cercanía se demuestra, no se declara (2026-08-26)
 Consolida el criterio de tono ya registrado en §5. Queremos que la persona pueda experimentar cosas como: CERCA se acordó; entendió lo relevante; no tuve que repetir todo; tuvo en cuenta cómo llegué; ajustó cuando tenía sentido; **mantuvo cuando no hacía falta cambiar**; me explicó una decisión con claridad.
