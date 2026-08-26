@@ -38,8 +38,16 @@
           <span class="pill"><span class="pulse"></span> Pre-lanzamiento en Chile</span>
           <a href="https://instagram.com/entrena.cerca" target="_blank" rel="noreferrer">@ENTRENA.CERCA</a>
         </div>
+        <div class="hero-signature" aria-label="CERCA, entrenamiento que recuerda">
+          <span class="hero-c-mark" aria-hidden="true">C</span>
+          <span class="hero-signature-copy"><strong>CERCA</strong><small>ENTRENAMIENTO QUE RECUERDA</small></span>
+        </div>
         <h1>Un entrenador<br/>que te <span class="underline">acompaña.</span></h1>
         <p class="lead"><strong>La IA nos ayuda a estar más cerca.</strong><span class="desktop-detail"> CERCA te pregunta cómo te fue después de cada sesión y usa esa información para adaptar la próxima decisión a tu tiempo, tu equipo y tu contexto.</span></p>
+        <div class="hero-mobile-proof" aria-label="Cómo acompaña CERCA entre sesiones">
+          <div class="hero-proof-row"><span>HOY</span><b>NOS CUENTAS QUÉ PASÓ</b><i>↗</i></div>
+          <div class="hero-proof-row"><span>MAÑANA</span><b>CERCA ADAPTA LA DECISIÓN</b><i>✦</i></div>
+        </div>
         <div class="actions">
           <a class="btn btn-primary" href="#prelanzamiento">✦ Sumarme al pre-lanzamiento <span>→</span></a>
           <a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
@@ -130,14 +138,71 @@
       </div>
       <form id="signupForm" class="signup-card" novalidate>
         <h3>Quiero probar CERCA.</h3>
-        <label>Nombre<input name="name" autocomplete="name" placeholder="Cómo te llamas" /></label>
+        <p class="prelaunch-intro">Son pocas preguntas. Queremos conocerte lo justo para invitarte al beta correcto.</p>
+
+        <label>Nombre *<input name="name" autocomplete="name" required placeholder="Cómo te llamas" /></label>
         <label>Correo *<input name="email" type="email" autocomplete="email" required placeholder="tucorreo@..." /></label>
-        <label>Ciudad (en Chile)<input name="city" placeholder="Santiago, Iquique, Concepción..." /></label>
-        <fieldset class="desktop-detail"><legend>¿Qué entrenas principalmente?</legend><div class="choice-row"><label><input type="radio" name="training" value="Pesas"/>Pesas</label><label><input type="radio" name="training" value="Running"/>Running</label><label><input type="radio" name="training" value="Calistenia"/>Calistenia</label><label><input type="radio" name="training" value="Funcional"/>Funcional</label><label><input type="radio" name="training" value="Mixto / otro"/>Mixto / otro</label></div></fieldset>
-        <label>¿Qué es lo que más te cuesta hoy de entrenar por tu cuenta?<textarea name="challenge" rows="3" placeholder="Opcional. Una línea basta."></textarea></label>
-        <button class="btn btn-primary" type="submit">Quiero sumarme <span>→</span></button>
+
+        <div class="option-grid">
+          <label>País *<input name="country" required autocomplete="country-name" placeholder="Chile" /></label>
+          <label>Ciudad<input name="city" autocomplete="address-level2" placeholder="Santiago" /></label>
+        </div>
+
+        <div class="form-question">¿Entrenas actualmente?</div>
+        <div class="option-grid" id="trainingStatusOptions">
+          <label class="option-pill"><input type="radio" name="trainsNow" value="Sí" required />Sí, entreno</label>
+          <label class="option-pill"><input type="radio" name="trainsNow" value="No" required />No, quiero empezar</label>
+        </div>
+
+        <div id="trainsYes" class="conditional-group">
+          <div class="form-question">¿Qué entrenas principalmente?</div>
+          <select name="trainingType" id="trainingType">
+            <option value="">Elige una opción</option>
+            <option>Gimnasio / pesas</option>
+            <option>Running</option>
+            <option>Funcional / CrossFit</option>
+            <option>Deporte</option>
+            <option>Yoga / Pilates</option>
+            <option>Otro / mixto</option>
+          </select>
+
+          <div class="form-question">¿Cómo entrenas normalmente?</div>
+          <div class="option-grid compact">
+            <label class="option-pill"><input type="radio" name="trainingSupport" value="Solo/a" />Solo/a</label>
+            <label class="option-pill"><input type="radio" name="trainingSupport" value="Con profesor/a" />Con profesor/a</label>
+            <label class="option-pill"><input type="radio" name="trainingSupport" value="Ambas" />Ambas</label>
+          </div>
+
+          <label>¿Qué es lo que más te cuesta hoy con tu entrenamiento?
+            <textarea name="trainingChallenge" rows="3" placeholder="Ej: ser constante, saber qué hacer, ajustar cuando ando cansado... (opcional)"></textarea>
+          </label>
+        </div>
+
+        <div id="trainsNo" class="conditional-group">
+          <div class="form-question">¿Qué sientes que te falta para empezar?<small>Puedes elegir hasta 3 alternativas.</small></div>
+          <div class="option-grid">
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Saber qué hacer" />Saber qué hacer</label>
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Tiempo" />Tiempo</label>
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Constancia / motivación" />Constancia</label>
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Acompañamiento" />Acompañamiento</label>
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Lugar / equipo" />Lugar / equipo</label>
+            <label class="option-pill"><input type="checkbox" name="startBarrier" value="Otro" />Otra cosa</label>
+          </div>
+          <p id="barrierHint" class="selection-note">Elige una, dos o tres. La idea es entender tu realidad, no encasillarte.</p>
+
+          <label>Si quieres, cuéntanos un poco más
+            <textarea name="startComment" rows="3" placeholder="Opcional. Una línea basta."></textarea>
+          </label>
+        </div>
+
+        <label class="consent-row">
+          <input type="checkbox" name="consentContact" required />
+          <span>Acepto que CERCA guarde estas respuestas y mi correo para contactarme sobre el pre-lanzamiento y la beta.</span>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Quiero sumarme <span>&rarr;</span></button>
         <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-        <p class="micro">Preview: este formulario todavía guarda el registro solo en tu navegador.</p>
+        <p class="privacy-note">Usaremos estos datos solo para gestionar el pre-lanzamiento de CERCA. Antes de la apertura pública incorporaremos la política de privacidad completa.</p>
       </form>
     </section>
 
