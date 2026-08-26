@@ -3,7 +3,7 @@
 > Fuente de verdad operativa para decisiones ya aprobadas de marca, landing y pre-lanzamiento.
 > Regla: si una decisión cambia, no se borra la anterior; se registra la nueva versión y el motivo.
 
-Última actualización: 2026-08-25
+Última actualización: 2026-08-26
 
 ## 1. Identidad de marca
 
@@ -38,9 +38,11 @@
 - **NO TIENES QUE EXPLICARTE COMO EXPERTO.**
 - **CUÉNTANOSLO A TU MANERA.**
 - **TE RESPONDEMOS SIMPLE PORQUE ENTENDEMOS LO COMPLEJO.**
+- **MAÑANA NO PARTES DE CERO.**
 
 ### NO USAR COMO FRASE CENTRAL
 - Variantes tipo “Hablamos normal, nosotros entendemos”, porque se percibieron forzadas.
+- Evitar expresiones como **“te respondemos humano”**: la humanidad/cercanía debe sentirse en el tono, no declararse.
 
 ## 3. Posicionamiento del producto
 
@@ -84,6 +86,14 @@ La tecnología aumenta presencia, memoria, seguimiento y continuidad. La IA es e
 - Conservar:
   - **No tienes que explicarte como experto.**
 - La conversación de marketing es una construcción inspirada en casos reales; no presentarla como cita literal histórica.
+
+### APROBADO — Estructura visual/comunicacional del tríptico (2026-08-26)
+- **1. TÚ CUENTAS**
+- **2. CERCA ENTIENDE**
+- **3. CERCA TE RESPONDE**
+- Copy aprobada para el tercer bloque: **“Te respondemos claro y ajustamos lo que viene.”**
+- Frase de cierre aprobada: **“MAÑANA NO PARTES DE CERO.”**
+- La estructura debe entenderse en segundos y no transformarse en una explicación técnica del motor interno.
 
 ### APROBADO — Criterio de tono y longitud (2026-08-25)
 - **Cercanía no significa más texto.** Una respuesta puede sentirse humana, tranquila y acompañante sin alargar el chat.
