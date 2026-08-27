@@ -3,7 +3,7 @@
 > Fuente de verdad operativa para decisiones ya aprobadas de marca, landing y pre-lanzamiento.
 > Regla: si una decisión cambia, no se borra la anterior; se registra la nueva versión y el motivo.
 
-Última actualización: 2026-08-27 — cierre de la Fase 4A.1 (familia tipográfica).
+Última actualización: 2026-08-27 — cierre de la Fase 4A.2 (sistema tipográfico implementado).
 
 ## 1. Identidad de marca
 
@@ -20,7 +20,9 @@
 
 **Archivo es la familia tipográfica principal aprobada para CERCA.**
 
-> **Aprobada no significa implementada.** La landing todavía no la carga. La implementación es trabajo de la Fase 4A.2.
+> **Nota de la Fase 4A.1 (2026-08-27), conservada como historia:** *"Aprobada no significa implementada. La landing todavía no la carga. La implementación es trabajo de la Fase 4A.2."*
+
+**ESTADO ACTUAL: Archivo está aprobada E IMPLEMENTADA en la landing.** Se implementó en la Fase 4A.2, commits `42f5653`, `d304651` y `89d589f`. Aquella nota describe el estado del 4A.1, no el de hoy.
 
 **Razón de diseño**
 - Aporta algo más de identidad propia que Inter.
@@ -48,6 +50,53 @@
 - La escala actual tiene demasiados tamaños.
 - Hay demasiados pesos declarados.
 - El tracking y el interlineado todavía no forman un sistema racionalizado.
+
+### APROBADO — Sistema tipográfico CERCA · Fase 4A.2 (2026-08-27)
+
+**Familia.** Archivo variable, **autoalojada** en el repositorio. Sin dependencia de Google Fonts en ejecución. Solo el eje de peso; **el eje de ancho no se usa**.
+
+**Carga.** Un único subset `latin` en woff2, con `preload` y `font-display: swap`, y un fallback ajustado para reducir el salto mientras la fuente llega.
+
+**Sistema: 15 roles tipográficos semánticos.**
+`promesa` · `manifiesto` · `titular` · `declaracion` · `bloque` · `guia` · `lectura` · `remate` · `etiqueta` · `marca` · `descriptor` · `accion` · `pregunta` · `campo` · `apunte`
+
+Dos ausencias deliberadas:
+- **No existe un token «conversación».** La conversación comparte la receta de `lectura` **a propósito**: debe sentirse como prosa natural, no como interfaz.
+- **No existe un token «etiqueta-corta».** Existe una **variante compacta del rol `etiqueta`** para cuando el layout lo exige. Una restricción de layout justifica una variante, no una voz tipográfica nueva.
+
+**Pesos.** `400` lectura y campo · `700` estructura y énfasis · `800` remate, acción y marca.
+
+**Line-height.** `.95` · `1` · `1.05` · `1.2` · `1.3` · `1.55` · `1.65`
+
+**Tracking base.** `-.05em` display · `0` lectura y campos · `+.05em` remate y variante compacta · `+.08em` cabecera de conversación · `+.12em` etiquetas · `+.16em` marca.
+
+### APROBADO — Excepción del hero: tracking −.055em (2026-08-27)
+El hero conserva **−.055em**, no el −.05em del sistema. A 44px, ese valor mantiene **«que te acompaña.» como unidad a 360px**; con −.05em se parte.
+
+**Está aprobada porque protege significado. No debe normalizarse automáticamente a −.05em.**
+
+### APROBADO — Decisiones tipográficas móviles (2026-08-27)
+
+| Pieza | Valor |
+|---|---|
+| Hero | **44px**. Tres líneas aceptables a 320px; dos desde 360px en las pruebas realizadas |
+| Descriptor `ENTRENAMIENTO QUE RECUERDA` | **11px** |
+| Kicker | **12px / 800** |
+| Lectura y conversación | **15px / lh 1.55** |
+| `memory-line` | **15px** |
+| **Pregunta** del formulario | **16px / 700** |
+| **Campo** del formulario | **16px / 400** — incluye `input`, `textarea`, `select` y las *option pills* |
+| Consentimiento | **13px / 400** |
+| Nota de privacidad | **12px / 400** |
+| `HOY` / `MAÑANA` | **12px / 800**, tracking compacto **+.05em**, columna de 64px conservada |
+| Handle | Variante compacta, para mantener «@ENTRENA.CERCA · CUPOS POR OLEADAS» en una línea sin cambiar copy ni layout |
+
+**Razón funcional del rol campo a 16px:** por debajo de ese tamaño, Safari en iOS hace zoom al enfocar un campo. Y separar `pregunta` de `campo` distingue visualmente lo que el formulario pregunta de lo que la persona responde.
+
+### APROBADO — Trazabilidad de la implementación (2026-08-27)
+- **`42f5653`** — implementa Archivo autoalojada **manteniendo la escala anterior**, para aislar el efecto de la familia del efecto del sistema.
+- **`d304651`** — implementa los 15 roles, las variantes y la excepción del hero.
+- **`89d589f`** — corrige el **único fallo detectado en el QA final**: las *option pills* en móvil se habían quedado accidentalmente en 15px cuando el rol `campo` aprobado era 16px. La corrección forma parte de la historia, no se esconde.
 
 ### APROBADO — Simbología
 - Ulises = compañía, lealtad, presencia y fuerza constante.
@@ -354,6 +403,15 @@ Antes de agregar o modificar algo, preguntar:
 6. ¿Se siente como CERCA o como una landing genérica de fitness/IA?
 7. Si lo quitamos, ¿qué se pierde realmente?
 
+### APROBADO — Cuándo una diferencia merece existir (2026-08-27)
+> Menos valores no es el objetivo. Menos decisiones arbitrarias sí.
+
+Una diferencia tipográfica, cromática o de espacio debe poder responder a la pregunta *¿qué trabajo hace?*. Si no puede, sobra. Pero reducir por reducir empobrece igual que acumular.
+
+> Una excepción que protege significado no debilita el sistema; lo explica.
+
+Cuando un valor de sistema y una unidad de significado entran en conflicto, gana el significado, y la excepción se registra con su razón.
+
 ### APROBADO — Cómo se aprueba una familia tipográfica (2026-08-27)
 Una familia no se aprueba porque tenga una historia atractiva ni porque gane una captura aislada. Se aprueba cuando **aporta identidad sin impedir que el producto haga su trabajo**.
 
@@ -420,9 +478,11 @@ Nada de esta sección está aprobado. Se registra para que no se dé por decidid
 - Mostrar **`#posicionamiento` en móvil** (hoy oculto bajo 560px).
 
 ### PENDIENTE — Identidad visual
-- **Tipografía — implementación.** La familia ya está decidida: **Archivo** (§1, 2026-08-27). Lo que sigue pendiente es llevarla a la landing. Hasta que eso ocurra sigue vigente el problema original: `styles.css` declara `Inter` y no la carga, así que cada dispositivo dibuja CERCA con otra familia.
+- ~~**Tipografía**~~ — **CERRADO.** La Fase 4A está completa: Archivo está implementada y el sistema tipográfico registrado en §1. El problema original —`Inter` declarada y nunca cargada— ya no existe.
 - **Jerarquía global del cyan**.
 - **Favicon** y **`og:image`**.
+- **CTA de Instagram: contraste incorrecto.** `.footer a,.faq-grid a,.instagram-card a,.eyebrow-row a{color:var(--cyan)}` gana por especificidad a `.btn-primary{color:#061111}`, así que el texto sale cyan sobre cyan: **contraste 1.00:1**. Detectado durante la Fase 4A.2 y **no corregido a propósito**: pertenece a la revisión de color posterior.
+- **Flechas `→` y `↗`.** Quedan fuera del subset de Archivo —y también de `latin-ext`—, así que las dibuja un glifo del sistema y cambian de forma según el dispositivo. Evaluar su sustitución por iconos SVG como trabajo separado.
 
 ### PENDIENTE — Activos de marca
 - El **logo maestro (Ulises + dragón)** no está en la landing; hoy hay una "C". Se necesita el activo aprobado del 2026-08-25. No reinterpretar de memoria (§1).
