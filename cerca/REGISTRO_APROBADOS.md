@@ -42,9 +42,9 @@
 
 **Sobre Inter.** Inter **no queda rechazada**: es una alternativa técnicamente válida y excelente que simplemente no fue la seleccionada.
 
-**Lo que esta decisión NO decide todavía.** Nada de lo siguiente está aprobado y todo pertenece a la implementación de la Fase 4A.2: método de instalación, proveedor, autoalojamiento, subsets, pesos, tamaños, estrategia de precarga, `font-display` y el eje de ancho.
+**Lo que esta decisión NO decidía todavía en la Fase 4A.1 — histórico.** Nada de lo siguiente está aprobado y todo pertenece a la implementación de la Fase 4A.2: método de instalación, proveedor, autoalojamiento, subsets, pesos, tamaños, estrategia de precarga, `font-display` y el eje de ancho.
 
-**Observaciones que no invalidan la decisión y pasan a 4A.2**
+**Observaciones de la Fase 4A.1 que pasaron a 4A.2 — histórico**
 - El hero móvil cae en tres líneas.
 - El descriptor pequeño tiene muy poca holgura.
 - La escala actual tiene demasiados tamaños.
