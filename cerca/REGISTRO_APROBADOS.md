@@ -31,7 +31,7 @@
 **Razón de validación**
 - Comparación visual controlada Inter vs Archivo, con la única variable siendo la familia.
 - Prueba en navegador real.
-- Validación técnica con Archivo variable real sobre la landing de producción.
+- Validación técnica con Archivo variable real sobre la versión actual de la landing.
 - Comprobada a 390, 768 y 1440 px.
 - Sin problemas materiales de legibilidad.
 - Sin desbordamiento horizontal.
