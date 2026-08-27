@@ -3,7 +3,7 @@
 > Fuente de verdad operativa para decisiones ya aprobadas de marca, landing y pre-lanzamiento.
 > Regla: si una decisión cambia, no se borra la anterior; se registra la nueva versión y el motivo.
 
-Última actualización: 2026-08-26 — cierre de la Fase 3 de la landing.
+Última actualización: 2026-08-27 — cierre de la Fase 4A.1 (familia tipográfica).
 
 ## 1. Identidad de marca
 
@@ -15,6 +15,39 @@
 - Evitar: versiones pesadas, agresivas, demasiado realistas, deportivas genéricas o tipo gaming/suplementos.
 - Tipografía de CERCA: limpia/futurista, con el isotipo pudiendo vivir solo o acompañado por el nombre.
 - La lámina aprobada por el usuario el 2026-08-25 es la referencia visual maestra. No reinterpretar el logo sin aprobación explícita.
+
+### APROBADO — Familia tipográfica: Archivo (2026-08-27)
+
+**Archivo es la familia tipográfica principal aprobada para CERCA.**
+
+> **Aprobada no significa implementada.** La landing todavía no la carga. La implementación es trabajo de la Fase 4A.2.
+
+**Razón de diseño**
+- Aporta algo más de identidad propia que Inter.
+- Mantiene una personalidad contemporánea, sólida y atlética sin caer en clichés fitness.
+- Funciona tanto en titulares y caja alta como en conversación, UI, formulario y texto largo.
+- Su personalidad es suficientemente sutil como para no convertirse en protagonista.
+
+**Razón de validación**
+- Comparación visual controlada Inter vs Archivo, con la única variable siendo la familia.
+- Prueba en navegador real.
+- Validación técnica con Archivo variable real sobre la landing de producción.
+- Comprobada a 390, 768 y 1440 px.
+- Sin problemas materiales de legibilidad.
+- Sin desbordamiento horizontal.
+- Sin fallback de glifos en las piezas revisadas.
+- Sin problemas materiales con la Ñ, las tildes ni las mayúsculas acentuadas.
+
+**Sobre Inter.** Inter **no queda rechazada**: es una alternativa técnicamente válida y excelente que simplemente no fue la seleccionada.
+
+**Lo que esta decisión NO decide todavía.** Nada de lo siguiente está aprobado y todo pertenece a la implementación de la Fase 4A.2: método de instalación, proveedor, autoalojamiento, subsets, pesos, tamaños, estrategia de precarga, `font-display` y el eje de ancho.
+
+**Observaciones que no invalidan la decisión y pasan a 4A.2**
+- El hero móvil cae en tres líneas.
+- El descriptor pequeño tiene muy poca holgura.
+- La escala actual tiene demasiados tamaños.
+- Hay demasiados pesos declarados.
+- El tracking y el interlineado todavía no forman un sistema racionalizado.
 
 ### APROBADO — Simbología
 - Ulises = compañía, lealtad, presencia y fuerza constante.
@@ -321,6 +354,13 @@ Antes de agregar o modificar algo, preguntar:
 6. ¿Se siente como CERCA o como una landing genérica de fitness/IA?
 7. Si lo quitamos, ¿qué se pierde realmente?
 
+### APROBADO — Cómo se aprueba una familia tipográfica (2026-08-27)
+Una familia no se aprueba porque tenga una historia atractiva ni porque gane una captura aislada. Se aprueba cuando **aporta identidad sin impedir que el producto haga su trabajo**.
+
+> La identidad puede aparecer con el tiempo; la fricción se siente inmediatamente.
+
+Por eso la personalidad tipográfica nunca debe comprarse sacrificando claridad.
+
 ### APROBADO — Símbolos y clichés de IA (2026-08-26)
 **La IA es el motor, no el héroe** (§3), también en lo visual. No usar símbolos genéricos de IA solo para declarar que el producto tiene IA. Cuestionar especialmente elementos como el sparkle ✦ cuando su única función es comunicar "IA".
 
@@ -380,7 +420,7 @@ Nada de esta sección está aprobado. Se registra para que no se dé por decidid
 - Mostrar **`#posicionamiento` en móvil** (hoy oculto bajo 560px).
 
 ### PENDIENTE — Identidad visual
-- **Tipografía**: hoy se declara `Inter` pero nunca se carga, así que cada dispositivo dibuja CERCA con otra familia.
+- **Tipografía — implementación.** La familia ya está decidida: **Archivo** (§1, 2026-08-27). Lo que sigue pendiente es llevarla a la landing. Hasta que eso ocurra sigue vigente el problema original: `styles.css` declara `Inter` y no la carga, así que cada dispositivo dibuja CERCA con otra familia.
 - **Jerarquía global del cyan**.
 - **Favicon** y **`og:image`**.
 
