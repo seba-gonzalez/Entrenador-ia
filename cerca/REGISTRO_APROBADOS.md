@@ -3,7 +3,7 @@
 > Fuente de verdad operativa para decisiones ya aprobadas de marca, landing y pre-lanzamiento.
 > Regla: si una decisión cambia, no se borra la anterior; se registra la nueva versión y el motivo.
 
-Última actualización: 2026-08-27 — cierre de la Fase 4A.2 (sistema tipográfico implementado).
+Última actualización: 2026-08-28 — cierre de la Fase 4B (jerarquía cromática) y de las erratas detectadas tras el cierre de 4A.
 
 ## 1. Identidad de marca
 
@@ -97,6 +97,81 @@ El hero conserva **−.055em**, no el −.05em del sistema. A 44px, ese valor ma
 - **`42f5653`** — implementa Archivo autoalojada **manteniendo la escala anterior**, para aislar el efecto de la familia del efecto del sistema.
 - **`d304651`** — implementa los 15 roles, las variantes y la excepción del hero.
 - **`89d589f`** — corrige el **único fallo detectado en el QA final**: las *option pills* en móvil se habían quedado accidentalmente en 15px cuando el rol `campo` aprobado era 16px. La corrección forma parte de la historia, no se esconde.
+
+### APROBADO — Erratas de implementación detectadas después del cierre de 4A (2026-08-28)
+
+La Fase 4A quedó cerrada el 2026-08-27 y **no se reabrió**. Nada de lo que sigue revisa una decisión tipográfica: las recetas de los quince roles son exactamente las mismas antes y después. Lo que se registra es que la hoja no estaba **entregando** decisiones que ya estaban aprobadas, y cómo se corrigió.
+
+Las cuatro erratas aparecieron mientras se trabajaba el color, y todas resultaron ser la misma forma: una regla que selecciona **dónde vive** un elemento en lugar de **qué es**.
+
+- **`306d0a3`** — la marca y el CTA de navegación recuperan sus roles *marca* y *acción*. `.nav-links a,.nav a` no describía un enlace de navegación: describía cualquier ancla dentro del contenedor `.nav`, así que alcanzaba también a `<a class="brand">` y `<a class="nav-cta">` y los dejaba en 15px/400 en vez de 16px/800, en las seis anchuras. Se retira el selector que sobraba.
+- **`502e9a3`** — el rol *lectura* recupera los párrafos de las tarjetas de «Cómo funciona» y las respuestas de preguntas frecuentes, que salían a 18,88px en vez de 15/16px. **La causa fue una corrección anterior nuestra:** en `d304651`, para proteger al `.kicker`, se añadió `:not([class])` a `.section p`; esa negación subió la especificidad de (0,1,1) a (0,2,1) y con ello la regla general pasó a derrotar al rol que se estaba escribiendo en ese mismo commit. Se corrige reduciendo la fuerza de la regla general con `:where()`, no fortaleciendo los selectores específicos.
+- **`13abe4c`** — los dos botones del hero móvil recuperan el rol *acción*. `.actions .btn-primary{font-size:.94rem}` y `.actions .btn-ghost{font-size:.86rem}`, anteriores a 4A, los dejaban en 15,04px y 13,76px, y además con tamaños distintos entre sí. Se retiran las dos declaraciones; no se sustituyen por 16px, porque el rol ya lo dice.
+- **`5683f6a`** — el manifiesto móvil recupera `line-height` 1. Un `<style>` incrustado en `index.html` declaraba `line-height:1.03!important`, fuera del alcance de cualquier capa. Se retiran sólo esas declaraciones; las de layout del mismo bloque se conservan.
+
+**Estado verificado el 2026-08-28**, sobre 168 nodos en 320, 360, 390, 430, 768 y 1440:
+- **15/15 roles PASS.**
+- **Cero discrepancias** donde una regla ajena derrote a un rol.
+- **Archivo** se renderiza en los 168 nodos; ninguno cae al fallback.
+
+Estos son aprendizajes técnicos y metodológicos nacidos de erratas reales. No son una reapertura del diseño tipográfico. Los dos principios que dejaron están en §12.
+
+### APROBADO — Jerarquía cromática CERCA · Fase 4B (2026-08-28)
+
+El cyan hacía demasiados trabajos sin jerarquía: repartido en veintitrés contornos, cuatro palabras y dos tonos casi iguales, no señalaba nada porque acompañaba a todo. La Fase 4B le da un trabajo.
+
+**Roles cromáticos aprobados.** Un token nombra una **responsabilidad**, no necesariamente un color distinto:
+
+| token | valor hoy | responsabilidad |
+|---|---|---|
+| `--color-brand` | `#fff` | tinta del logotipo |
+| `--color-link` | `var(--cyan)` | enlace de texto |
+| `--color-action` | `var(--cyan)` | el acento del que está hecha una acción primaria |
+| `--color-on-accent` | `#041111` | tinta **sobre** acento — no significa «acción» |
+| `--color-enfasis` | `var(--cyan)` | la palabra donde vive la diferencia |
+
+Marca, enlace, acción y énfasis comparten hoy `#10e7ef` **sin ser el mismo rol**. El día que uno se separe, se separa en un solo sitio.
+
+**Trazabilidad:**
+- **`bc8378f`** — introduce los cuatro primeros roles y repara el modelo: la semántica del componente pasa a ganar a la regla genérica de enlace. Corrige tres síntomas de una sola causa — la marca salía gris pese a declarar blanco, el CTA de navegación conservaba su tinta sólo por un `!important`, y el CTA de Instagram salía cyan sobre cyan con **contraste 1,00:1**. La regla de enlaces de texto pasa a `:where(...)`, especificidad cero: deja de ser una autoridad y vuelve a ser un valor por defecto.
+- **`5189375`** — corrige una **regresión propia**: al reducir aquella regla en `bc8378f` se retiró sin querer el `text-decoration:none` del que dependía el CTA de navegación, que quedó subrayado durante tres commits. El barrido de propiedades de `bc8378f` no lo vio porque `text-decoration` no estaba entre las propiedades medidas. Se corrige haciendo que el componente declare lo suyo. No se esconde: es el origen del criterio de QA de §12.
+- **`6bfcb45`** — implementación cromática final: unificación de cyan, énfasis verbal y bordes de acento.
+
+**Estado final medido** en 320, 390, 768 y 1440: marca `#fff` 16/800 · CTA de Instagram **12,53:1** · ningún botón subrayado · sin scroll horizontal · 15/15 roles tipográficos intactos.
+
+### APROBADO — Énfasis verbal en cyan (2026-08-28)
+
+Palabras en cyan, y son todas:
+
+- **Acompañamos.**
+- **conversación.**
+- **SIMPLE**
+
+Pasan a texto normal: **LO COMPLEJO.** y **pocas personas.**
+
+En «TE RESPONDEMOS SIMPLE PORQUE ENTENDEMOS LO COMPLEJO», lo complejo ocurre por dentro; **lo simple es lo que la persona recibe**. El cyan estaba al final de la frase, subrayando el problema; ahora está en la promesa.
+
+**No existe obligación de tener una palabra cyan en cada titular.** «Una buena rutina es solo el comienzo.» permanece sin énfasis cyan, y así debe quedarse mientras no aparezca una razón semántica propia.
+
+### APROBADO — Cuándo un borde es cyan (2026-08-28)
+
+Un borde cyan se reserva para lo que comunica: **acción, estado, identidad de hablante, marca, selección, foco funcional y componente destacado**. Cuando sólo hay estructura, el borde es neutro.
+
+Conservan cyan por esa razón: el CTA de navegación, la pill de pre-lanzamiento, la burbuja de CERCA, la «C» del hero móvil, la tarjeta destacada y su etiqueta, el foco de campo y la opción seleccionada.
+
+Los recuentos **23 → 4 en móvil** y **22 → 6 en escritorio** son la **consecuencia** de aplicar esa clasificación. No son objetivos de diseño y no deben usarse como meta en el futuro. Lo que importa no es cuántos quedan, sino que el foco de campo y la opción marcada pasaron de ser dos cyanes entre veintitrés a ser de los pocos que quedan.
+
+### APROBADO — Decisiones cromáticas deliberadamente conservadas (2026-08-28)
+
+No se tocaron, y no por olvido:
+
+- **`#1ec0c3`** de la burbuja de la persona — protegido por contraste y por identidad de hablante.
+- **`#6ff8fc`** de la pill de pre-lanzamiento — es un componente de estado de producto, no una etiqueta más.
+- **Azul y violeta** — aportan transición, no son ruido por defecto.
+- **Glows, flare del hero, superficies y fondos.**
+- **El chat del hero**, que sigue siendo el bloque cyan dominante de la primera pantalla.
+
+Y una heurística que **no** se convierte en regla del sistema: *«funcional = opaco»* y *«atmosférico = alpha baja»* sirvieron para observar durante la auditoría, pero no definen semántica. Un focus ring puede ser translúcido y funcional; un glow puede superar puntualmente .20 y seguir siendo atmósfera. **La función se determina por el trabajo que hace el elemento, no por su alpha.**
 
 ### APROBADO — Simbología
 - Ulises = compañía, lealtad, presencia y fuerza constante.
@@ -419,6 +494,41 @@ Una familia no se aprueba porque tenga una historia atractiva ni porque gane una
 
 Por eso la personalidad tipográfica nunca debe comprarse sacrificando claridad.
 
+### APROBADO — Principios de color (2026-08-28)
+
+> **El color de marca no tiene que estar en todas partes. Tiene que aparecer donde su presencia haga un trabajo.**
+
+> **No unificamos colores porque se parecen. Los unificamos cuando hacen el mismo trabajo.**
+
+> **El cyan verbal aparece donde vive la diferencia, no donde termina la frase.**
+
+> **La acción gana porque alrededor hay menos ruido, no porque grita más.**
+
+> **Identidad no es colorear más.**
+
+Síntesis:
+
+> **El cyan de CERCA no tiene que demostrar presencia. Tiene que demostrar criterio.**
+
+Es la misma idea que sostiene el producto: CERCA acompaña tomando decisiones sobre qué importa, y su lenguaje visual debe hacer lo mismo. Un color que se reparte por igual dice *todo importa igual*, que es justo lo que dice un plan que no mira a nadie.
+
+### APROBADO — Cuándo una implementación está correcta (2026-08-28)
+
+Dos principios técnicos nacidos de erratas reales —las cuatro posteriores al cierre de 4A (§1) y las tres reparaciones cromáticas de 4B (§1)—, no de una discusión teórica. Seis instancias del mismo mecanismo.
+
+> **La implementación no está correcta porque contenga la regla correcta. Está correcta cuando la decisión correcta llega a pantalla.**
+
+Por eso la verdad de una decisión visual es el *computed style* del nodo real, no la regla escrita. Y no se atribuye al hijo el valor medido en el padre.
+
+> **Una regla debe seleccionar aquello que significa, no todo lo que casualmente vive dentro del mismo contenedor.**
+
+`.nav a`, `.section p`, `.actions .btn-primary` y `.footer a` describían **dónde vive** un elemento, no **qué es**, y por eso derrotaban a los componentes. La corrección nunca fue subir la especificidad del componente ni añadir `!important`: fue reducir la fuerza de la regla general para que vuelva a comportarse como valor por defecto.
+
+Dos consecuencias de método, aprendidas a base de fallar:
+
+- **Una corrección por especificidad no termina cuando el caso corregido pasa.** Termina cuando se comprueba a quién más alcanza la regla modificada. Añadir `:not([class])` para proteger un elemento creó una errata mayor en el mismo commit.
+- **Un barrido de propiedades sólo demuestra las propiedades que enumera.** Decir «cambian N elementos» no prueba la página si sólo se compararon algunas propiedades: un subrayado se coló exactamente por ese hueco. Toda verificación visual lleva dos capas — computed styles para lo semántico y comparación de píxeles para lo que la lista no contempla.
+
 ### APROBADO — Símbolos y clichés de IA (2026-08-26)
 **La IA es el motor, no el héroe** (§3), también en lo visual. No usar símbolos genéricos de IA solo para declarar que el producto tiene IA. Cuestionar especialmente elementos como el sparkle ✦ cuando su única función es comunicar "IA".
 
@@ -479,10 +589,14 @@ Nada de esta sección está aprobado. Se registra para que no se dé por decidid
 
 ### PENDIENTE — Identidad visual
 - ~~**Tipografía**~~ — **CERRADO.** La Fase 4A está completa: Archivo está implementada y el sistema tipográfico registrado en §1. El problema original —`Inter` declarada y nunca cargada— ya no existe.
-- **Jerarquía global del cyan**.
+- ~~**Erratas tipográficas posteriores al cierre de 4A**~~ — **CERRADO** el 2026-08-28. Las cuatro están corregidas y registradas en §1; verificación final 15/15 roles PASS, cero discrepancias.
+- ~~**Jerarquía global del cyan**~~ — **CERRADO** el 2026-08-28 con la Fase 4B. Los cinco roles cromáticos, el énfasis verbal y el criterio de bordes están en §1.
+- ~~**CTA de Instagram: contraste incorrecto**~~ — **CERRADO.** Salía cyan sobre cyan, **1,00:1**, porque `.footer a,.faq-grid a,.instagram-card a,.eyebrow-row a` ganaba por especificidad a `.btn-primary`. Corregido en `bc8378f`: hoy es **12,53:1**.
 - **Favicon** y **`og:image`**.
-- **CTA de Instagram: contraste incorrecto.** `.footer a,.faq-grid a,.instagram-card a,.eyebrow-row a{color:var(--cyan)}` gana por especificidad a `.btn-primary{color:#061111}`, así que el texto sale cyan sobre cyan: **contraste 1.00:1**. Detectado durante la Fase 4A.2 y **no corregido a propósito**: pertenece a la revisión de color posterior.
 - **Flechas `→` y `↗`.** Quedan fuera del subset de Archivo —y también de `latin-ext`—, así que las dibuja un glifo del sistema y cambian de forma según el dispositivo. Evaluar su sustitución por iconos SVG como trabajo separado.
+
+### DEUDA TÉCNICA MENOR — No bloquea Landing V1
+- **`.choice-row` y sus reglas de selección viven en `styles.css` pero no existen en el HTML** desde que la Fase 1 pasó el formulario a `.option-pill`. Son reglas muertas, no un defecto visible ni funcional. Se retiran cuando toque limpiar CSS, no antes.
 
 ### PENDIENTE — Activos de marca
 - El **logo maestro (Ulises + dragón)** no está en la landing; hoy hay una "C". Se necesita el activo aprobado del 2026-08-25. No reinterpretar de memoria (§1).
