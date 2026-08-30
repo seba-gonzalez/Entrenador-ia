@@ -35,6 +35,7 @@ brand/isotipo.svg
 # error. Es una red de seguridad, no el mecanismo principal.
 PROHIBIDOS="
 REGISTRO_APROBADOS.md
+MATRIZ_DE_DATOS.md
 admin.html
 type-lab.html
 type-lab.css
