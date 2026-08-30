@@ -3,7 +3,7 @@
 > Fuente de verdad operativa para decisiones ya aprobadas de marca, landing y pre-lanzamiento.
 > Regla: si una decisión cambia, no se borra la anterior; se registra la nueva versión y el motivo.
 
-Última actualización: 2026-08-28 — cierre de la Fase 4B (jerarquía cromática) y de las erratas detectadas tras el cierre de 4A.
+Última actualización: 2026-08-30 — revisión de dos copies de la landing: la frase protegida «Cuéntanos a tu manera» y el copy de entrada del pre-lanzamiento.
 
 ## 1. Identidad de marca
 
@@ -193,9 +193,24 @@ Y una heurística que **no** se convierte en regla del sistema: *«funcional = o
 - **TU ENTRENAMIENTO DE HOY DEBERÍA SABER CÓMO TE FUE AYER.**
 - **ENTRENAS. NOS CUENTAS. RECORDAMOS. ADAPTAMOS.**
 - **NO TIENES QUE EXPLICARTE COMO EXPERTO.**
-- **CUÉNTANOSLO A TU MANERA.**
+- **CUÉNTANOS A TU MANERA.**
 - **TE RESPONDEMOS SIMPLE PORQUE ENTENDEMOS LO COMPLEJO.**
 - **MAÑANA NO PARTES DE CERO.**
+
+### AFINADO — «CUÉNTANOSLO» pasa a «CUÉNTANOS» (2026-08-30)
+
+| | |
+|---|---|
+| **Versión vigente** | **CUÉNTANOS A TU MANERA.** — protegida |
+| **Versión anterior** | ~~CUÉNTANOSLO A TU MANERA.~~ — **HISTÓRICA / SUPERADA.** No es una alternativa válida ni una variante intercambiable |
+| **Cuándo** | 2026-08-30, por decisión explícita de dirección |
+| **Implementación** | `bd432fba251f2056e98d6093b4f1d55c5d88d217` |
+
+**Motivo.** «Cuéntanoslo» generaba fricción al hablar y se sentía más forzado; había vuelto a aparecer como problema repetidamente. «Cuéntanos» conserva íntegra la intención —la persona puede expresarse a su manera, sin necesidad de sonar experta— con una formulación más natural.
+
+> **Si una frase necesita ser explicada para sonar natural, la frase está haciendo demasiado trabajo.**
+
+Que esta frase estuviera protegida no la hacía intocable: la protección impide cambiarla por descuido, no revisarla por decisión. Cambiar una decisión no borra su historia; cambia cuál es la versión vigente.
 
 ### NO USAR COMO FRASE CENTRAL
 - Variantes tipo “Hablamos normal, nosotros entendemos”, porque se percibieron forzadas.
@@ -313,6 +328,20 @@ Si no entrena:
 - Selección múltiple, mínimo 1 y máximo 3
 - Barreras: saber qué hacer, tiempo, constancia, acompañamiento, lugar/equipo, otra cosa
 - Comentario opcional
+
+### APROBADO — Copy de entrada del pre-lanzamiento (2026-08-30)
+
+Vigente: **«Queremos construir CERCA con personas que quieren entrenar.»**
+
+Sustituye a *«…con personas que entrenan de verdad»*, que quedaba **HISTÓRICA / SUPERADA**: dejaba fuera a quien todavía no ha empezado.
+
+**Motivo.** CERCA incluye tanto a quien ya entrena como a quien quiere comenzar, y el propio formulario de esta sección ya contempla *«No, quiero empezar»*. La promesa verbal tenía que ser coherente con esa inclusión: alguien que aún no entrena debe poder leer la frase y pensar *«esto también puede ser para mí»*.
+
+> **CERCA acompaña un proceso. No exige que el proceso ya haya empezado.**
+
+Es copy operativo de esta sección, no una frase maestra: no entra en §2.
+
+**Implementación:** `bd432fba251f2056e98d6093b4f1d55c5d88d217`.
 
 ### APROBADO — Separación de formularios
 - Formulario corto = interés/pre-lanzamiento.
