@@ -37,6 +37,8 @@ if (form) {
   const status = document.getElementById('formStatus');
   const submitButton = form.querySelector('button[type="submit"]');
   const barrierHint = document.getElementById('barrierHint');
+  const perfilCta = document.getElementById('perfilCta');
+  let registrado = false;
   const trainRadios = Array.from(form.querySelectorAll('input[name="trainsNow"]'));
   const startBarriers = Array.from(form.querySelectorAll('input[name="startBarrier"]'));
 
@@ -127,7 +129,27 @@ if (form) {
         throw new Error(`Signup failed with status ${response.status}`);
       }
 
+      // Contexto que puede viajar al perfil. Lista blanca estricta: solo campos
+      // cerrados y no sensibles. training_challenge y start_comment son texto
+      // libre y NO viajan — estan pendientes de revision (MATRIZ_DE_DATOS.md §6).
+      try {
+        window.sessionStorage.setItem('cerca_contexto_landing', JSON.stringify({
+          name: payload.name,
+          trains_now: payload.trains_now,
+          training_type: payload.training_type,
+          training_support: payload.training_support,
+          start_barriers: payload.start_barriers
+        }));
+      } catch (error) {
+        // Sin sessionStorage el perfil funciona igual, entrando sin contexto.
+      }
+
       setStatus('¡Listo! Ya quedaste registrado para el pre-lanzamiento de CERCA.', 'success');
+      // El registro ya esta hecho: la accion primaria pasa a ser el perfil.
+      // Dos botones primarios compitiendo no dicen cual es el siguiente paso.
+      registrado = true;
+      submitButton.hidden = true;
+      if (perfilCta) perfilCta.hidden = false;
       form.reset();
       yesGroup.classList.remove('is-visible');
       noGroup.classList.remove('is-visible');
@@ -136,8 +158,10 @@ if (form) {
       console.error('CERCA signup error', error);
       setStatus('No pudimos guardar tu registro. Inténtalo nuevamente en un momento.', 'error');
     } finally {
-      submitButton.disabled = false;
-      submitButton.innerHTML = 'Quiero sumarme <span>→</span>';
+      if (!registrado) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Quiero sumarme <span>→</span>';
+      }
     }
   });
 }

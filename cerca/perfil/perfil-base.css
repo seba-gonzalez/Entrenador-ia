@@ -1,0 +1,66 @@
+/* CERCA · Base del perfil
+   ------------------------------------------------------------------
+   Este fichero repite deliberadamente la fundacion de cerca/styles.css
+   (fuente, tokens de color y tokens tipograficos) en lugar de importarla.
+   Motivo: la Fase C prohibe expresamente refactorizar styles.css y cargarlo
+   dentro del perfil. La duplicacion es temporal y conocida: cuando se
+   apruebe la extraccion de una base comun, este fichero es el candidato a
+   convertirse en ella y styles.css pasaria a consumirlo.
+   Mientras tanto: si un valor cambia en styles.css, cambia aqui tambien.
+   ------------------------------------------------------------------ */
+
+/* Misma fuente autoalojada de la landing. Un nivel arriba: cerca/fonts/ */
+@font-face{font-family:"Archivo";src:url("../fonts/archivo-variable-latin.woff2") format("woff2-variations");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Archivo Fallback";src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");size-adjust:88.5%}
+
+/* Tokens cromaticos: valores identicos a la landing. */
+:root{
+  --bg:#020606; --panel:#06100f; --panel2:#081514;
+  --text:#f5f7f7; --muted:#9aa7a7;
+  --cyan:#10e7ef; --cyan2:#00b7c2;
+  --line:rgba(255,255,255,.09);
+  --radius:24px;
+}
+/* Roles cromaticos. Un token nombra una RESPONSABILIDAD, no un color. */
+:root{
+  --color-brand:#fff;          /* tinta del logotipo */
+  --color-action:var(--cyan);  /* acento del que esta hecha una accion primaria */
+  --color-on-accent:#041111;   /* tinta SOBRE acento; no significa "accion" */
+  --color-enfasis:var(--cyan); /* la palabra donde vive la diferencia */
+  --color-estado:var(--cyan);  /* un estado real del producto, no una decoracion */
+  /* Estructura: cuando un borde solo separa, es neutro. */
+  --borde-estructura:var(--line);
+  /* Ranura pendiente: lo que el sistema todavia no ha inferido se declara
+     vacio, no se rellena. Nunca cyan: no es un estado logrado. */
+  --borde-pendiente:rgba(255,255,255,.14);
+}
+
+/* Tokens tipograficos: los 15 roles aprobados en la Fase 4A.2. */
+:root{
+  --peso-lectura:400; --peso-estructura:700; --peso-remate:800;
+  --track-display:-.05em; --track-lectura:0; --track-compacta:.05em;
+  --track-conversa:.08em; --track-etiqueta:.12em; --track-marca:.16em;
+  --lh-display:.95; --lh-manifiesto:1; --lh-titular:1.05; --lh-bloque:1.2;
+  --lh-alta:1.3; --lh-lectura:1.55; --lh-guia:1.65;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Archivo","Archivo Fallback",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  line-height:1.5;
+  -webkit-text-size-adjust:100%;
+}
+
+/* Foco funcional: es de los pocos sitios donde el cyan tiene trabajo. */
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+textarea:focus-visible{outline:none}
+
+button{font:inherit;color:inherit}
+textarea{font:inherit}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}

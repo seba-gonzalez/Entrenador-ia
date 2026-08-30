@@ -29,6 +29,10 @@ app.js
 fonts/archivo-variable-latin.woff2
 fonts/OFL.txt
 brand/isotipo.svg
+perfil/index.html
+perfil/perfil-base.css
+perfil/perfil.css
+perfil/perfil.js
 "
 
 # Lo que nunca puede salir, aunque alguien lo añada a la lista de arriba por
@@ -65,6 +69,16 @@ for p in $PROHIBIDOS; do
     exit 1
   fi
 done
+
+# Salvaguarda general: ningun documento .md sale nunca, tenga el nombre que
+# tenga. El registro, la matriz de datos y las preguntas juridicas ya estan
+# arriba por su nombre; esto cubre al siguiente que alguien escriba.
+if find "$SALIDA" -mindepth 1 -name '*.md' | grep -q .; then
+  echo "ERROR: hay documentos .md en la salida publica. Ninguno se publica." >&2
+  find "$SALIDA" -mindepth 1 -name '*.md' | sed "s#$SALIDA/#  #" >&2
+  rm -rf "$SALIDA"
+  exit 1
+fi
 
 echo "Salida pública en cerca/dist/"
 find "$SALIDA" -type f | sed "s#$SALIDA/#  #" | sort
