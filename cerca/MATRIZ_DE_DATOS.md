@@ -64,9 +64,12 @@ tiene que decirlo.
 ### C · INFORMACIÓN DE SALUD
 > *"Me operaron la rodilla." · "Tengo tendinitis." · "Me duele el hombro."*
 
-- **Trato del producto:** **ninguno por ahora.** No se captura, no se persiste, no se procesa.
+- **Trato del producto:** **ninguno por ahora.** No se solicita, no se persiste, no se procesa.
+  *No solicitar no es lo mismo que no poder recibir:* un campo libre puede recibirla
+  espontáneamente aunque nunca se haya pedido. Lo que sí está garantizado es que no se
+  persiste ni se envía a ningún servicio.
 - **Categoría legal:** dato personal **sensible**.
-- **Captura:** **BLOQUEADA** hasta cerrar la revisión jurídica.
+- **Solicitud deliberada:** **BLOQUEADA** hasta cerrar la revisión jurídica.
 
 ### La frontera peligrosa es B/C, y es una frontera que el producto puede cruzar solo
 

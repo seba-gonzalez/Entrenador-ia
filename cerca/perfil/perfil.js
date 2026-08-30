@@ -10,12 +10,24 @@
    descartarlo en el navegador. Ver cerca/MATRIZ_DE_DATOS.md §7.
 
    DATOS DE SALUD
-   Este prototipo no pide lesiones, diagnosticos, dolor ni antecedentes
-   medicos, y no pregunta la causa de ninguna restriccion. La garantia no
-   es una promesa: es el guardia `PATRONES_CAUSA`, que se aplica a NUESTRO
-   banco de preguntas al cargar. Filtramos lo que preguntamos, nunca lo que
-   la persona escribe: clasificar su texto seria justamente el tratamiento
-   que estamos evitando.
+   La afirmacion correcta es acotada, y la distincion importa:
+
+     CERCA NO SOLICITA DELIBERADAMENTE INFORMACION DE SALUD EN ESTE
+     PROTOTIPO Y NO REPREGUNTA SOBRE ELLA.
+
+   No es lo mismo NO SOLICITAR que NO PODER RECIBIR. Un campo libre puede
+   recibir espontaneamente "me operaron la rodilla" aunque nunca se haya
+   pedido, y ese texto entra al objeto `estado` mientras viva la pestana.
+   Decir "no se capturan datos de salud" seria falso.
+
+   Lo que si esta garantizado: no se persisten; no se envian a ningun
+   servidor, ni a Supabase, ni a Core, ni a servicios de IA; y no se
+   intenta inferir diagnostico ni causa medica.
+
+   El guardia `PATRONES_CAUSA` se aplica a NUESTRO banco de preguntas al
+   cargar. Filtramos lo que preguntamos, nunca lo que la persona escribe:
+   clasificar su texto seria justamente el tratamiento que estamos
+   evitando.
    ================================================================== */
 'use strict';
 
@@ -375,7 +387,11 @@ function pedir(cfg) {
   else { elOmitir.hidden = true; }
   pendiente = cfg;
   alFinal();
-  elCampo.focus({ preventScroll: true });
+  // Sin autofocus a proposito. En Safari/iPhone el teclado que abre el foco
+  // automatico puede empujar la pregunta fuera de vista, y Playwright con
+  // viewport movil no reproduce ese comportamiento: la comodidad de escritorio
+  // no justifica romper la composicion en el dispositivo real. La persona toca
+  // el campo cuando quiere responder.
 }
 
 /* ==================================================================
