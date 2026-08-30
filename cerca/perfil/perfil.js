@@ -142,7 +142,7 @@ function construirTurnos(ctx) {
   });
   turnos.push({
     tipo: 'pregunta', id: 'restricciones', paso: 'LO QUE DEJAMOS FUERA', opcional: true,
-    pregunta: '¿Hay algún movimiento o tipo de ejercicio que prefieras que no incluyamos por ahora?',
+    pregunta: '¿Hay algún movimiento, ejercicio o tipo de esfuerzo que prefieras que no incluyamos por ahora?',
     apunte: 'En esta etapa no necesitamos que nos cuentes diagnósticos, lesiones ni antecedentes médicos.',
     marcador: 'Por ejemplo: prefiero no hacer saltos.',
     omitirTexto: 'No hay nada'
