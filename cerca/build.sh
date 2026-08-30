@@ -36,6 +36,7 @@ brand/isotipo.svg
 PROHIBIDOS="
 REGISTRO_APROBADOS.md
 MATRIZ_DE_DATOS.md
+PREGUNTAS_ABOGADO_PRIVACIDAD.md
 admin.html
 type-lab.html
 type-lab.css
