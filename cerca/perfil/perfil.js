@@ -32,10 +32,16 @@
    Y una leccion de la primera prueba humana (2026-08-30): ese guardia no
    basta por si solo. Vigila el TEXTO de nuestras preguntas, no la CONDICION
    que las dispara. Una pregunta impecable puede activarse sobre una premisa
-   falsa acerca de lo que hemos recibido — fue lo que ocurrio con
-   `alcance-restriccion`. Si no podemos distinguir con seguridad que tipo de
-   informacion nos llego, no construimos una decision automatica encima de
-   ella.
+   falsa acerca de lo que hemos recibido. Ocurrio con `alcance-restriccion`
+   (texto presente -> asumimos que nombro un ejercicio a excluir) y el mismo
+   defecto estaba en `frecuencia-otra-actividad` (actividad mencionada ->
+   asumimos que la practica hoy). En ambos casos la segunda parte no estaba
+   garantizada por la primera:
+
+     UNA MENCION NO ES UN HECHO.
+
+   Si no podemos distinguir con seguridad que tipo de informacion nos llego,
+   no construimos una decision automatica encima de ella.
    ================================================================== */
 'use strict';
 
@@ -229,6 +235,25 @@ const BANCO = [
     resuelta_por(t) { return norm(t).trim().length > 0; }
   },
   {
+    /* DESACTIVADA EN V0 (2026-08-30), por el mismo defecto que
+       `alcance-restriccion` y sin esperar a que otra persona diga "no
+       entiendo": su condicion barre cuatro campos de texto libre buscando el
+       nombre de una actividad, y convierte esa mencion en un hecho.
+
+       Estas cuatro frases contienen la misma palabra y solo una justifica
+       preguntar por frecuencia actual:
+
+         "Quiero volver a correr."     — todavia no lo hace
+         "Antes corria."               — ya no lo hace
+         "No me gusta correr."         — lo evita
+         "Corro tres veces por semana." — lo hace, y ya dijo cuanto
+
+       Resolver tiempos verbales, negaciones e intencion es interpretar texto
+       libre, y una regla determinista simple no debe inventar esa
+       interpretacion. No se sustituye por una regex mas fina ni por un
+       clasificador. Se queda en el banco para que la traza siga explicando por
+       que no se pregunta. */
+    desactivada: 'desactivada en V0: detectar el nombre de una actividad dentro de texto libre no permite saber con seguridad si la persona la realiza actualmente ni si esa actividad aporta carga semanal real',
     id: 'frecuencia-otra-actividad',
     asunto: 'Cuánta carga ya tienes encima',
     decision_afectada: 'Carga semanal total',
