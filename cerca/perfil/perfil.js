@@ -28,6 +28,14 @@
    cargar. Filtramos lo que preguntamos, nunca lo que la persona escribe:
    clasificar su texto seria justamente el tratamiento que estamos
    evitando.
+
+   Y una leccion de la primera prueba humana (2026-08-30): ese guardia no
+   basta por si solo. Vigila el TEXTO de nuestras preguntas, no la CONDICION
+   que las dispara. Una pregunta impecable puede activarse sobre una premisa
+   falsa acerca de lo que hemos recibido — fue lo que ocurrio con
+   `alcance-restriccion`. Si no podemos distinguir con seguridad que tipo de
+   informacion nos llego, no construimos una decision automatica encima de
+   ella.
    ================================================================== */
 'use strict';
 
@@ -173,6 +181,7 @@ const ACTIVIDADES = /futbol|correr|running|trotar|padel|tenis|natacion|nadar|bic
 const BANCO = [
   {
     id: 'dias-fijos',
+    asunto: 'Cómo se ordena tu semana',
     decision_afectada: 'Estructura del microciclo',
     rama_a: 'Días fijos: progresión numerada, la sesión 2 continúa a la sesión 1',
     rama_b: 'Días variables: sesiones intercambiables A/B/C, cualquiera sirve cualquier día',
@@ -188,6 +197,7 @@ const BANCO = [
   },
   {
     id: 'duracion-sesion',
+    asunto: 'Cuánto cabe en cada sesión',
     decision_afectada: 'Cuánto cabe dentro de una sesión',
     rama_a: '45 minutos o más: estructura completa, con accesorios y trabajo complementario',
     rama_b: '30 minutos o menos: sesión comprimida, solo el trabajo principal',
@@ -202,6 +212,7 @@ const BANCO = [
   },
   {
     id: 'material-disponible',
+    asunto: 'Con qué vas a entrenar',
     decision_afectada: 'Qué ejercicios son ejecutables',
     rama_a: 'Con carga externa: la progresión es por peso',
     rama_b: 'Sin material: la progresión es por dificultad del propio peso corporal',
@@ -219,6 +230,7 @@ const BANCO = [
   },
   {
     id: 'frecuencia-otra-actividad',
+    asunto: 'Cuánta carga ya tienes encima',
     decision_afectada: 'Carga semanal total',
     rama_a: 'Una vez por semana: no ajustamos el volumen de CERCA',
     rama_b: 'Tres o más veces: bajamos volumen para no sumar carga sobre carga',
@@ -235,7 +247,29 @@ const BANCO = [
     resuelta_por(t) { return hay(t, /\d|una|dos|tres|cuatro|cinco|diario|todos los dias|nunca/); }
   },
   {
+    /* DESACTIVADA EN V0 tras la primera prueba humana (iPad, 2026-08-30).
+       Alguien escribio "me duele el hombro un poco al subirlo" en el bloque de
+       lo que dejamos fuera, y esta incertidumbre le repregunto por el alcance
+       de la exclusion. La respuesta de la persona fue "no entiendo", y tenia
+       razon: su frase no nombraba ningun ejercicio.
+
+       La causa no es la pregunta —es inocua palabra por palabra, y por eso paso
+       el guardia PATRONES_CAUSA—, sino su CONDICION DE ACTIVACION, que asumia
+       que cualquier texto no vacio en ese campo nombra un movimiento a excluir.
+       La prueba demuestra que esa premisa es falsa.
+
+       No se arregla clasificando el texto de la persona: eso seria construir
+       justo el tratamiento que estamos evitando. Se desactiva. Se pierde una
+       aclaracion util cuando la restriccion SI era funcional ("prefiero no
+       hacer saltos"), y se acepta ese coste. La entrada se conserva literal en
+       memoria y se muestra en la confirmacion; simplemente no genera decision.
+
+       Se queda en el banco, no se borra: asi la traza sigue explicando por que
+       no se pregunta. Revisable cuando este resuelto juridica y tecnicamente
+       como tratar este tipo de informacion. */
+    desactivada: 'desactivada en V0: su condicion de activacion asumia que cualquier texto en ese campo nombra un ejercicio, y la prueba humana demostro que no',
     id: 'alcance-restriccion',
+    asunto: 'Qué dejamos fuera exactamente',
     decision_afectada: 'Qué queda fuera del catálogo de ejercicios',
     rama_a: 'Solo ese movimiento: excluimos exactamente lo que nombraste',
     rama_b: 'La familia completa: excluimos también lo que comparte el mismo patrón',
@@ -256,6 +290,7 @@ const BANCO = [
        misma decision, porque la primera propuesta es una hipotesis que se
        calibra con feedback real, venga de donde venga la persona. */
     id: 'detalle-experiencia',
+    asunto: 'Tu punto de partida',
     decision_afectada: 'Carga de la primera sesión',
     rama_a: 'La primera sesión es una hipótesis que se calibra con tu feedback',
     rama_b: 'La primera sesión es una hipótesis que se calibra con tu feedback',
@@ -308,7 +343,10 @@ function evaluar() {
       rama_a: inc.rama_a,
       rama_b: inc.rama_b
     };
-    if (estado.preguntadas.indexOf(inc.id) !== -1) {
+    if (inc.desactivada) {
+      fila.resultado = 'no se pregunta';
+      fila.motivo = inc.desactivada;
+    } else if (estado.preguntadas.indexOf(inc.id) !== -1) {
       fila.resultado = 'no se pregunta';
       fila.motivo = 'ya se preguntó una vez';
     } else if (!ramasDistintas(inc)) {
@@ -332,7 +370,7 @@ function evaluar() {
    ================================================================== */
 const hilo = $('#hilo');
 const turno = $('#turno');
-const elPregunta = $('#pregunta');
+
 const elApunte = $('#apunte');
 const elCampo = $('#respuesta');
 const elAviso = $('#aviso');
@@ -346,11 +384,25 @@ function escapar(texto) {
   return div.innerHTML;
 }
 
+let contadorBurbujas = 0;
+
 function burbuja(quien, html) {
   const div = document.createElement('div');
   div.className = `burbuja burbuja-${quien} burbuja-entra`;
   div.innerHTML = html;
   hilo.appendChild(div);
+  return div;
+}
+
+/* La pregunta se dice UNA vez, en la conversacion. El area de respuesta ya no
+   la repite: el nombre accesible del campo lo da la propia burbuja que CERCA
+   acaba de decir. El rotulo del campo es, literalmente, lo que dijo el
+   entrenador — que es tambien lo que la persona esta respondiendo. */
+function preguntaEnVoz(texto) {
+  const div = burbuja('cerca', escapar(texto));
+  contadorBurbujas += 1;
+  div.id = `pregunta-${contadorBurbujas}`;
+  elCampo.setAttribute('aria-labelledby', div.id);
   return div;
 }
 
@@ -375,7 +427,6 @@ function ocultarTurno() {
 function pedir(cfg) {
   turno.hidden = false;
   elPaso.textContent = cfg.paso || '';
-  elPregunta.textContent = cfg.pregunta;
   if (cfg.apunte) { elApunte.textContent = cfg.apunte; elApunte.hidden = false; }
   else { elApunte.textContent = ''; elApunte.hidden = true; }
   elCampo.value = cfg.valor || '';
@@ -418,7 +469,7 @@ function siguienteTurno() {
   }
   if (indice >= turnos.length) { ocultarTurno(); confirmar(); return; }
   const t = turnos[indice];
-  burbuja('cerca', escapar(t.pregunta));
+  preguntaEnVoz(t.pregunta);
   pedir({
     paso: t.paso, pregunta: t.pregunta, apunte: t.apunte,
     marcador: t.marcador, opcional: t.opcional, omitirTexto: t.omitirTexto
@@ -476,34 +527,44 @@ function enviar(omitida) {
 }
 
 /* ---------- confirmacion: "Esto me contaste" ---------- */
+/* Rotulos en caja baja y en lenguaje de CERCA. La caja alta con tracking era
+   justo lo que hacia que la recapitulacion se leyera como una ficha con
+   nombres de campo. */
 const ROTULOS = {
-  objetivo: 'LO QUE QUIERES CONSEGUIR',
-  experiencia: 'TU EXPERIENCIA',
-  disponibilidad: 'DISPONIBILIDAD',
-  lugar: 'DÓNDE ENTRENAS',
-  preferencias: 'LO QUE PREFIERES',
-  restricciones: 'LO QUE DEJAMOS FUERA',
-  cierre: 'ALGO MÁS'
+  objetivo: 'Lo que quieres conseguir',
+  experiencia: 'Tu experiencia',
+  disponibilidad: 'Cuándo puedes entrenar',
+  lugar: 'Dónde entrenas',
+  preferencias: 'Lo que prefieres',
+  restricciones: 'Lo que dejamos fuera',
+  cierre: 'Algo más'
 };
 
-function filasHeredadas() {
+/* El contexto heredado deja de ser cinco filas con "· del formulario" repetido
+   y pasa a una frase. El origen se explica una vez. No hay interpretacion: son
+   los mismos datos cerrados, unidos por gramatica, como CERCA ya los dice en el
+   bloque 2. */
+function fraseHeredada() {
   const c = estado.contexto;
-  const filas = [];
-  if (c.name) filas.push(['NOMBRE', c.name]);
-  if (c.trains_now !== undefined) filas.push(['ENTRENAS HOY', c.trains_now ? 'Sí' : 'No']);
-  if (c.training_type) filas.push(['TIPO', c.training_type]);
-  if (c.training_support) filas.push(['ACOMPAÑAMIENTO', c.training_support]);
-  if (Array.isArray(c.start_barriers) && c.start_barriers.length) filas.push(['TE FALTA', c.start_barriers.join(' · ')]);
-  return filas;
+  const partes = [];
+  if (c.name) partes.push(`te llamas <b>${escapar(c.name)}</b>`);
+  if (c.trains_now === true) partes.push('hoy entrenas');
+  if (c.trains_now === false) partes.push('todavía no entrenas');
+  if (c.training_type) partes.push(`haces <b>${escapar(c.training_type)}</b>`);
+  if (c.training_support) partes.push(`normalmente <b>${escapar(String(c.training_support).toLowerCase())}</b>`);
+  if (Array.isArray(c.start_barriers) && c.start_barriers.length) {
+    partes.push(`hoy te falta <b>${escapar(c.start_barriers.join(', ').toLowerCase())}</b>`);
+  }
+  if (!partes.length) return '';
+  const texto = partes.length === 1
+    ? partes[0]
+    : `${partes.slice(0, -1).join(', ')} y ${partes[partes.length - 1]}`;
+  return `<p class="heredado-frase">Del formulario ya sé que ${texto}.</p>`;
 }
 
 function confirmar() {
   elPaso.textContent = 'CONFIRMACION';
   const decisivas = evaluar();
-
-  const heredadas = filasHeredadas().map(([r, v]) => `
-      <li><span class="de">${escapar(r)} · del formulario</span>
-        <p class="texto heredado">${escapar(v)}</p></li>`).join('');
 
   const propias = Object.keys(ROTULOS)
     .filter((id) => estado.respuestas[id])
@@ -516,24 +577,23 @@ function confirmar() {
         <button class="btn-texto" type="button" data-corregir="${id}">Corregir</button></li>`;
     }).join('');
 
+  /* La tarjeta nombra los asuntos que quedan abiertos, no escribe las preguntas:
+     CERCA las hace a continuacion y no tiene sentido leerlas dos veces. */
   const bloqueAclarar = decisivas.length
     ? `<p class="rotulo">LO QUE TODAVÍA NECESITO ACLARAR</p>
        <ul class="pendientes">${decisivas.map((inc) => `
-         <li>${escapar(inc.pregunta)}
-           <span class="porque">Cambia una decisión: ${escapar(inc.decision_afectada)}.</span></li>`).join('')}</ul>`
+         <li>${escapar(inc.asunto || inc.decision_afectada)}</li>`).join('')}</ul>`
     : bloqueSuficiente();
 
+  /* No hay bloque de "lectura pendiente". La regla de no fingir interpretacion
+     sigue viva donde corresponde —`interpretacion` y `decision_propuesta` siguen
+     en null y en la traza de QA—, pero el alumno no tiene por que leer estados
+     internos del prototipo. Ser honestos no significa mostrar la cocina. */
   tarjeta(`
     <h2>Esto me contaste</h2>
     <p>Son tus palabras, sin resumir. Si algo no quedó bien, corrígelo antes de seguir.</p>
-    <p class="rotulo">LO QUE ME DIJISTE</p>
-    <ul class="dicho">${heredadas}${propias}</ul>
-    <div class="ranura">
-      <b>MI LECTURA COMO ENTRENADOR · PENDIENTE</b>
-      <p>Todavía no hay motor de interpretación, así que no voy a escribir una
-         lectura que aparente haber entendido algo que no he inferido. Este
-         espacio queda reservado y vacío a propósito.</p>
-    </div>
+    ${fraseHeredada()}
+    <ul class="dicho">${propias}</ul>
     ${bloqueAclarar}`);
 
   hilo.querySelectorAll('[data-corregir]').forEach((boton) => {
@@ -542,6 +602,10 @@ function confirmar() {
 
   ocultarTurno();
   if (decisivas.length) {
+    // Tambien esta pregunta se dice en voz de CERCA, no como rotulo de campo:
+    // si no, quedaria invisible y el campo heredaria el nombre accesible del
+    // turno anterior.
+    preguntaEnVoz('¿Esto te representa?');
     pedir({
       paso: 'CONFIRMACION',
       pregunta: '¿Esto te representa?',
@@ -561,7 +625,7 @@ function corregir(id) {
   if (!turnoOrigen) return;
   modo = 'correccion';
   correccionId = id;
-  burbuja('cerca', escapar(turnoOrigen.pregunta));
+  preguntaEnVoz(turnoOrigen.pregunta);
   pedir({
     paso: turnoOrigen.paso, pregunta: turnoOrigen.pregunta, apunte: turnoOrigen.apunte,
     marcador: turnoOrigen.marcador, valor: (estado.respuestas[id] || {}).texto || '',
@@ -576,7 +640,7 @@ function siguienteAclaracion() {
   if (!decisivas.length) { ocultarTurno(); finalizar(); return; }
   const inc = decisivas[0];
   modo = 'aclaracion';
-  burbuja('cerca', escapar(inc.pregunta));
+  preguntaEnVoz(inc.pregunta);
   pedir({
     paso: 'ACLARACION', pregunta: inc.pregunta,
     apunte: `Te lo pregunto porque cambia una decisión: ${inc.decision_afectada.toLowerCase()}.`,
@@ -594,9 +658,10 @@ function bloqueSuficiente() {
     ? `<p>${noResueltas.length === 1 ? 'Queda un punto sin resolver' : `Quedan ${noResueltas.length} puntos sin resolver`}: avanzo por la opción que asume menos.</p>`
     : '';
   return `<div class="suficiente">
-      <b>INFORMACION SUFICIENTE</b>
-      <p>Con esto puedo decidir con criterio. No voy a preguntarte más por ahora:
-         lo que falta se aprende entrenando, no llenando una ficha.</p>
+      <b>INFORMACIÓN SUFICIENTE</b>
+      <p>Con esto tengo información suficiente para cerrar este primer perfil.
+         Por ahora no necesito preguntarte más: lo que falta se aprende
+         entrenando, no llenando una ficha.</p>
       ${nota}
     </div>`;
 }
@@ -606,7 +671,7 @@ function finalizar() {
   elPaso.textContent = 'SUFICIENTE';
   ocultarTurno();
   if (estado.aclaraciones.length) {
-    tarjeta(`<h2>Ya no necesito preguntarte más</h2>${bloqueSuficiente()}`);
+    tarjeta(`<h2>Por ahora no necesito preguntarte más</h2>${bloqueSuficiente()}`);
   }
   burbuja('cerca',
     'Hasta aquí llega el prototipo. La propuesta de entrenamiento todavía no está construida, ' +

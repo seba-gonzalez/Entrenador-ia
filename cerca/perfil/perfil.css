@@ -126,11 +126,14 @@
    recortar, sin poner en minusculas lo que la persona escribio. */
 .dicho{list-style:none;margin:0;padding:0}
 .dicho li{padding:14px 0;border-top:1px solid var(--borde-estructura)}
+.dicho{margin-top:18px}
 .dicho li:first-child{border-top:0;padding-top:0}
+/* Caja baja y registro de apunte. En caja alta con tracking, estos rotulos se
+   leian como nombres de campo de una ficha; el contenido no cambio, la voz si. */
 .dicho .de{
-  display:block;margin-bottom:6px;color:var(--muted);
-  font-size:12px;font-weight:var(--peso-remate);
-  line-height:var(--lh-alta);letter-spacing:var(--track-etiqueta);
+  display:block;margin-bottom:4px;color:var(--muted);
+  font-size:13px;font-weight:var(--peso-lectura);
+  line-height:var(--lh-alta);letter-spacing:var(--track-lectura);
 }
 .dicho .texto{
   margin:0 0 8px;font-size:15px;font-weight:var(--peso-lectura);
@@ -138,19 +141,16 @@
 }
 .dicho .heredado{color:var(--muted)}
 
-/* Ranura pendiente. Lo que todavia no hay motor para inferir se muestra
-   vacio y rotulado, no se rellena con una frase que aparente lectura.
-   Borde neutro y discontinuo: es una reserva, no un estado logrado. */
-.ranura{
-  margin-top:6px;padding:14px 16px;
-  border:1px dashed var(--borde-pendiente);border-radius:14px;
-  color:var(--muted);
+/* Contexto heredado de la landing: una frase, no una tabla de campos. El
+   origen se dice una vez, y el borde izquierdo lo mantiene distinguible de lo
+   que la persona escribio en el perfil, que va sin marca. */
+.heredado-frase{
+  margin:18px 0 4px;padding:12px 14px;
+  background:var(--panel2);border-left:2px solid var(--borde-estructura);
+  border-radius:0 12px 12px 0;color:#c3cccc;
+  font-size:15px;font-weight:var(--peso-lectura);line-height:var(--lh-lectura);
 }
-.ranura b{
-  display:block;margin-bottom:4px;color:#c3cccc;
-  font-size:12px;font-weight:var(--peso-remate);letter-spacing:var(--track-etiqueta);
-}
-.ranura p{margin:0;font-size:13px;line-height:var(--lh-alta)}
+.heredado-frase b{color:var(--text);font-weight:var(--peso-estructura)}
 
 /* Lo que todavia hay que aclarar. Cada linea nombra la decision que depende
    de ella: si no cambia una decision, no aparece aqui ni se pregunta. */
@@ -160,10 +160,7 @@
   background:var(--panel2);border-radius:14px;
   font-size:15px;line-height:var(--lh-lectura);
 }
-.pendientes .porque{
-  display:block;margin-top:4px;color:var(--muted);
-  font-size:13px;line-height:var(--lh-alta);
-}
+
 
 /* Estado "informacion suficiente". Es un resultado de primera clase, no un
    consuelo por no haber preguntado: por eso lleva el cyan de estado. */
@@ -193,7 +190,7 @@
   .burbuja{max-width:88%;padding:16px 20px;font-size:16px;margin-bottom:16px}
   .tarjeta{padding:26px}
   .tarjeta h2{font-size:30px}
-  .dicho .texto,.pendientes li,.suficiente p{font-size:16px}
+  .dicho .texto,.pendientes li,.suficiente p,.heredado-frase{font-size:16px}
 }
 
 /* ---------- 1440 ----------
