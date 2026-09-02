@@ -754,6 +754,49 @@ de Git impedía editar una publicación sin dejar rastro. En Supabase eso depend
 de la configuración. La compensación es que el revisor de invariantes se movió
 al momento de publicar, que es cuando todavía se puede arreglar.
 
+### APROBADO — La entrega es inmutable por construcción, no por acuerdo (2026-09-02)
+
+Dirección preguntó qué impide **técnicamente** editar una entrega publicada, y
+descartó de antemano la respuesta «nadie lo va a hacer». Tenía razón: la primera
+versión de esto solo tenía Row Level Security, y **RLS detiene a internet, no al
+dueño** — el Table Editor del panel trabaja como `service_role`, que se salta
+RLS por diseño.
+
+Lo que quedó, en orden:
+
+1. **No hay nada que actualizar.** Se eliminó la columna `vigente`. La entrega
+   vigente se deduce de cuál es la última, con un `seq` que asigna la base.
+   Publicar pasó a ser solo insertar.
+2. **Un disparador `BEFORE UPDATE OR DELETE` que lanza un error.** Los
+   disparadores se ejecutan para todos los roles. Comprobado contra un Postgres
+   real: `service_role` y el superusuario reciben el error; la fila no cambia.
+3. **Un testigo independiente.** El reproductor recalcula la huella de lo que
+   recibió, la compara con la que la entrega declara, y manda las dos dentro de
+   la ejecución (`integridad`). Esas filas las escribe el teléfono del alumno.
+
+**El techo, registrado para no olvidarlo:** el dueño puede desactivar el
+disparador. Comprobado también. Eso deja de ser un descuido y pasa a ser un acto
+deliberado. Hacerlo imposible de verdad exige un testigo fuera de la base —la
+garantía de Git que se cambió por publicar desde el iPad—, y el punto 3 recupera
+buena parte de eso sin volver al commit.
+
+**Ante una huella que no cuadra, el reproductor NO detiene la sesión.** Registra
+la discrepancia y sigue. Deja a alguien mirando una pantalla en blanco en mitad
+del gimnasio es un daño seguro para evitar uno hipotético. Esto supera la parte
+de D-025 (`ARQUITECTURA.md`) que exigía fallo cerrado, y la supera a propósito.
+
+### APROBADO — La pantalla de publicar sí se despliega (2026-09-02)
+
+`cerca/publicar/` sale en la salida pública, contra el criterio general de la
+lista blanca. Sebastián publica desde el iPad: una pantalla que no está en
+internet no se puede usar.
+
+**Por qué no debilita nada:** no contiene ninguna decisión ni ningún dato, a
+diferencia de los `.md` internos. Lo que la protege no es estar escondida —eso
+no protege nada— sino que la clave se comprueba **dentro de Supabase**, en las
+funciones. La página sin la clave no puede hacer nada. Por eso el SQL se niega a
+operar con una clave de menos de 20 caracteres: una clave corta no es una clave.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

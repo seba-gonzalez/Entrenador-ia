@@ -23,6 +23,14 @@ SALIDA="$ORIGEN/dist"
 # Lo que la landing necesita para funcionar, y nada más.
 # Verificado siguiendo cada referencia de index.html, styles.css y app.js.
 #
+# Sobre publicar/: SÍ sale, y es deliberado. Sebastián publica desde el iPad,
+# así que la pantalla tiene que existir en internet o no se puede usar. No es
+# material interno en el sentido de los .md: no contiene ninguna decisión ni
+# ningún dato. Lo que la protege no es estar escondida —eso no protege nada—
+# sino que la clave se comprueba dentro de Supabase, en las funciones. La
+# página sin la clave no puede hacer nada. Por eso el SQL se niega a operar
+# con una clave de menos de 20 caracteres.
+#
 # Sobre sesiones/: es un PUENTE, no el destino. Una sesión servida como archivo
 # obliga a un commit para publicarla, que es justo lo que hay que evitar. En
 # cuanto la sesión de Nico esté publicada desde cerca/publicar/, esa línea se
@@ -45,6 +53,8 @@ alumno/cerca-alumno.css
 s/index.html
 s/reproductor.js
 sesiones/kecJVd0cI2VQVobjAof6xg.json
+publicar/index.html
+publicar/publicador.js
 "
 
 # Lo que nunca puede salir, aunque alguien lo añada a la lista de arriba por
@@ -54,7 +64,7 @@ REGISTRO_APROBADOS.md
 MATRIZ_DE_DATOS.md
 PREGUNTAS_ABOGADO_PRIVACIDAD.md
 PROPUESTA_OPERACIONAL.md
-publicar
+COMO_PUBLICAR.md
 sql
 admin.html
 type-lab.html

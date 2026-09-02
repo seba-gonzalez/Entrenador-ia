@@ -83,7 +83,8 @@ async function cargarSesion() {
     const r = await fetch(`../sesiones/${archivo}.json`);
     if (!r.ok) throw new Error('archivo');
     const sesion = await r.json();
-    return { sesion, hash: await huella(sesion), entrega: archivo };
+    // Servido como archivo: no hay huella declarada contra la que comparar.
+    return { sesion, hash: await huella(sesion), declarado: null, entrega: archivo };
   }
 
   if (!token) throw new Error('sin_token');
@@ -97,14 +98,28 @@ async function cargarSesion() {
   const filas = await r.json();
   const fila = Array.isArray(filas) ? filas[0] : filas;
   if (!fila || !fila.sesion) throw new Error('no_existe');
-  return { sesion: fila.sesion, hash: fila.hash || await huella(fila.sesion), entrega: token };
+
+  // La huella se recalcula sobre lo que de verdad llego, y se compara con la
+  // que la entrega declara. Si alguien editara una entrega ya publicada, las
+  // dos dejarian de coincidir y la ejecucion se lleva la discrepancia.
+  //
+  // No se detiene la sesion: dejar a alguien mirando una pantalla en blanco
+  // en mitad del gimnasio es un dano seguro para evitar uno hipotetico. Se
+  // registra, que es lo que permite darse cuenta despues.
+  const servido = await huella(fila.sesion);
+  return {
+    sesion: fila.sesion,
+    hash: servido,
+    declarado: fila.hash || null,
+    entrega: token
+  };
 }
 
 /* ==========================================================================
    2. Estado vivo
    ========================================================================== */
 
-const S = { sesion: null, hash: null, entrega: null, dias: {} };
+const S = { sesion: null, hash: null, declarado: null, entrega: null, dias: {} };
 
 function estadoDia(id) { return S.dias[id]; }
 
@@ -474,6 +489,13 @@ function construirEjecucion(dia) {
     // dos evidencias distintas y no se pueden leer como la misma.
     capturado: 'en_conjunto',
     fuente_confirmacion: 'boton_bloque_listo',
+    // Contra que se entreno, acreditado. `coincide: false` significa que la
+    // entrega cambio despues de publicarse.
+    integridad: {
+      declarado: S.declarado,
+      servido: S.hash,
+      coincide: S.declarado === null ? null : S.declarado === S.hash
+    },
     bloques,
     registros
   };
@@ -699,9 +721,9 @@ function conectarHojas() {
 
 async function arrancar() {
   try {
-    const { sesion, hash, entrega } = await cargarSesion();
+    const { sesion, hash, declarado, entrega } = await cargarSesion();
     if (sesion.formato !== 1) throw new Error('formato');
-    S.sesion = sesion; S.hash = hash; S.entrega = entrega;
+    S.sesion = sesion; S.hash = hash; S.declarado = declarado; S.entrega = entrega;
   } catch (e) {
     const razones = {
       sin_token: ['Falta el enlace completo', 'Este enlace está incompleto. Pídele a Seba que te mande el enlace otra vez.'],

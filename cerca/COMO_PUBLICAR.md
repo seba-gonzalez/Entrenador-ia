@@ -9,20 +9,25 @@ los de cada semana y se pueden hacer desde el iPad.
 
 1. Abre **supabase.com** → tu proyecto → menú izquierdo → **SQL Editor**.
 2. Abre el archivo `cerca/sql/001-entregas.sql` de este repositorio.
-3. **Antes de pegarlo**, busca la línea que dice `'CAMBIA-ESTA-CLAVE'` y pon ahí
-   la clave que quieras. Esa va a ser tu clave para publicar. Anótala donde
-   guardas tus claves.
+3. **Antes de pegarlo**, busca `'CAMBIA-ESTA-CLAVE'` y pon ahí tu clave.
+   **Tiene que tener 20 caracteres o más**, y conviene que sea al azar, no una
+   palabra. El SQL se niega a funcionar con una clave corta: es lo único que
+   protege de verdad la pantalla de publicar, que vive en internet.
 4. Pega todo y aprieta **Run**.
 
-Si dice *Success*, listo. Se puede volver a correr las veces que quieras: no
-borra nada.
+Si dice *Success*, listo.
 
-> **Por qué hay una clave.** La página de publicar es tuya, pero vive en
-> internet. Sin clave, cualquiera que encontrara la dirección podría dejarle una
-> rutina a un alumno tuyo. No protege datos —ahí no hay datos de nadie—: protege
-> que nadie te ensucie las rutinas.
-
----
+> **Qué queda garantizado después de esto.** Una entrega publicada **no se
+> puede modificar ni borrar**, ni desde la API ni desde el Table Editor del
+> panel, ni siquiera como `service_role`. No es una promesa: hay un disparador
+> en la base que lanza un error, y los disparadores se ejecutan para todos los
+> roles. Probado contra un Postgres real.
+>
+> El único que puede saltárselo es quien sea dueño de la base, desactivando el
+> disparador a propósito. Eso ya no es un descuido. Y aunque lo hiciera, cada
+> ejecución que registra un alumno lleva la huella de la sesión que tuvo
+> delante, escrita por su teléfono: para falsificar sin dejar rastro habría que
+> editar también todas esas filas.
 
 ## Paso 2 · Escribir la sesión
 
@@ -50,7 +55,7 @@ Lo único que hay que entender de la forma:
 
 ## Paso 3 · Publicar
 
-1. Abre `/publicar/` en el navegador y entra con tu clave.
+1. Abre **`/publicar/`** de tu sitio en el navegador del iPad y entra con tu clave.
 2. Escribe de quién es (`nico`) y el plan (`nico-v1`).
 3. Pega la sesión, o trae la última y edítala.
 4. Aprieta **Revisar**. Te dice qué está mal, con el día y el ejercicio.
@@ -81,8 +86,11 @@ Reescribirla haría que el alumno abriera hoy algo distinto de lo que tuvo
 delante cuando entrenó.
 
 **Si algo falla al publicar**, la pantalla te dice qué pasó con palabras, no con
-un código de error. Los dos casos comunes son que la clave no coincida o que
-falte correr el SQL del paso 1.
+un código de error. Los tres casos comunes son que la clave no coincida, que sea
+más corta de 20 caracteres, o que falte correr el SQL del paso 1.
+
+**Si algo falla, mándame el texto que salió en pantalla.** Está escrito para que
+sirva de diagnóstico: con esa frase sé exactamente en qué paso se cortó.
 
 ---
 
