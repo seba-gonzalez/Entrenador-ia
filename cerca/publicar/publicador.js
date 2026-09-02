@@ -200,6 +200,22 @@ $('#traer').onclick = async () => {
   } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
 };
 
+/* Arranque en frio: la primera vez no hay nada publicado que traer, y el
+   archivo vive en GitHub. Este boton lo carga desde el propio sitio para no
+   tener que ir a buscarlo. Cuando ya haya historia en Supabase sobra: lo
+   cubre "Traer la ultima entrega". */
+$('#molde').onclick = async () => {
+  decir('#estadoTraer', 'Cargando…');
+  try {
+    const r = await fetch('/sesiones/kecJVd0cI2VQVobjAof6xg.json');
+    if (!r.ok) throw new Error('No encontré la sesión de ejemplo en este sitio.');
+    $('#json').value = JSON.stringify(await r.json(), null, 2);
+    $('#alumno').value = 'nico';
+    $('#plan').value = 'nico-v1';
+    decir('#estadoTraer', 'Lista. Aprieta Revisar y después Publicar.', 'bien');
+  } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
+};
+
 /* --- Publicar ------------------------------------------------------------- */
 $('#publicar').onclick = async () => {
   if (!SESION) return;
