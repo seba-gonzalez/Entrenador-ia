@@ -34,6 +34,7 @@ perfil/perfil-base.css
 perfil/perfil.css
 perfil/perfil.js
 pancha/index.html
+pali/index.html
 "
 
 # Lo que nunca puede salir, aunque alguien lo añada a la lista de arriba por
