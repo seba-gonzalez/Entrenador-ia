@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tu perfil · CERCA</title>
+<meta name="description" content="La conversación con la que CERCA empieza a conocerte." />
+<meta name="robots" content="noindex" />
+<link rel="preload" as="font" type="font/woff2" href="../fonts/archivo-variable-latin.woff2" crossorigin />
+<link rel="stylesheet" href="./perfil-base.css" />
+<link rel="stylesheet" href="./perfil.css" />
+</head>
+<body>
+
+<header class="cabecera">
+  <a class="marca" href="../index.html">
+    <span class="isotipo" aria-hidden="true"></span>
+    <span>CERCA</span>
+  </a>
+  <p class="paso" id="paso">OBJETIVO</p>
+  <h1 class="solo-lectores">Tu perfil CERCA</h1>
+</header>
+
+<!-- El hilo es el indicador de avance: lo que ya contaste queda arriba. -->
+<main class="hilo" id="hilo" role="log" aria-live="polite" aria-label="Conversación con CERCA"></main>
+
+<section class="turno" id="turno" aria-label="Tu respuesta">
+  <p class="apunte" id="apunte" hidden></p>
+  <textarea class="campo" id="respuesta" rows="3" aria-describedby="apunte"></textarea>
+  <p class="aviso" id="aviso" role="alert" hidden></p>
+  <div class="acciones">
+    <button class="btn btn-principal" id="enviar" type="button">Continuar</button>
+    <button class="btn-texto" id="omitir" type="button" hidden>Prefiero no responder</button>
+  </div>
+</section>
+
+<footer class="pie">
+  <p class="privacidad">
+    <b>Nada de lo que escribas aquí se guarda.</b>
+    Tus respuestas viven solo en esta pestaña y desaparecen al cerrarla o recargarla.
+    No se envían a ningún servidor.
+  </p>
+</footer>
+
+<script src="./perfil.js"></script>
+</body>
+</html>

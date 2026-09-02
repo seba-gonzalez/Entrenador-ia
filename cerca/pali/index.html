@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020606">
+<title>CERCA · Pali · Sesión de hoy</title>
+<style>
+@font-face{font-family:Archivo;src:url('/fonts/archivo-variable-latin.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--bg:#020606;--panel:#06100f;--panel2:#081514;--text:#f5f7f7;--muted:#9aa7a7;--cyan:#10e7ef;--cyan2:#00b7c2;--blue:#5577ff;--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 85% 7%,rgba(0,183,194,.12),transparent 28%),var(--bg);color:var(--text);font-family:Archivo,Arial,sans-serif}
+.app{width:min(100%,560px);margin:auto;padding:18px 14px 100px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px} .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.08em}
+.logo{width:36px;height:39px;background:var(--cyan);-webkit-mask:url('/brand/isotipo.svg') center/contain no-repeat;mask:url('/brand/isotipo.svg') center/contain no-repeat} .chip{font-size:.68rem;border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#b9c6c6}
+.hero{padding:22px 20px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#061211,#020c0c)}
+.kick{color:var(--cyan);font-weight:800;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:clamp(1.85rem,8vw,2.35rem);line-height:1.03;letter-spacing:-.04em;margin:0} .lead{font-size:.85rem;line-height:1.55;color:#aab5b5;margin:10px 0 0}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.progress{margin-top:12px;padding:11px 13px;border:1px solid var(--line);border-radius:15px;background:#06100f} .phead{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700}
+.phead b{color:var(--cyan)} .track{height:5px;background:#101918;border-radius:99px;overflow:hidden;margin-top:8px} .fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan2),var(--cyan));transition:.2s}
+details{border:1px solid var(--line);border-radius:19px;background:linear-gradient(180deg,#06100f,#030c0c);overflow:hidden;margin:10px 0}
+details.block-done{border-color:rgba(16,231,239,.4)} summary{list-style:none;display:flex;align-items:center;gap:11px;padding:15px 14px;cursor:pointer} summary::-webkit-details-marker{display:none}
+.num{width:37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#071211;border:1px solid var(--line);color:var(--cyan);font-size:.75rem;font-weight:800} .block-done .num{background:var(--cyan);color:#041111}
+.sum{flex:1} .sum strong{display:block;font-size:.95rem} .sum small{display:block;color:var(--muted);font-size:.69rem;margin-top:3px} .arrow{color:#718080;font-size:1.1rem} details[open] .arrow{transform:rotate(90deg);color:var(--cyan)}
+.content{padding:0 14px 15px 62px} .ex{padding:11px 0;border-top:1px solid rgba(255,255,255,.055)} .ex:first-child{border-top:0} .ex b{display:block;font-size:.86rem} .ex p{font-size:.75rem;color:var(--muted);margin:4px 0 0;line-height:1.45}
+.note{margin-top:9px;padding:10px 11px;border-left:2px solid var(--blue);background:rgba(85,119,255,.055);border-radius:0 10px 10px 0;color:#c6cfda;font-size:.71rem;line-height:1.45}
+.done-row{text-align:right;padding-top:11px} .done-btn{border:1px solid var(--line);background:#081313;color:#c7d1d1;border-radius:10px;padding:9px 10px;font-size:.68rem;font-weight:800} .done-btn.active{border-color:var(--cyan);color:#8cf9fb;background:rgba(16,231,239,.08)}
+.kb-box{margin-top:8px;padding:10px;border:1px solid rgba(16,231,239,.18);border-radius:12px;background:rgba(16,231,239,.035)} .kb-label{display:block;font-size:.65rem;color:var(--muted);margin-bottom:7px} .kb-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.kb-options button{min-height:39px;border:1px solid var(--line);border-radius:10px;background:#071211;color:#d5dddd;font-weight:800} .kb-options button.on{border-color:var(--cyan);background:rgba(16,231,239,.09);color:#8cf9fb}
+.finish{margin-top:18px;padding:18px;border:1px solid rgba(16,231,239,.27);border-radius:20px;background:linear-gradient(120deg,rgba(16,231,239,.065),rgba(85,119,255,.035))} .finish h3{margin:0 0 6px;font-size:1.14rem} .finish p{font-size:.76rem;color:var(--muted);line-height:1.5}
+.primary{width:100%;min-height:49px;border:0;border-radius:12px;background:linear-gradient(90deg,var(--cyan),#34f7f2);color:#041111;font-weight:900;margin-top:9px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:30;display:none;align-items:flex-end} .sheet.open{display:flex} .panel{width:min(100%,560px);max-height:91vh;overflow:auto;margin:auto 0 0;background:#030b0b;border-radius:23px 23px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));border:1px solid var(--line);border-bottom:0}
+.sheethead{position:sticky;top:-16px;z-index:5;display:flex;justify-content:space-between;align-items:center;margin:-16px -16px 12px;padding:16px;background:#030b0b;border-bottom:1px solid var(--line)} .sheethead h3{margin:0} .close{flex:0 0 auto;width:42px;height:42px;border:1px solid rgba(16,231,239,.35);border-radius:11px;background:#081313;color:#fff;font-size:1.1rem;font-weight:900;display:grid;place-items:center}
+.field{margin:13px 0} .label{display:block;font-size:.72rem;font-weight:800;margin-bottom:7px} .effort{display:grid;grid-template-columns:repeat(5,1fr);gap:5px} .effort button{min-height:38px;background:#071211;color:#ddd;border:1px solid var(--line);border-radius:8px} .effort button.on{background:var(--cyan);color:#041111;border-color:var(--cyan)}
+textarea{width:100%;background:#101817;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:11px;outline:none;min-height:96px;resize:vertical}
+.audio-box,.consent{padding:11px;border:1px solid var(--line);border-radius:11px;background:#071211} .audio-actions{display:flex;gap:7px;flex-wrap:wrap} .audio-btn{border:1px solid rgba(16,231,239,.28);background:#081313;color:#bafcff;border-radius:9px;padding:8px 10px;font-size:.65rem;font-weight:800} .audio-btn.recording{border-color:#ff7b82;color:#ffd6d8} #discardAudio{display:none} .small,.status{font-size:.64rem;color:var(--muted);line-height:1.45;margin-top:7px} audio{width:100%;margin-top:9px}
+.consent{display:flex;gap:8px;font-size:.67rem;color:#abb8b8;margin:12px 0} .consent input{margin-top:2px;accent-color:var(--cyan)} .success{display:none;padding:14px;border:1px solid rgba(16,231,239,.28);border-radius:13px;background:rgba(16,231,239,.055);font-size:.8rem;line-height:1.5}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><div class="brand"><span class="logo" aria-hidden="true"></span><span>CERCA</span></div><span class="chip">Pali</span></header>
+<section class="hero">
+<div class="kick">Tu entrenamiento de hoy</div>
+<h1>Hola, Pali 👋</h1>
+<p class="lead">Esta es la sesión que hicimos hoy. Marca cada bloque y al final cuéntanos cómo te sentiste. Puedes escribirlo o mandarlo hablando.</p>
+<div class="meta"><span class="chip">40 min aprox.</span><span class="chip">4 bloques</span><span class="chip">casa</span></div>
+<div class="progress"><div class="phead"><span>Tu sesión</span><b id="progressText">0 / 4</b></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
+</section>
+
+<details data-block="movilidad" open><summary><span class="num">01</span><span class="sum"><strong>Movilidad</strong><small>2 rondas</small></span><span class="arrow">›</span></summary><div class="content">
+<div class="ex"><b>Perro-gato</b><p>10 repeticiones.</p></div>
+<div class="ex"><b>Spiderman</b><p>10 repeticiones.</p></div>
+<div class="done-row"><button class="done-btn">MARCAR BLOQUE LISTO</button></div></div></details>
+
+<details data-block="circuito1"><summary><span class="num">02</span><span class="sum"><strong>Circuito 1</strong><small>4 rondas · pausa 1:00</small></span><span class="arrow">›</span></summary><div class="content">
+<div class="ex"><b>KB Swing</b><p>10 repeticiones.</p>
+<div class="kb-box"><span class="kb-label">¿Cuál kettlebell ocupaste hoy? No me acuerdo 😅</span><div class="kb-options"><button type="button" data-kb="10">10 kg</button><button type="button" data-kb="12">12 kg</button><button type="button" data-kb="15">15 kg</button><button type="button" data-kb="16">16 kg</button></div></div></div>
+<div class="ex"><b>Toques de hombro</b><p>20 repeticiones.</p></div>
+<div class="ex"><b>Jumping jacks</b><p>30 repeticiones.</p></div>
+<div class="note">Descansa 1 minuto entre rondas. Completa 4 rondas.</div>
+<div class="done-row"><button class="done-btn">MARCAR BLOQUE LISTO</button></div></div></details>
+
+<details data-block="circuito2"><summary><span class="num">03</span><span class="sum"><strong>Glúteos + abdomen</strong><small>4 rondas · pausa 1:00</small></span><span class="arrow">›</span></summary><div class="content">
+<div class="ex"><b>Elevaciones de cadera</b><p>20 repeticiones con el mismo kettlebell apoyado sobre la guatita.</p></div>
+<div class="ex"><b>Abdominales cortos</b><p>20 repeticiones · pies apoyados sobre la cama.</p></div>
+<div class="ex"><b>Nados</b><p>10 repeticiones.</p></div>
+<div class="note">Descansa 1 minuto entre rondas. Completa 4 rondas.</div>
+<div class="done-row"><button class="done-btn">MARCAR BLOQUE LISTO</button></div></div></details>
+
+<details data-block="tabata"><summary><span class="num">04</span><span class="sum"><strong>Tabata</strong><small>Plancha frontal</small></span><span class="arrow">›</span></summary><div class="content">
+<div class="ex"><b>Plancha frontal</b><p>El cierre de la sesión de hoy.</p></div>
+<div class="note">Como hoy estamos registrando lo que realmente hicimos, no agregamos una duración que no quedó confirmada.</div>
+<div class="done-row"><button class="done-btn">MARCAR BLOQUE LISTO</button></div></div></details>
+
+<section class="finish"><h3>Terminaste 💪</h3><p>Yo vi los bloques que marcaste. Ahora cuéntame la parte que yo no puedo ver: cómo te sentiste, qué estuvo fácil, qué costó o cualquier cosa que quieras que Seba recuerde para la próxima.</p><button class="primary" id="openFeedback">CONTAR CÓMO ME FUE</button></section>
+</main>
+
+<div class="sheet" id="feedback"><div class="panel"><div class="sheethead"><h3>¿Cómo te fue, Pali?</h3><button class="close" id="closeFeedback" type="button" aria-label="Cerrar">✕</button></div>
+<div id="feedbackForm">
+<div class="field"><span class="label">¿Qué tan exigente estuvo?</span><div class="effort" id="effortGrid"><button type="button" data-effort="1">1</button><button type="button" data-effort="2">2</button><button type="button" data-effort="3">3</button><button type="button" data-effort="4">4</button><button type="button" data-effort="5">5</button><button type="button" data-effort="6">6</button><button type="button" data-effort="7">7</button><button type="button" data-effort="8">8</button><button type="button" data-effort="9">9</button><button type="button" data-effort="10">10</button></div><div class="small">1 = muy fácil · 10 = muy exigente. No hay valor marcado por defecto.</div></div>
+<div class="field"><label class="label" for="comment">Cuéntame a tu manera</label><textarea id="comment" maxlength="1000" placeholder="Ej.: los swings estuvieron bien, el último bloque me costó, el kettlebell se sintió liviano…"></textarea></div>
+<div class="field"><span class="label">¿Prefieres contarlo hablando?</span><div class="audio-box"><div class="audio-actions"><button type="button" class="audio-btn" id="recordBtn">● GRABAR AUDIO</button><button type="button" class="audio-btn" id="discardAudio">BORRAR AUDIO</button></div><div class="small" id="audioStatus">Opcional · máximo 90 segundos.</div><audio id="audioPreview" controls style="display:none"></audio></div></div>
+<div class="consent"><input id="consent" type="checkbox"><label for="consent">Acepto enviar este registro y mi feedback a Seba para revisar esta sesión y preparar las próximas decisiones de entrenamiento.</label></div>
+<button class="primary" id="sendBtn" disabled>ELIGE TU ESFUERZO</button><div class="status" id="status"></div>
+</div>
+<div class="success" id="success"><strong>Listo ❤️</strong><br>Gracias. Esto queda listo para que Seba lo revise para la próxima sesión.</div>
+</div></div>
+
+<script>
+const SUPABASE_URL='https://lggygnieziilvquvttby.supabase.co';
+const SUPABASE_KEY='sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC';
+const SESSION_ID='pali-casa-2026-09-01';
+const SNAPSHOT_HASH='sha256:bc77f5c4cbf054da6fb2379274906212aeb2e6ec737bfa673c0b893036e9d358';
+const CLIENT_VERSION='v0.1';
+const SOURCE='vista_alumno_pali_v1';
+const done={movilidad:false,circuito1:false,circuito2:false,tabata:false};
+let effort=null,kb=null,audioBlob=null,recorder=null,stream=null,chunks=[],timer=null,secs=0;
+let submissionId=(crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`);
+let executionSaved=false;
+const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
+const apiHeaders={'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`};
+
+function updateProgress(){
+ const n=Object.values(done).filter(Boolean).length;
+ qs('#progressText').textContent=`${n} / 4`; qs('#progressFill').style.width=`${n*25}%`;
+}
+qsa('details').forEach(d=>{
+ const b=d.dataset.block,btn=d.querySelector('.done-btn');
+ btn.onclick=()=>{done[b]=!done[b];d.classList.toggle('block-done',done[b]);btn.classList.toggle('active',done[b]);btn.textContent=done[b]?'BLOQUE LISTO ✓':'MARCAR BLOQUE LISTO';updateProgress();};
+});
+
+qsa('[data-kb]').forEach(b=>b.onclick=()=>{kb=Number(b.dataset.kb);qsa('[data-kb]').forEach(x=>x.classList.toggle('on',x===b));});
+
+qs('#openFeedback').onclick=()=>qs('#feedback').classList.add('open');
+qs('#closeFeedback').onclick=()=>qs('#feedback').classList.remove('open');
+qs('#feedback').addEventListener('click',e=>{if(e.target===qs('#feedback'))qs('#feedback').classList.remove('open')});
+
+function updateSend(){
+ const btn=qs('#sendBtn'),consent=qs('#consent').checked;
+ btn.disabled=!(effort&&consent);
+ btn.textContent=!effort?'ELIGE TU ESFUERZO':!consent?'ACEPTA PARA ENVIAR':'PREPARAR FEEDBACK';
+}
+qsa('[data-effort]').forEach(b=>b.onclick=()=>{effort=Number(b.dataset.effort);qsa('[data-effort]').forEach(x=>x.classList.toggle('on',x===b));updateSend();});
+qs('#consent').onchange=updateSend;
+
+function mime(){const a=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];return window.MediaRecorder&&MediaRecorder.isTypeSupported?a.find(x=>MediaRecorder.isTypeSupported(x))||'':''}
+function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function resetAudio(){clearInterval(timer);stopTracks();audioBlob=null;chunks=[];secs=0;const a=qs('#audioPreview');if(a.src)URL.revokeObjectURL(a.src);a.style.display='none';a.removeAttribute('src');qs('#discardAudio').style.display='none';qs('#recordBtn').textContent='● GRABAR AUDIO';qs('#recordBtn').classList.remove('recording');qs('#audioStatus').textContent='Opcional · máximo 90 segundos.'}
+qs('#discardAudio').onclick=resetAudio;
+qs('#recordBtn').onclick=async function(){
+ if(recorder&&recorder.state==='recording'){recorder.stop();return}
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){qs('#audioStatus').textContent='Este navegador no permite grabar aquí. Puedes escribir tu feedback.';return}
+ try{
+   stream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];secs=0;const mt=mime();recorder=mt?new MediaRecorder(stream,{mimeType:mt}):new MediaRecorder(stream);
+   recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+   recorder.onstop=()=>{clearInterval(timer);stopTracks();audioBlob=new Blob(chunks,{type:recorder.mimeType||mt||'audio/webm'});const a=qs('#audioPreview');a.src=URL.createObjectURL(audioBlob);a.style.display='block';qs('#discardAudio').style.display='inline-block';this.textContent='● GRABAR DE NUEVO';this.classList.remove('recording');qs('#audioStatus').textContent=`Audio listo · ${secs} s. Puedes escucharlo antes de enviar.`;};
+   recorder.start();this.textContent='■ DETENER';this.classList.add('recording');timer=setInterval(()=>{secs++;qs('#audioStatus').textContent=`Grabando… ${secs} s / 90 s`;if(secs>=90&&recorder.state==='recording')recorder.stop()},1000)
+ }catch(e){stopTracks();qs('#audioStatus').textContent='No pude acceder al micrófono. Puedes escribir tu feedback.'}
+};
+
+async function uploadAudio(){
+ if(!audioBlob)return null;
+ const ext=(audioBlob.type.includes('mp4')?'m4a':audioBlob.type.includes('ogg')?'ogg':audioBlob.type.includes('mpeg')?'mp3':audioBlob.type.includes('wav')?'wav':'webm');
+ const path=`pali/${SESSION_ID}/feedback/${Date.now()}-${Math.random().toString(36).slice(2,9)}.${ext}`;
+ const r=await fetch(`${SUPABASE_URL}/storage/v1/object/cerca-feedback-audio/${path}`,{
+   method:'POST',
+   headers:{...apiHeaders,'Content-Type':audioBlob.type||'audio/webm','x-upsert':'false'},
+   body:audioBlob
+ });
+ if(!r.ok)throw new Error('No pude guardar el audio.');
+ return path;
+}
+async function saveExecution(){
+ if(executionSaved)return;
+ const blocks=Object.entries(done).map(([block_id,confirmed])=>({block_id,confirmed}));
+ const execution={blocks,kettlebell_kg:kb,confirmation_source:'block_ready_buttons'};
+ const r=await fetch(`${SUPABASE_URL}/rest/v1/cerca_session_executions`,{
+   method:'POST',
+   headers:{...apiHeaders,'Content-Type':'application/json','Prefer':'return=minimal'},
+   body:JSON.stringify({
+     submission_id:submissionId,
+     session_id:SESSION_ID,
+     student_slug:'pali',
+     client_version:CLIENT_VERSION,
+     source:SOURCE,
+     blocks_completed:Object.values(done).filter(Boolean).length,
+     execution,
+     snapshot_hash:SNAPSHOT_HASH
+   })
+ });
+ if(!r.ok){
+   const t=await r.text();
+   if(!t.includes('duplicate key'))throw new Error('No pude guardar el registro de la sesión.');
+ }
+ executionSaved=true;
+}
+async function saveFeedback(audioPath){
+ const blocksCompleted=Object.values(done).filter(Boolean).length;
+ const completion=blocksCompleted===4?'si':blocksCompleted===0?'no':'casi';
+ const comment=qs('#comment').value.trim()||null;
+ const r=await fetch(`${SUPABASE_URL}/rest/v1/cerca_workout_feedback`,{
+   method:'POST',
+   headers:{...apiHeaders,'Content-Type':'application/json','Prefer':'return=minimal'},
+   body:JSON.stringify({
+     student_slug:'pali',
+     session_id:SESSION_ID,
+     completion,
+     effort,
+     comment,
+     blocks_completed:blocksCompleted,
+     source:SOURCE,
+     client_version:CLIENT_VERSION,
+     audio_path:audioPath,
+     execution_submission_id:submissionId,
+     snapshot_hash:SNAPSHOT_HASH
+   })
+ });
+ if(!r.ok)throw new Error('No pude guardar el feedback.');
+}
+
+qs('#sendBtn').onclick=async()=>{
+ const btn=qs('#sendBtn'),status=qs('#status');
+ if(btn.disabled)return;
+ btn.disabled=true;btn.textContent='ENVIANDO…';status.textContent='';
+ try{
+   await saveExecution();
+   const audioPath=await uploadAudio();
+   await saveFeedback(audioPath);
+   qs('#feedbackForm').style.display='none';
+   qs('#success').style.display='block';
+ }catch(e){
+   status.textContent=e.message||'No pude enviar. Intenta de nuevo.';
+   btn.disabled=false;btn.textContent='ENVIAR A SEBA';
+ }
+};
+updateProgress(); updateSend();
+</script>
+</body></html>

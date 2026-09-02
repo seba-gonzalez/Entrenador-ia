@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CERCA · Laboratorio tipográfico — Inter vs Archivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./type-lab.css" />
+</head>
+<body>
+
+<header class="lab-head">
+  <div class="lab-head-row">
+    <h1>Laboratorio tipográfico CERCA</h1>
+    <p class="lab-sub">Inter vs Archivo. Única variable: la familia. Tamaños, pesos, interlineado, tracking y ancho de columna son los de la landing actual, sin corregir.</p>
+  </div>
+  <div class="lab-controls">
+    <div class="ctrl-group" role="group" aria-label="Tamaño">
+      <button type="button" data-mode="desktop" class="is-on">Escritorio 1440</button>
+      <button type="button" data-mode="mobile">Móvil 390</button>
+    </div>
+    <button type="button" id="swap">Intercambiar lados</button>
+    <button type="button" id="blind">Ocultar etiquetas</button>
+  </div>
+  <div id="fontstatus" class="fontstatus" role="status">Comprobando fuentes…</div>
+</header>
+
+<noscript><p class="warn">Este laboratorio necesita JavaScript: las dos columnas se generan desde una misma plantilla para garantizar que el marcado sea idéntico y que la única diferencia sea la familia tipográfica.</p></noscript>
+
+<main id="lab"></main>
+
+<footer class="lab-foot">
+  <p>Herramienta interna de decisión. No enlazada desde la landing. No forma parte de la identidad de CERCA.</p>
+</footer>
+
+<!-- ───────── Plantillas: cada muestra se escribe UNA vez y se clona en las dos columnas ───────── -->
+
+<template id="s-hero">
+  <div class="pane-inner" style="width:var(--pane-w)">
+    <h2 class="t-hero measure">Un entrenador<br/>que te <span class="t-underline">acompaña.</span></h2>
+    <p class="t-lead measure"><strong>La IA nos ayuda a estar más cerca.</strong> CERCA te pregunta cómo te fue después de cada sesión y usa esa información para adaptar la próxima decisión a tu tiempo, tu equipo y tu contexto.</p>
+  </div>
+</template>
+
+<template id="s-firma">
+  <div class="pane-inner" style="width:var(--pane-w-m)">
+    <div class="t-signature">
+      <span class="t-cmark" aria-hidden="true">C</span>
+      <span class="t-sigcopy"><strong class="measure">CERCA</strong><small class="measure">ENTRENAMIENTO QUE RECUERDA</small></span>
+    </div>
+    <div class="t-proof">
+      <div class="t-proof-row"><span>HOY</span><b>NOS CUENTAS QUÉ PASÓ</b><i>↗</i></div>
+      <div class="t-proof-row"><span>MAÑANA</span><b>CERCA ADAPTA LA DECISIÓN</b><i>→</i></div>
+    </div>
+  </div>
+</template>
+
+<template id="s-caps">
+  <div class="pane-inner" style="width:var(--pane-w)">
+    <p class="t-closing measure">MAÑANA NO PARTES DE CERO.</p>
+    <p class="t-eyebrow measure">CUÉNTANOSLO A TU MANERA.</p>
+    <p class="t-chathead measure">DESPUÉS DE ENTRENAR</p>
+    <p class="t-kicker measure">CÓMO FUNCIONA</p>
+    <p class="t-kicker measure">POR QUÉ CERCA</p>
+    <p class="t-caps-zoom">MAÑANA · DESPUÉS · CÓMO · QUÉ · TÚ · Ñ É Ó Ú Á Ü</p>
+  </div>
+</template>
+
+<template id="s-chat">
+  <div class="pane-inner t-card" style="width:var(--pane-w)">
+    <div class="t-chathead t-chathead-row"><span class="t-pulse"></span><b>DESPUÉS DE ENTRENAR</b><em>Hoy · 19:42</em></div>
+    <div class="t-bubble t-bubble-muted">¿Cómo te fue hoy? Cuéntame qué salió bien y qué cambiarías.</div>
+    <div class="t-bubble t-bubble-user measure">Dormí poco y hoy tengo solo 40 minutos.</div>
+    <div class="t-bubble t-bubble-ai measure"><b>Ya, te entendí.</b> Podemos mantener lo importante y ajustar la sesión para que entre bien en esos 40 minutos.</div>
+    <div class="t-memory"><span class="t-chip"></span><b>No tienes que explicarte como experto.</b></div>
+  </div>
+</template>
+
+<template id="s-form">
+  <div class="pane-inner t-card" style="width:var(--pane-w)">
+    <h3 class="t-formtitle measure">Quiero probar CERCA.</h3>
+    <label class="t-label">Nombre *<input class="t-input" value="Camila Fuentes" /></label>
+    <label class="t-label">Correo *<input class="t-input" value="camila.fuentes@correo.cl" /></label>
+    <div class="t-question">¿Entrenas actualmente?</div>
+    <div class="t-pillrow">
+      <span class="t-pill">Sí, entreno</span>
+      <span class="t-pill measure">No, quiero empezar</span>
+    </div>
+    <p class="t-privacy measure">Usaremos estos datos solo para gestionar el pre-lanzamiento de CERCA. Antes de la apertura pública incorporaremos la política de privacidad completa.</p>
+  </div>
+</template>
+
+<template id="s-faq">
+  <div class="pane-inner" style="width:var(--pane-w)">
+    <p class="t-summary">¿Qué pasa si fallo varias sesiones seguidas?</p>
+    <p class="t-faq measure">Ese contexto importa. CERCA debe poder usarlo para proponer una siguiente decisión razonable en vez de tratar tu semana como si nada hubiera pasado. La idea no es que recuperes lo que no hiciste, sino que la próxima sesión tenga sentido con lo que realmente ocurrió.</p>
+  </div>
+</template>
+
+<template id="s-cards">
+  <div class="pane-inner t-cardgrid" style="width:var(--pane-w)">
+    <article class="t-card t-compare">
+      <span class="t-badge">ACOMPAÑAMIENTO</span>
+      <h3 class="t-cardtitle measure">CERCA</h3>
+      <ul><li>Tiene en cuenta cómo llegas ese día</li><li>Si hoy llegas distinto, CERCA puede ajustar la sesión</li><li>Te pregunta cómo te fue cuando terminas</li><li>Se acuerda de lo que le contaste y lo usa para decidir lo que viene</li></ul>
+    </article>
+    <article class="t-card t-compare">
+      <span class="t-badge">PLAN</span>
+      <h3 class="t-cardtitle measure">Un plan personalizado</h3>
+      <ul><li>Te entrega una estructura pensada para ti</li><li>Organiza ejercicios, volumen y progresión</li><li>Te da una dirección sobre la cual entrenar</li></ul>
+    </article>
+    <article class="t-card t-compare">
+      <span class="t-badge">CHAT</span>
+      <h3 class="t-cardtitle measure">Un chat de IA</h3>
+      <ul><li>Te ayuda a resolver dudas cuando le preguntas</li><li>Puede ayudarte a pensar, aclarar o explorar una situación</li><li>Responde a partir de la información y el contexto que recibe</li></ul>
+    </article>
+  </div>
+</template>
+
+<template id="s-btn">
+  <div class="pane-inner" style="width:var(--pane-w)">
+    <span class="t-btn t-btn-primary measure">Sumarme al pre-lanzamiento <i>→</i></span>
+    <span class="t-btn t-btn-ghost measure">Ver cómo funciona</span>
+    <span class="t-btn t-btn-primary measure">Seguir @entrena.cerca</span>
+  </div>
+</template>
+
+<script src="./type-lab.js"></script>
+</body>
+</html>

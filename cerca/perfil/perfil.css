@@ -1,0 +1,202 @@
+/* CERCA · Perfil V0 — componentes
+   Depende de perfil-base.css (tokens, fuente, reset). No carga styles.css.
+
+   Idea de diseno: no hay stepper ni porcentaje. El indicador de avance es la
+   propia conversacion: lo que ya contaste queda arriba y crece. El unico
+   elemento de estado es la etiqueta del bloque en la cabecera, que dice
+   donde estas con una palabra, no con una fraccion inventada. */
+
+/* ---------- cabecera ---------- */
+.cabecera{
+  position:sticky;top:0;z-index:5;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 20px;
+  background:rgba(2,6,6,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--borde-estructura);
+}
+.marca{
+  display:inline-flex;align-items:center;gap:10px;
+  color:var(--color-brand);text-decoration:none;
+  font-size:16px;font-weight:var(--peso-remate);
+  line-height:var(--lh-alta);letter-spacing:var(--track-marca);
+}
+/* Isotipo pequeno. Mascara + background-color: la geometria vive en un solo
+   fichero y el color lo pone el sistema. */
+.isotipo{
+  width:22px;height:22px;flex:0 0 auto;
+  background-color:var(--color-brand);
+  -webkit-mask:url("../brand/isotipo.svg") center/contain no-repeat;
+  mask:url("../brand/isotipo.svg") center/contain no-repeat;
+}
+.paso{
+  margin:0;color:var(--muted);
+  font-size:12px;font-weight:var(--peso-remate);
+  line-height:var(--lh-alta);letter-spacing:var(--track-etiqueta);
+}
+
+/* ---------- columna ---------- */
+.hilo,.turno,.pie{width:100%;max-width:660px;margin:0 auto;padding:0 20px}
+.hilo{padding-top:24px}
+.pie{padding-top:8px;padding-bottom:40px}
+
+/* ---------- conversacion ---------- */
+/* La conversacion comparte la receta del rol lectura a proposito: debe
+   sentirse como prosa, no como interfaz. */
+.burbuja{
+  max-width:96%;margin:0 0 14px;padding:13px 16px;border-radius:20px;
+  font-size:15px;font-weight:var(--peso-lectura);line-height:var(--lh-lectura);
+}
+.burbuja b{font-weight:var(--peso-estructura)}
+/* Borde cyan por identidad de hablante. Es la misma justificacion que en la
+   landing: dice quien habla, no adorna. */
+.burbuja-cerca{background:#061c1b;border:1px solid rgba(16,231,239,.28)}
+.burbuja-persona{margin-left:auto;background:#1ec0c3;color:#021010}
+.burbuja-entra{animation:entra .34s cubic-bezier(.2,.7,.3,1) both}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- turno actual ---------- */
+.turno{padding-top:6px}
+.turno[hidden]{display:none}
+.pregunta{
+  margin:0 0 4px;
+  font-size:16px;font-weight:var(--peso-estructura);line-height:var(--lh-lectura);
+}
+.apunte{
+  margin:0;color:var(--muted);
+  font-size:12px;font-weight:var(--peso-lectura);line-height:var(--lh-alta);
+}
+.pregunta + .apunte{margin-bottom:10px}
+.campo{
+  width:100%;min-height:96px;margin-top:10px;padding:14px;
+  background:#111918;color:#fff;
+  border:1px solid rgba(255,255,255,.15);border-radius:14px;
+  font-size:16px;font-weight:var(--peso-lectura);line-height:var(--lh-lectura);
+  outline:none;resize:vertical;
+}
+.campo::placeholder{color:#6f7b7b}
+/* Foco funcional: cyan justificado. */
+.campo:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(16,231,239,.08)}
+.campo.es-invalido{border-color:#ff8f8f}
+
+.acciones{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px}
+.btn{
+  border:0;border-radius:12px;padding:13px 20px;cursor:pointer;
+  font-size:16px;font-weight:var(--peso-remate);
+  line-height:var(--lh-alta);letter-spacing:var(--track-lectura);
+}
+.btn-principal{
+  background:linear-gradient(90deg,var(--color-action),#38f2f1);
+  color:var(--color-on-accent);
+}
+.btn-principal:hover{filter:brightness(1.06)}
+.btn-secundario{
+  background:transparent;color:var(--text);
+  border:1px solid var(--borde-estructura);
+}
+.btn-secundario:hover{border-color:rgba(255,255,255,.24)}
+.btn-texto{
+  background:none;border:0;padding:6px 0;cursor:pointer;color:var(--muted);
+  font-size:13px;font-weight:var(--peso-lectura);text-decoration:underline;
+  text-underline-offset:3px;
+}
+.btn-texto:hover{color:var(--text)}
+.aviso{margin:10px 0 0;color:#ff8f8f;font-size:13px;line-height:var(--lh-alta)}
+.aviso[hidden]{display:none}
+
+/* ---------- tarjeta de resumen ---------- */
+.tarjeta{
+  margin:4px 0 14px;padding:20px;
+  background:var(--panel);
+  border:1px solid var(--borde-estructura);border-radius:var(--radius);
+}
+.tarjeta h2{
+  margin:0 0 4px;
+  font-size:26px;font-weight:var(--peso-remate);
+  line-height:var(--lh-bloque);letter-spacing:var(--track-lectura);
+}
+.tarjeta > p{margin:0;color:var(--muted);font-size:15px;line-height:var(--lh-lectura)}
+.rotulo{
+  margin:22px 0 10px;color:var(--muted);
+  font-size:12px;font-weight:var(--peso-remate);
+  line-height:var(--lh-alta);letter-spacing:var(--track-etiqueta);
+}
+
+/* "Esto me contaste": la respuesta va literal. Sin parafrasear, sin
+   recortar, sin poner en minusculas lo que la persona escribio. */
+.dicho{list-style:none;margin:0;padding:0}
+.dicho li{padding:14px 0;border-top:1px solid var(--borde-estructura)}
+.dicho{margin-top:18px}
+.dicho li:first-child{border-top:0;padding-top:0}
+/* Caja baja y registro de apunte. En caja alta con tracking, estos rotulos se
+   leian como nombres de campo de una ficha; el contenido no cambio, la voz si. */
+.dicho .de{
+  display:block;margin-bottom:4px;color:var(--muted);
+  font-size:13px;font-weight:var(--peso-lectura);
+  line-height:var(--lh-alta);letter-spacing:var(--track-lectura);
+}
+.dicho .texto{
+  margin:0 0 8px;font-size:15px;font-weight:var(--peso-lectura);
+  line-height:var(--lh-lectura);white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.dicho .heredado{color:var(--muted)}
+
+/* Contexto heredado de la landing: una frase, no una tabla de campos. El
+   origen se dice una vez, y el borde izquierdo lo mantiene distinguible de lo
+   que la persona escribio en el perfil, que va sin marca. */
+.heredado-frase{
+  margin:18px 0 4px;padding:12px 14px;
+  background:var(--panel2);border-left:2px solid var(--borde-estructura);
+  border-radius:0 12px 12px 0;color:#c3cccc;
+  font-size:15px;font-weight:var(--peso-lectura);line-height:var(--lh-lectura);
+}
+.heredado-frase b{color:var(--text);font-weight:var(--peso-estructura)}
+
+/* Lo que todavia hay que aclarar. Cada linea nombra la decision que depende
+   de ella: si no cambia una decision, no aparece aqui ni se pregunta. */
+.pendientes{list-style:none;margin:0;padding:0}
+.pendientes li{
+  padding:12px 14px;margin-bottom:8px;
+  background:var(--panel2);border-radius:14px;
+  font-size:15px;line-height:var(--lh-lectura);
+}
+
+
+/* Estado "informacion suficiente". Es un resultado de primera clase, no un
+   consuelo por no haber preguntado: por eso lleva el cyan de estado. */
+.suficiente{
+  margin-top:6px;padding:16px 18px;
+  background:#061c1b;border:1px solid rgba(16,231,239,.28);border-radius:16px;
+}
+.suficiente b{
+  display:block;margin-bottom:6px;color:var(--color-estado);
+  font-size:13px;font-weight:var(--peso-remate);letter-spacing:var(--track-etiqueta);
+}
+.suficiente p{margin:0;font-size:15px;line-height:var(--lh-lectura)}
+.suficiente p + p{margin-top:8px;color:var(--muted);font-size:13px;line-height:var(--lh-alta)}
+
+/* ---------- pie ---------- */
+.privacidad{
+  margin:0;color:var(--muted);
+  font-size:12px;font-weight:var(--peso-lectura);line-height:var(--lh-alta);
+}
+.privacidad b{color:#c3cccc;font-weight:var(--peso-estructura)}
+
+/* ---------- 768 ---------- */
+@media (min-width:768px){
+  .cabecera{padding:16px 32px}
+  .hilo,.turno,.pie{padding-left:32px;padding-right:32px}
+  .hilo{padding-top:36px}
+  .burbuja{max-width:88%;padding:16px 20px;font-size:16px;margin-bottom:16px}
+  .tarjeta{padding:26px}
+  .tarjeta h2{font-size:30px}
+  .dicho .texto,.pendientes li,.suficiente p,.heredado-frase{font-size:16px}
+}
+
+/* ---------- 1440 ----------
+   La columna no se estira: a mas ancho, mas aire, no mas linea. Una medida
+   de lectura larga rompe la sensacion de conversacion. */
+@media (min-width:1200px){
+  .hilo{padding-top:56px}
+  .pie{padding-bottom:64px}
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>CERCA · Centro de control</title>
+<style>
+:root{--bg:#020606;--panel:#071110;--line:rgba(16,231,239,.18);--text:#f4f8f8;--muted:#8fa0a0;--cyan:#10e7ef;--blue:#5577ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,rgba(16,231,239,.09),transparent 28%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif}.wrap{width:min(1180px,calc(100% - 28px));margin:auto;padding:28px 0 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:28px}.brand{font-weight:900;letter-spacing:.08em}.brand b{color:var(--cyan)}.top small{color:var(--muted)}h1{font-size:clamp(2rem,5vw,4rem);letter-spacing:-.05em;margin:16px 0 10px}.sub{color:var(--muted);margin:0 0 28px}.lock,.panel,.card,.metric{border:1px solid var(--line);background:linear-gradient(180deg,rgba(7,20,19,.96),rgba(3,12,12,.96));border-radius:18px}.lock{max-width:520px;padding:24px;margin:70px auto}.lock input,.filters input,.filters select,.card select,.card textarea,.card input{width:100%;background:#101918;color:white;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px;font:inherit}.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--cyan),#34f7f2);color:#031010}.btn.secondary{background:#101918;color:#dbeaea;border:1px solid rgba(255,255,255,.14)}.status{min-height:22px;color:#75f8fb;font-size:.9rem}.status.err{color:#ffb8b8}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.metric{padding:18px}.metric span{display:block;color:var(--muted);font-size:.82rem}.metric strong{font-size:2rem}.filters{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:10px;margin:18px 0}.list{display:grid;gap:12px}.card{padding:18px}.card-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.name{font-size:1.1rem;font-weight:850}.meta{color:var(--muted);font-size:.88rem;margin-top:4px}.tagrow{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.tag{border:1px solid rgba(16,231,239,.22);border-radius:999px;padding:5px 9px;color:#c9fbfd;font-size:.75rem}.challenge{padding:12px;background:rgba(255,255,255,.025);border-radius:10px;color:#d6dfdf;font-size:.9rem;margin:12px 0}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notes{grid-column:1/3}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.empty{text-align:center;color:var(--muted);padding:40px}.hidden{display:none!important}@media(max-width:760px){.metrics{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}.filters input{grid-column:1/3}.controls{grid-template-columns:1fr}.notes{grid-column:auto}.card-head{display:block}.top{align-items:flex-start;flex-direction:column}} 
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="lock" class="lock">
+    <div class="brand"><b>C</b> CERCA</div>
+    <h2>Centro de control</h2>
+    <p class="sub">Acceso interno. Ingresa la clave de administración.</p>
+    <input id="keyInput" type="password" autocomplete="current-password" placeholder="Clave interna CERCA"/>
+    <div style="height:10px"></div>
+    <button id="enterBtn" class="btn">Entrar</button>
+    <p id="loginStatus" class="status"></p>
+  </div>
+
+  <main id="app" class="hidden">
+    <div class="top"><div><div class="brand"><b>C</b> CERCA · INTERNO</div><small>Pre-lanzamiento</small></div><button id="logoutBtn" class="btn secondary">Cerrar acceso</button></div>
+    <h1>Centro de control CERCA</h1>
+    <p class="sub">Quién llegó, cómo entrena y en qué etapa está.</p>
+
+    <section class="metrics">
+      <div class="metric"><span>Inscritos</span><strong id="mTotal">0</strong></div>
+      <div class="metric"><span>Entrenan</span><strong id="mTrain">0</strong></div>
+      <div class="metric"><span>Quieren empezar</span><strong id="mStart">0</strong></div>
+      <div class="metric"><span>Entrenan solos</span><strong id="mSolo">0</strong></div>
+    </section>
+
+    <section class="filters">
+      <input id="q" placeholder="Buscar nombre, ciudad, disciplina..."/>
+      <select id="fStatus"><option value="">Todos los estados</option><option value="nuevo">Nuevo</option><option value="contactado">Contactado</option><option value="invitado_beta">Invitado beta</option><option value="probando">Probando</option><option value="activo">Activo</option><option value="no_siguio">No siguió</option></select>
+      <select id="fTrain"><option value="">Entrena / no entrena</option><option value="true">Entrena</option><option value="false">Quiere empezar</option></select>
+      <select id="fSupport"><option value="">Todos los acompañamientos</option><option value="Solo/a">Solo/a</option><option value="Con profesor/a">Con profesor/a</option><option value="Ambas">Ambas</option></select>
+    </section>
+    <p id="appStatus" class="status"></p>
+    <section id="list" class="list"></section>
+  </main>
+</div>
+<script>
+const API='https://lggygnieziilvquvttby.supabase.co/functions/v1/cerca-admin';
+const $=s=>document.querySelector(s);let rows=[];let adminKey='';
+const labels={nuevo:'Nuevo',contactado:'Contactado',invitado_beta:'Invitado beta',probando:'Probando',activo:'Activo',no_siguio:'No siguió'};
+function escapeHtml(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function storeKey(k){sessionStorage.setItem('cerca-admin-key',k)}
+function getUrlKey(){const u=new URL(location.href);const k=u.searchParams.get('access');if(k){u.searchParams.delete('access');history.replaceState({},'',u.toString());storeKey(k);return k}return sessionStorage.getItem('cerca-admin-key')||''}
+async function api(method='GET',body){const r=await fetch(API,{method,headers:{'Content-Type':'application/json','x-cerca-admin-key':adminKey},body:body?JSON.stringify(body):undefined});if(r.status===401)throw new Error('Clave incorrecta');if(!r.ok)throw new Error('Error '+r.status);return r.json()}
+async function load(){try{$('#appStatus').textContent='Cargando…';const d=await api();rows=d.rows||[];$('#mTotal').textContent=d.summary.total;$('#mTrain').textContent=d.summary.trains;$('#mStart').textContent=d.summary.wants_to_start;$('#mSolo').textContent=d.summary.trains_solo;$('#appStatus').textContent='';render()}catch(e){$('#appStatus').textContent=e.message;$('#appStatus').classList.add('err')}}
+function render(){const q=$('#q').value.trim().toLowerCase(),fs=$('#fStatus').value,ft=$('#fTrain').value,fp=$('#fSupport').value;const filtered=rows.filter(r=>{const hay=[r.name,r.country,r.city,r.training_type,r.training_support,r.training_challenge,...(r.start_barriers||[])].join(' ').toLowerCase();return(!q||hay.includes(q))&&(!fs||r.lead_status===fs)&&(!ft||String(r.trains_now)===ft)&&(!fp||r.training_support===fp)});$('#list').innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">No hay personas con esos filtros.</div>';document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>saveCard(b.dataset.save))}
+function card(r){const challenge=r.trains_now?r.training_challenge:(r.start_barriers||[]).join(' · ')+(r.start_comment?' — '+r.start_comment:'');return `<article class="card"><div class="card-head"><div><div class="name">${escapeHtml(r.name)}</div><div class="meta">${escapeHtml(r.email)} · ${escapeHtml(r.city||'Sin ciudad')}, ${escapeHtml(r.country||'')}</div></div><span class="tag">${labels[r.lead_status]||r.lead_status}</span></div><div class="tagrow"><span class="tag">${r.trains_now?'Entrena':'Quiere empezar'}</span>${r.training_type?`<span class="tag">${escapeHtml(r.training_type)}</span>`:''}${r.training_support?`<span class="tag">${escapeHtml(r.training_support)}</span>`:''}</div>${challenge?`<div class="challenge">${escapeHtml(challenge)}</div>`:''}<div class="controls"><label>Estado<select id="s-${r.id}">${Object.entries(labels).map(([v,l])=>`<option value="${v}" ${r.lead_status===v?'selected':''}>${l}</option>`).join('')}</select></label><label>Oleada beta<input id="w-${r.id}" value="${escapeHtml(r.beta_wave||'')}" placeholder="Ej: Beta 01"/></label><label class="notes">Notas internas<textarea id="n-${r.id}" rows="2" placeholder="Notas del equipo">${escapeHtml(r.internal_notes||'')}</textarea></label></div><div class="actions"><button class="btn" data-save="${r.id}">Guardar cambios</button></div></article>`}
+async function saveCard(id){const b=document.querySelector(`[data-save="${id}"]`);b.disabled=true;b.textContent='Guardando…';try{await api('POST',{id,lead_status:$(`#s-${id}`).value,beta_wave:$(`#w-${id}`).value.trim()||null,internal_notes:$(`#n-${id}`).value.trim()||null});await load()}catch(e){alert(e.message)}finally{b.disabled=false;b.textContent='Guardar cambios'}}
+async function enter(k){adminKey=k;$('#loginStatus').textContent='Verificando…';try{await api();storeKey(k);$('#lock').classList.add('hidden');$('#app').classList.remove('hidden');$('#loginStatus').textContent='';await load()}catch(e){$('#loginStatus').textContent=e.message;$('#loginStatus').classList.add('err')}}
+$('#enterBtn').onclick=()=>enter($('#keyInput').value.trim());$('#keyInput').addEventListener('keydown',e=>{if(e.key==='Enter')enter($('#keyInput').value.trim())});['q','fStatus','fTrain','fSupport'].forEach(id=>$('#'+id).addEventListener(id==='q'?'input':'change',render));$('#logoutBtn').onclick=()=>{sessionStorage.removeItem('cerca-admin-key');location.reload()};
+adminKey=getUrlKey();if(adminKey)enter(adminKey);
+</script>
+</body>
+</html>
