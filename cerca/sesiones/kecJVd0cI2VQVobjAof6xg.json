@@ -1,0 +1,326 @@
+{
+  "formato": 1,
+  "alumno": "Nico",
+  "alumno_slug": "nico",
+  "plan": "nico-v1",
+  "publicado": "2026-09-01",
+
+  "portada": {
+    "kicker": "Volver a entrenar",
+    "titulo": "Partamos simple.\nPero partamos bien.",
+    "bajada": "Dos entrenamientos de máximo una hora y una misión de movimiento. Esta es tu semana vigente: si algo cambia con tu feedback, la siguiente versión también puede cambiar.",
+    "pastillas": ["Día 1", "Día 2", "Día 3 · misión"]
+  },
+
+  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
+
+  "chat": {
+    "atajos": ["¿Cómo hago el circuito?", "¿Cuánto descanso?", "¿Qué significa esfuerzo del 1 al 10?"],
+    "videos": [
+      ["perro gato", "cat cow exercise"],
+      ["spiderman", "spiderman mobility exercise"],
+      ["rotacion toracica", "quadruped thoracic rotation exercise"],
+      ["elevacion de cadera", "glute bridge exercise"],
+      ["plancha", "plank exercise"],
+      ["goblet", "goblet squat tutorial"],
+      ["jalon", "lat pulldown tutorial"],
+      ["flexion", "knee push up tutorial"],
+      ["floor press", "dumbbell floor press tutorial"],
+      ["bird dog", "bird dog exercise"],
+      ["remo", "one arm dumbbell row tutorial"],
+      ["press", "kneeling dumbbell shoulder press"],
+      ["estocada", "reverse lunge tutorial"],
+      ["dead bug", "dead bug exercise"],
+      ["jumping", "jumping jack exercise"]
+    ]
+  },
+
+  "dias": [
+    {
+      "id": "1",
+      "nav": "DÍA 1",
+      "sesion_id": "nico-dia1-v1",
+      "titulo": "Día 1 · Fuerza base",
+      "bajada": "Máximo 60 minutos. Volver a moverte bien, recuperar fuerza y terminar con sensación de que podrías haber hecho un poco más.",
+      "bloques": [
+        {
+          "id": "A",
+          "titulo": "Movilidad + activación",
+          "intro": "Circuito continuo durante 8–10 minutos.",
+          "recorrido": "*Cómo hacerlo:* A1 → A2 → A3 → A4 → A5 sin descanso entre ejercicios. Al terminar A5, *descansa 30 s* y vuelve a A1. Repite durante 8–10 min.",
+          "descanso": "*Descanso:* 30 s solo al terminar A5.",
+          "ejercicios": [
+            { "codigo": "A1", "nombre": "Perro-gato", "dosis": "10 reps",
+              "descripcion": "En cuatro apoyos: redondea suavemente la espalda y luego llévala hacia la posición contraria." },
+            { "codigo": "A2", "nombre": "Spiderman", "dosis": "6 por lado",
+              "descripcion": "Desde plancha, lleva un pie por fuera de la mano del mismo lado y carga suavemente la cadera hacia adelante." },
+            { "codigo": "A3", "nombre": "Rotación torácica", "dosis": "8 por lado",
+              "descripcion": "En cuatro apoyos, una mano detrás de la cabeza. Gira el pecho llevando el codo hacia arriba y vuelve." },
+            { "codigo": "A4", "nombre": "Elevación de cadera", "dosis": "10 reps",
+              "descripcion": "Acostado boca arriba, pies apoyados. Eleva la cadera y aprieta glúteos arriba." },
+            { "codigo": "A5", "nombre": "Plancha frontal", "dosis": "20 s",
+              "descripcion": "Guatita firme, glúteos apretados y cuerpo alineado.",
+              "crono": { "segundos": 20, "rotulo": "20 s" } }
+          ]
+        },
+        {
+          "id": "B",
+          "titulo": "Fuerza base",
+          "intro": "3 vueltas en circuito.",
+          "recorrido": "*B1 → B2 → B3* continuos. Al terminar B3, descansa *75–90 s*. Vuelve a B1. Completa 3 vueltas.",
+          "ejercicios": [
+            { "codigo": "B1", "nombre": "Goblet squat", "dosis": "10–12 · 10 kg",
+              "descripcion": "Mancuerna delante del pecho. Baja controlado y sube empujando el suelo.",
+              "consejo": "Pies cómodos, rodillas acompañan la dirección de los pies y la mancuerna se mantiene cerca del cuerpo.",
+              "registro": {
+                "nota": "La mancuerna es siempre la de 10 kg: eso no se pregunta.",
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "10–12", "min": 10, "max": 12 }
+                ]
+              } },
+            { "codigo": "B2", "nombre": "Jalón en polea alta", "dosis": "10–12",
+              "descripcion": "Engancha la barra arriba en la multifuncional y llévala hacia la parte alta del pecho.",
+              "consejo": "Pecho ligeramente elevado, hombros lejos de las orejas y codos hacia abajo. No lleves la barra detrás de la cabeza.",
+              "registro": {
+                "campos": [
+                  { "campo": "carga", "etiqueta": "Peso de la polea", "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "La polea tiene muchos pesos y todavía no sabemos cuál te queda bien. El primero que anotes es el que vamos a usar de referencia." },
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "10–12", "min": 10, "max": 12 }
+                ]
+              } },
+            { "codigo": "B3", "nombre": "Flexiones con rodillas", "dosis": "6–12",
+              "descripcion": "Rodillas en el suelo. Baja suave y sube manteniendo tronco y cadera como un bloque.",
+              "consejo": "Guatita firme. Si hoy no salen bien, cambia por 20 toques de hombro alternados.",
+              "registro": {
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "6–12", "min": 6, "max": 12 }
+                ]
+              } }
+          ]
+        },
+        {
+          "id": "C",
+          "titulo": "Fuerza + zona media",
+          "intro": "3 vueltas en circuito.",
+          "recorrido": "*C1 → C2 → C3 → C4*. Al terminar C4, descansa *1 min* y vuelve a C1.",
+          "ejercicios": [
+            { "codigo": "C1", "nombre": "Elevación de cadera con carga", "dosis": "15 · 10 kg",
+              "descripcion": "Mancuerna sobre la cadera/guatita. Sube, aprieta glúteos y baja controlado." },
+            { "codigo": "C2", "nombre": "Floor press", "dosis": "10–12 · 2×10 kg",
+              "descripcion": "Acostado en el suelo, una mancuerna por mano. Baja los codos hasta tocar suavemente el piso y vuelve a empujar.",
+              "registro": {
+                "nota": "El peso es fijo: las dos mancuernas de 10 kg.",
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "10–12", "min": 10, "max": 12 }
+                ]
+              } },
+            { "codigo": "C3", "nombre": "Sentadilla en pared", "dosis": "30 s",
+              "descripcion": "Espalda apoyada, baja hasta una posición cómoda y mantén.",
+              "crono": { "segundos": 30, "rotulo": "30 s" } },
+            { "codigo": "C4", "nombre": "Bird dog", "dosis": "6–8 por lado",
+              "descripcion": "En cuatro apoyos: brazo derecho + pierna izquierda. Vuelve y cambia. Trata de que la pelvis no rote." }
+          ]
+        },
+        {
+          "id": "D",
+          "titulo": "Bicicleta",
+          "ejercicios": [
+            { "codigo": "D1", "nombre": "Entrada en calor", "dosis": "2 min suave",
+              "crono": { "segundos": 120, "rotulo": "2:00" } },
+            { "codigo": "D2", "nombre": "Intervalos", "dosis": "6 veces",
+              "descripcion": "20 s a intensidad media-alta + 40 s muy suave. Eso es 1 intervalo.",
+              "consejo": "Media-alta = un poco agitado, pero no a matarte. Muy suave = recuperación real, respiración tranquila.",
+              "crono": [
+                { "segundos": 20, "rotulo": "20 s · TRABAJO" },
+                { "segundos": 40, "rotulo": "40 s · SUAVE" }
+              ] },
+            { "codigo": "D3", "nombre": "Vuelta a la calma", "dosis": "2 min muy suave",
+              "crono": { "segundos": 120, "rotulo": "2:00" } }
+          ]
+        },
+        {
+          "id": "E",
+          "titulo": "Cierre tranquilo",
+          "recorrido": "Suave, sin buscar dolor ni forzar rango.",
+          "ejercicios": [
+            { "codigo": "E1", "nombre": "Rodillas al pecho acostado", "dosis": "20–30 s" },
+            { "codigo": "E2", "nombre": "Postura de niño", "dosis": "20–30 s" },
+            { "codigo": "E3", "nombre": "Rotación suave acostado", "dosis": "20 s por lado" }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te sentiste en el Día 1?",
+        "texto": "Percepción de esfuerzo: 1 = muy fácil; 10 = extremadamente difícil, casi no podías hacer nada más. No hay número correcto: marca cómo se sintió para ti.",
+        "marcador": "Ej.: las flexiones me costaron, la bici estuvo entretenida…"
+      }
+    },
+
+    {
+      "id": "2",
+      "nav": "DÍA 2",
+      "sesion_id": "nico-dia2-v1",
+      "titulo": "Día 2 · Movimiento + fuerza",
+      "bajada": "Máximo 60 minutos. Recuperar coordinación, moverte más atlético y sumar fuerza.",
+      "bloques": [
+        {
+          "id": "A",
+          "titulo": "Activación",
+          "intro": "Circuito continuo 8–10 min.",
+          "recorrido": "*A1 → A2 → A3 → A4 → A5* continuos. Después de A5, *30 s de descanso* y vuelves a A1.",
+          "ejercicios": [
+            { "codigo": "A1", "nombre": "Perro-gato", "dosis": "8" },
+            { "codigo": "A2", "nombre": "Spiderman", "dosis": "6 por lado" },
+            { "codigo": "A3", "nombre": "Rotación torácica", "dosis": "8 por lado" },
+            { "codigo": "A4", "nombre": "Elevación de cadera", "dosis": "10" },
+            { "codigo": "A5", "nombre": "Plancha frontal", "dosis": "20 s",
+              "crono": { "segundos": 20, "rotulo": "20 s" } }
+          ]
+        },
+        {
+          "id": "B",
+          "titulo": "Coordinación + movimiento",
+          "intro": "3 vueltas en circuito.",
+          "recorrido": "*B1 → B2 → B3 → B4*. Al terminar B4, *1 min de descanso* y vuelves a B1.",
+          "ejercicios": [
+            { "codigo": "B1", "nombre": "Desplazamientos laterales", "dosis": "10 + 10 ×2",
+              "descripcion": "10 pasos a la derecha + 10 a la izquierda. Esa ida y vuelta se hace dos veces." },
+            { "codigo": "B2", "nombre": "Caminata de manos", "dosis": "5",
+              "descripcion": "Desde de pie: manos al suelo, camina con las manos hasta plancha alta, vuelve hacia los pies y ponte de pie. Eso es 1." },
+            { "codigo": "B3", "nombre": "Adelante / atrás", "dosis": "controlado",
+              "descripcion": "Acelera suavemente hacia adelante y vuelve trotando de espalda. Usa el espacio disponible." },
+            { "codigo": "B4", "nombre": "Plancha frontal", "dosis": "20 s",
+              "crono": { "segundos": 20, "rotulo": "20 s" } }
+          ]
+        },
+        {
+          "id": "C",
+          "titulo": "Fuerza",
+          "intro": "3 vueltas en circuito.",
+          "recorrido": "*C1 → C2 → C3 → C4 → C5 → C6*. Después de C6 descansa *1:30* y vuelve a C1.",
+          "ejercicios": [
+            { "codigo": "C1", "nombre": "Goblet squat", "dosis": "12 · 10 kg" },
+            { "codigo": "C2", "nombre": "Remo a una mano", "dosis": "15 + 15 · 10 kg",
+              "descripcion": "Tronco estable. Lleva la mancuerna hacia la cadera y baja controlado." },
+            { "codigo": "C3", "nombre": "Flexiones con rodillas", "dosis": "8–12",
+              "registro": {
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "8–12", "min": 8, "max": 12 }
+                ]
+              } },
+            { "codigo": "C4", "nombre": "Press de hombro de rodillas", "dosis": "8–10 · 1×10 kg",
+              "descripcion": "De rodillas, toma una sola mancuerna con las dos manos frente al pecho y empújala arriba.",
+              "consejo": "Aprieta guatita y glúteos. Si necesitas arquear mucho la espalda, corta antes.",
+              "registro": {
+                "nota": "El peso es fijo: una sola mancuerna de 10 kg.",
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "8–10", "min": 8, "max": 10 }
+                ]
+              } },
+            { "codigo": "C5", "nombre": "Elevación de cadera", "dosis": "15–20 · 10 kg",
+              "registro": {
+                "nota": "El peso es fijo: la mancuerna de 10 kg.",
+                "campos": [
+                  { "campo": "reps", "etiqueta": "Repeticiones por vuelta", "unidad": "reps",
+                    "prescrito": true, "texto": "15–20", "min": 15, "max": 20 }
+                ]
+              } },
+            { "codigo": "C6", "nombre": "Estocadas atrás", "dosis": "4 + 4",
+              "descripcion": "Cuatro con una pierna y cuatro con la otra, controladas." }
+          ]
+        },
+        {
+          "id": "D",
+          "titulo": "Zona media",
+          "intro": "3 vueltas.",
+          "recorrido": "*D1 → D2 → D3*. Descansa *30–45 s* y vuelve a D1.",
+          "ejercicios": [
+            { "codigo": "D1", "nombre": "Dead bug", "dosis": "8 por lado",
+              "descripcion": "Boca arriba. Extiende brazo y pierna contraria sin despegar la zona lumbar." },
+            { "codigo": "D2", "nombre": "Bird dog", "dosis": "8 por lado" },
+            { "codigo": "D3", "nombre": "Plancha lateral modificada", "dosis": "15–20 s por lado",
+              "descripcion": "Rodilla de abajo apoyada y pierna de arriba extendida.",
+              "crono": { "segundos": 20, "rotulo": "20 s" } }
+          ]
+        },
+        {
+          "id": "E",
+          "titulo": "EMOM · Jumping jacks + bicicleta",
+          "intro": "10 min totales.",
+          "recorrido": "*Min 1–2:* bici suave → *min 3:* jumping jacks → *4:* bici → *5:* jumping jacks → *6:* bici → *7:* jumping jacks → *8:* bici → *9–10:* bici muy suave.",
+          "ejercicios": [
+            { "codigo": "E1", "nombre": "Entrada en calor", "dosis": "min 1–2 · bici suave",
+              "crono": { "segundos": 120, "rotulo": "2:00" } },
+            { "codigo": "E2", "nombre": "Jumping jacks", "dosis": "min 3 · 5 · 7",
+              "descripcion": "20 s jumping jacks + 40 s descanso. Al terminar el minuto, súbete a la bici." },
+            { "codigo": "E3", "nombre": "Bicicleta", "dosis": "min 4 · 6 · 8",
+              "descripcion": "30 s intensidad media-alta + 30 s muy suave. Al terminar, bájate para los jumping jacks." },
+            { "codigo": "E4", "nombre": "Timer del bloque central", "dosis": "6 min",
+              "descripcion": "Parte en el minuto 3 con jumping jacks y avisa cada minuto cuándo cambiar.",
+              "crono": {
+                "tipo": "emom", "segundos": 60, "rotulo": "MIN 3–8",
+                "rotulos": [
+                  "MIN 3 · JUMPING JACKS · 20 s + 40 s DESCANSO",
+                  "MIN 4 · BICI · 30 s MEDIA-ALTA + 30 s SUAVE",
+                  "MIN 5 · JUMPING JACKS · 20 s + 40 s DESCANSO",
+                  "MIN 6 · BICI · 30 s MEDIA-ALTA + 30 s SUAVE",
+                  "MIN 7 · JUMPING JACKS · 20 s + 40 s DESCANSO",
+                  "MIN 8 · BICI · 30 s MEDIA-ALTA + 30 s SUAVE"
+                ]
+              } },
+            { "codigo": "E5", "nombre": "Vuelta a la calma", "dosis": "min 9–10 · bici muy suave",
+              "crono": { "segundos": 120, "rotulo": "2:00" } }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te sentiste en el Día 2?",
+        "texto": "1 = muy fácil y 10 = extremadamente difícil. No buscamos un número correcto: queremos saber cómo se sintió para ti.",
+        "marcador": "Ej.: el press estuvo pesado, me gustó la parte de movimiento, la plancha lateral me costó…"
+      }
+    },
+
+    {
+      "id": "3",
+      "nav": "DÍA 3",
+      "sesion_id": "nico-dia3-v1",
+      "titulo": "Día 3 · Misión",
+      "bajada": "No es otra rutina. Es una invitación a sumar movimiento fuera del gimnasio.",
+      "bloques": [
+        {
+          "id": "M",
+          "tipo": "mision",
+          "titulo": "Elige tu misión",
+          "intro": "Haz al menos 30 minutos de una actividad que te haga moverte.",
+          "opciones": [
+            { "id": "basket", "texto": "🏀 Básquet" },
+            { "id": "futbol", "texto": "⚽ Fútbol / pichanga" },
+            { "id": "tenis", "texto": "🎾 Tenis / pádel" },
+            { "id": "bici", "texto": "🚲 Bicicleta" },
+            { "id": "caminar", "texto": "🚶 Caminata" },
+            { "id": "otra", "texto": "🌳 Otra actividad" }
+          ],
+          "cierre": "También vale caminar desde el metro, ir al mall caminando o inventar un panorama que aumente tu movimiento.",
+          "registro": {
+            "campos": [
+              { "campo": "minutos", "etiqueta": "Minutos que te moviste", "unidad": "min",
+                "prescrito": true, "texto": "al menos 30", "min": 30, "max": 600 }
+            ]
+          }
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en la misión?",
+        "texto": "Cuéntanos qué hiciste y cómo terminaste. 1 = muy fácil; 10 = extremadamente difícil.",
+        "marcador": "Ej.: jugué básquet 45 min, caminé una hora, terminé cansado pero bien…"
+      }
+    }
+  ]
+}

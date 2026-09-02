@@ -8,6 +8,29 @@ explico la primera vez.
 
 ---
 
+## Estado al 2026-09-02 — lo que ya está construido
+
+Dirección aprobó concretar. Los pasos 1 y 2 de la hoja de ruta de §5 **están
+hechos y probados en navegador**; el resto de este documento queda como estaba,
+porque las preguntas de §7 siguen abiertas.
+
+| | Qué | Dónde |
+|---|---|---|
+| ✅ | El estilo definido de la vista de alumno: nueve roles tipográficos con piso de 12px, y el cyan reservado a lo que está activo o elegido | `cerca/alumno/cerca-alumno.css` |
+| ✅ | El reproductor: una sola página que dibuja cualquier sesión escrita como dato | `cerca/s/` |
+| ✅ | La semana de Nico convertida a dato | `cerca/sesiones/` |
+| ✅ | El publicador: pegar, revisar, publicar y llevarse el enlace estable, sin commit | `cerca/publicar/` |
+| ✅ | El SQL de instalación, para pegar una vez en Supabase | `cerca/sql/001-entregas.sql` |
+| ✅ | Las instrucciones de uso | `COMO_PUBLICAR.md` |
+
+Medido a 320, 390 y 768 px: **39 → 2 bordes cyan**, **25 → 10 roles de texto**,
+piso de 9,9px → 12px, todos los campos a 16px, sin scroll horizontal.
+
+Las decisiones quedaron registradas en `REGISTRO_APROBADOS.md` §14 bis, con su
+justificación y con lo que se pierde en cada una.
+
+---
+
 ## 0. Tres cosas que encontré antes de diseñar nada
 
 Las pongo primero porque cambian el encargo.

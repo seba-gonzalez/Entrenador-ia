@@ -1,0 +1,364 @@
+/* ==========================================================================
+   CERCA · Sistema de estilo de la vista de alumno
+   --------------------------------------------------------------------------
+   Este archivo es el estilo definido. No hay CSS suelto dentro de la pagina
+   de ningun alumno: si algo se ve distinto entre dos alumnos, es un error.
+
+   Dos sistemas, y cada uno responde a una pregunta.
+
+   TIPOGRAFIA — nueve roles, no quince. La landing tiene quince porque tiene
+   quince trabajos. Una pantalla de entrenamiento tiene nueve. Y tiene un piso
+   mas alto: 12px, no 9,9px. Se lee a la distancia del brazo, transpirado y
+   entre rondas, no sentado en un escritorio.
+
+   COLOR — el cyan marca LO QUE ESTA ACTIVO O ELEGIDO, no lo que esta
+   disponible. Un boton que se puede apretar es neutro; el bloque que ya
+   marcaste esta encendido. Asi la pantalla esta callada mientras se lee y
+   clara mientras se actua, y el avance de la sesion se ve solo.
+
+   Y una separacion que es la tesis del producto puesta en color:
+     cyan  = la sesion, lo que Seba propone y tu accionas.
+     azul  = tu evidencia, lo que tu aportas.
+   Prescrito y ejecutado no se parecen en pantalla porque no son lo mismo.
+   ========================================================================== */
+
+@font-face {
+  font-family: Archivo;
+  src: url('/fonts/archivo-variable-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /* --- Superficies ------------------------------------------------------ */
+  --fondo:        #020606;
+  --panel:        #06100f;
+  --panel-hondo:  #030b0b;
+  --hueco:        #101817;
+
+  /* --- Roles cromaticos -------------------------------------------------- */
+  /* Un token nombra una responsabilidad, no necesariamente un color distinto. */
+  --activo:    #10e7ef;   /* lo que esta encendido: dia en curso, bloque listo */
+  --accion:    #10e7ef;   /* la accion primaria del momento, y solo cuando lo es */
+  --foco:      #10e7ef;   /* el campo enfocado */
+  --sobre-acento: #041111; /* tinta SOBRE el acento. No significa "accion". */
+  --tuyo:      #5577ff;   /* lo que aporta el alumno: sus casilleros */
+  --tuyo-tinta:#9fb2ff;
+
+  /* --- Tinta ------------------------------------------------------------- */
+  --texto:     #f5f7f7;
+  --lectura:   #c3cece;
+  --apunte:    #93a0a0;
+
+  /* --- Estructura -------------------------------------------------------- */
+  /* Nunca cyan. Un borde que solo separa no comunica nada. */
+  --linea:     rgba(255, 255, 255, .10);
+  --linea-suave: rgba(255, 255, 255, .055);
+
+  --alerta:    #ffb8b8;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 84% 5%, rgba(0, 183, 194, .12), transparent 28%),
+    var(--fondo);
+  color: var(--texto);
+  font-family: Archivo, system-ui, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ==========================================================================
+   ROLES TIPOGRAFICOS
+   Cada uno responde a: que trabajo hace. Si no puede responderlo, sobra.
+   ========================================================================== */
+
+/* `sesion` — el titulo del dia. Es lo unico que puede gritar. */
+.r-sesion   { font-size: 26px; font-weight: 700; line-height: 1.05; letter-spacing: -.03em; margin: 0; }
+/* `portada` — el titulo de la semana, una vez, arriba de todo. */
+.r-portada  { font-size: clamp(30px, 8vw, 40px); font-weight: 700; line-height: 1.02; letter-spacing: -.04em; margin: 0; }
+/* `bloque` — A · FUERZA BASE. Ordena la sesion, no compite con ella. */
+.r-bloque   { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin: 0; }
+/* `ejercicio` — el nombre. Es lo que Nico busca cuando levanta la vista. */
+.r-ejercicio{ font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+/* `dosis` — 10–12 · 10 kg. Un dato, no un adorno: por eso no es cyan. */
+.r-dosis    { font-size: 14px; font-weight: 800; letter-spacing: 0; }
+/* `lectura` — descripciones, consejos, recorridos. Prosa, no interfaz. */
+.r-lectura  { font-size: 14px; font-weight: 400; line-height: 1.5; }
+/* `campo` — el casillero. 16px es el valor aprobado y la razon es funcional:
+   por debajo, Safari en iOS hace zoom al enfocar. Aqui eso pasa entre vueltas. */
+.r-campo    { font-size: 16px; font-weight: 800; }
+/* `etiqueta` — lo que nombra un campo o una unidad. */
+.r-etiqueta { font-size: 13px; font-weight: 400; letter-spacing: 0; }
+/* `accion` — la tinta de los botones. */
+.r-accion   { font-size: 14px; font-weight: 800; letter-spacing: .06em; }
+/* `apunte` — el piso del sistema. 12px, y no baja de ahi. */
+.r-apunte   { font-size: 12px; font-weight: 400; line-height: 1.45; }
+
+/* ==========================================================================
+   ARMAZON
+   ========================================================================== */
+
+.app { width: min(100%, 620px); margin: auto; padding: 16px 14px 112px; }
+
+.top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.marca { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .16em; font-size: 16px; }
+.isotipo {
+  width: 34px; height: 38px; background: var(--activo);
+  -webkit-mask: url('/brand/isotipo.svg') center/contain no-repeat;
+  mask: url('/brand/isotipo.svg') center/contain no-repeat;
+}
+.pastilla {
+  border: 1px solid var(--linea); border-radius: 999px; padding: 7px 11px;
+  color: var(--lectura); font-size: 12px; font-weight: 400;
+}
+
+.portada {
+  padding: 22px 19px; border: 1px solid var(--linea); border-radius: 22px;
+  background: linear-gradient(180deg, #061211, #020c0c);
+}
+.portada .kicker {
+  color: var(--activo); font-size: 12px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px;
+}
+.portada .bajada { color: var(--lectura); margin: 12px 0 0; }
+.portada .pastillas { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 15px; }
+
+/* --- Riel de dias --------------------------------------------------------
+   El dia en curso es lo unico encendido. Los otros estan disponibles, y
+   disponible no es lo mismo que activo. */
+.dias { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 7px; margin: 16px 0; }
+.dia-nav {
+  border: 1px solid var(--linea); background: var(--panel); color: var(--lectura);
+  border-radius: 12px; padding: 12px 6px; font: inherit; font-size: 14px; font-weight: 800;
+  letter-spacing: .06em; cursor: pointer;
+}
+.dia-nav[aria-selected="true"] {
+  border-color: var(--activo); color: #8cf9fb; background: rgba(16, 231, 239, .08);
+}
+
+.dia { display: none; }
+.dia.activo { display: block; }
+
+.sesion {
+  border: 1px solid var(--linea); border-radius: 20px; overflow: hidden;
+  background: linear-gradient(180deg, var(--panel), var(--panel-hondo));
+}
+.sesion-cab { padding: 17px 15px; border-bottom: 1px solid var(--linea); }
+.sesion-cab p { margin: 6px 0 0; color: var(--apunte); }
+.sesion-cuerpo { padding: 0 14px 16px; }
+
+/* ==========================================================================
+   BLOQUE
+   ========================================================================== */
+
+.bloque { border-top: 1px solid var(--linea-suave); padding: 16px 0; }
+.bloque:first-child { border-top: 0; }
+.bloque-intro { color: var(--lectura); margin: 6px 0 11px; }
+
+/* El recorrido del circuito. Es la mejor idea de la vista de Nico: nada se da
+   por obvio. Se destaca con superficie y con peso, no con color de accion. */
+.recorrido {
+  padding: 11px 12px; border: 1px solid var(--linea); border-radius: 11px;
+  background: rgba(255, 255, 255, .028); color: var(--lectura); margin-bottom: 11px;
+}
+.recorrido b, .descanso b { color: var(--texto); font-weight: 800; }
+
+.descanso {
+  margin-top: 11px; padding: 10px 11px; border: 1px solid var(--linea);
+  border-radius: 10px; background: #081514; color: var(--lectura);
+}
+
+/* --- Ejercicio ----------------------------------------------------------- */
+.ejercicio { padding: 12px 0; border-top: 1px dashed var(--linea-suave); }
+.ejercicio-cab { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+/* El codigo A1 ordena. No es accion ni seleccion: borde neutro. */
+.codigo {
+  display: inline-grid; place-items: center; min-width: 30px; height: 25px; padding: 0 8px;
+  border-radius: 7px; background: #0a1414; border: 1px solid var(--linea);
+  color: var(--lectura); font-size: 12px; font-weight: 800; letter-spacing: .04em;
+}
+.dosis { color: var(--texto); opacity: .82; }
+.descripcion { color: var(--apunte); margin-top: 6px; }
+.consejo {
+  margin-top: 8px; padding: 9px 10px; border: 1px solid var(--linea);
+  border-radius: 9px; background: rgba(255, 255, 255, .022); color: var(--lectura);
+}
+
+/* --- Cronometro de un ejercicio ------------------------------------------
+   Disponible, no activo: borde neutro, icono cyan. */
+.crono {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 9px;
+  border: 1px solid var(--linea); background: #071514; color: var(--lectura);
+  border-radius: 9px; padding: 8px 11px; font: inherit; font-size: 12px; font-weight: 800;
+  letter-spacing: .04em; cursor: pointer; min-height: 38px;
+}
+.crono i { font-style: normal; color: var(--activo); }
+
+/* ==========================================================================
+   REGISTRO — lo que aporta el alumno
+   Azul, no cyan. Es la unica zona de la pantalla donde el dato lo pone el.
+   ========================================================================== */
+
+.registro {
+  margin-top: 12px; padding: 12px; border: 1px solid rgba(85, 119, 255, .3);
+  border-radius: 12px; background: rgba(85, 119, 255, .055);
+}
+.registro-cab {
+  font-size: 12px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase;
+  color: var(--tuyo-tinta); margin-bottom: 8px;
+}
+.registro-nota { color: var(--apunte); margin-bottom: 9px; }
+.registro-fila { display: grid; grid-template-columns: 1fr 92px auto; align-items: center; gap: 10px; margin-top: 9px; }
+.registro-et { color: var(--lectura); line-height: 1.35; }
+/* Lo prescrito se muestra AL LADO del casillero, nunca DENTRO: si estuviera
+   dentro, no tocarlo se leeria como haberlo confirmado. */
+.registro-pre { display: block; margin-top: 3px; font-style: normal; font-size: 12px; color: #8fa0d8; }
+.registro-fila input {
+  min-width: 0; background: var(--hueco); color: #fff; border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 9px; padding: 11px 6px; text-align: center; font-family: inherit;
+}
+.registro-fila input::placeholder { color: #5d6a6a; font-weight: 400; }
+/* Sin flechitas: roban ancho al numero y en el telefono no existen. */
+.registro-fila input::-webkit-outer-spin-button,
+.registro-fila input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.registro-fila input { -moz-appearance: textfield; appearance: textfield; }
+.registro-fila input:focus { outline: none; border-color: var(--foco); box-shadow: 0 0 0 3px rgba(16, 231, 239, .16); }
+.registro-un { color: var(--apunte); min-width: 26px; font-size: 13px; }
+.registro-motivo { margin-top: 8px; color: var(--tuyo-tinta); }
+.registro-pie { margin-top: 11px; color: var(--apunte); }
+
+/* ==========================================================================
+   BOTONES
+   Disponible = neutro. Activo o primario del momento = encendido.
+   ========================================================================== */
+
+.btn {
+  width: 100%; min-height: 46px; border-radius: 11px; cursor: pointer;
+  border: 1px solid var(--linea); background: var(--panel); color: var(--lectura);
+  font-family: inherit; font-size: 14px; font-weight: 800; letter-spacing: .06em;
+}
+.btn:disabled { cursor: default; opacity: .55; }
+.btn-primario:not(:disabled) { border: 0; background: var(--accion); color: var(--sobre-acento); }
+
+.listo { margin-top: 14px; color: #8cf9fb; }
+.listo[aria-pressed="true"] { background: var(--activo); border-color: var(--activo); color: var(--sobre-acento); }
+.bloque.hecho { opacity: .68; }
+
+/* ==========================================================================
+   FEEDBACK
+   ========================================================================== */
+
+.feedback {
+  margin-top: 18px; padding: 17px; border: 1px solid rgba(16, 231, 239, .26);
+  border-radius: 17px;
+  background: linear-gradient(120deg, rgba(16, 231, 239, .05), rgba(85, 119, 255, .025));
+}
+.feedback h3 { margin: 0 0 6px; }
+.feedback > p { color: var(--apunte); margin: 0 0 10px; }
+.escala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 10px 0; }
+.escala button {
+  min-height: 42px; border: 1px solid var(--linea); background: #071211; color: var(--lectura);
+  border-radius: 9px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.escala button[aria-pressed="true"] { background: var(--activo); color: var(--sobre-acento); border-color: var(--activo); }
+
+textarea {
+  width: 100%; min-height: 94px; background: var(--hueco); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .14); border-radius: 10px; padding: 12px;
+  resize: vertical; outline: none; font-family: inherit; font-size: 16px; line-height: 1.5;
+}
+textarea:focus { border-color: var(--foco); }
+
+.resumen {
+  margin-top: 12px; padding: 10px 11px; border: 1px solid var(--linea);
+  border-radius: 10px; background: #050f0f; color: var(--lectura);
+}
+.consent { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; margin: 11px 0 3px; }
+.consent input { width: 21px; height: 21px; margin-top: 1px; accent-color: var(--activo); }
+.consent label { color: var(--apunte); }
+.estado { text-align: center; min-height: 19px; margin-top: 8px; color: var(--apunte); }
+.estado.mal { color: var(--alerta); }
+
+/* --- Misiones ------------------------------------------------------------ */
+.misiones { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 11px; }
+.mision {
+  border: 1px solid var(--linea); background: #071211; color: var(--lectura);
+  border-radius: 11px; padding: 12px 10px; text-align: left; font-family: inherit;
+  font-size: 13px; cursor: pointer;
+}
+.mision[aria-pressed="true"] { border-color: var(--activo); background: rgba(16, 231, 239, .08); color: #9af9fb; }
+
+.seguridad {
+  color: var(--lectura); padding: 12px; border: 1px solid var(--linea);
+  border-radius: 11px; background: #050d0d; margin-top: 14px;
+}
+
+/* ==========================================================================
+   FLOTANTES Y HOJAS
+   El cronometro es lo que se necesita en mitad de una serie: se queda con el
+   tratamiento fuerte. El chat acompana, no manda: se queda neutro.
+   ========================================================================== */
+
+.flota {
+  position: fixed; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 20;
+  width: 56px; height: 56px; border-radius: 18px; font-size: 20px; cursor: pointer;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .5);
+}
+#fabCrono { left: 16px; border: 0; background: var(--accion); color: var(--sobre-acento); }
+#fabChat  { right: 16px; border: 1px solid var(--linea); background: #0a1413; color: var(--lectura); }
+
+.hoja { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, .72); display: none; align-items: flex-end; }
+.hoja.abierta { display: flex; }
+.hoja-panel {
+  width: min(100%, 620px); max-height: 84vh; overflow: auto; margin: auto 0 0;
+  background: var(--panel-hondo); border: 1px solid var(--linea); border-bottom: 0;
+  border-radius: 24px 24px 0 0; padding: 15px 15px calc(18px + env(safe-area-inset-bottom));
+}
+.hoja-cab {
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: -15px; background: var(--panel-hondo); padding: 6px 0 11px; z-index: 2;
+}
+.cerrar { width: 42px; height: 42px; border: 1px solid var(--linea); border-radius: 10px; background: #081313; color: #fff; font-size: 16px; cursor: pointer; }
+
+.crono-tiempo { text-align: center; font-size: 52px; font-weight: 900; margin: 16px 0 4px; font-variant-numeric: tabular-nums; }
+.crono-rotulo { text-align: center; color: var(--activo); font-size: 12px; font-weight: 800; letter-spacing: .06em; min-height: 20px; line-height: 1.4; }
+.presets, .mandos { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 13px; }
+.mandos { grid-template-columns: repeat(3, 1fr); }
+.presets button, .mandos button {
+  min-height: 44px; border: 1px solid var(--linea); border-radius: 9px; background: #071211;
+  color: var(--lectura); font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer;
+}
+.mandos .va { background: var(--accion); color: var(--sobre-acento); border-color: var(--accion); }
+
+.chatlog { display: flex; flex-direction: column; gap: 9px; min-height: 200px; max-height: 44vh; overflow: auto; padding: 8px 0; }
+.msg { max-width: 87%; padding: 11px 13px; border-radius: 15px; font-size: 14px; line-height: 1.45; }
+/* Identidad de hablante: uno de los usos que el registro reserva al cyan. */
+.msg.cerca { align-self: flex-start; background: #061c1b; border: 1px solid rgba(16, 231, 239, .22); }
+.msg.tuyo  { align-self: flex-end; background: #1ec0c3; color: #021010; }
+.atajos { display: flex; gap: 7px; overflow: auto; padding: 9px 0; }
+.atajos button {
+  white-space: nowrap; border: 1px solid var(--linea); background: #071211; color: var(--lectura);
+  border-radius: 999px; padding: 9px 12px; font-family: inherit; font-size: 12px; cursor: pointer;
+}
+.chat-fila { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.chat-fila input {
+  min-width: 0; background: var(--hueco); color: #fff; border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 10px; padding: 12px; font-family: inherit; font-size: 16px;
+}
+.chat-fila input:focus { outline: none; border-color: var(--foco); }
+.chat-fila button { border: 0; border-radius: 10px; background: var(--accion); color: var(--sobre-acento); font-family: inherit; font-size: 13px; font-weight: 800; padding: 0 16px; cursor: pointer; }
+.video {
+  display: inline-block; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--linea);
+  border-radius: 9px; color: #9af9fb; text-decoration: none; font-size: 12px; font-weight: 800;
+}
+
+/* --- Pantalla de fallo ---------------------------------------------------- */
+.fallo { padding: 24px 18px; border: 1px solid var(--linea); border-radius: 16px; background: var(--panel); margin-top: 24px; }
+.fallo h1 { font-size: 22px; margin: 0 0 10px; }
+.fallo p { color: var(--lectura); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }

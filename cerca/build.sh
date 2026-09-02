@@ -22,6 +22,11 @@ SALIDA="$ORIGEN/dist"
 
 # Lo que la landing necesita para funcionar, y nada más.
 # Verificado siguiendo cada referencia de index.html, styles.css y app.js.
+#
+# Sobre sesiones/: es un PUENTE, no el destino. Una sesión servida como archivo
+# obliga a un commit para publicarla, que es justo lo que hay que evitar. En
+# cuanto la sesión de Nico esté publicada desde cerca/publicar/, esa línea se
+# borra de aquí y el archivo se va con ella. Las sesiones viven en Supabase.
 PUBLICOS="
 index.html
 styles.css
@@ -36,6 +41,10 @@ perfil/perfil.js
 pancha/index.html
 pali/index.html
 nico/index.html
+alumno/cerca-alumno.css
+s/index.html
+s/reproductor.js
+sesiones/kecJVd0cI2VQVobjAof6xg.json
 "
 
 # Lo que nunca puede salir, aunque alguien lo añada a la lista de arriba por
@@ -45,6 +54,8 @@ REGISTRO_APROBADOS.md
 MATRIZ_DE_DATOS.md
 PREGUNTAS_ABOGADO_PRIVACIDAD.md
 PROPUESTA_OPERACIONAL.md
+publicar
+sql
 admin.html
 type-lab.html
 type-lab.css

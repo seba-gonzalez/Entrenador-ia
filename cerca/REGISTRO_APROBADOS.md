@@ -630,6 +630,141 @@ Nada de esta sección está aprobado. Se registra para que no se dé por decidid
 ### PENDIENTE — Activos de marca
 - El **logo maestro (Ulises + dragón)** no está en la landing; hoy hay una "C". Se necesita el activo aprobado del 2026-08-25. No reinterpretar de memoria (§1).
 
+## 14 bis. Vista de alumno — sistema propio (2026-09-02)
+
+Aprobado por dirección el 2026-09-02 con la instrucción explícita de concretar
+y con luz verde para modificar lo existente justificándolo. Lo que sigue es la
+decisión tomada, no una exploración.
+
+### APROBADO — La vista de alumno es una sola página que lee un dato
+
+Deja de haber una página por alumno. Existe **un reproductor**, `cerca/s/`, que
+recibe una sesión escrita como dato y la dibuja. El alumno número diez es un
+dato más, no una página más.
+
+**Por qué:** con tres alumnos ya había tres formas distintas de nombrar y
+guardar lo mismo, y ninguna pantalla del entrenador podía leerlas a todas.
+
+**Qué NO hace el reproductor, a propósito:** no decide dónde va un casillero de
+registro, no deduce lo que se registra a partir de lo que se muestra, no rellena
+un casillero con lo prescrito y no interpreta lo que el alumno anota. Los dos
+lados —lo que se muestra y lo que se registra— los escribe el entrenador, y el
+código no deriva uno del otro.
+
+### APROBADO — Nueve roles tipográficos, con piso de 12px
+
+La landing tiene quince roles porque tiene quince trabajos. La pantalla de
+entrenamiento tiene nueve: `portada` · `sesion` · `bloque` · `ejercicio` ·
+`dosis` · `lectura` · `campo` · `etiqueta` · `accion` · `apunte`.
+
+**El piso del sistema es 12px y no baja de ahí.** Antes de esta decisión el
+texto más pequeño de la vista de Nico era **9,9px, repetido quince veces**.
+
+**Por qué el piso es más alto que en la landing:** se lee a la distancia del
+brazo, transpirado y entre rondas, no sentado en un escritorio. El contexto de
+uso es distinto, así que corresponde una variante del sistema, no una copia.
+
+**El rol `campo` se mantiene en 16px**, con la misma razón funcional ya
+registrada en §1: por debajo de ese tamaño Safari en iOS hace zoom al enfocar.
+Aquí protege más que en la landing, porque ese zoom ocurre en mitad de un
+circuito. Medido: 320, 390 y 768 px, todos los campos a 16px.
+
+### APROBADO — El cyan marca lo que está activo o elegido, no lo que está disponible
+
+Es la Fase 4B (§1) aplicada a la vista de alumno, que nunca la había recibido.
+
+Un botón que se puede apretar es **neutro**. El bloque que ya marcaste, el día
+en curso y la opción que elegiste están **encendidos**. Así la pantalla está
+callada mientras se lee y clara mientras se actúa, y el avance de la sesión se
+ve solo, sin barra de progreso ni ningún elemento nuevo.
+
+**Estado medido a 320, 390 y 768 px:**
+
+| | bordes cyan | roles de texto | piso |
+|---|---|---|---|
+| Vista de Nico (antes) | **39** | 25 | 9,9px |
+| Reproductor (ahora) | **2** | 10 | 12px |
+
+Los dos que quedan son el día en curso y la tarjeta de feedback. Igual que Pali,
+que era la más disciplinada de las tres vistas.
+
+Como en la Fase 4B, **el recuento es la consecuencia de aplicar el criterio, no
+la meta.** De los 39 anteriores, 26 eran estructura pura: 18 chips de código de
+ejercicio, 4 recuadros de recorrido y 4 de consejo. Ninguno era acción, estado
+ni selección.
+
+### APROBADO — El azul nombra lo que aporta el alumno
+
+Nuevo rol cromático, `--tuyo`, en el azul `#5577ff` que el registro ya conserva
+para transición y profundidad (§1).
+
+| | color | responsabilidad |
+|---|---|---|
+| `--activo` / `--accion` / `--foco` | cyan | la sesión: lo que Seba propone y tú accionas |
+| `--tuyo` | azul | tu evidencia: lo que tú aportas |
+
+**Por qué merece existir:** *prescrito ≠ ejecutado* es la idea que fundó el
+proyecto, y hasta ahora solo vivía en la estructura de los datos. Esta es la
+primera vez que la persona la ve. La distinción entre «esto te lo mandó tu
+entrenador» y «esto lo pones tú» es la más importante de la pantalla, y por eso
+tiene un token propio.
+
+**Precedente, no invento:** en la vista de Pali, uno de los dos únicos bordes
+destacados era el selector de kettlebell, es decir, el lugar donde el alumno
+elige.
+
+### APROBADO — Un cuarto estado de la evidencia, con nombre propio
+
+`desconocido` · `confirmado` · `modificado`, más `registrado_sin_prescripcion`.
+
+El cuarto apareció con la polea de Nico: el alumno anotó un número, pero nunca
+hubo un número que confirmar o modificar. Ese dato no cumple ni incumple nada:
+**es el que crea la referencia.** Meterlo en `confirmado` habría sido mentir.
+
+Es la regla de §12 aplicada: cuando un valor del sistema y una unidad de
+significado entran en conflicto, gana el significado y la excepción se registra
+con su razón.
+
+### APROBADO — El cronómetro manda sobre el chat en la jerarquía visual
+
+El botón flotante del cronómetro lleva el tratamiento fuerte; el del chat queda
+neutro. Antes el chat era el acento más fuerte de toda la pantalla.
+
+**Por qué:** el cronómetro es lo que se necesita en mitad de una serie. El chat
+acompaña; no manda. La acción gana porque alrededor hay menos ruido.
+
+### APROBADO — Publicar es un acto, no un commit
+
+`cerca/publicar/` es la pantalla interna donde se pega una sesión, se revisa y
+se publica, y devuelve un enlace estable. Es interna: `build.sh` la bloquea.
+
+**Reglas de la entrega:**
+- El enlace lleva un token al azar de 22 caracteres. No dice el nombre de nadie.
+- Una entrega publicada **no se edita nunca**. Publicar de nuevo crea una entrega
+  nueva y **jubila** la anterior. La anterior no se borra: lo que el alumno ya
+  entrenó apunta a ella por su huella, y ese blanco no se puede mover después.
+- La tabla no tiene permiso de lectura directa. Se lee por función y solo con el
+  token: **sin token no hay forma de listar las entregas de nadie.**
+- Lo que el alumno escribe sigue siendo de solo escritura, en sus tablas de
+  siempre. La entrega es lo único que se lee, y no contiene nada que él haya
+  escrito.
+
+**Lo que se pierde y hay que decir:** con las sesiones en archivos, el historial
+de Git impedía editar una publicación sin dejar rastro. En Supabase eso depende
+de la configuración. La compensación es que el revisor de invariantes se movió
+al momento de publicar, que es cuando todavía se puede arreglar.
+
+### EN PRUEBA — Que el casillero recuerde
+
+Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo
+lee la página: el número llega dentro de lo prescrito, porque el entrenador lo
+puso al publicar. Recordar sigue siendo una decisión suya, no un eco automático.
+
+**No aprobado todavía por un riesgo real:** un número a la vista ancla. Probar
+primero solo en cargas, y mirar si los valores se pegan al del recuerdo.
+
+---
+
 ## 15. Regla de gobernanza de este archivo
 
 - Solo una decisión explícitamente aprobada entra como **APROBADO**.
