@@ -362,11 +362,15 @@ Lo mínimo que funciona:
 matriz de datos. Construir un clasificador de molestias es construir un sistema
 que trata información de salud. **No lo haría antes de que el abogado responda.**
 
-Y hay algo que sí se puede hacer ya, sin tocar nada: Nico tiene historia de
-molestias de espalda. Eso es un dato de salud que **hoy no está escrito en ninguna
-parte del sistema**, y está bien que no lo esté mientras el bloqueo siga vigente.
-Pero significa que la única red que hay eres tú leyendo. Vale la pena que sepas
-que esa es la red.
+Y una cosa que conviene tener presente mientras tanto. El encargo menciona, sobre
+uno de los alumnos, un antecedente corporal que **no está escrito en ninguna parte
+del sistema**, y está bien que no lo esté mientras el bloqueo siga vigente: este
+repositorio es el público, y los antecedentes de personas reales no van aquí
+(decisión D-002).
+
+Pero significa que, hoy, la única red que hay eres tú leyendo lo que escriben.
+El sistema no la tiene. Vale la pena que sepas que esa es la red, porque de aquí
+a que exista la marca de prioridad no va a haber otra.
 
 ### 3.6 Privacidad
 
