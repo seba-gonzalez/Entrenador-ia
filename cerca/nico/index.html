@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#020606"><title>CERCA · Nico</title><style>
 @font-face{font-family:Archivo;src:url('/fonts/archivo-variable-latin.woff2') format('woff2');font-weight:100 900;font-display:swap}:root{--bg:#020606;--panel:#06100f;--text:#f5f7f7;--muted:#9aa7a7;--cyan:#10e7ef;--line:rgba(255,255,255,.09);--blue:#5577ff}*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at 84% 6%,rgba(0,183,194,.12),transparent 28%),var(--bg);color:var(--text);font-family:Archivo,Arial,sans-serif}.app{width:min(100%,620px);margin:auto;padding:16px 14px 110px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.08em}.logo{width:34px;height:38px;background:var(--cyan);-webkit-mask:url('/brand/isotipo.svg') center/contain no-repeat;mask:url('/brand/isotipo.svg') center/contain no-repeat}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#b9c6c6;font-size:.69rem}.hero{padding:22px 19px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#061211,#020c0c)}.kick{color:var(--cyan);font-size:.69rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}h1{margin:0;font-size:clamp(2rem,8vw,2.7rem);line-height:1.02;letter-spacing:-.045em}.lead{color:#aab5b5;font-size:.87rem;line-height:1.55;margin:11px 0 0}.meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.days{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:15px 0}.daynav{border:1px solid var(--line);background:#06100f;color:#bcc7c7;border-radius:12px;padding:11px 6px;font-weight:900}.daynav.active{border-color:var(--cyan);color:#8cf9fb;background:rgba(16,231,239,.075)}.day{display:none}.day.active{display:block}.session{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#06100f,#030b0b);overflow:hidden}.sessionhead{padding:16px 15px;border-bottom:1px solid var(--line)}.sessionhead h2{margin:0;font-size:1.2rem}.sessionhead p{margin:5px 0 0;color:var(--muted);font-size:.74rem;line-height:1.45}.body{padding:0 14px 16px}.block{border-top:1px solid rgba(255,255,255,.06);padding:15px 0}.block:first-child{border-top:0}.block h3{font-size:.77rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 5px}.blockintro{font-size:.72rem;color:#b9c5c5;line-height:1.48;margin:0 0 10px}.route{padding:10px 11px;border:1px solid rgba(16,231,239,.18);border-radius:11px;background:rgba(16,231,239,.035);font-size:.69rem;line-height:1.5;color:#c9d5d5;margin-bottom:10px}.route strong,.rest strong{color:var(--cyan)}.exercise{padding:10px 0;border-top:1px dashed rgba(255,255,255,.055)}.exercise b{font-size:.84rem}.code{display:inline-grid;place-items:center;min-width:29px;height:24px;padding:0 7px;margin-right:7px;border-radius:7px;background:#071211;border:1px solid rgba(16,231,239,.2);color:var(--cyan);font-size:.66rem;font-weight:900}.dose{display:inline-block;margin-left:5px;color:var(--cyan);font-size:.72rem;font-weight:800}.desc{color:var(--muted);font-size:.72rem;line-height:1.46;margin-top:5px}.tip{margin-top:7px;padding:8px 9px;border:1px solid rgba(16,231,239,.13);border-radius:9px;background:rgba(16,231,239,.03);font-size:.69rem;color:#cad4d4;line-height:1.45}.rest{margin-top:10px;padding:9px 10px;border-radius:10px;background:#081514;border:1px solid var(--line);font-size:.7rem;color:#b9c5c5;line-height:1.45}.timer-mini{margin-left:7px;border:1px solid rgba(16,231,239,.25);background:#071514;color:#8cf9fb;border-radius:8px;padding:5px 7px;font-size:.62rem;font-weight:900}.feedback{margin-top:16px;padding:16px;border:1px solid rgba(16,231,239,.25);border-radius:17px;background:linear-gradient(120deg,rgba(16,231,239,.05),rgba(85,119,255,.025))}.feedback h3{margin:0 0 5px}.feedback p{font-size:.72rem;color:var(--muted);line-height:1.45}.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:9px 0}.scores button{min-height:38px;border:1px solid var(--line);background:#071211;color:#ddd;border-radius:8px}.scores button.on{background:var(--cyan);color:#031111;border-color:var(--cyan)}textarea{width:100%;min-height:92px;background:#101817;color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:11px;resize:vertical;outline:none}.save{width:100%;min-height:47px;border:0;border-radius:11px;background:var(--cyan);color:#041111;font-weight:900;margin-top:9px}.save:disabled{opacity:.45}.status{font-size:.67rem;color:#9eaaaa;text-align:center;min-height:18px;margin-top:7px}.missions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.mission{border:1px solid var(--line);background:#071211;color:#d6dddd;border-radius:11px;padding:11px 9px;text-align:left;font-size:.72rem}.mission.on{border-color:var(--cyan);background:rgba(16,231,239,.075);color:#9af9fb}.safety{font-size:.68rem;line-height:1.45;color:#aab4b4;padding:11px;border:1px solid var(--line);border-radius:11px;background:#050d0d;margin-top:13px}.float{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;width:56px;height:56px;border-radius:18px;font-weight:900;box-shadow:0 12px 34px rgba(0,0,0,.45)}#timerFab{left:16px;border:1px solid rgba(16,231,239,.35);background:#071514;color:var(--cyan);font-size:1.1rem}#chatFab{right:16px;border:0;background:var(--cyan);color:#031111;font-size:1.25rem}.sheet{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.7);display:none;align-items:flex-end}.sheet.open{display:flex}.panel{width:min(100%,620px);max-height:82vh;overflow:auto;margin:auto 0 0;background:#030b0b;border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;padding:15px 15px calc(18px + env(safe-area-inset-bottom))}.sheethead{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-15px;background:#030b0b;padding:5px 0 10px;z-index:2}.close{width:40px;height:40px;border:1px solid rgba(16,231,239,.3);border-radius:10px;background:#081313;color:#fff}.timer-display{text-align:center;font-size:3.1rem;font-weight:900;margin:15px 0 4px}.timer-label{text-align:center;color:var(--cyan);font-size:.7rem;font-weight:900;min-height:19px}.presets,.controls{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}.controls{grid-template-columns:repeat(3,1fr)}.presets button,.controls button{min-height:41px;border:1px solid var(--line);border-radius:9px;background:#071211;color:#d5dddd;font-weight:800}.controls .go{background:var(--cyan);color:#031111}.chatlog{display:flex;flex-direction:column;gap:9px;min-height:210px;max-height:45vh;overflow:auto;padding:8px 0}.msg{max-width:87%;padding:10px 12px;border-radius:15px;font-size:.75rem;line-height:1.45}.msg.bot{align-self:flex-start;background:#061c1b;border:1px solid rgba(16,231,239,.2)}.msg.user{align-self:flex-end;background:#16aeb6;color:#021010}.quick{display:flex;gap:7px;overflow:auto;padding:8px 0}.quick button{white-space:nowrap;border:1px solid var(--line);background:#071211;color:#bcc7c7;border-radius:999px;padding:8px 10px;font-size:.66rem}.chatrow{display:grid;grid-template-columns:1fr auto;gap:7px}.chatrow input{min-width:0;background:#101817;color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:11px}.chatrow button{border:0;border-radius:10px;background:var(--cyan);color:#031111;font-weight:900;padding:0 14px}.video{display:inline-block;margin-top:7px;padding:7px 9px;border:1px solid rgba(16,231,239,.28);border-radius:9px;color:#9af9fb;text-decoration:none;font-size:.68rem;font-weight:800}
+textarea,.chatrow input{font-family:inherit}.done-btn{width:100%;margin-top:13px;min-height:44px;border:1px solid rgba(16,231,239,.28);border-radius:11px;background:#071211;color:#8cf9fb;font-weight:900;font-size:.7rem;letter-spacing:.07em}.done-btn.active{background:var(--cyan);color:#031111;border-color:var(--cyan)}.block.block-done{opacity:.7}.registro{margin-top:11px;padding:11px 11px 10px;border:1px solid rgba(85,119,255,.28);border-radius:12px;background:rgba(85,119,255,.055)}.registro-head{font-size:.62rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#9fb2ff;margin-bottom:7px}.registro-nota{font-size:.67rem;color:#a9b4b4;line-height:1.45;margin-bottom:8px}.registro-fila{display:grid;grid-template-columns:1fr 84px auto;align-items:center;gap:9px;margin-top:8px}.registro-et{font-size:.71rem;color:#d3dcdc;line-height:1.35}.registro-pre{display:block;margin-top:2px;font-style:normal;font-size:.62rem;color:#8fa0d8}.registro-fila input{min-width:0;background:#101817;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:10px 6px;font:inherit;font-size:.85rem;font-weight:800;text-align:center}.registro-fila input::placeholder{color:#5d6a6a;font-weight:400}.registro-un{font-size:.65rem;color:var(--muted);min-width:24px}.registro-motivo{margin-top:8px;font-size:.66rem;line-height:1.45;color:#9fb2ff}.registro-pie{margin-top:10px;font-size:.63rem;line-height:1.45;color:#8b9797}.resumen{margin-top:12px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#050f0f;font-size:.67rem;color:#b6c2c2;line-height:1.45}.consent{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:10px 0 2px}.consent input{width:20px;height:20px;margin-top:1px;accent-color:var(--cyan)}.consent label{font-size:.67rem;line-height:1.45;color:#aeb9b9}
 </style></head><body><main class="app"><header class="top"><div class="brand"><span class="logo"></span><span>CERCA</span></div><span class="pill">Nico</span></header><section class="hero"><div class="kick">Volver a entrenar</div><h1>Partamos simple.<br>Pero partamos bien.</h1><p class="lead">Dos entrenamientos de máximo una hora y una misión de movimiento. Esta es tu semana vigente: si algo cambia con tu feedback, la siguiente versión también puede cambiar.</p><div class="meta"><span class="pill">Día 1</span><span class="pill">Día 2</span><span class="pill">Día 3 · misión</span></div></section><nav class="days"><button class="daynav active" data-day="1">DÍA 1</button><button class="daynav" data-day="2">DÍA 2</button><button class="daynav" data-day="3">DÍA 3</button></nav>
 <section class="day active" data-panel="1"><div class="session"><div class="sessionhead"><h2>Día 1 · Fuerza base</h2><p>Máximo 60 minutos. Volver a moverte bien, recuperar fuerza y terminar con sensación de que podrías haber hecho un poco más.</p></div><div class="body">
 <div class="block"><h3>A · Movilidad + activación</h3><p class="blockintro">Circuito continuo durante 8–10 minutos.</p><div class="route"><strong>Cómo hacerlo:</strong> A1 → A2 → A3 → A4 → A5 sin descanso entre ejercicios. Al terminar A5, <strong>descansa 30 s</strong> y vuelve a A1. Repite durante 8–10 min.</div><div class="exercise"><span class="code">A1</span><b>Perro-gato</b><span class="dose">10 reps</span><div class="desc">En cuatro apoyos: redondea suavemente la espalda y luego llévala hacia la posición contraria.</div></div><div class="exercise"><span class="code">A2</span><b>Spiderman</b><span class="dose">6 por lado</span><div class="desc">Desde plancha, lleva un pie por fuera de la mano del mismo lado y carga suavemente la cadera hacia adelante.</div></div><div class="exercise"><span class="code">A3</span><b>Rotación torácica</b><span class="dose">8 por lado</span><div class="desc">En cuatro apoyos, una mano detrás de la cabeza. Gira el pecho llevando el codo hacia arriba y vuelve.</div></div><div class="exercise"><span class="code">A4</span><b>Elevación de cadera</b><span class="dose">10 reps</span><div class="desc">Acostado boca arriba, pies apoyados. Eleva la cadera y aprieta glúteos arriba.</div></div><div class="exercise"><span class="code">A5</span><b>Plancha frontal</b><span class="dose">20 s</span><button class="timer-mini" data-timer="20">⏱ 20 s</button><div class="desc">Guatita firme, glúteos apretados y cuerpo alineado.</div></div><div class="rest"><strong>Descanso:</strong> 30 s solo al terminar A5.</div></div>
@@ -22,9 +23,740 @@
 <button class="float" id="timerFab">⏱</button><button class="float" id="chatFab">✦</button><div class="sheet" id="timerSheet"><div class="panel"><div class="sheethead"><strong>Timer CERCA</strong><button class="close" data-close="timerSheet">✕</button></div><div class="timer-display" id="timerDisplay">00:30</div><div class="timer-label" id="timerLabel">PAUSA</div><div class="presets"><button data-preset="20">20 s</button><button data-preset="30">30 s</button><button data-preset="45">45 s</button><button data-preset="60">1:00</button><button data-preset="90">1:30</button></div><div class="controls"><button id="timerReset">REINICIAR</button><button id="timerPause">PAUSA</button><button class="go" id="timerStart">INICIAR</button></div></div></div>
 <div class="sheet" id="chatSheet"><div class="panel"><div class="sheethead"><strong>Pregúntale a CERCA</strong><button class="close" data-close="chatSheet">✕</button></div><div class="chatlog" id="chatLog"><div class="msg bot">Hola 👋 Estoy aprendiendo. Puedo ayudarte con algunas cosas simples de esta rutina. Si tienes una duda o te pasa algo mientras entrenas, escríbelo acá. Aunque todavía no sepa responderte, lo guardo en tu bitácora para que Seba lo revise.</div></div><div class="status" id="bitStatus">Tus mensajes quedan registrados como bitácora de esta sesión.</div><div class="quick"><button data-q="¿Cómo hago este circuito?">¿Cómo hago el circuito?</button><button data-q="¿Cuánto descanso?">¿Cuánto descanso?</button><button data-q="¿Qué significa esfuerzo del 1 al 10?">Escala 1–10</button></div><div class="chatrow"><input id="chatInput" maxlength="300" placeholder="Escribe tu duda…"><button id="chatSend">ENVIAR</button></div></div></div>
 <script>
-const SB='https://lggygnieziilvquvttby.supabase.co',KEY='sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC',SID='nico-plan-v1-prototype',VER='v0.5',SRC='vista_alumno_nico_v1',HASH='proto:nico-v1-2026-09-01';const H={'apikey':KEY,'Authorization':`Bearer ${KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'};const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-$$('.daynav').forEach(b=>b.onclick=()=>{$$('.daynav').forEach(x=>x.classList.toggle('active',x===b));$$('.day').forEach(x=>x.classList.toggle('active',x.dataset.panel===b.dataset.day));scrollTo({top:0,behavior:'smooth'})});$$('.mission').forEach(b=>b.onclick=()=>{$$('.mission').forEach(x=>x.classList.remove('on'));b.classList.add('on');localStorage.setItem('nico_mission',b.dataset.mission)});const sm=localStorage.getItem('nico_mission');if(sm)$(`[data-mission="${sm}"]`)?.classList.add('on');
-$$('.feedback').forEach(box=>{const scores=box.querySelector('.scores');for(let i=1;i<=10;i++){const b=document.createElement('button');b.textContent=i;b.dataset.score=i;scores.appendChild(b)}let score=null;const save=box.querySelector('.save');scores.querySelectorAll('button').forEach(b=>b.onclick=()=>{score=+b.dataset.score;scores.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));save.disabled=false});save.onclick=async()=>{const day=box.dataset.fb,note=box.querySelector('textarea').value.trim(),mission=day==='3'?localStorage.getItem('nico_mission'):null,comment=[`Día ${day}`,mission?`Misión: ${mission}`:null,note||null].filter(Boolean).join(' · ');save.disabled=true;save.textContent='ENVIANDO…';try{const r=await fetch(`${SB}/rest/v1/cerca_workout_feedback`,{method:'POST',headers:H,body:JSON.stringify({student_slug:'nico',session_id:SID,completion:'si',effort:score,comment,blocks_completed:0,source:SRC,client_version:VER,audio_path:null,execution_submission_id:null,snapshot_hash:HASH})});if(!r.ok)throw Error();box.querySelector('.status').textContent=`Feedback del Día ${day} enviado a Seba ✓`;save.textContent='ENVIADO ✓'}catch(e){box.querySelector('.status').textContent='No se pudo enviar ahora. Intenta de nuevo.';save.disabled=false;save.textContent=`ENVIAR FEEDBACK DÍA ${day}`}}});
-const timerSheet=$('#timerSheet'),disp=$('#timerDisplay'),lab=$('#timerLabel');let remain=30,tick=null,running=false,emom=null,em=1;const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;function render(){disp.textContent=fmt(remain)}function beep(){try{const c=new(AudioContext||webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);g.gain.value=.1;o.start();o.stop(c.currentTime+.12)}catch(e){}}function stop(){clearInterval(tick);tick=null;running=false;$('#timerStart').textContent='INICIAR'}function simple(s,l='PAUSA'){stop();emom=null;remain=s;lab.textContent=l;render();timerSheet.classList.add('open')}function emomStart(){stop();emom=6;em=1;remain=60;lab.textContent='MIN 3 · JUMPING JACKS · 20 s + 40 s DESCANSO';render();timerSheet.classList.add('open')}function run(){if(running)return;running=true;$('#timerStart').textContent='CORRIENDO';const start=Date.now(),initial=remain;tick=setInterval(()=>{remain=Math.max(0,initial-Math.floor((Date.now()-start)/1000));render();if(remain<=0){stop();beep();if(emom&&em<emom){em++;remain=60;const m=em+2;lab.textContent=m%2===0?`MIN ${m} · BICI · 30 s MEDIA-ALTA + 30 s SUAVE`:`MIN ${m} · JUMPING JACKS · 20 s + 40 s DESCANSO`;setTimeout(run,250)}else lab.textContent='LISTO ✓'}},250)}$('#timerFab').onclick=()=>timerSheet.classList.add('open');$$('[data-timer]').forEach(b=>b.onclick=()=>simple(+b.dataset.timer,'EJERCICIO'));$$('[data-emom]').forEach(b=>b.onclick=emomStart);$$('[data-preset]').forEach(b=>b.onclick=()=>simple(+b.dataset.preset));$('#timerStart').onclick=run;$('#timerPause').onclick=stop;$('#timerReset').onclick=()=>{stop();if(emom){em=1;remain=60;lab.textContent='MIN 3 · JUMPING JACKS · 20 s + 40 s DESCANSO'}else{remain=30;lab.textContent='PAUSA'}render()};render();
-const chatSheet=$('#chatSheet'),log=$('#chatLog'),input=$('#chatInput');$('#chatFab').onclick=()=>chatSheet.classList.add('open');$$('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).classList.remove('open'));$$('.sheet').forEach(s=>s.addEventListener('click',e=>{if(e.target===s)s.classList.remove('open')}));function norm(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}const vids=[['perro gato','cat cow exercise'],['spiderman','spiderman mobility exercise'],['rotacion toracica','quadruped thoracic rotation exercise'],['elevacion de cadera','glute bridge exercise'],['plancha','plank exercise'],['goblet','goblet squat tutorial'],['jalon','lat pulldown tutorial'],['flexion','knee push up tutorial'],['floor press','dumbbell floor press tutorial'],['bird dog','bird dog exercise'],['remo','one arm dumbbell row tutorial'],['press','kneeling dumbbell shoulder press'],['estocada','reverse lunge tutorial'],['dead bug','dead bug exercise'],['jumping','jumping jack exercise']];function video(q){const n=norm(q);for(const [k,v] of vids)if(n.includes(k))return`https://www.youtube.com/results?search_query=${encodeURIComponent(v)}`;return null}function answer(q){const s=norm(q);if(s.includes('video')||s.includes('youtube'))return'Dime el nombre del ejercicio en el mismo mensaje y te mando a buscarlo en YouTube.';if(s.includes('circuito')||s.includes('vuelta')||s.includes('ronda'))return'Haz los ejercicios en el orden indicado, sin descanso entre ellos. El descanso aparece al final de la ronda; después vuelves al primero.';if(s.includes('descanso')||s.includes('pausa'))return'Cada bloque dice exactamente dónde descansar. También puedes usar el botón ⏱ sin salir de CERCA.';if(s.includes('esfuerzo')||s.includes('1 al 10'))return'1 = muy fácil; 10 = extremadamente difícil, casi no podías hacer nada más. No hay una respuesta correcta.';if(s.includes('dolor')||s.includes('molest'))return'No fuerces ese movimiento. Detén el ejercicio y deja anotado qué pasó para que Seba lo revise.';return'Tu mensaje quedó anotado. Si es una duda que todavía no sé responder bien, Seba la podrá revisar.'}function msg(t,w){const d=document.createElement('div');d.className='msg '+w;d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight;return d}async function saveBit(q){$('#bitStatus').textContent='Guardando…';try{const day=$('.daynav.active')?.dataset.day||'1',r=await fetch(`${SB}/rest/v1/cerca_session_questions`,{method:'POST',headers:H,body:JSON.stringify({session_id:SID,student_slug:'nico',block_id:`day_${day}`,question_text:q,input_mode:'text',audio_path:null,client_version:VER,source:SRC,entry_kind:q.includes('?')?'question':'note'})});if(!r.ok)throw Error();$('#bitStatus').textContent='Guardado para Seba ✓'}catch(e){$('#bitStatus').textContent='No se pudo sincronizar; copia tu nota si es importante.'}}function send(q){q=(q||input.value).trim();if(!q)return;msg(q,'user');input.value='';saveBit(q);setTimeout(()=>{const d=msg(answer(q),'bot'),v=video(q);if(v&&(norm(q).includes('video')||norm(q).includes('youtube'))){const a=document.createElement('a');a.className='video';a.href=v;a.target='_blank';a.rel='noopener';a.textContent='▶ BUSCAR EN YOUTUBE';d.appendChild(document.createElement('br'));d.appendChild(a)}},120)}$('#chatSend').onclick=()=>send();input.onkeydown=e=>{if(e.key==='Enter')send()};$$('[data-q]').forEach(b=>b.onclick=()=>send(b.dataset.q));
+/* ==========================================================================
+   CERCA · Vista de alumno · Nico
+   --------------------------------------------------------------------------
+   Lo que esta pantalla tiene que sostener, y por que:
+
+   1. PRESCRITO != EJECUTADO. Lo que Seba mando es una hipotesis y vive en
+      PRESCRITO, congelado. Lo que Nico registro es evidencia y viaja aparte,
+      a cerca_session_executions. Ninguno pisa al otro.
+
+   2. EL SILENCIO NO ES CONFIRMACION. Los casilleros nacen vacios, nunca
+      prellenados con lo prescrito. Un casillero en blanco se guarda como
+      "desconocido", no como "hizo lo que decia el papel".
+
+   3. UN DATO SE CAPTURA SI PUEDE CAMBIAR UNA DECISION FUTURA. Donde el peso
+      es fijo (las dos mancuernas de 10 kg son todo el equipamiento) no se
+      pregunta nada. Donde Nico tuvo que elegir el numero -la polea, un rango
+      de repeticiones- ahi si.
+
+   4. CADA EJECUCION SE PUEDE DISTINGUIR. session_id dice QUE sesion;
+      submission_id dice CUAL DE LAS VECES que la hizo.
+   ========================================================================== */
+
+const SUPABASE_URL = 'https://lggygnieziilvquvttby.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC';
+const VERSION_CLIENTE = 'v0.6';
+const FUENTE = 'vista_alumno_nico_v1';
+const ALUMNO = 'nico';
+
+const CABECERAS = {
+  apikey: SUPABASE_KEY,
+  Authorization: `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+  Prefer: 'return=minimal'
+};
+
+/* --------------------------------------------------------------------------
+   LO PRESCRITO — la foto congelada de lo que Seba mando el 2026-09-01.
+   --------------------------------------------------------------------------
+   Esto no se edita para "corregir" una sesion que Nico ya entreno. Si algo
+   esta mal, se arregla en la sesion siguiente: reescribir esto haria que su
+   historial dijera algo que no ocurrio.
+
+   Cada campo declara si el numero venia prescrito o no. `prescrito: false`
+   NO significa "cero" ni "cualquiera": significa que todavia no existe una
+   referencia y que la referencia va a nacer de lo que Nico registre.
+   -------------------------------------------------------------------------- */
+const PRESCRITO = {
+  plan: 'nico-v1',
+  publicado: '2026-09-01',
+  dias: {
+    '1': {
+      sesion_id: 'nico-dia1-v1',
+      titulo: 'Día 1 · Fuerza base',
+      registro: [
+        {
+          ejercicio: 'B1',
+          nombre: 'Goblet squat',
+          nota: 'La mancuerna es siempre la de 10 kg: eso no se pregunta.',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '10–12', min: 10, max: 12 }
+          ]
+        },
+        {
+          ejercicio: 'B2',
+          nombre: 'Jalón en polea alta',
+          campos: [
+            { campo: 'carga', etiqueta: 'Peso de la polea', unidad: 'kg',
+              prescrito: false,
+              motivo_no_prescrito: 'La polea tiene muchos pesos y todavía no sabemos cuál te queda bien. El primero que anotes es el que vamos a usar de referencia.' },
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '10–12', min: 10, max: 12 }
+          ]
+        },
+        {
+          ejercicio: 'B3',
+          nombre: 'Flexiones con rodillas',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '6–12', min: 6, max: 12 }
+          ]
+        },
+        {
+          ejercicio: 'C2',
+          nombre: 'Floor press',
+          nota: 'El peso es fijo: las dos mancuernas de 10 kg.',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '10–12', min: 10, max: 12 }
+          ]
+        }
+      ]
+    },
+    '2': {
+      sesion_id: 'nico-dia2-v1',
+      titulo: 'Día 2 · Movimiento + fuerza',
+      registro: [
+        {
+          ejercicio: 'C3',
+          nombre: 'Flexiones con rodillas',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '8–12', min: 8, max: 12 }
+          ]
+        },
+        {
+          ejercicio: 'C4',
+          nombre: 'Press de hombro de rodillas',
+          nota: 'El peso es fijo: una sola mancuerna de 10 kg.',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '8–10', min: 8, max: 10 }
+          ]
+        },
+        {
+          ejercicio: 'C5',
+          nombre: 'Elevación de cadera',
+          nota: 'El peso es fijo: la mancuerna de 10 kg.',
+          campos: [
+            { campo: 'reps', etiqueta: 'Repeticiones por vuelta', unidad: 'reps',
+              prescrito: true, texto: '15–20', min: 15, max: 20 }
+          ]
+        }
+      ]
+    },
+    '3': {
+      sesion_id: 'nico-dia3-v1',
+      titulo: 'Día 3 · Misión',
+      registro: [
+        {
+          ejercicio: 'M',
+          nombre: 'Misión de movimiento',
+          campos: [
+            { campo: 'minutos', etiqueta: 'Minutos que te moviste', unidad: 'min',
+              prescrito: true, texto: 'al menos 30', min: 30, max: 600 }
+          ]
+        }
+      ]
+    }
+  }
+};
+
+const $ = (s, raiz = document) => raiz.querySelector(s);
+const $$ = (s, raiz = document) => [...raiz.querySelectorAll(s)];
+
+/* Estado vivo de la pantalla. Nada de esto es la verdad: la verdad es lo que
+   se envia. Esto solo sostiene lo que Nico va marcando mientras entrena. */
+const estado = {};   // estado[dia] = { bloques:{}, valores:{}, envio, enviado }
+const hashes = {};   // hashes[dia] = sha256 de lo prescrito de ese dia
+
+function nuevoId() {
+  return (crypto.randomUUID)
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+/* El hash de lo prescrito viaja con cada ejecucion. No es burocracia: es lo
+   que permite saber, meses despues, si dos ejecuciones vieron el mismo papel
+   o si el papel cambio entremedio. Se calcula sobre el dato, no sobre el
+   archivo, para que no haga falta ningun paso de compilacion. */
+async function calcularHashes() {
+  for (const dia of Object.keys(PRESCRITO.dias)) {
+    const texto = JSON.stringify({
+      plan: PRESCRITO.plan,
+      publicado: PRESCRITO.publicado,
+      dia: PRESCRITO.dias[dia]
+    });
+    try {
+      const bytes = new TextEncoder().encode(texto);
+      const resumen = await crypto.subtle.digest('SHA-256', bytes);
+      hashes[dia] = 'sha256:' + [...new Uint8Array(resumen)]
+        .map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) {
+      // Sin crypto.subtle (http:// desde una IP) no se puede acreditar nada.
+      // Se dice, no se inventa un valor plausible.
+      hashes[dia] = 'sin_verificar:' + PRESCRITO.plan + '@' + PRESCRITO.publicado;
+    }
+  }
+}
+
+/* ==========================================================================
+   1. Identificar bloques y ejercicios a partir de lo que ya esta en pantalla
+   ========================================================================== */
+
+function prepararEstructura() {
+  $$('.day').forEach(panel => {
+    const dia = panel.dataset.panel;
+    estado[dia] = { bloques: {}, valores: {}, envio: nuevoId(), enviado: false };
+
+    $$('.block', panel).forEach(bloque => {
+      const titulo = ($('h3', bloque)?.textContent || '').trim();
+      // "A · Movilidad + activacion" -> A. El dia 3 no tiene letra: es la mision.
+      const letra = /^([A-Z])\s*·/.test(titulo) ? titulo.match(/^([A-Z])\s*·/)[1] : 'M';
+      bloque.dataset.block = letra;
+      bloque.dataset.titulo = titulo;
+      estado[dia].bloques[letra] = false;
+
+      $$('.exercise', bloque).forEach(ej => {
+        const codigo = ($('.code', ej)?.textContent || '').trim();
+        if (codigo) ej.dataset.ex = codigo;
+      });
+    });
+  });
+}
+
+/* ==========================================================================
+   2. Casilleros de registro — solo donde el numero pudo variar
+   ========================================================================== */
+
+function montarRegistro() {
+  Object.entries(PRESCRITO.dias).forEach(([dia, def]) => {
+    const panel = $(`.day[data-panel="${dia}"]`);
+    if (!panel) return;
+
+    def.registro.forEach(item => {
+      // El dia 3 no tiene ficha de ejercicio: el registro va bajo las misiones.
+      const destino = item.ejercicio === 'M'
+        ? $('.missions', panel)?.parentElement
+        : $(`.exercise[data-ex="${item.ejercicio}"]`, panel);
+      if (!destino) return;
+
+      const caja = document.createElement('div');
+      caja.className = 'registro';
+
+      const titulo = document.createElement('div');
+      titulo.className = 'registro-head';
+      titulo.textContent = 'Anota lo que hiciste';
+      caja.appendChild(titulo);
+
+      if (item.nota) {
+        const nota = document.createElement('div');
+        nota.className = 'registro-nota';
+        nota.textContent = item.nota;
+        caja.appendChild(nota);
+      }
+
+      item.campos.forEach(campo => {
+        const fila = document.createElement('label');
+        fila.className = 'registro-fila';
+
+        const et = document.createElement('span');
+        et.className = 'registro-et';
+        et.textContent = campo.etiqueta;
+        // Lo prescrito se muestra AL LADO del casillero, nunca DENTRO. Si
+        // estuviera dentro, no tocarlo se leeria como haberlo confirmado.
+        const pre = document.createElement('em');
+        pre.className = 'registro-pre';
+        pre.textContent = campo.prescrito
+          ? `Seba mandó ${campo.texto}`
+          : 'Todavía no hay referencia';
+        et.appendChild(pre);
+        fila.appendChild(et);
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.inputMode = 'decimal';
+        input.min = '0';
+        input.step = campo.campo === 'carga' ? '0.5' : '1';
+        // Vacio a proposito: si el casillero trajera el numero prescrito,
+        // no tocarlo se leeria como "lo hizo", y no lo sabriamos.
+        input.placeholder = '—';
+        input.dataset.dia = dia;
+        input.dataset.ex = item.ejercicio;
+        input.dataset.campo = campo.campo;
+        input.oninput = () => {
+          const v = input.value.trim();
+          estado[dia].valores[`${item.ejercicio}.${campo.campo}`] = v === '' ? null : Number(v);
+          actualizarEnvio(dia);
+        };
+        fila.appendChild(input);
+
+        const un = document.createElement('span');
+        un.className = 'registro-un';
+        un.textContent = campo.unidad;
+        fila.appendChild(un);
+
+        caja.appendChild(fila);
+
+        if (!campo.prescrito && campo.motivo_no_prescrito) {
+          const m = document.createElement('div');
+          m.className = 'registro-motivo';
+          m.textContent = campo.motivo_no_prescrito;
+          caja.appendChild(m);
+        }
+      });
+
+      // La explicacion va una sola vez por dia, en el primer casillero que
+      // Nico se encuentra. Repetirla debajo de cada uno es ruido.
+      if (!panel.dataset.pieRegistro) {
+        const pie = document.createElement('div');
+        pie.className = 'registro-pie';
+        pie.textContent = 'Si no lo anotaste, déjalo en blanco. En blanco significa «no sabemos», y eso es más útil que un número inventado.';
+        caja.appendChild(pie);
+        panel.dataset.pieRegistro = '1';
+      }
+
+      destino.appendChild(caja);
+    });
+  });
+}
+
+/* ==========================================================================
+   3. Marcar bloque listo — el acto explicito que confirma
+   ========================================================================== */
+
+function montarBloques() {
+  $$('.day').forEach(panel => {
+    const dia = panel.dataset.panel;
+    $$('.block', panel).forEach(bloque => {
+      const letra = bloque.dataset.block;
+      const boton = document.createElement('button');
+      boton.className = 'done-btn';
+      boton.type = 'button';
+      boton.textContent = 'MARCAR BLOQUE LISTO';
+      boton.onclick = () => {
+        const nuevo = !estado[dia].bloques[letra];
+        estado[dia].bloques[letra] = nuevo;
+        bloque.classList.toggle('block-done', nuevo);
+        boton.classList.toggle('active', nuevo);
+        boton.textContent = nuevo ? 'BLOQUE LISTO ✓' : 'MARCAR BLOQUE LISTO';
+        actualizarEnvio(dia);
+      };
+      bloque.appendChild(boton);
+    });
+  });
+}
+
+function bloquesDe(dia) {
+  return Object.entries(estado[dia].bloques);
+}
+
+function bloquesListos(dia) {
+  return bloquesDe(dia).filter(([, v]) => v).length;
+}
+
+/* ==========================================================================
+   4. Feedback — esfuerzo sin valor por defecto, consentimiento explicito
+   ========================================================================== */
+
+function montarFeedback() {
+  $$('.feedback').forEach(caja => {
+    const dia = caja.dataset.fb;
+    const escala = $('.scores', caja);
+    for (let i = 1; i <= 10; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = i;
+      b.dataset.score = i;
+      escala.appendChild(b);
+    }
+    let esfuerzo = null;
+    const enviar = $('.save', caja);
+
+    $$('button', escala).forEach(b => {
+      b.onclick = () => {
+        esfuerzo = Number(b.dataset.score);
+        $$('button', escala).forEach(x => x.classList.toggle('on', x === b));
+        caja.dataset.esfuerzo = esfuerzo;
+        actualizarEnvio(dia);
+      };
+    });
+
+    // Resumen de lo que se va a guardar. No pide confirmar de nuevo lo ya
+    // marcado: solo lo pone a la vista antes de enviar.
+    const resumen = document.createElement('div');
+    resumen.className = 'resumen';
+    caja.insertBefore(resumen, enviar);
+
+    const consentimiento = document.createElement('div');
+    consentimiento.className = 'consent';
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.id = `consent-${dia}`;
+    const etiqueta = document.createElement('label');
+    etiqueta.setAttribute('for', check.id);
+    etiqueta.textContent = 'Acepto enviar este registro y mi feedback a Seba para revisar esta sesión y preparar las próximas decisiones de entrenamiento.';
+    consentimiento.appendChild(check);
+    consentimiento.appendChild(etiqueta);
+    caja.insertBefore(consentimiento, enviar);
+    check.onchange = () => actualizarEnvio(dia);
+
+    enviar.onclick = () => enviarDia(dia, caja, esfuerzo);
+    caja.dataset.montado = '1';
+  });
+}
+
+function actualizarEnvio(dia) {
+  const caja = $(`.feedback[data-fb="${dia}"]`);
+  if (!caja || !caja.dataset.montado) return;
+  if (estado[dia].enviado) return;
+
+  const esfuerzo = caja.dataset.esfuerzo ? Number(caja.dataset.esfuerzo) : null;
+  const acepta = $(`#consent-${dia}`)?.checked;
+  const boton = $('.save', caja);
+  const listos = bloquesListos(dia);
+  const total = bloquesDe(dia).length;
+  const anotados = Object.values(estado[dia].valores).filter(v => v !== null && v !== undefined).length;
+
+  $('.resumen', caja).textContent =
+    `Se va a guardar: ${listos} de ${total} bloque${total === 1 ? '' : 's'} marcado${listos === 1 ? '' : 's'}` +
+    (anotados ? ` · ${anotados} dato${anotados === 1 ? '' : 's'} anotado${anotados === 1 ? '' : 's'}` : ' · sin datos anotados') +
+    (esfuerzo ? ` · esfuerzo ${esfuerzo}/10` : ' · falta tu esfuerzo');
+
+  boton.disabled = !(esfuerzo && acepta);
+  boton.textContent = !esfuerzo ? 'ELIGE TU ESFUERZO'
+    : !acepta ? 'ACEPTA PARA ENVIAR'
+    : `ENVIAR DÍA ${dia} A SEBA`;
+}
+
+/* ==========================================================================
+   5. Lo ejecutado — tres estados, y un cuarto caso honesto
+   --------------------------------------------------------------------------
+   desconocido                  : no se anoto nada. No es cero ni es lo prescrito.
+   confirmado                   : se anoto y cae dentro de lo que Seba mando.
+   modificado                   : se anoto y NO coincide con lo que Seba mando.
+   registrado_sin_prescripcion  : se anoto, pero nunca hubo un numero que
+                                  confirmar ni modificar (la polea). Este dato
+                                  es el que crea la referencia, no el que la
+                                  cumple o la incumple.
+   ========================================================================== */
+
+function estadoDeCampo(campo, valor) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) return 'desconocido';
+  if (!campo.prescrito) return 'registrado_sin_prescripcion';
+  if (typeof campo.min === 'number' && typeof campo.max === 'number') {
+    return (valor >= campo.min && valor <= campo.max) ? 'confirmado' : 'modificado';
+  }
+  return 'confirmado';
+}
+
+function construirEjecucion(dia) {
+  const def = PRESCRITO.dias[dia];
+  const panel = $(`.day[data-panel="${dia}"]`);
+
+  const bloques = bloquesDe(dia).map(([id, confirmado]) => ({
+    id,
+    titulo: $(`.block[data-block="${id}"]`, panel)?.dataset.titulo || null,
+    confirmado
+  }));
+
+  const ejercicios = def.registro.map(item => ({
+    codigo: item.ejercicio,
+    nombre: item.nombre,
+    campos: item.campos.map(campo => {
+      const valor = estado[dia].valores[`${item.ejercicio}.${campo.campo}`] ?? null;
+      return {
+        campo: campo.campo,
+        etiqueta: campo.etiqueta,
+        unidad: campo.unidad,
+        prescrito: campo.prescrito
+          ? { declarado: true, valor: campo.texto, min: campo.min ?? null, max: campo.max ?? null }
+          : { declarado: false, motivo: campo.motivo_no_prescrito || null },
+        registrado: (valor === null)
+          ? { declarado: false, motivo: 'el alumno no anotó este dato' }
+          : { declarado: true, valor },
+        estado: estadoDeCampo(campo, valor)
+      };
+    })
+  }));
+
+  const ejecucion = {
+    dia: Number(dia),
+    sesion_id: def.sesion_id,
+    // Se registro una entrada por ejercicio, no una por vuelta del circuito.
+    // Decirlo importa: "las tres vueltas iguales" y "anote cada vuelta" son
+    // dos evidencias distintas y no se pueden leer como la misma.
+    capturado: 'en_conjunto',
+    fuente_confirmacion: 'boton_bloque_listo',
+    bloques,
+    ejercicios
+  };
+
+  if (dia === '3') {
+    const elegida = $('.mission.on', panel)?.dataset.mission || null;
+    ejecucion.mision = {
+      elegida,
+      registrada: elegida !== null
+    };
+  }
+
+  return ejecucion;
+}
+
+/* completion sale de lo que Nico marco, no de una suposicion del codigo.
+   Antes esta pantalla mandaba siempre 'si': afirmaba por el un hecho que
+   nadie habia observado. */
+function completionDe(dia) {
+  const listos = bloquesListos(dia);
+  const total = bloquesDe(dia).length;
+  if (listos === 0) return 'no';
+  if (listos === total) return 'si';
+  return 'casi';
+}
+
+async function guardarEjecucion(dia) {
+  const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/cerca_session_executions`, {
+    method: 'POST',
+    headers: CABECERAS,
+    body: JSON.stringify({
+      submission_id: estado[dia].envio,
+      session_id: PRESCRITO.dias[dia].sesion_id,
+      student_slug: ALUMNO,
+      client_version: VERSION_CLIENTE,
+      source: FUENTE,
+      blocks_completed: bloquesListos(dia),
+      execution: construirEjecucion(dia),
+      snapshot_hash: hashes[dia]
+    })
+  });
+  if (!respuesta.ok) {
+    const texto = await respuesta.text();
+    if (!texto.includes('duplicate key')) {
+      throw new Error('No pude guardar el registro de la sesión.');
+    }
+  }
+}
+
+async function guardarFeedback(dia, esfuerzo, comentario) {
+  const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/cerca_workout_feedback`, {
+    method: 'POST',
+    headers: CABECERAS,
+    body: JSON.stringify({
+      student_slug: ALUMNO,
+      session_id: PRESCRITO.dias[dia].sesion_id,
+      completion: completionDe(dia),
+      effort: esfuerzo,
+      comment: comentario,
+      blocks_completed: bloquesListos(dia),
+      source: FUENTE,
+      client_version: VERSION_CLIENTE,
+      audio_path: null,
+      execution_submission_id: estado[dia].envio,
+      snapshot_hash: hashes[dia]
+    })
+  });
+  if (!respuesta.ok) throw new Error('No pude guardar el feedback.');
+}
+
+async function enviarDia(dia, caja, esfuerzoInicial) {
+  const boton = $('.save', caja);
+  if (boton.disabled) return;
+  const esfuerzo = caja.dataset.esfuerzo ? Number(caja.dataset.esfuerzo) : esfuerzoInicial;
+  const estadoTexto = $('.status', caja);
+  const nota = $('textarea', caja).value.trim() || null;
+
+  boton.disabled = true;
+  boton.textContent = 'ENVIANDO…';
+  estadoTexto.textContent = '';
+
+  try {
+    // La ejecucion primero: si el feedback falla, lo que ocurrio ya quedo.
+    await guardarEjecucion(dia);
+    await guardarFeedback(dia, esfuerzo, nota);
+    estado[dia].enviado = true;
+    estadoTexto.textContent = `Día ${dia} enviado a Seba ✓`;
+    boton.textContent = 'ENVIADO ✓';
+    // El boton queda cerrado: un envio por dia y por visita. Si Nico vuelve a
+    // hacer este mismo dia otra semana, abre la pagina de nuevo y esa vez
+    // nace con su propio submission_id: son dos ejecuciones distinguibles.
+    estado[dia].envio = nuevoId();
+  } catch (e) {
+    estadoTexto.textContent = (e && e.message) ? e.message : 'No se pudo enviar ahora. Intenta de nuevo.';
+    boton.disabled = false;
+    boton.textContent = `ENVIAR DÍA ${dia} A SEBA`;
+  }
+}
+
+/* ==========================================================================
+   6. Navegacion por dias y misiones
+   ========================================================================== */
+
+$$('.daynav').forEach(b => {
+  b.onclick = () => {
+    $$('.daynav').forEach(x => x.classList.toggle('active', x === b));
+    $$('.day').forEach(x => x.classList.toggle('active', x.dataset.panel === b.dataset.day));
+    scrollTo({ top: 0, behavior: 'smooth' });
+  };
+});
+
+$$('.mission').forEach(b => {
+  b.onclick = () => {
+    $$('.mission').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    // El navegador solo recuerda la seleccion para que no se pierda al
+    // recargar. El dato que cuenta viaja dentro de la ejecucion.
+    try { localStorage.setItem('nico_mission', b.dataset.mission); } catch (e) {}
+    actualizarEnvio('3');
+  };
+});
+
+/* ==========================================================================
+   7. Timer
+   ========================================================================== */
+
+const timerSheet = $('#timerSheet'), disp = $('#timerDisplay'), lab = $('#timerLabel');
+let remain = 30, tick = null, running = false, emom = null, em = 1;
+const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+function render() { disp.textContent = fmt(remain); }
+function beep() {
+  try {
+    const c = new (AudioContext || webkitAudioContext)(), o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination); g.gain.value = .1; o.start(); o.stop(c.currentTime + .12);
+  } catch (e) {}
+}
+function stop() { clearInterval(tick); tick = null; running = false; $('#timerStart').textContent = 'INICIAR'; }
+function simple(s, l = 'PAUSA') { stop(); emom = null; remain = s; lab.textContent = l; render(); timerSheet.classList.add('open'); }
+function emomStart() { stop(); emom = 6; em = 1; remain = 60; lab.textContent = 'MIN 3 · JUMPING JACKS · 20 s + 40 s DESCANSO'; render(); timerSheet.classList.add('open'); }
+function run() {
+  if (running) return;
+  running = true;
+  $('#timerStart').textContent = 'CORRIENDO';
+  const start = Date.now(), initial = remain;
+  tick = setInterval(() => {
+    remain = Math.max(0, initial - Math.floor((Date.now() - start) / 1000));
+    render();
+    if (remain <= 0) {
+      stop(); beep();
+      if (emom && em < emom) {
+        em++; remain = 60;
+        const m = em + 2;
+        lab.textContent = m % 2 === 0
+          ? `MIN ${m} · BICI · 30 s MEDIA-ALTA + 30 s SUAVE`
+          : `MIN ${m} · JUMPING JACKS · 20 s + 40 s DESCANSO`;
+        setTimeout(run, 250);
+      } else lab.textContent = 'LISTO ✓';
+    }
+  }, 250);
+}
+$('#timerFab').onclick = () => timerSheet.classList.add('open');
+$$('[data-timer]').forEach(b => b.onclick = () => simple(+b.dataset.timer, 'EJERCICIO'));
+$$('[data-emom]').forEach(b => b.onclick = emomStart);
+$$('[data-preset]').forEach(b => b.onclick = () => simple(+b.dataset.preset));
+$('#timerStart').onclick = run;
+$('#timerPause').onclick = stop;
+$('#timerReset').onclick = () => {
+  stop();
+  if (emom) { em = 1; remain = 60; lab.textContent = 'MIN 3 · JUMPING JACKS · 20 s + 40 s DESCANSO'; }
+  else { remain = 30; lab.textContent = 'PAUSA'; }
+  render();
+};
+render();
+
+/* ==========================================================================
+   8. Chat / bitacora
+   ========================================================================== */
+
+const chatSheet = $('#chatSheet'), log = $('#chatLog'), input = $('#chatInput');
+$('#chatFab').onclick = () => chatSheet.classList.add('open');
+$$('[data-close]').forEach(b => b.onclick = () => $('#' + b.dataset.close).classList.remove('open'));
+$$('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s) s.classList.remove('open'); }));
+
+function norm(s) { return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+const vids = [['perro gato', 'cat cow exercise'], ['spiderman', 'spiderman mobility exercise'], ['rotacion toracica', 'quadruped thoracic rotation exercise'], ['elevacion de cadera', 'glute bridge exercise'], ['plancha', 'plank exercise'], ['goblet', 'goblet squat tutorial'], ['jalon', 'lat pulldown tutorial'], ['flexion', 'knee push up tutorial'], ['floor press', 'dumbbell floor press tutorial'], ['bird dog', 'bird dog exercise'], ['remo', 'one arm dumbbell row tutorial'], ['press', 'kneeling dumbbell shoulder press'], ['estocada', 'reverse lunge tutorial'], ['dead bug', 'dead bug exercise'], ['jumping', 'jumping jack exercise']];
+function video(q) {
+  const n = norm(q);
+  for (const [k, v] of vids) if (n.includes(k)) return `https://www.youtube.com/results?search_query=${encodeURIComponent(v)}`;
+  return null;
+}
+function answer(q) {
+  const s = norm(q);
+  if (s.includes('video') || s.includes('youtube')) return 'Dime el nombre del ejercicio en el mismo mensaje y te mando a buscarlo en YouTube.';
+  if (s.includes('circuito') || s.includes('vuelta') || s.includes('ronda')) return 'Haz los ejercicios en el orden indicado, sin descanso entre ellos. El descanso aparece al final de la ronda; después vuelves al primero.';
+  if (s.includes('descanso') || s.includes('pausa')) return 'Cada bloque dice exactamente dónde descansar. También puedes usar el botón ⏱ sin salir de CERCA.';
+  if (s.includes('anot') || s.includes('registr') || s.includes('casiller')) return 'Anota solo donde aparece el casillero: son los números que pudiste elegir tú. Si no lo anotaste, déjalo en blanco.';
+  if (s.includes('esfuerzo') || s.includes('1 al 10')) return '1 = muy fácil; 10 = extremadamente difícil, casi no podías hacer nada más. No hay una respuesta correcta.';
+  if (s.includes('dolor') || s.includes('molest')) return 'No fuerces ese movimiento. Detén el ejercicio y deja anotado qué pasó para que Seba lo revise.';
+  return 'Tu mensaje quedó anotado. Si es una duda que todavía no sé responder bien, Seba la podrá revisar.';
+}
+function msg(t, w) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + w;
+  d.textContent = t;
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+async function saveBit(q) {
+  $('#bitStatus').textContent = 'Guardando…';
+  try {
+    const dia = $('.daynav.active')?.dataset.day || '1';
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/cerca_session_questions`, {
+      method: 'POST',
+      headers: CABECERAS,
+      body: JSON.stringify({
+        session_id: PRESCRITO.dias[dia].sesion_id,
+        student_slug: ALUMNO,
+        block_id: `day_${dia}`,
+        question_text: q,
+        input_mode: 'text',
+        audio_path: null,
+        client_version: VERSION_CLIENTE,
+        source: FUENTE,
+        entry_kind: q.includes('?') ? 'question' : 'note'
+      })
+    });
+    if (!r.ok) throw Error();
+    $('#bitStatus').textContent = 'Guardado para Seba ✓';
+  } catch (e) {
+    $('#bitStatus').textContent = 'No se pudo sincronizar; copia tu nota si es importante.';
+  }
+}
+function send(q) {
+  q = (q || input.value).trim();
+  if (!q) return;
+  msg(q, 'user');
+  input.value = '';
+  saveBit(q);
+  setTimeout(() => {
+    const d = msg(answer(q), 'bot'), v = video(q);
+    if (v && (norm(q).includes('video') || norm(q).includes('youtube'))) {
+      const a = document.createElement('a');
+      a.className = 'video'; a.href = v; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = '▶ BUSCAR EN YOUTUBE';
+      d.appendChild(document.createElement('br'));
+      d.appendChild(a);
+    }
+  }, 120);
+}
+$('#chatSend').onclick = () => send();
+input.onkeydown = e => { if (e.key === 'Enter') send(); };
+$$('[data-q]').forEach(b => b.onclick = () => send(b.dataset.q));
+
+/* ==========================================================================
+   9. Arranque
+   ========================================================================== */
+
+prepararEstructura();
+montarRegistro();
+montarBloques();
+montarFeedback();
+
+const misionGuardada = (() => { try { return localStorage.getItem('nico_mission'); } catch (e) { return null; } })();
+if (misionGuardada) $(`[data-mission="${misionGuardada}"]`)?.classList.add('on');
+
+Object.keys(estado).forEach(actualizarEnvio);
+calcularHashes();
 </script></body></html>
