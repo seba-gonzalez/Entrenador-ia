@@ -101,5 +101,8 @@ tocan** mientras haya alguien entrenando con ellas. La de Nico ya está también
 como dato, y se ve mejor. Cuando quieras, le mandas el enlace nuevo y esa
 carpeta se puede borrar.
 
-De Panchi y Pali no convertí nada, porque antes necesito que me digas cuál de
-las dos es la buena (está preguntado en `PROPUESTA_OPERACIONAL.md`).
+**Panchi ya está convertida** desde la v4-evidence, con todo lo suyo: registro
+por serie con los 50 kg escritos, carga compartida del circuito, audio de 90
+segundos, consentimiento que bloquea, esfuerzo sin valor por defecto y el tabata
+con sonido. De Pali no convertí nada: era la misma sesión que Panchi en una
+versión anterior.

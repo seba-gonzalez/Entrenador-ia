@@ -53,6 +53,7 @@ alumno/cerca-alumno.css
 s/index.html
 s/reproductor.js
 sesiones/kecJVd0cI2VQVobjAof6xg.json
+sesiones/r5GvuG0A6UDfxXw3_EViKA.json
 publicar/index.html
 publicar/publicador.js
 "

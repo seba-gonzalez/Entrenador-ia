@@ -797,6 +797,63 @@ no protege nada— sino que la clave se comprueba **dentro de Supabase**, en las
 funciones. La página sin la clave no puede hacer nada. Por eso el SQL se niega a
 operar con una clave de menos de 20 caracteres: una clave corta no es una clave.
 
+### APROBADO — Tres formas de registrar, una sola regla de confirmación (2026-09-02)
+
+Al convertir la Panchi v4-evidence apareció un caso que Nico no tenía: **un
+casillero que nace con el valor prescrito ya escrito dentro**. Los 50 kg del
+back squat están ahí desde que abre la página.
+
+El reproductor pasa a tener tres formas de registrar, declaradas por la sesión:
+
+| `tipo` | dónde | qué captura |
+|---|---|---|
+| `simple` | un ejercicio | una entrada por ejercicio, casilleros vacíos |
+| `por_serie` | un ejercicio | una fila por serie, con series añadibles |
+| `carga_compartida` | un bloque | un solo valor para todo el circuito |
+
+Y **una sola regla** que cubre los tres, que es la que hay que recordar:
+
+> **La confirmación nunca puede venir de un número que puso el sistema.**
+
+- Casillero que **nace vacío** (Nico): escribirlo *es* el acto. Dentro del rango
+  prescrito → `confirmado`; fuera → `modificado`.
+- Casillero que **nace con lo prescrito escrito** (Panchi): el silencio no
+  confirma nada. Hace falta un acto aparte — marcar el bloque como listo, o
+  mover el campo.
+
+**Un campo movido y devuelto a su valor no es un campo intacto.** La versión
+anterior comparaba el valor final contra el prescrito, así que 50 → 55 → 50 se
+guardaba idéntico a no haberlo tocado nunca. Ahora `tocado` se enciende en el
+primer `input` y no se apaga: los dos casos dan `confirmado`, pero con
+evidencias distintas (`campo_movido_y_devuelto_al_valor_prescrito` frente a
+`bloque_marcado_listo`). Que alguien dude de una carga y la deje igual es una
+observación, y perderla era borrar evidencia.
+
+**Una serie añadida en ejecución** nace con todos sus campos vacíos —no estaba
+prevista, así que nada en ella viene prescrito— y **solo se puede quitar
+mientras esté vacía**: con datos escritos, borrarla sería destruir un registro
+sin dejar constancia.
+
+**Ámbar para el campo tocado.** Ni cyan ni azul: no es acción ni evidencia
+cerrada. Es «esto lo moviste tú».
+
+### APROBADO — El acordeón y el progreso se declaran por sesión (2026-09-02)
+
+`vista: { acordeon: true, progreso: true }`. Seis bloques en una sola columna
+obligan a scrollear con las manos ocupadas; tres con pestañas de día, no. No se
+impone a todas las sesiones: la de Nico ya estaba probada plana y cambiarla
+habría alterado lo que se iba a probar con una persona real.
+
+El número del bloque se enciende al marcarlo listo, con el mismo criterio de
+siempre: el cyan marca lo hecho, no lo disponible. Medido en la vista de Panchi
+a 320, 390 y 768: **2 bordes cyan**, piso de 12px, campos a 16px.
+
+### APROBADO — El identificador de la ejecución sobrevive a una recarga (2026-09-02)
+
+Vive en `sessionStorage`, con la clave de la sesión. Recargar en mitad del
+entrenamiento no puede crear una segunda ejecución; abrir la página otro día sí.
+Tomado de la Panchi v4-evidence, que ya lo hacía bien.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

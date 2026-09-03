@@ -80,10 +80,19 @@ function revisar(s) {
       [b, ...(b.ejercicios || [])].forEach(x => {
         if (!x.registro) return;
         const quien = `${donde} · ${x.codigo || x.id || x.nombre}`;
-        if (!Array.isArray(x.registro.campos) || !x.registro.campos.length) {
+        // Tres formas de registrar, y cada una guarda sus campos en otro sitio:
+        // una lista suelta, una columna por serie, o un solo valor compartido.
+        const tipo = x.registro.tipo || 'simple';
+        const lista = tipo === 'por_serie' ? x.registro.columnas
+                    : tipo === 'carga_compartida' ? (x.registro.campo ? [x.registro.campo] : null)
+                    : x.registro.campos;
+        if (!Array.isArray(lista) || !lista.length) {
           mal.push(`${quien}: tiene registro sin campos`); return;
         }
-        x.registro.campos.forEach(c => {
+        if (tipo === 'por_serie' && !(x.registro.series > 0)) {
+          mal.push(`${quien}: registro por serie sin decir cuántas series`);
+        }
+        lista.forEach(c => {
           casilleros++;
           if (!c.campo || !c.etiqueta || !c.unidad) mal.push(`${quien}: un casillero no dice campo, etiqueta o unidad`);
           if (typeof c.prescrito !== 'boolean') { mal.push(`${quien} · ${c.campo}: no dice si el valor venía prescrito`); return; }
@@ -91,6 +100,10 @@ function revisar(s) {
           // no prescrito tiene que decir POR QUE no lo esta. Un desconocido sin
           // motivo se lee despues como un olvido.
           if (c.prescrito && !c.texto) mal.push(`${quien} · ${c.campo}: dice que venía prescrito pero no trae el valor`);
+          // Un casillero solo puede nacer con el valor escrito si ese valor
+          // existe. Y prellenarlo cambia de donde sale la confirmacion, asi
+          // que no puede colarse por descuido en algo no prescrito.
+          if (c.prellenado && !c.prescrito) mal.push(`${quien} · ${c.campo}: nace con un valor escrito pero no declara qué se prescribió`);
           if (!c.prescrito && !c.motivo) mal.push(`${quien} · ${c.campo}: no venía prescrito y no explica por qué`);
           if (c.prescrito && (typeof c.min === 'number') !== (typeof c.max === 'number')) {
             mal.push(`${quien} · ${c.campo}: tiene solo uno de los dos extremos del rango`);

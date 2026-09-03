@@ -44,6 +44,7 @@
   --sobre-acento: #041111; /* tinta SOBRE el acento. No significa "accion". */
   --tuyo:      #5577ff;   /* lo que aporta el alumno: sus casilleros */
   --tuyo-tinta:#9fb2ff;
+  --tocado:    #ffbd70;   /* un campo prellenado que el alumno movio */
 
   /* --- Tinta ------------------------------------------------------------- */
   --texto:     #f5f7f7;
@@ -223,9 +224,12 @@ body {
 }
 .registro-fila input::placeholder { color: #5d6a6a; font-weight: 400; }
 /* Sin flechitas: roban ancho al numero y en el telefono no existen. */
-.registro-fila input::-webkit-outer-spin-button,
-.registro-fila input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.registro-fila input { -moz-appearance: textfield; appearance: textfield; }
+.registro-fila input::-webkit-outer-spin-button, .registro-fila input::-webkit-inner-spin-button,
+.registro-series input::-webkit-outer-spin-button, .registro-series input::-webkit-inner-spin-button,
+.carga-compartida input::-webkit-outer-spin-button, .carga-compartida input::-webkit-inner-spin-button
+  { -webkit-appearance: none; margin: 0; }
+.registro-fila input, .registro-series input, .carga-compartida input
+  { -moz-appearance: textfield; appearance: textfield; }
 .registro-fila input:focus { outline: none; border-color: var(--foco); box-shadow: 0 0 0 3px rgba(16, 231, 239, .16); }
 .registro-un { color: var(--apunte); min-width: 26px; font-size: 13px; }
 .registro-motivo { margin-top: 8px; color: var(--tuyo-tinta); }
@@ -362,3 +366,100 @@ textarea:focus { border-color: var(--foco); }
 .fallo p { color: var(--lectura); }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ==========================================================================
+   ACORDEÓN Y PROGRESO
+   --------------------------------------------------------------------------
+   Una sesión de seis bloques en una sola columna obliga a scrollear con las
+   manos ocupadas. El acordeón deja a la vista el bloque en curso. Se declara
+   por sesión: no todas lo necesitan.
+
+   El número del bloque se enciende cuando el bloque está listo. Es el mismo
+   criterio de siempre: el cyan marca lo hecho, no lo disponible.
+   ========================================================================== */
+
+.progreso { margin-top: 13px; padding: 11px 13px; border: 1px solid var(--linea); border-radius: 14px; background: var(--panel); }
+.progreso-cab { display: flex; justify-content: space-between; }
+.progreso-cab b { color: var(--activo); }
+.barra { height: 5px; background: #101918; border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.barra i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #00b7c2, var(--activo)); transition: width .2s; }
+
+details.bloque { border: 1px solid var(--linea); border-radius: 19px; background: linear-gradient(180deg, var(--panel), #030c0c); overflow: hidden; margin: 10px 0; padding: 0; }
+details.bloque[open] { padding-bottom: 4px; }
+details.bloque.hecho { opacity: 1; border-color: rgba(16, 231, 239, .34); }
+details.bloque > summary { list-style: none; display: flex; align-items: center; gap: 11px; padding: 14px; cursor: pointer; }
+details.bloque > summary::-webkit-details-marker { display: none; }
+.orden { width: 37px; height: 37px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid var(--linea); border-radius: 11px; color: var(--lectura); font-size: 12px; font-weight: 800; }
+details.bloque.hecho .orden { background: var(--activo); border-color: var(--activo); color: var(--sobre-acento); }
+.resumen-bloque { flex: 1; min-width: 0; }
+.resumen-bloque b, .resumen-bloque small { display: block; }
+.resumen-bloque small { color: var(--apunte); font-size: 12px; margin-top: 3px; }
+.flecha { color: #738080; }
+details.bloque[open] > summary .flecha { transform: rotate(90deg); }
+details.bloque > .cuerpo-bloque { padding: 0 14px 15px; }
+
+/* En acordeón, el borde superior de separación sobra: cada bloque es su caja. */
+details.bloque .ejercicio:first-of-type { border-top: 0; }
+
+/* ==========================================================================
+   REGISTRO POR SERIE
+   --------------------------------------------------------------------------
+   Una fila por serie. La columna de carga nace CON el valor prescrito escrito,
+   y por eso aquí el silencio no confirma nada: hace falta marcar el bloque.
+   Un campo tocado se marca en ámbar, que no es ni acción ni evidencia
+   cerrada: es "esto lo moviste tú".
+   ========================================================================== */
+
+.registro-series { display: grid; grid-template-columns: 42px repeat(3, 1fr); gap: 6px; align-items: center; }
+.registro-series .cab { font-size: 12px; color: var(--apunte); text-align: center; padding-bottom: 2px; }
+.registro-series .cab:first-child { text-align: left; }
+.registro-series .sn { font-size: 13px; color: var(--lectura); font-weight: 700; }
+.registro-series input {
+  width: 100%; min-width: 0; text-align: center; background: var(--hueco); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .15); border-radius: 8px; padding: 10px 4px;
+  font-family: inherit; font-size: 16px; font-weight: 700; outline: none;
+}
+.registro-series input::placeholder { color: #5d6a6a; font-weight: 400; font-size: 13px; }
+.registro-series input:focus, .carga-compartida input:focus { border-color: var(--foco); box-shadow: 0 0 0 3px rgba(16, 231, 239, .16); }
+.registro-series input.tocado, .carga-compartida input.tocado { border-color: var(--tocado); color: #ffe0b6; }
+.quitar-serie { grid-column: 1 / -1; justify-self: end; border: 0; background: transparent; color: var(--apunte); font-family: inherit; font-size: 12px; padding: 2px 0; cursor: pointer; }
+.sumar-serie {
+  width: 100%; margin-top: 9px; border: 1px dashed rgba(85, 119, 255, .4); background: transparent;
+  color: var(--tuyo-tinta); border-radius: 9px; padding: 10px; font-family: inherit;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+}
+.sumar-serie:disabled { opacity: .4; cursor: default; }
+
+.carga-compartida { display: grid; grid-template-columns: 1fr 92px auto; align-items: center; gap: 9px; }
+.carga-compartida input {
+  width: 100%; min-width: 0; text-align: center; background: var(--hueco); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .15); border-radius: 9px; padding: 11px 6px;
+  font-family: inherit; font-size: 16px; font-weight: 800; outline: none;
+}
+
+/* ==========================================================================
+   TABATA
+   ========================================================================== */
+
+.tabata { text-align: center; border: 1px solid var(--linea); border-radius: 15px; padding: 14px; margin-top: 13px; background: #061110; }
+.tabata .fase { color: var(--activo); font-size: 12px; font-weight: 800; letter-spacing: .13em; }
+.tabata .cuenta { font-size: 52px; font-weight: 900; line-height: 1; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+.tabata .quien { display: block; font-size: 14px; font-weight: 700; }
+.tabata .reloj { display: block; font-size: 12px; color: var(--apunte); margin-top: 5px; }
+.tabata-mandos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 11px; }
+.tabata-mandos button { min-height: 44px; border: 1px solid var(--linea); border-radius: 9px; background: #081313; color: var(--lectura); font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+.tabata-mandos button:disabled { opacity: .45; cursor: default; }
+.tabata-mandos .va { background: var(--accion); color: var(--sobre-acento); border-color: var(--accion); }
+.tabata .aviso { font-size: 12px; color: var(--apunte); margin-top: 8px; line-height: 1.45; }
+
+/* ==========================================================================
+   AUDIO
+   ========================================================================== */
+
+.audio { padding: 12px; border: 1px solid var(--linea); border-radius: 11px; background: #071211; margin-top: 8px; }
+.audio-botones { display: flex; gap: 8px; flex-wrap: wrap; }
+.audio-btn { border: 1px solid var(--linea); background: #081313; color: var(--lectura); border-radius: 9px; padding: 10px 12px; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; min-height: 42px; }
+.audio-btn.grabando { border-color: #ff7b82; color: #ffd6d8; }
+.audio-btn[hidden] { display: none; }
+.audio-estado { font-size: 12px; color: var(--apunte); line-height: 1.45; margin-top: 8px; }
+.audio audio { width: 100%; margin-top: 9px; }

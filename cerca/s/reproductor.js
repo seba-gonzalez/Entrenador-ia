@@ -12,7 +12,8 @@
    Lo que este archivo NO hace, a proposito:
      no decide donde va un casillero  — eso lo escribe el entrenador;
      no deduce lo que se registra a partir de lo que se muestra;
-     no rellena un casillero con lo prescrito;
+     no rellena un casillero con lo prescrito salvo que la sesion lo pida
+       explicitamente, y en ese caso el silencio NO confirma nada;
      no interpreta lo que el alumno anota.
    ========================================================================== */
 
@@ -24,7 +25,7 @@ const CABECERAS = {
   Authorization: `Bearer ${SUPABASE_KEY}`,
   'Content-Type': 'application/json'
 };
-const ESCRITURA = { ...CABECERAS, Prefer: 'return=minimal' };
+const ESCRITURA = { ...CABECERAS, Prefer: 'return=minimal,resolution=ignore-duplicates' };
 
 /* --- Utilidades ---------------------------------------------------------- */
 
@@ -57,7 +58,6 @@ async function huella(objeto) {
     const r = await crypto.subtle.digest('SHA-256', bytes);
     return 'sha256:' + [...new Uint8Array(r)].map(b => b.toString(16).padStart(2, '0')).join('');
   } catch (e) {
-    // Sin crypto.subtle no se puede acreditar nada. Se dice; no se inventa.
     return 'sin_verificar';
   }
 }
@@ -107,12 +107,7 @@ async function cargarSesion() {
   // en mitad del gimnasio es un dano seguro para evitar uno hipotetico. Se
   // registra, que es lo que permite darse cuenta despues.
   const servido = await huella(fila.sesion);
-  return {
-    sesion: fila.sesion,
-    hash: servido,
-    declarado: fila.hash || null,
-    entrega: token
-  };
+  return { sesion: fila.sesion, hash: servido, declarado: fila.hash || null, entrega: token };
 }
 
 /* ==========================================================================
@@ -120,8 +115,7 @@ async function cargarSesion() {
    ========================================================================== */
 
 const S = { sesion: null, hash: null, declarado: null, entrega: null, dias: {} };
-
-function estadoDia(id) { return S.dias[id]; }
+const D = id => S.dias[id];
 
 /* ==========================================================================
    3. Dibujar
@@ -133,7 +127,6 @@ function dibujar() {
   app.replaceChildren();
   document.title = `CERCA · ${s.alumno}`;
 
-  // --- Cabecera
   const top = el('header', 'top');
   const marca = el('div', 'marca');
   marca.appendChild(el('span', 'isotipo'));
@@ -142,7 +135,6 @@ function dibujar() {
   top.appendChild(el('span', 'pastilla r-apunte', s.alumno));
   app.appendChild(top);
 
-  // --- Portada
   if (s.portada) {
     const p = el('section', 'portada');
     if (s.portada.kicker) p.appendChild(el('div', 'kicker', s.portada.kicker));
@@ -158,10 +150,20 @@ function dibujar() {
       s.portada.pastillas.forEach(t => fila.appendChild(el('span', 'pastilla r-apunte', t)));
       p.appendChild(fila);
     }
+    if (s.vista?.progreso) {
+      const pr = el('div', 'progreso');
+      const cab = el('div', 'progreso-cab r-etiqueta');
+      cab.appendChild(el('span', null, 'Tu sesión'));
+      cab.appendChild(el('b', 'progreso-n', '0 / 0'));
+      pr.appendChild(cab);
+      const barra = el('div', 'barra');
+      barra.appendChild(el('i', 'progreso-i'));
+      pr.appendChild(barra);
+      p.appendChild(pr);
+    }
     app.appendChild(p);
   }
 
-  // --- Riel de dias
   const riel = el('nav', 'dias');
   riel.setAttribute('role', 'tablist');
   s.dias.forEach((dia, i) => {
@@ -173,6 +175,7 @@ function dibujar() {
       $$('.dia-nav', riel).forEach(x => x.setAttribute('aria-selected', String(x === b)));
       $$('.dia').forEach(x => x.classList.toggle('activo', x.dataset.dia === dia.id));
       S.diaVisible = dia.id;
+      refrescarProgreso(dia.id);
       scrollTo({ top: 0, behavior: 'smooth' });
     };
     riel.appendChild(b);
@@ -180,16 +183,28 @@ function dibujar() {
   if (s.dias.length > 1) app.appendChild(riel);
   S.diaVisible = s.dias[0].id;
 
-  // --- Dias
   s.dias.forEach((dia, i) => app.appendChild(dibujarDia(dia, i === 0)));
 
   if (s.seguridad) app.appendChild(el('div', 'seguridad r-apunte', s.seguridad));
 
-  $$('.dia').forEach(n => refrescarEnvio(n.dataset.dia));
+  s.dias.forEach(d => { refrescarEnvio(d.id); refrescarProgreso(d.id); });
 }
 
 function dibujarDia(dia, visible) {
-  S.dias[dia.id] = { bloques: {}, valores: {}, mision: null, envio: nuevoId(), enviado: false, esfuerzo: null };
+  // El identificador de la ejecucion sobrevive a una recarga dentro de la
+  // misma pestana: recargar en mitad del entrenamiento no puede crear una
+  // segunda ejecucion. Cerrar la pestana si empieza una nueva.
+  const llave = `cerca_envio_${dia.sesion_id}`;
+  let envio;
+  try {
+    envio = sessionStorage.getItem(llave) || nuevoId();
+    sessionStorage.setItem(llave, envio);
+  } catch (e) { envio = nuevoId(); }
+
+  S.dias[dia.id] = {
+    bloques: {}, valores: {}, tocados: {}, series: {},
+    mision: null, envio, llave, enviado: false, esfuerzo: null, audio: null
+  };
 
   const seccion = el('section', 'dia' + (visible ? ' activo' : ''));
   seccion.dataset.dia = dia.id;
@@ -200,8 +215,9 @@ function dibujarDia(dia, visible) {
   if (dia.bajada) cab.appendChild(el('p', 'r-apunte', dia.bajada));
   caja.appendChild(cab);
 
+  const acordeon = !!S.sesion.vista?.acordeon;
   const cuerpo = el('div', 'sesion-cuerpo');
-  dia.bloques.forEach(bloque => cuerpo.appendChild(dibujarBloque(dia, bloque)));
+  dia.bloques.forEach((b, i) => cuerpo.appendChild(dibujarBloque(dia, b, i, acordeon)));
   if (dia.feedback) cuerpo.appendChild(dibujarFeedback(dia));
   caja.appendChild(cuerpo);
 
@@ -209,21 +225,39 @@ function dibujarDia(dia, visible) {
   return seccion;
 }
 
-function dibujarBloque(dia, bloque) {
-  const est = estadoDia(dia.id);
+function dibujarBloque(dia, bloque, indice, acordeon) {
+  const est = D(dia.id);
   est.bloques[bloque.id] = false;
 
-  const n = el('div', 'bloque');
-  n.dataset.bloque = bloque.id;
   const rotulo = bloque.titulo ? `${bloque.id} · ${bloque.titulo}` : bloque.id;
+  const n = el(acordeon ? 'details' : 'div', 'bloque');
+  n.dataset.bloque = bloque.id;
   n.dataset.rotulo = rotulo;
-  n.appendChild(el('h3', 'r-bloque', rotulo));
-  if (bloque.intro) n.appendChild(el('p', 'bloque-intro r-lectura', bloque.intro));
+
+  let cuerpo = n;
+  if (acordeon) {
+    if (indice === 0) n.open = true;
+    const sum = el('summary');
+    sum.appendChild(el('span', 'orden', String(indice + 1).padStart(2, '0')));
+    const res = el('span', 'resumen-bloque');
+    res.appendChild(el('b', 'r-ejercicio', bloque.titulo || bloque.id));
+    if (bloque.intro) res.appendChild(el('small', null, bloque.intro));
+    sum.appendChild(res);
+    sum.appendChild(el('span', 'flecha', '›'));
+    n.appendChild(sum);
+    // La bitacora anota el bloque que estaba abierto, no el dia entero.
+    n.addEventListener('toggle', () => { if (n.open) S.bloqueVisible = rotulo; });
+    cuerpo = el('div', 'cuerpo-bloque');
+    n.appendChild(cuerpo);
+  } else {
+    cuerpo.appendChild(el('h3', 'r-bloque', rotulo));
+    if (bloque.intro) cuerpo.appendChild(el('p', 'bloque-intro r-lectura', bloque.intro));
+  }
 
   if (bloque.recorrido) {
     const r = el('div', 'recorrido r-lectura');
     r.appendChild(rico(bloque.recorrido));
-    n.appendChild(r);
+    cuerpo.appendChild(r);
   }
 
   if (bloque.tipo === 'mision') {
@@ -239,23 +273,26 @@ function dibujarBloque(dia, bloque) {
       };
       grid.appendChild(b);
     });
-    n.appendChild(grid);
-    if (bloque.cierre) n.appendChild(el('div', 'descanso r-lectura', bloque.cierre));
+    cuerpo.appendChild(grid);
+    if (bloque.cierre) cuerpo.appendChild(el('div', 'descanso r-lectura', bloque.cierre));
   }
 
-  (bloque.ejercicios || []).forEach(ej => n.appendChild(dibujarEjercicio(dia, bloque, ej)));
+  (bloque.ejercicios || []).forEach(ej => cuerpo.appendChild(dibujarEjercicio(dia, bloque, ej)));
 
   if (bloque.descanso) {
     const d = el('div', 'descanso r-lectura');
     d.appendChild(rico(bloque.descanso));
-    n.appendChild(d);
+    cuerpo.appendChild(d);
   }
 
-  // Un registro puede colgar del bloque (la mision) o de un ejercicio.
-  if (bloque.registro) n.appendChild(dibujarRegistro(dia, bloque.id, bloque.registro));
+  // Un registro puede colgar del bloque (la mision, la carga compartida de un
+  // circuito) o de un ejercicio.
+  if (bloque.registro) cuerpo.appendChild(dibujarRegistro(dia, bloque.id, bloque.registro));
 
-  // Marcar el bloque como listo es el acto explicito que confirma. Mientras no
-  // se marca esta disponible, no activo: por eso nace neutro.
+  if (bloque.crono) cuerpo.appendChild(dibujarTabata(bloque.crono));
+
+  // Marcar el bloque como listo es el acto explicito que confirma. Mientras
+  // no se marca esta disponible, no activo: por eso nace neutro.
   const listo = el('button', 'btn listo', 'MARCAR BLOQUE LISTO');
   listo.type = 'button';
   listo.setAttribute('aria-pressed', 'false');
@@ -266,8 +303,9 @@ function dibujarBloque(dia, bloque) {
     listo.textContent = v ? 'BLOQUE LISTO ✓' : 'MARCAR BLOQUE LISTO';
     n.classList.toggle('hecho', v);
     refrescarEnvio(dia.id);
+    refrescarProgreso(dia.id);
   };
-  n.appendChild(listo);
+  cuerpo.appendChild(listo);
 
   return n;
 }
@@ -284,6 +322,7 @@ function dibujarEjercicio(dia, bloque, ej) {
   if (ej.consejo) n.appendChild(el('div', 'consejo r-lectura', ej.consejo));
 
   (Array.isArray(ej.crono) ? ej.crono : ej.crono ? [ej.crono] : []).forEach(c => {
+    if (c.tipo === 'tabata') { n.appendChild(dibujarTabata(c)); return; }
     const b = el('button', 'crono');
     b.type = 'button';
     b.appendChild(el('i', null, '⏱'));
@@ -296,58 +335,161 @@ function dibujarEjercicio(dia, bloque, ej) {
   return n;
 }
 
+/* ==========================================================================
+   4. Casilleros
+   ========================================================================== */
+
+/* Un casillero, con su rastro. `tocado` se enciende en el primer `input` y no
+   se apaga nunca: haber movido el campo y haberlo devuelto al valor prescrito
+   es una observacion, y perderla seria borrar evidencia. */
+function casillero(dia, clave, campo, { prellenado, marcador }) {
+  const est = D(dia.id);
+  const input = el('input');
+  input.dataset.clave = clave;      // deja el casillero localizable desde fuera
+  input.dataset.campo = campo.campo;
+  input.type = 'number';
+  input.inputMode = 'decimal';
+  input.min = '0';
+  input.step = campo.campo === 'carga' ? '0.5' : '1';
+  input.setAttribute('aria-label', campo.etiqueta);
+
+  if (prellenado) {
+    input.value = campo.texto;
+    est.valores[clave] = Number(campo.texto);
+  } else {
+    input.placeholder = marcador ?? '—';
+  }
+
+  input.oninput = () => {
+    est.tocados[clave] = true;
+    if (prellenado) input.classList.add('tocado');
+    const v = input.value.trim();
+    est.valores[clave] = v === '' ? null : Number(v);
+    refrescarEnvio(dia.id);
+  };
+  return input;
+}
+
 function dibujarRegistro(dia, refId, registro) {
-  const est = estadoDia(dia.id);
+  const tipo = registro.tipo || 'simple';
   const caja = el('div', 'registro');
   caja.appendChild(el('div', 'registro-cab', 'Anota lo que hiciste'));
   if (registro.nota) caja.appendChild(el('div', 'registro-nota r-apunte', registro.nota));
 
-  registro.campos.forEach(campo => {
-    const fila = el('label', 'registro-fila');
+  if (tipo === 'por_serie')          dibujarSeries(dia, refId, registro, caja);
+  else if (tipo === 'carga_compartida') dibujarCargaCompartida(dia, refId, registro, caja);
+  else                                dibujarSimple(dia, refId, registro, caja);
 
-    const et = el('span', 'registro-et r-etiqueta', campo.etiqueta);
-    const pre = el('em', 'registro-pre');
-    pre.textContent = campo.prescrito ? `Seba mandó ${campo.texto}` : 'Todavía no hay referencia';
-    et.appendChild(pre);
-    fila.appendChild(et);
-
-    const input = el('input', 'r-campo');
-    input.type = 'number';
-    input.inputMode = 'decimal';
-    input.min = '0';
-    input.step = campo.campo === 'carga' ? '0.5' : '1';
-    input.placeholder = '—';          // vacio: el numero prescrito nunca va dentro
-    input.dataset.ref = refId;
-    input.dataset.campo = campo.campo;
-    input.oninput = () => {
-      const v = input.value.trim();
-      est.valores[`${refId}.${campo.campo}`] = v === '' ? null : Number(v);
-      refrescarEnvio(dia.id);
-    };
-    fila.appendChild(input);
-    fila.appendChild(el('span', 'registro-un r-etiqueta', campo.unidad));
-    caja.appendChild(fila);
-
-    if (!campo.prescrito && campo.motivo) {
-      caja.appendChild(el('div', 'registro-motivo r-apunte', campo.motivo));
-    }
-  });
-
-  // La explicacion va una sola vez por dia, en el primer casillero que aparece.
+  const est = D(dia.id);
   if (!est.pieDicho) {
-    caja.appendChild(el('div', 'registro-pie r-apunte',
+    caja.appendChild(el('div', 'registro-pie r-apunte', registro.pie ||
       'Si no lo anotaste, déjalo en blanco. En blanco significa «no sabemos», y eso es más útil que un número inventado.'));
     est.pieDicho = true;
   }
   return caja;
 }
 
+function dibujarSimple(dia, refId, registro, caja) {
+  registro.campos.forEach(campo => {
+    const fila = el('label', 'registro-fila');
+    const et = el('span', 'registro-et r-etiqueta', campo.etiqueta);
+    const pre = el('em', 'registro-pre');
+    pre.textContent = campo.prescrito ? `Seba mandó ${campo.texto}` : 'Todavía no hay referencia';
+    et.appendChild(pre);
+    fila.appendChild(et);
+    fila.appendChild(casillero(dia, `${refId}.${campo.campo}`, campo, { prellenado: false }));
+    fila.appendChild(el('span', 'registro-un r-etiqueta', campo.unidad));
+    caja.appendChild(fila);
+    if (!campo.prescrito && campo.motivo) {
+      caja.appendChild(el('div', 'registro-motivo r-apunte', campo.motivo));
+    }
+  });
+}
+
+function dibujarCargaCompartida(dia, refId, registro, caja) {
+  const campo = registro.campo;
+  const fila = el('div', 'carga-compartida');
+  const et = el('span', 'registro-et r-etiqueta', campo.etiqueta);
+  const pre = el('em', 'registro-pre');
+  pre.textContent = campo.prescrito
+    ? `Seba mandó ${campo.texto} ${campo.unidad} · se confirma al marcar el bloque listo`
+    : 'Todavía no hay referencia';
+  et.appendChild(pre);
+  fila.appendChild(et);
+  fila.appendChild(casillero(dia, `${refId}.${campo.campo}`, campo, { prellenado: !!campo.prellenado }));
+  fila.appendChild(el('span', 'registro-un r-etiqueta', campo.unidad));
+  caja.appendChild(fila);
+}
+
+function dibujarSeries(dia, refId, registro, caja) {
+  const est = D(dia.id);
+  est.series[refId] = [];
+
+  const grid = el('div', 'registro-series');
+  ['Serie', ...registro.columnas.map(c => c.etiqueta)].forEach(t =>
+    grid.appendChild(el('span', 'cab', t)));
+  caja.appendChild(grid);
+
+  const filas = el('div');
+  filas.className = 'registro-series';
+  caja.appendChild(filas);
+
+  const sumar = el('button', 'sumar-serie', '+ AGREGAR SERIE');
+  sumar.type = 'button';
+
+  function renumerar() {
+    est.series[refId].forEach((s, i) => { s.n = i + 1; s.nodo.textContent = 'S' + (i + 1); });
+    sumar.disabled = est.series[refId].length >= (registro.maximo || 5);
+  }
+
+  function agregar(anadida) {
+    const n = est.series[refId].length + 1;
+    const sn = el('span', 'sn', 'S' + n);
+    filas.appendChild(sn);
+    const serie = { n, anadida, nodo: sn, claves: {} };
+    registro.columnas.forEach(col => {
+      // Una serie anadida no estaba prevista: ninguno de sus campos viene
+      // prescrito, asi que ninguno nace con valor escrito.
+      const prellenado = !anadida && !!col.prellenado;
+      const clave = `${refId}.S${n}.${col.campo}`;
+      serie.claves[col.campo] = clave;
+      filas.appendChild(casillero(dia, clave, col, { prellenado, marcador: col.texto || '—' }));
+    });
+    if (anadida) {
+      const quitar = el('button', 'quitar-serie', 'QUITAR SERIE');
+      quitar.type = 'button';
+      quitar.onclick = () => {
+        // Solo se puede quitar mientras esta vacia: con datos escritos,
+        // borrarla seria destruir un registro sin dejar constancia.
+        const conDatos = Object.values(serie.claves).some(k =>
+          est.valores[k] !== null && est.valores[k] !== undefined);
+        if (conDatos) { quitar.textContent = 'TIENE DATOS ANOTADOS'; return; }
+        Object.values(serie.claves).forEach(k => { delete est.valores[k]; delete est.tocados[k]; });
+        serie.nodos.forEach(x => x.remove());
+        est.series[refId] = est.series[refId].filter(x => x !== serie);
+        renumerar(); refrescarEnvio(dia.id);
+      };
+      filas.appendChild(quitar);
+    }
+    // Guardamos los nodos de la fila para poder retirarla entera.
+    const total = 1 + registro.columnas.length + (anadida ? 1 : 0);
+    serie.nodos = [...filas.children].slice(-total);
+    est.series[refId].push(serie);
+    renumerar();
+    refrescarEnvio(dia.id);
+  }
+
+  for (let i = 0; i < (registro.series || 1); i++) agregar(false);
+  sumar.onclick = () => { if (!sumar.disabled) agregar(true); };
+  caja.appendChild(sumar);
+}
+
 /* ==========================================================================
-   4. Feedback
+   5. Feedback
    ========================================================================== */
 
 function dibujarFeedback(dia) {
-  const est = estadoDia(dia.id);
+  const est = D(dia.id);
   const caja = el('div', 'feedback');
   caja.dataset.fb = dia.id;
   caja.appendChild(el('h3', 'r-sesion', dia.feedback.titulo));
@@ -368,9 +510,11 @@ function dibujarFeedback(dia) {
   caja.appendChild(escala);
 
   const nota = el('textarea');
-  nota.maxLength = 800;
+  nota.maxLength = 1000;
   nota.placeholder = dia.feedback.marcador || '';
   caja.appendChild(nota);
+
+  if (dia.feedback.audio) caja.appendChild(dibujarAudio(dia));
 
   caja.appendChild(el('div', 'resumen r-apunte'));
 
@@ -396,15 +540,24 @@ function dibujarFeedback(dia) {
 }
 
 function cuentaBloques(id) {
-  const b = estadoDia(id).bloques;
+  const b = D(id).bloques;
   const claves = Object.keys(b);
   return { listos: claves.filter(k => b[k]).length, total: claves.length };
+}
+
+function refrescarProgreso(id) {
+  if (!S.sesion.vista?.progreso || id !== S.diaVisible) return;
+  const { listos, total } = cuentaBloques(id);
+  const n = $('.progreso-n');
+  if (!n) return;
+  n.textContent = `${listos} / ${total}`;
+  $('.progreso-i').style.width = total ? (listos / total * 100) + '%' : '0';
 }
 
 function refrescarEnvio(id) {
   const caja = $(`.feedback[data-fb="${id}"]`);
   if (!caja) return;
-  const est = estadoDia(id);
+  const est = D(id);
   if (est.enviado) return;
 
   const { listos, total } = cuentaBloques(id);
@@ -424,26 +577,75 @@ function refrescarEnvio(id) {
 }
 
 /* ==========================================================================
-   5. Lo ejecutado
+   6. Lo ejecutado
    --------------------------------------------------------------------------
-   desconocido                  no se anoto. No es cero ni es lo prescrito.
-   confirmado                   se anoto y cae dentro de lo que se mando.
+   desconocido                  no se anoto, o el campo venia escrito y nadie
+                                confirmo nada. No es cero ni es lo prescrito.
+   confirmado                   se anoto y coincide con lo que se mando, o el
+                                alumno marco el bloque como listo.
    modificado                   se anoto y no coincide con lo que se mando.
    registrado_sin_prescripcion  se anoto, pero nunca hubo numero que confirmar
                                 ni modificar. Este dato crea la referencia.
+
+   La regla que cubre los dos casos: LA CONFIRMACION NUNCA PUEDE VENIR DE UN
+   NUMERO QUE PUSO EL SISTEMA. Si el campo nace vacio, escribirlo es el acto.
+   Si nace con lo prescrito escrito, hace falta un acto aparte: marcar el
+   bloque como listo, o mover el campo.
    ========================================================================== */
 
-function estadoDeCampo(campo, valor) {
-  if (valor === null || valor === undefined || Number.isNaN(valor)) return 'desconocido';
-  if (!campo.prescrito) return 'registrado_sin_prescripcion';
-  if (typeof campo.min === 'number' && typeof campo.max === 'number') {
-    return (valor >= campo.min && valor <= campo.max) ? 'confirmado' : 'modificado';
+function estadoDeCampo(campo, valor, tocado, bloqueListo, anadida) {
+  const vacio = valor === null || valor === undefined || valor === '' || Number.isNaN(valor);
+
+  if (anadida) {
+    return vacio
+      ? { estado: 'desconocido', motivo: 'serie_anadida_sin_anotar' }
+      : { estado: 'registrado_sin_prescripcion', evidencia: 'serie_anadida_en_ejecucion' };
   }
-  return 'confirmado';
+
+  if (campo.prellenado) {
+    if (vacio) return { estado: 'desconocido', motivo: tocado ? 'campo_vaciado' : 'no_anotado' };
+    const igual = String(valor) === String(campo.texto);
+    // Haberlo movido y haberlo dejado igual NO es lo mismo que no haberlo
+    // tocado. Las dos cosas dan "confirmado", pero por evidencias distintas.
+    if (tocado) return igual
+      ? { estado: 'confirmado', evidencia: 'campo_movido_y_devuelto_al_valor_prescrito' }
+      : { estado: 'modificado', evidencia: 'campo_cambiado' };
+    if (bloqueListo) return { estado: 'confirmado', evidencia: 'bloque_marcado_listo' };
+    return { estado: 'desconocido', motivo: 'bloque_no_marcado_listo' };
+  }
+
+  if (vacio) return { estado: 'desconocido', motivo: 'no_anotado' };
+  if (!campo.prescrito) return { estado: 'registrado_sin_prescripcion', evidencia: 'anotado_por_el_alumno' };
+  if (typeof campo.min === 'number' && typeof campo.max === 'number') {
+    return (valor >= campo.min && valor <= campo.max)
+      ? { estado: 'confirmado', evidencia: 'anotado_dentro_del_rango' }
+      : { estado: 'modificado', evidencia: 'anotado_fuera_del_rango' };
+  }
+  return { estado: 'confirmado', evidencia: 'anotado_por_el_alumno' };
+}
+
+function campoPayload(campo, valor, tocado, bloqueListo, anadida) {
+  const r = estadoDeCampo(campo, valor, tocado, bloqueListo, anadida);
+  return {
+    campo: campo.campo,
+    etiqueta: campo.etiqueta,
+    unidad: campo.unidad || null,
+    prescrito: (anadida || !campo.prescrito)
+      ? { declarado: false, motivo: anadida ? 'serie no prevista en la prescripción' : (campo.motivo || null) }
+      : { declarado: true, valor: campo.texto, min: campo.min ?? null, max: campo.max ?? null,
+          prellenado: !!campo.prellenado },
+    registrado: (valor === null || valor === undefined)
+      ? { declarado: false }
+      : { declarado: true, valor },
+    tocado: !!tocado,
+    estado: r.estado,
+    evidencia: r.evidencia || null,
+    motivo: r.motivo || null
+  };
 }
 
 function construirEjecucion(dia) {
-  const est = estadoDia(dia.id);
+  const est = D(dia.id);
   const seccion = $(`.dia[data-dia="${dia.id}"]`);
 
   const bloques = Object.entries(est.bloques).map(([id, confirmado]) => ({
@@ -454,26 +656,34 @@ function construirEjecucion(dia) {
 
   const registros = [];
   dia.bloques.forEach(bloque => {
+    const listo = !!est.bloques[bloque.id];
     const juntar = (refId, nombre, registro) => {
       if (!registro) return;
+      const tipo = registro.tipo || 'simple';
+
+      if (tipo === 'por_serie') {
+        registros.push({
+          ref: refId, nombre, captura: 'por_serie',
+          series: (est.series[refId] || []).map(s => ({
+            serie: s.n,
+            anadida_en_ejecucion: s.anadida,
+            campos: registro.columnas.map(col => campoPayload(
+              col, est.valores[s.claves[col.campo]] ?? null,
+              est.tocados[s.claves[col.campo]], listo, s.anadida))
+          }))
+        });
+        return;
+      }
+
+      const campos = tipo === 'carga_compartida' ? [registro.campo] : registro.campos;
       registros.push({
-        ref: refId,
-        nombre,
-        campos: registro.campos.map(campo => {
-          const valor = est.valores[`${refId}.${campo.campo}`] ?? null;
-          return {
-            campo: campo.campo,
-            etiqueta: campo.etiqueta,
-            unidad: campo.unidad,
-            prescrito: campo.prescrito
-              ? { declarado: true, valor: campo.texto, min: campo.min ?? null, max: campo.max ?? null }
-              : { declarado: false, motivo: campo.motivo || null },
-            registrado: valor === null
-              ? { declarado: false, motivo: 'el alumno no anotó este dato' }
-              : { declarado: true, valor },
-            estado: estadoDeCampo(campo, valor)
-          };
-        })
+        ref: refId, nombre,
+        // Una entrada por ejercicio, no una por vuelta. Decirlo importa: "las
+        // tres vueltas iguales" y "anote cada vuelta" son evidencias distintas.
+        captura: tipo === 'carga_compartida' ? 'carga_compartida' : 'en_conjunto',
+        campos: campos.map(c => campoPayload(
+          c, est.valores[`${refId}.${c.campo}`] ?? null,
+          est.tocados[`${refId}.${c.campo}`], listo, false))
       });
     };
     juntar(bloque.id, bloque.titulo, bloque.registro);
@@ -484,10 +694,6 @@ function construirEjecucion(dia) {
     dia: dia.id,
     sesion_id: dia.sesion_id,
     entrega: S.entrega,
-    // Se registro una entrada por ejercicio, no una por vuelta del circuito.
-    // Decirlo importa: "las tres vueltas iguales" y "anote cada vuelta" son
-    // dos evidencias distintas y no se pueden leer como la misma.
-    capturado: 'en_conjunto',
     fuente_confirmacion: 'boton_bloque_listo',
     // Contra que se entreno, acreditado. `coincide: false` significa que la
     // entrega cambio despues de publicarse.
@@ -510,8 +716,118 @@ function completionDe(id) {
   return 'casi';
 }
 
+/* ==========================================================================
+   7. Audio
+   ========================================================================== */
+
+function dibujarAudio(dia) {
+  const est = D(dia.id);
+  const caja = el('div', 'audio');
+  const botones = el('div', 'audio-botones');
+  const grabar = el('button', 'audio-btn', '● GRABAR AUDIO');
+  grabar.type = 'button';
+  const borrar = el('button', 'audio-btn', 'BORRAR AUDIO');
+  borrar.type = 'button';
+  borrar.hidden = true;
+  botones.appendChild(grabar);
+  botones.appendChild(borrar);
+  caja.appendChild(botones);
+  const rotulo = el('div', 'audio-estado', 'Opcional · máximo 90 segundos.');
+  caja.appendChild(rotulo);
+  const oir = el('audio');
+  oir.controls = true;
+  oir.hidden = true;
+  caja.appendChild(oir);
+
+  let rec = null, pista = null, trozos = [], reloj = null, seg = 0;
+
+  const mime = () => {
+    const c = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
+    return (window.MediaRecorder && MediaRecorder.isTypeSupported)
+      ? (c.find(x => MediaRecorder.isTypeSupported(x)) || '') : '';
+  };
+  const ext = t => {
+    t = (t || '').toLowerCase();
+    if (t.includes('mp4')) return 'm4a';
+    if (t.includes('ogg')) return 'ogg';
+    if (t.includes('mpeg')) return 'mp3';
+    return 'webm';
+  };
+  const soltar = () => { if (pista) { pista.getTracks().forEach(t => t.stop()); pista = null; } };
+
+  borrar.onclick = () => {
+    clearInterval(reloj); soltar();
+    est.audio = null; trozos = []; seg = 0;
+    if (oir.src) URL.revokeObjectURL(oir.src);
+    oir.removeAttribute('src'); oir.hidden = true;
+    borrar.hidden = true;
+    grabar.textContent = '● GRABAR AUDIO';
+    grabar.classList.remove('grabando');
+    rotulo.textContent = 'Opcional · máximo 90 segundos.';
+  };
+
+  grabar.onclick = async () => {
+    if (rec && rec.state === 'recording') { rec.stop(); return; }
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      rotulo.textContent = 'Este navegador no permite grabar aquí. Puedes escribir tu feedback.';
+      return;
+    }
+    try {
+      pista = await navigator.mediaDevices.getUserMedia({ audio: true });
+      trozos = []; seg = 0;
+      const m = mime();
+      rec = m ? new MediaRecorder(pista, { mimeType: m }) : new MediaRecorder(pista);
+      rec.ondataavailable = e => { if (e.data && e.data.size) trozos.push(e.data); };
+      rec.onstop = () => {
+        clearInterval(reloj); soltar();
+        est.audio = new Blob(trozos, { type: rec.mimeType || m || 'audio/webm' });
+        est.audioExt = ext(est.audio.type);
+        oir.src = URL.createObjectURL(est.audio);
+        oir.hidden = false;
+        borrar.hidden = false;
+        grabar.textContent = '● GRABAR DE NUEVO';
+        grabar.classList.remove('grabando');
+        rotulo.textContent = `Audio listo · ${seg} s. Puedes escucharlo antes de enviar.`;
+      };
+      rec.start();
+      grabar.textContent = '■ DETENER';
+      grabar.classList.add('grabando');
+      rotulo.textContent = 'Grabando… 0 s / 90 s';
+      reloj = setInterval(() => {
+        seg++;
+        rotulo.textContent = `Grabando… ${seg} s / 90 s`;
+        if (seg >= 90 && rec?.state === 'recording') rec.stop();
+      }, 1000);
+    } catch (e) {
+      soltar();
+      rotulo.textContent = 'No pude acceder al micrófono. Puedes escribir tu feedback.';
+    }
+  };
+  return caja;
+}
+
+async function subirAudio(dia) {
+  const est = D(dia.id);
+  if (!est.audio) return null;
+  const ruta = `${S.sesion.alumno_slug}/${dia.sesion_id}/feedback/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${est.audioExt}`;
+  const r = await fetch(`${SUPABASE_URL}/storage/v1/object/cerca-feedback-audio/${ruta}`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': est.audio.type || 'audio/webm', 'x-upsert': 'false'
+    },
+    body: est.audio
+  });
+  if (!r.ok) throw new Error('No pude guardar el audio.');
+  return ruta;
+}
+
+/* ==========================================================================
+   8. Enviar
+   ========================================================================== */
+
 async function enviarDia(dia, caja) {
-  const est = estadoDia(dia.id);
+  const est = D(dia.id);
   const boton = $('.btn-primario', caja);
   if (boton.disabled) return;
   const rotulo = $('.estado', caja);
@@ -538,9 +854,9 @@ async function enviarDia(dia, caja) {
       method: 'POST', headers: ESCRITURA,
       body: JSON.stringify({ ...comun, submission_id: est.envio, execution: construirEjecucion(dia) })
     });
-    if (!r1.ok && !(await r1.text()).includes('duplicate key')) {
-      throw new Error('No pude guardar el registro de la sesión.');
-    }
+    if (!r1.ok) throw new Error('No pude guardar el registro de la sesión.');
+
+    const audio = await subirAudio(dia);
 
     const r2 = await fetch(`${SUPABASE_URL}/rest/v1/cerca_workout_feedback`, {
       method: 'POST', headers: ESCRITURA,
@@ -549,7 +865,7 @@ async function enviarDia(dia, caja) {
         completion: completionDe(dia.id),
         effort: est.esfuerzo,
         comment: nota,
-        audio_path: null,
+        audio_path: audio,
         execution_submission_id: est.envio
       })
     });
@@ -558,9 +874,7 @@ async function enviarDia(dia, caja) {
     est.enviado = true;
     rotulo.textContent = 'Enviado a Seba ✓';
     boton.textContent = 'ENVIADO ✓';
-    // El boton queda cerrado: un envio por dia y por visita. Otra semana se
-    // abre la pagina de nuevo y esa vez nace con su propio identificador.
-    est.envio = nuevoId();
+    try { sessionStorage.removeItem(est.llave); } catch (e) {}
   } catch (e) {
     rotulo.textContent = e.message || 'No se pudo enviar ahora. Intenta de nuevo.';
     rotulo.classList.add('mal');
@@ -570,24 +884,27 @@ async function enviarDia(dia, caja) {
 }
 
 /* ==========================================================================
-   6. Cronometro
+   9. Cronometros
    ========================================================================== */
 
 const crono = { restante: 30, tic: null, corriendo: false, vueltas: null, vuelta: 0, rotulos: [] };
 const mmss = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
-function pintarCrono() { $('#cronoTiempo').textContent = mmss(crono.restante); }
-function pitar() {
+let audioCtx = null;
+function pitar(hz = 880, dur = .12) {
   try {
-    const c = new (window.AudioContext || window.webkitAudioContext)();
-    const o = c.createOscillator(), g = c.createGain();
-    o.connect(g); g.connect(c.destination); g.gain.value = .1; o.start(); o.stop(c.currentTime + .12);
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.frequency.value = hz;
+    g.gain.setValueAtTime(.15, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + dur);
   } catch (e) { /* sin sonido, el numero sigue estando */ }
 }
-function pararCrono() {
-  clearInterval(crono.tic); crono.tic = null; crono.corriendo = false;
-  $('#cronoVa').textContent = 'INICIAR';
-}
+
+function pintarCrono() { $('#cronoTiempo').textContent = mmss(crono.restante); }
+function pararCrono() { clearInterval(crono.tic); crono.tic = null; crono.corriendo = false; $('#cronoVa').textContent = 'INICIAR'; }
 function abrirCrono(c) {
   pararCrono();
   if (c && c.tipo === 'emom') {
@@ -624,8 +941,71 @@ function correrCrono() {
   }, 250);
 }
 
+/* --- Tabata: vive dentro del bloque, no en la hoja ------------------------ */
+function dibujarTabata(c) {
+  const trabajo = c.trabajo || 20, descanso = c.descanso || 10, total = c.total || 480;
+  const nombres = c.ejercicios || ['Trabajo'];
+  const caja = el('div', 'tabata');
+  caja.appendChild(el('small', 'fase r-etiqueta', c.rotulo || 'TABATA'));
+  const fase = el('strong', 'fase r-etiqueta', 'LISTO');
+  caja.appendChild(fase);
+  const cuenta = el('div', 'cuenta', String(trabajo));
+  caja.appendChild(cuenta);
+  const quien = el('b', 'quien', nombres[0]);
+  caja.appendChild(quien);
+  const reloj = el('em', 'reloj');
+  caja.appendChild(reloj);
+
+  const mandos = el('div', 'tabata-mandos');
+  const va = el('button', 'va', 'INICIAR'); va.type = 'button';
+  const pausa = el('button', null, 'PAUSA'); pausa.type = 'button'; pausa.disabled = true;
+  const cero = el('button', null, 'REINICIAR'); cero.type = 'button';
+  mandos.appendChild(cero); mandos.appendChild(pausa); mandos.appendChild(va);
+  caja.appendChild(mandos);
+  const aviso = el('div', 'aviso', 'CERCA avisa con sonido al cambiar trabajo y descanso.');
+  caja.appendChild(aviso);
+
+  let corriendo = false, tic = null, en = 'trabajo', queda = trabajo, ido = 0, i = 0, lock = null;
+
+  async function pedirPantalla() {
+    try { if ('wakeLock' in navigator && !lock) lock = await navigator.wakeLock.request('screen'); }
+    catch (e) { aviso.textContent = 'El cronómetro seguirá sonando, pero este dispositivo no permitió mantener la pantalla encendida.'; }
+  }
+  async function soltarPantalla() { try { if (lock) await lock.release(); } catch (e) {} lock = null; }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && corriendo) pedirPantalla();
+  });
+
+  function pintar() {
+    fase.textContent = ido >= total ? 'TERMINADO' : en === 'trabajo' ? 'TRABAJO' : 'DESCANSO';
+    cuenta.textContent = ido >= total ? '✓' : String(queda);
+    quien.textContent = nombres[i % nombres.length];
+    reloj.textContent = `${Math.floor(ido / 60)}:${String(ido % 60).padStart(2, '0')} / ${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+    pausa.disabled = !corriendo;
+    va.textContent = corriendo ? 'CORRIENDO' : 'INICIAR';
+  }
+  function tick() {
+    if (ido >= total) { clearInterval(tic); corriendo = false; pitar(1100, .28); soltarPantalla(); pintar(); return; }
+    queda--; ido++;
+    if (queda <= 0) {
+      if (en === 'trabajo') { en = 'descanso'; queda = descanso; pitar(520, .15); }
+      else { en = 'trabajo'; queda = trabajo; i++; pitar(980, .15); }
+    }
+    pintar();
+  }
+  va.onclick = async () => {
+    if (corriendo) return;
+    corriendo = true; pitar(980, .12); await pedirPantalla(); pintar();
+    tic = setInterval(tick, 1000);
+  };
+  pausa.onclick = () => { clearInterval(tic); corriendo = false; soltarPantalla(); pintar(); };
+  cero.onclick = () => { clearInterval(tic); corriendo = false; en = 'trabajo'; queda = trabajo; ido = 0; i = 0; soltarPantalla(); pintar(); };
+  pintar();
+  return caja;
+}
+
 /* ==========================================================================
-   7. Chat / bitacora
+   10. Chat / bitacora
    ========================================================================== */
 
 const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -667,7 +1047,7 @@ async function guardarBitacora(texto) {
       body: JSON.stringify({
         session_id: dia.sesion_id,
         student_slug: S.sesion.alumno_slug,
-        block_id: `dia_${dia.id}`,
+        block_id: S.bloqueVisible || `dia_${dia.id}`,
         question_text: texto,
         input_mode: 'text',
         audio_path: null,
@@ -703,7 +1083,7 @@ function enviarChat(texto) {
 }
 
 /* ==========================================================================
-   8. Arranque
+   11. Arranque
    ========================================================================== */
 
 function conectarHojas() {
