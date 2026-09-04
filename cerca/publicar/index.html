@@ -28,9 +28,23 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
 .enlace{margin-top:16px;padding:16px;border:1px solid rgba(16,231,239,.35);border-radius:12px;background:rgba(16,231,239,.05);display:none}
 .enlace.on{display:block}
 .enlace code{display:block;word-break:break-all;font-size:14px;color:#9af9fb;margin:8px 0 12px}
-ul.chequeo{margin:12px 0 0;padding-left:20px;font-size:14px;color:var(--apunte)}
-ul.chequeo li{margin:4px 0}
-ul.chequeo li.mal{color:var(--mal)}
+.veredicto{display:flex;gap:10px;align-items:flex-start;padding:13px 14px;border-radius:12px;border:1px solid var(--linea);background:#050f0f;font-size:15px;line-height:1.5}
+.veredicto .marca{font-size:18px;line-height:1.3}
+.veredicto.bien{border-color:rgba(126,240,176,.4);background:rgba(126,240,176,.06)}
+.veredicto.bien .marca{color:var(--bien)}
+.veredicto.mal{border-color:rgba(255,184,184,.4);background:rgba(255,184,184,.06)}
+.veredicto.mal .marca{color:var(--mal)}
+ul.problemas{margin:12px 0 0;padding-left:22px;font-size:15px;line-height:1.5;color:#ffcfcf}
+ul.problemas li{margin:6px 0}
+ul.problemas:empty{display:none}
+.telefono{margin:18px auto 0;width:min(390px,100%);border:1px solid var(--linea);border-radius:22px;overflow:hidden;background:#020606;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.telefono iframe{display:block;width:100%;height:min(720px,72vh);border:0}
+.pie-vista{text-align:center;color:var(--apunte);font-size:13px;margin-top:10px}
+details.codigo{margin-top:20px;border-top:1px solid var(--linea);padding-top:14px}
+details.codigo summary{cursor:pointer;color:var(--apunte);font-size:14px;list-style:none}
+details.codigo summary::-webkit-details-marker{display:none}
+details.codigo summary::before{content:'▸ ';color:var(--cyan)}
+details.codigo[open] summary::before{content:'▾ '}
 table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
 th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--linea)}
 th{color:var(--apunte);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
@@ -52,7 +66,7 @@ td.jub{color:var(--apunte)}
 
   <main id="app" class="oculto">
     <h1>Publicar una sesión</h1>
-    <p class="sub">Pegas la sesión, aprietas publicar y te llevas el enlace. No caduca, no se puede adivinar y no requiere tocar código.</p>
+    <p class="sub">Traes la sesión, la miras como la va a ver el alumno, y te llevas el enlace. No caduca, no se puede adivinar y no requiere tocar código.</p>
 
     <h2>1 · De quién es</h2>
     <div class="caja">
@@ -72,26 +86,35 @@ td.jub{color:var(--apunte)}
       </div>
       <div class="fila">
         <button class="btn sec" id="traer">Traer la última entrega de este alumno</button>
-        <button class="btn sec" id="molde">Traer la sesión de Nico que ya está lista</button>
+      </div>
+      <label style="margin-top:16px">O empezar desde una que ya existe</label>
+      <div class="fila">
+        <button class="btn sec" data-molde="nico">La semana de Nico</button>
+        <button class="btn sec" data-molde="pancha">La sesión de Panchi</button>
       </div>
       <div class="estado" id="estadoTraer"></div>
     </div>
 
-    <h2>2 · La sesión</h2>
+    <h2>2 · Cómo la va a ver</h2>
     <div class="caja">
-      <label for="json">Contenido de la sesión</label>
-      <textarea id="json" spellcheck="false" placeholder='Pega aquí la sesión, o trae la última y edítale los números.'></textarea>
-      <div class="fila">
-        <button class="btn sec" id="revisar">Revisar</button>
-        <button class="btn sec" id="ordenar">Ordenar el texto</button>
-      </div>
-      <ul class="chequeo oculto" id="chequeo"></ul>
+      <div class="veredicto" id="veredicto"><span class="marca">·</span><span id="veredictoTexto">Trae una sesión arriba para verla aquí.</span></div>
+      <ul class="problemas" id="problemas"></ul>
+
+      <div class="telefono"><iframe id="vista" title="Vista previa de la sesión"></iframe></div>
+      <p class="pie-vista">Esto es exactamente lo que va a ver en su teléfono. Puedes tocarlo: nada de lo que hagas aquí se guarda.</p>
+
+      <details class="codigo">
+        <summary>Ver el código</summary>
+        <label for="json" style="margin-top:12px">Contenido de la sesión</label>
+        <textarea id="json" spellcheck="false" placeholder='Trae una sesión arriba, o pega una aquí.'></textarea>
+        <div class="fila"><button class="btn sec" id="ordenar">Ordenar el texto</button></div>
+      </details>
     </div>
 
     <h2>3 · Publicar</h2>
     <div class="caja">
-      <p style="margin:0;color:var(--apunte);font-size:14px">Publicar crea una entrega nueva y jubila la anterior de este alumno y este plan. La anterior no se borra: lo que ya entrenó apunta a ella.</p>
-      <div class="fila"><button class="btn" id="publicar" disabled>Revisa primero</button></div>
+      <p style="margin:0;color:var(--apunte);font-size:15px;line-height:1.5">Publicar crea una entrega nueva y jubila la anterior de este alumno y este plan. La anterior no se borra: lo que ya entrenó apunta a ella.</p>
+      <div class="fila"><button class="btn" id="publicar" disabled>Trae una sesión</button></div>
       <div class="estado" id="estadoPub"></div>
       <div class="enlace" id="enlace">
         <strong>Enlace para mandarle:</strong>

@@ -10,6 +10,7 @@
    ========================================================================== */
 
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 let CLAVE = '';
 
 const cab = () => ({
@@ -37,49 +38,49 @@ async function rpc(nombre, cuerpo) {
    Comprueba estructura, no criterio de entrenamiento. Nunca opina sobre si
    una carga es alta o si faltan ejercicios: eso es del entrenador. */
 function revisar(s) {
-  const mal = [], bien = [];
-  const exigir = (cond, texto) => { (cond ? bien : mal).push(texto); return cond; };
+  const mal = [];
+  const exigir = (cond, texto) => { if (!cond) mal.push(texto); return cond; };
 
-  if (!exigir(s && typeof s === 'object', 'La sesión es un objeto')) return { mal, bien };
-  exigir(s.formato === 1, 'Declara "formato": 1');
-  exigir(typeof s.alumno === 'string' && s.alumno, 'Tiene nombre de alumno');
-  exigir(/^[a-z0-9_-]+$/.test(s.alumno_slug || ''), 'El alumno_slug es simple (minúsculas, sin tildes ni espacios)');
-  if (!exigir(Array.isArray(s.dias) && s.dias.length, 'Tiene al menos un día')) return { mal, bien };
+  if (!exigir(s && typeof s === 'object', 'Esto no es una sesión.')) return { mal, resumen: '' };
+  exigir(s.formato === 1, 'La sesión no dice en qué formato está escrita.');
+  exigir(typeof s.alumno === 'string' && s.alumno, 'Falta el nombre del alumno.');
+  exigir(/^[a-z0-9_-]+$/.test(s.alumno_slug || ''), 'El nombre corto del alumno debe ir en minúsculas, sin tildes ni espacios.');
+  if (!exigir(Array.isArray(s.dias) && s.dias.length, 'La sesión no tiene ningún día.')) return { mal, resumen: '' };
 
   const sesionIds = new Set();
   let bloques = 0, ejercicios = 0, casilleros = 0;
 
   s.dias.forEach((d, i) => {
     const donde = `día ${i + 1}`;
-    exigir(typeof d.id === 'string' && d.id, `${donde}: tiene id`);
-    exigir(typeof d.nav === 'string' && d.nav, `${donde}: tiene rótulo de pestaña`);
-    exigir(typeof d.titulo === 'string' && d.titulo, `${donde}: tiene título`);
-    if (exigir(typeof d.sesion_id === 'string' && d.sesion_id, `${donde}: tiene sesion_id`)) {
-      exigir(!sesionIds.has(d.sesion_id), `${donde}: su sesion_id no se repite («${d.sesion_id}»)`);
+    exigir(typeof d.id === 'string' && d.id, `${donde}: le falta el identificador.`);
+    exigir(typeof d.nav === 'string' && d.nav, `${donde}: le falta el rótulo de la pestaña.`);
+    exigir(typeof d.titulo === 'string' && d.titulo, `${donde}: le falta el título.`);
+    if (exigir(typeof d.sesion_id === 'string' && d.sesion_id, `${donde}: le falta el identificador de sesión.`)) {
+      exigir(!sesionIds.has(d.sesion_id), `${donde}: repite el identificador de sesión «${d.sesion_id}». Cada día necesita el suyo o después no se pueden distinguir.`);
       sesionIds.add(d.sesion_id);
     }
-    if (!Array.isArray(d.bloques) || !d.bloques.length) { mal.push(`${donde}: no tiene bloques`); return; }
+    if (!Array.isArray(d.bloques) || !d.bloques.length) { mal.push(`${donde}: no tiene ningún bloque.`); return; }
 
     const idsBloque = new Set(), codigos = new Set();
     d.bloques.forEach(b => {
       bloques++;
-      if (!b.id) { mal.push(`${donde}: hay un bloque sin id`); return; }
-      if (idsBloque.has(b.id)) mal.push(`${donde}: el bloque «${b.id}» está dos veces`);
+      if (!b.id) { mal.push(`${donde}: hay un bloque sin identificador.`); return; }
+      if (idsBloque.has(b.id)) mal.push(`${donde}: el bloque «${b.id}» aparece dos veces.`);
       idsBloque.add(b.id);
       if (b.tipo === 'mision' && (!Array.isArray(b.opciones) || !b.opciones.length)) {
-        mal.push(`${donde} · ${b.id}: es una misión y no tiene opciones`);
+        mal.push(`${donde}, bloque ${b.id}: es una misión pero no ofrece ninguna opción para elegir.`);
       }
       (b.ejercicios || []).forEach(e => {
         ejercicios++;
-        if (!e.nombre) mal.push(`${donde} · ${b.id}: hay un ejercicio sin nombre`);
+        if (!e.nombre) mal.push(`${donde}, bloque ${b.id}: hay un ejercicio sin nombre.`);
         if (e.codigo) {
-          if (codigos.has(e.codigo)) mal.push(`${donde}: el código «${e.codigo}» está dos veces`);
+          if (codigos.has(e.codigo)) mal.push(`${donde}: el código «${e.codigo}» está en dos ejercicios.`);
           codigos.add(e.codigo);
         }
       });
       [b, ...(b.ejercicios || [])].forEach(x => {
         if (!x.registro) return;
-        const quien = `${donde} · ${x.codigo || x.id || x.nombre}`;
+        const quien = `${donde}, ${x.nombre || 'bloque ' + x.id}`;
         // Tres formas de registrar, y cada una guarda sus campos en otro sitio:
         // una lista suelta, una columna por serie, o un solo valor compartido.
         const tipo = x.registro.tipo || 'simple';
@@ -87,41 +88,43 @@ function revisar(s) {
                     : tipo === 'carga_compartida' ? (x.registro.campo ? [x.registro.campo] : null)
                     : x.registro.campos;
         if (!Array.isArray(lista) || !lista.length) {
-          mal.push(`${quien}: tiene registro sin campos`); return;
+          mal.push(`${quien}: pide anotar algo pero no dice qué.`); return;
         }
         if (tipo === 'por_serie' && !(x.registro.series > 0)) {
-          mal.push(`${quien}: registro por serie sin decir cuántas series`);
+          mal.push(`${quien}: registra por serie pero no dice cuántas series son.`);
         }
         lista.forEach(c => {
           casilleros++;
-          if (!c.campo || !c.etiqueta || !c.unidad) mal.push(`${quien}: un casillero no dice campo, etiqueta o unidad`);
-          if (typeof c.prescrito !== 'boolean') { mal.push(`${quien} · ${c.campo}: no dice si el valor venía prescrito`); return; }
+          if (!c.campo || !c.etiqueta || !c.unidad) mal.push(`${quien}: un casillero está incompleto (le falta el nombre o la unidad).`);
+          if (typeof c.prescrito !== 'boolean') { mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: no dice si el valor venía prescrito o no.`); return; }
           // Lo prescrito tiene que poder mostrarse al lado del casillero, y lo
           // no prescrito tiene que decir POR QUE no lo esta. Un desconocido sin
           // motivo se lee despues como un olvido.
-          if (c.prescrito && !c.texto) mal.push(`${quien} · ${c.campo}: dice que venía prescrito pero no trae el valor`);
+          if (c.prescrito && !c.texto) mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: dice que lo prescribiste pero no trae el número.`);
           // Un casillero solo puede nacer con el valor escrito si ese valor
           // existe. Y prellenarlo cambia de donde sale la confirmacion, asi
           // que no puede colarse por descuido en algo no prescrito.
-          if (c.prellenado && !c.prescrito) mal.push(`${quien} · ${c.campo}: nace con un valor escrito pero no declara qué se prescribió`);
-          if (!c.prescrito && !c.motivo) mal.push(`${quien} · ${c.campo}: no venía prescrito y no explica por qué`);
+          if (c.prellenado && !c.prescrito) mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: aparece con un número ya escrito pero no dice cuál prescribiste.`);
+          if (!c.prescrito && !c.motivo) mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: no lleva número prescrito y no explica por qué. Sin motivo, después se lee como un olvido.`);
           if (c.prescrito && (typeof c.min === 'number') !== (typeof c.max === 'number')) {
-            mal.push(`${quien} · ${c.campo}: tiene solo uno de los dos extremos del rango`);
+            mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: el rango tiene solo uno de sus dos extremos.`);
           }
           if (typeof c.min === 'number' && typeof c.max === 'number' && c.min > c.max) {
-            mal.push(`${quien} · ${c.campo}: el mínimo es mayor que el máximo`);
+            mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: el mínimo del rango es mayor que el máximo.`);
           }
         });
       });
       if (!Array.isArray(b.ejercicios) && b.tipo !== 'mision') {
-        mal.push(`${donde} · ${b.id}: no tiene ejercicios`);
+        mal.push(`${donde}, bloque ${b.id}: no tiene ejercicios.`);
       }
     });
-    if (!d.feedback || !d.feedback.titulo) mal.push(`${donde}: no tiene la pregunta de feedback`);
+    if (!d.feedback || !d.feedback.titulo) mal.push(`${donde}: no le pregunta nada al alumno al terminar.`);
   });
 
-  bien.push(`${s.dias.length} día(s) · ${bloques} bloques · ${ejercicios} ejercicios · ${casilleros} casilleros de registro`);
-  return { mal, bien };
+  const dias = s.dias.length;
+  return { mal, resumen:
+    `${dias} ${dias === 1 ? 'día' : 'días'} · ${bloques} bloques · ${ejercicios} ejercicios · ` +
+    `${casilleros} ${casilleros === 1 ? 'casillero' : 'casilleros'} para anotar.` };
 }
 
 async function huella(objeto) {
@@ -157,45 +160,92 @@ try {
   if (g) { $('#clave').value = g; entrar(); }
 } catch (e) {}
 
-/* --- Revisar -------------------------------------------------------------- */
-let SESION = null;
+/* --- La vista previa ------------------------------------------------------
+   No es una imitacion de la pantalla del alumno: es la pantalla del alumno.
+   El mismo archivo que ella abre, cargado aqui dentro y alimentado por
+   mensaje. Una copia se habria desviado del original, y entonces lo revisado
+   no seria lo entregado. */
+
+let SESION = null;      // la ultima sesion valida
+let PENDIENTE = null;   // la que espera a que el marco diga que esta listo
+
+window.addEventListener('message', e => {
+  if (e.origin !== location.origin) return;
+  if (e.data?.cerca === 'lista' && PENDIENTE) {
+    $('#vista').contentWindow.postMessage({ cerca: 'sesion', sesion: PENDIENTE }, location.origin);
+  }
+});
+
+function mostrar(sesion) {
+  PENDIENTE = sesion;
+  // Recargar el marco es lo que provoca el saludo al que respondemos arriba.
+  $('#vista').src = '/s/index.html?p=vista&t=' + Date.now();
+}
+
+function veredicto(clase, marca, texto, problemas = []) {
+  const caja = $('#veredicto');
+  caja.className = 'veredicto' + (clase ? ' ' + clase : '');
+  $('#veredictoTexto').textContent = texto;
+  caja.querySelector('.marca').textContent = marca;
+  const lista = $('#problemas');
+  lista.replaceChildren();
+  problemas.forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    lista.appendChild(li);
+  });
+}
 
 function leerJson() {
   try { return JSON.parse($('#json').value); }
-  catch (e) { throw new Error('El texto no es un JSON válido. ' + e.message); }
+  catch (e) { throw new Error('lectura'); }
 }
 
-$('#revisar').onclick = () => {
-  const lista = $('#chequeo');
-  lista.classList.remove('oculto');
-  lista.replaceChildren();
+/* Una sola frase, y los problemas solo cuando los hay. La lista de todo lo que
+   esta bien no le dice nada a nadie. */
+function comprobar({ mostrarVista = true } = {}) {
+  const boton = $('#publicar');
+  if (!$('#json').value.trim()) {
+    SESION = null; boton.disabled = true; boton.textContent = 'Trae una sesión';
+    veredicto('', '·', 'Trae una sesión arriba para verla aquí.');
+    return;
+  }
+
   let s;
   try { s = leerJson(); }
-  catch (e) { SESION = null; $('#publicar').disabled = true; $('#publicar').textContent = 'Revisa primero'; decir('#estadoPub', e.message, 'mal'); return; }
+  catch (e) {
+    SESION = null; boton.disabled = true; boton.textContent = 'Trae una sesión';
+    veredicto('', '·', 'Todavía no puedo leer este texto. Si lo estás editando, sigue: reviso solo cuando pares.');
+    return;
+  }
 
-  const { mal, bien } = revisar(s);
-  [...mal.map(t => ['mal', '✕ ' + t]), ...bien.map(t => ['', '✓ ' + t])].forEach(([c, t]) => {
-    const li = document.createElement('li');
-    li.className = c; li.textContent = t;
-    lista.appendChild(li);
-  });
-
+  const { mal, resumen } = revisar(s);
   if (mal.length) {
     SESION = null;
-    $('#publicar').disabled = true;
-    $('#publicar').textContent = 'Arregla lo marcado';
-    decir('#estadoPub', `${mal.length} cosa(s) por arreglar antes de publicar.`, 'mal');
+    boton.disabled = true;
+    boton.textContent = 'Arregla lo de arriba';
+    veredicto('mal', '✕',
+      mal.length === 1 ? 'Hay una cosa que arreglar antes de publicar:'
+                       : `Hay ${mal.length} cosas que arreglar antes de publicar:`, mal);
   } else {
     SESION = s;
-    $('#publicar').disabled = false;
-    $('#publicar').textContent = 'Publicar y darme el enlace';
-    decir('#estadoPub', 'La sesión está lista para publicarse.', 'bien');
+    boton.disabled = false;
+    boton.textContent = 'Publicar y darme el enlace';
+    veredicto('bien', '✓', 'Todo bien. ' + resumen);
   }
-};
+  if (mostrarVista) mostrar(s);
+}
+
+/* Mientras escribe no se le grita: se espera a que pare. */
+let reloj = null;
+$('#json').addEventListener('input', () => {
+  clearTimeout(reloj);
+  reloj = setTimeout(() => comprobar(), 700);
+});
 
 $('#ordenar').onclick = () => {
-  try { $('#json').value = JSON.stringify(leerJson(), null, 2); decir('#estadoPub', 'Texto ordenado.', 'bien'); }
-  catch (e) { decir('#estadoPub', e.message, 'mal'); }
+  try { $('#json').value = JSON.stringify(leerJson(), null, 2); comprobar(); }
+  catch (e) { veredicto('mal', '✕', 'No puedo ordenar este texto porque todavía no se puede leer.'); }
 };
 
 /* --- Traer la ultima ------------------------------------------------------ */
@@ -209,25 +259,35 @@ $('#traer').onclick = async () => {
     const ultima = filas[0];
     $('#json').value = JSON.stringify(ultima.sesion, null, 2);
     if (ultima.plan) $('#plan').value = ultima.plan;
-    decir('#estadoTraer', `Traída la del ${new Date(ultima.publicado_en).toLocaleDateString('es-CL')}. Cámbiale lo que haga falta y revisa.`, 'bien');
+    decir('#estadoTraer', `Traída la del ${new Date(ultima.publicado_en).toLocaleDateString('es-CL')}. Mírala abajo y cámbiale lo que haga falta.`, 'bien');
+    comprobar();
   } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
 };
 
 /* Arranque en frio: la primera vez no hay nada publicado que traer, y el
-   archivo vive en GitHub. Este boton lo carga desde el propio sitio para no
-   tener que ir a buscarlo. Cuando ya haya historia en Supabase sobra: lo
+   archivo vive en GitHub. Estos botones lo cargan desde el propio sitio para
+   no tener que ir a buscarlo. Cuando ya haya historia en Supabase sobran: lo
    cubre "Traer la ultima entrega". */
-$('#molde').onclick = async () => {
-  decir('#estadoTraer', 'Cargando…');
-  try {
-    const r = await fetch('/sesiones/kecJVd0cI2VQVobjAof6xg.json');
-    if (!r.ok) throw new Error('No encontré la sesión de ejemplo en este sitio.');
-    $('#json').value = JSON.stringify(await r.json(), null, 2);
-    $('#alumno').value = 'nico';
-    $('#plan').value = 'nico-v1';
-    decir('#estadoTraer', 'Lista. Aprieta Revisar y después Publicar.', 'bien');
-  } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
+const MOLDES = {
+  nico:   { archivo: 'kecJVd0cI2VQVobjAof6xg', plan: 'nico-v1',           nombre: 'la semana de Nico' },
+  pancha: { archivo: 'r5GvuG0A6UDfxXw3_EViKA', plan: 'pancha-piernas-v4', nombre: 'la sesión de Panchi' }
 };
+
+$$('[data-molde]').forEach(boton => {
+  boton.onclick = async () => {
+    const m = MOLDES[boton.dataset.molde];
+    decir('#estadoTraer', 'Cargando…');
+    try {
+      const r = await fetch(`/sesiones/${m.archivo}.json`);
+      if (!r.ok) throw new Error(`No encontré ${m.nombre} en este sitio.`);
+      $('#json').value = JSON.stringify(await r.json(), null, 2);
+      $('#alumno').value = boton.dataset.molde;
+      $('#plan').value = m.plan;
+      decir('#estadoTraer', `Cargada ${m.nombre}. Mírala abajo y edítale lo que haga falta.`, 'bien');
+      comprobar();
+    } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
+  };
+});
 
 /* --- Publicar ------------------------------------------------------------- */
 $('#publicar').onclick = async () => {
@@ -302,3 +362,7 @@ async function listar() {
   } catch (e) { caja.textContent = e.message; }
 }
 $('#listar').onclick = listar;
+
+/* Estado inicial de la vista. Va al final: antes de aqui, SESION todavia no
+   existe y llamarlo arriba reventaba la pagina entera. */
+comprobar();

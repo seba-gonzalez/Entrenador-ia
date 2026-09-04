@@ -88,9 +88,7 @@
               "registro": {
                 "tipo": "por_serie",
                 "series": 3,
-                "maximo": 5,
                 "nota": "Los 50 kg son la prescripción. Si usaste otra carga, cámbiala. Si dejas 50 kg, CERCA solo los confirma cuando marcas este bloque como listo. Reps y esfuerzo quedan sin inventar si no los anotas.",
-                "pie": "Puedes agregar una serie si hiciste una de más. Una serie agregada se guarda marcada como añadida en ejecución, y solo se puede quitar mientras esté vacía.",
                 "columnas": [
                   { "campo": "carga", "etiqueta": "Kg", "unidad": "kg",
                     "prescrito": true, "texto": "50", "prellenado": true },

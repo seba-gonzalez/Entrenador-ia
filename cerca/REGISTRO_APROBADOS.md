@@ -854,6 +854,45 @@ Vive en `sessionStorage`, con la clave de la sesión. Recargar en mitad del
 entrenamiento no puede crear una segunda ejecución; abrir la página otro día sí.
 Tomado de la Panchi v4-evidence, que ya lo hacía bien.
 
+### APROBADO — El entrenador revisa mirando la pantalla del alumno (2026-09-02)
+
+La pantalla de publicar mostraba el JSON de la sesión. Sebastián no lee código,
+así que no podía revisar si la rutina estaba bien: aprobaba a ciegas.
+
+Ahora el paso 2 muestra **la pantalla del alumno dentro de un teléfono**, y el
+código vive detrás de *Ver el código*.
+
+**No es una imitación: es la pantalla.** El mismo `cerca/s/` que abre la alumna,
+cargado en un marco y alimentado por `postMessage` desde el mismo origen. Una
+segunda implementación para previsualizar se habría desviado del original con el
+tiempo, y entonces lo revisado dejaría de ser lo entregado — que es la misma
+clase de error que `prescrito ≠ ejecutado` existe para impedir.
+
+En modo previsualización la pantalla **no escribe nada**: ni ejecución, ni
+feedback, ni bitácora. Lo dice en pantalla en vez de fallar en silencio.
+
+### APROBADO — Una frase, y los problemas solo cuando los hay (2026-09-02)
+
+La lista de comprobaciones enumeraba también todo lo que estaba bien. Eran
+muchas líneas técnicas que no le decían nada a nadie.
+
+Ahora es **una sola frase**: *«Todo bien. 1 día · 6 bloques · 19 ejercicios · 4
+casilleros para anotar.»* o *«Hay 2 cosas que arreglar antes de publicar»* con
+las dos escritas en castellano, diciendo el día y el ejercicio.
+
+Los aciertos no se enumeran. Un aviso solo existe si hay algo que hacer con él.
+
+### APROBADO — Agregar series es opcional, y por defecto no está (2026-09-02)
+
+El botón «+ agregar serie» solo aparece si la sesión declara un `maximo` mayor
+que las series previstas. Se quitó de la de Panchi por decisión de dirección:
+seis años entrenándola, casi nunca hace pasadas extra, y un botón que no se usa
+ocupa sitio en una pantalla que se mira entre series. Si alguna vez ocurre, lo
+cuenta en el audio.
+
+La capacidad se conserva para quien la necesite. Lo que cambia es el defecto:
+**ausente**, no presente.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

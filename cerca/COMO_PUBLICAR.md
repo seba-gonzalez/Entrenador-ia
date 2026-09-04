@@ -29,39 +29,45 @@ Si dice *Success*, listo.
 > delante, escrita por su teléfono: para falsificar sin dejar rastro habría que
 > editar también todas esas filas.
 
-## Paso 2 · Escribir la sesión
+## Paso 2 · Traer la sesión
 
-Una sesión es un archivo de texto con una forma fija. El que ya existe, y que
-sirve de molde, es `cerca/sesiones/kecJVd0cI2VQVobjAof6xg.json`: es la semana
-de Nico entera.
+En `/publicar/`, arriba, tienes tres botones:
 
-**La primera vez** se copia ese y se le cambia el contenido.
-**Las siguientes**, no se escribe nada de cero: se aprieta *Traer la última
-entrega de este alumno* y se le cambian los números.
-
-Lo único que hay que entender de la forma:
-
-- **`dosis`** es lo que Nico lee: `"10–12 · 10 kg"`.
-- **`registro`** es dónde va un casillero. **Solo se pone donde el número pudo
-  variar.** Si el peso es fijo, no se pone: preguntar algo que ya sabemos es
-  fricción sin información.
-- Dentro de un casillero, `"prescrito": true` va con el valor (`"texto"`) y con
-  el rango (`"min"`, `"max"`). `"prescrito": false` va con un `"motivo"` que
-  explica por qué todavía no hay referencia. **El revisor no te deja publicar un
-  desconocido sin motivo**, porque un desconocido sin explicación se lee después
-  como un olvido.
+- **Traer la última entrega de este alumno** — el camino normal. Trae lo que le
+  mandaste la semana pasada para que le cambies los números.
+- **La semana de Nico** / **La sesión de Panchi** — para empezar desde una que
+  ya existe. La primera vez de cada alumno, o cuando quieras copiar la
+  estructura de otro.
 
 ---
 
-## Paso 3 · Publicar
+## Paso 3 · Mirarla y publicar
 
-1. Abre **`/publicar/`** de tu sitio en el navegador del iPad y entra con tu clave.
-2. Escribe de quién es (`nico`) y el plan (`nico-v1`).
-3. Pega la sesión, o trae la última y edítala.
-4. Aprieta **Revisar**. Te dice qué está mal, con el día y el ejercicio.
-5. Aprieta **Publicar**. Te devuelve el enlace.
+Debajo aparece **la pantalla del alumno tal cual**, dentro de un teléfono. No es
+un dibujo ni una aproximación: es la misma página que ella va a abrir, con los
+mismos bloques, dosis, descansos y casilleros. Puedes tocarla, abrir bloques y
+probar el cronómetro: nada de lo que hagas ahí se guarda.
 
-El enlace **no caduca** y **no se puede adivinar**.
+Arriba de la vista hay **una sola frase**:
+
+- *Todo bien. 1 día · 6 bloques · 19 ejercicios · 4 casilleros para anotar.*
+- o *Hay 2 cosas que arreglar antes de publicar*, con las dos cosas escritas en
+  castellano y diciendo en qué día y en qué ejercicio están.
+
+Si necesitas cambiar algo, abre **Ver el código** al final, edita, y la vista se
+actualiza sola cuando paras de escribir. **Lo que hay que entender del texto:**
+
+- **`dosis`** es lo que ella lee: `"10–12 · 10 kg"`.
+- **`registro`** es dónde va un casillero. Solo donde el número pudo variar. Si
+  el peso es fijo, no se pone.
+- `"prescrito": true` va con el valor y con el rango. `"prescrito": false` va con
+  un `"motivo"` que explica por qué todavía no hay referencia.
+- `"prellenado": true` hace que el casillero nazca con el número escrito, como
+  los 50 kg del squat. Ahí el silencio no confirma nada: hace falta que ella
+  marque el bloque como listo o mueva el campo.
+
+Cuando la frase diga que todo está bien, aprieta **Publicar**. Te devuelve el
+enlace.
 
 ---
 

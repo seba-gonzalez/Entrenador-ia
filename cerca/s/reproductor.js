@@ -78,6 +78,21 @@ async function cargarSesion() {
   const token = p.get('e');
   const archivo = p.get('f');
 
+  // Previsualizacion: la pantalla de publicar necesita mostrarle a Sebastian
+  // exactamente lo que va a ver el alumno. Se alimenta por mensaje, desde el
+  // mismo origen, en vez de duplicar el dibujado en otro archivo: una copia
+  // se desviaria del original y lo previsto dejaria de ser lo entregado.
+  if (p.get('p') === 'vista') {
+    const sesion = await new Promise(resolve => {
+      window.addEventListener('message', e => {
+        if (e.origin !== location.origin) return;
+        if (e.data && e.data.cerca === 'sesion') resolve(e.data.sesion);
+      });
+      parent.postMessage({ cerca: 'lista' }, location.origin);
+    });
+    return { sesion, hash: await huella(sesion), declarado: null, entrega: null };
+  }
+
   if (archivo) {
     if (!/^[a-zA-Z0-9_-]+$/.test(archivo)) throw new Error('ruta no permitida');
     const r = await fetch(`../sesiones/${archivo}.json`);
@@ -434,12 +449,15 @@ function dibujarSeries(dia, refId, registro, caja) {
   filas.className = 'registro-series';
   caja.appendChild(filas);
 
+  // Agregar series es opcional. Si el entrenador no declara un maximo mayor que
+  // las series previstas, el boton no existe: ocupa sitio y no se usa.
+  const permiteAgregar = (registro.maximo || 0) > (registro.series || 1);
   const sumar = el('button', 'sumar-serie', '+ AGREGAR SERIE');
   sumar.type = 'button';
 
   function renumerar() {
     est.series[refId].forEach((s, i) => { s.n = i + 1; s.nodo.textContent = 'S' + (i + 1); });
-    sumar.disabled = est.series[refId].length >= (registro.maximo || 5);
+    sumar.disabled = est.series[refId].length >= (registro.maximo || 0);
   }
 
   function agregar(anadida) {
@@ -480,8 +498,10 @@ function dibujarSeries(dia, refId, registro, caja) {
   }
 
   for (let i = 0; i < (registro.series || 1); i++) agregar(false);
-  sumar.onclick = () => { if (!sumar.disabled) agregar(true); };
-  caja.appendChild(sumar);
+  if (permiteAgregar) {
+    sumar.onclick = () => { if (!sumar.disabled) agregar(true); };
+    caja.appendChild(sumar);
+  }
 }
 
 /* ==========================================================================
@@ -826,10 +846,16 @@ async function subirAudio(dia) {
    8. Enviar
    ========================================================================== */
 
+const PREVISUALIZANDO = new URLSearchParams(location.search).get('p') === 'vista';
+
 async function enviarDia(dia, caja) {
   const est = D(dia.id);
   const boton = $('.btn-primario', caja);
   if (boton.disabled) return;
+  if (PREVISUALIZANDO) {
+    $('.estado', caja).textContent = 'Esto es una vista previa: no se envía nada.';
+    return;
+  }
   const rotulo = $('.estado', caja);
   const nota = $('textarea', caja).value.trim() || null;
   const { listos } = cuentaBloques(dia.id);
@@ -1039,6 +1065,7 @@ function burbuja(texto, quien) {
 
 async function guardarBitacora(texto) {
   const rotulo = $('#bitEstado');
+  if (PREVISUALIZANDO) { rotulo.textContent = 'Vista previa: los mensajes no se guardan.'; return; }
   rotulo.textContent = 'Guardando…';
   const dia = S.sesion.dias.find(d => d.id === S.diaVisible) || S.sesion.dias[0];
   try {
