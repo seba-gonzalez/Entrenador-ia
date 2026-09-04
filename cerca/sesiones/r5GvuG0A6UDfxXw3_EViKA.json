@@ -4,36 +4,78 @@
   "alumno_slug": "pancha",
   "plan": "pancha-piernas-v4",
   "publicado": "2026-09-01",
-
-  "vista": { "acordeon": true, "progreso": true },
-
+  "vista": {
+    "acordeon": true,
+    "progreso": true
+  },
   "portada": {
     "kicker": "Entrenamiento de hoy",
     "titulo": "Hola, Panchi 👋\nHoy vamos con piernas.",
     "bajada": "Tu rutina, tus cargas y lo que realmente pasó en la sesión. Registra solo donde vale la pena recordarlo.",
-    "pastillas": ["6 bloques", "piernas + core", "feedback al final"]
-  },
-
-  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
-
-  "chat": {
-    "atajos": ["¿Cuánto descanso?", "¿Cómo funciona el tabata?", "¿Qué carga uso?"],
-    "videos": [
-      ["spiderman", "spiderman mobility exercise"],
-      ["paloma", "single leg romanian deadlift dumbbell"],
-      ["plancha", "plank exercise"],
-      ["back squat", "back squat tutorial"],
-      ["squat", "back squat tutorial"],
-      ["almejita", "side plank clamshell rotation"],
-      ["estocada", "walking lunge dumbbell"],
-      ["renegado", "renegade row tutorial"],
-      ["burpee", "half burpee tutorial"],
-      ["escalador", "mountain climbers exercise"],
-      ["oso", "bear crawl exercise"],
-      ["cadera", "glute bridge band exercise"]
+    "pastillas": [
+      "6 bloques",
+      "piernas + core",
+      "feedback al final"
     ]
   },
-
+  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
+  "chat": {
+    "atajos": [
+      "¿Cuánto descanso?",
+      "¿Cómo funciona el tabata?",
+      "¿Qué carga uso?"
+    ],
+    "videos": [
+      [
+        "spiderman",
+        "spiderman mobility exercise"
+      ],
+      [
+        "paloma",
+        "single leg romanian deadlift dumbbell"
+      ],
+      [
+        "plancha",
+        "plank exercise"
+      ],
+      [
+        "back squat",
+        "back squat tutorial"
+      ],
+      [
+        "squat",
+        "back squat tutorial"
+      ],
+      [
+        "almejita",
+        "side plank clamshell rotation"
+      ],
+      [
+        "estocada",
+        "walking lunge dumbbell"
+      ],
+      [
+        "renegado",
+        "renegade row tutorial"
+      ],
+      [
+        "burpee",
+        "half burpee tutorial"
+      ],
+      [
+        "escalador",
+        "mountain climbers exercise"
+      ],
+      [
+        "oso",
+        "bear crawl exercise"
+      ],
+      [
+        "cadera",
+        "glute bridge band exercise"
+      ]
+    ]
+  },
   "dias": [
     {
       "id": "hoy",
@@ -41,6 +83,12 @@
       "sesion_id": "pancha-piernas-2026-09-01-v2",
       "titulo": "Piernas + core",
       "bajada": "Seis bloques. Registra solo el squat de trabajo y la carga del circuito: el resto no cambia ninguna decisión.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
       "bloques": [
         {
           "id": "b1",
@@ -49,9 +97,18 @@
           "recorrido": "*Cómo hacerlo:* Rotaciones → Pierna al lado → Spiderman, continuos y sin descanso entre ejercicios. Al terminar Spiderman, *máximo 30 s* y vuelves a empezar. Son *3 vueltas*.",
           "descanso": "*Descanso:* máximo 30 s, solo al terminar Spiderman.",
           "ejercicios": [
-            { "nombre": "Rotaciones en cuatro apoyos", "descripcion": "10 hacia adelante + 10 hacia atrás." },
-            { "nombre": "Pierna al lado + carga adelante/atrás", "descripcion": "5 por lado." },
-            { "nombre": "Spiderman", "descripcion": "10 repeticiones, cargándote adelante y atrás." }
+            {
+              "nombre": "Rotaciones en cuatro apoyos",
+              "descripcion": "10 hacia adelante + 10 hacia atrás."
+            },
+            {
+              "nombre": "Pierna al lado + carga adelante/atrás",
+              "descripcion": "5 por lado."
+            },
+            {
+              "nombre": "Spiderman",
+              "descripcion": "10 repeticiones, cargándote adelante y atrás."
+            }
           ]
         },
         {
@@ -61,10 +118,23 @@
           "recorrido": "*Cómo hacerlo:* Elevación de cadera → Palomas → Plancha, continuos y sin descanso entre ejercicios. Al terminar la plancha, *máximo 30 s* y vuelves a empezar. Son *3 vueltas*.",
           "descanso": "*Descanso:* máximo 30 s, solo al terminar la plancha.",
           "ejercicios": [
-            { "nombre": "Elevación de cadera + banda", "descripcion": "20 repeticiones. Banda en las rodillas." },
-            { "nombre": "Palomas", "dosis": "15 lb", "descripcion": "10 por pierna. Mancuerna tomada con las dos manos." },
-            { "nombre": "Plancha", "descripcion": "30 segundos.",
-              "crono": { "segundos": 30, "rotulo": "30 s" } }
+            {
+              "nombre": "Elevación de cadera + banda",
+              "descripcion": "20 repeticiones. Banda en las rodillas."
+            },
+            {
+              "nombre": "Palomas",
+              "dosis": "15 lb",
+              "descripcion": "10 por pierna. Mancuerna tomada con las dos manos."
+            },
+            {
+              "nombre": "Plancha",
+              "descripcion": "30 segundos.",
+              "crono": {
+                "segundos": 30,
+                "rotulo": "30 s"
+              }
+            }
           ]
         },
         {
@@ -74,9 +144,18 @@
           "recorrido": "*Cómo hacerlo:* Puntas de pie caída + saltos → Caminata de oso → Spiderman con salto. Al terminar, *descansa 2 min* y vuelves al primero. Son *3 rondas*.",
           "descanso": "*Descanso:* 2 min entre rondas.",
           "ejercicios": [
-            { "nombre": "Puntas de pie caída + saltos horizontales", "descripcion": "5 puntas de pie caída → 3 saltos horizontales → vuelve caminando → 5 puntas de pie caída → 3 saltos horizontales → vuelve caminando." },
-            { "nombre": "Caminata de oso", "descripcion": "Después de la segunda vuelta, 5 caminatas de oso." },
-            { "nombre": "Spiderman con salto", "descripcion": "10 repeticiones." }
+            {
+              "nombre": "Puntas de pie caída + saltos horizontales",
+              "descripcion": "5 puntas de pie caída → 3 saltos horizontales → vuelve caminando → 5 puntas de pie caída → 3 saltos horizontales → vuelve caminando."
+            },
+            {
+              "nombre": "Caminata de oso",
+              "descripcion": "Después de la segunda vuelta, 5 caminatas de oso."
+            },
+            {
+              "nombre": "Spiderman con salto",
+              "descripcion": "10 repeticiones."
+            }
           ]
         },
         {
@@ -85,26 +164,52 @@
           "intro": "Aproximaciones + 3 pasadas de trabajo",
           "descanso": "Entre cargas de aproximación, usa unos *30 segundos* para ordenar y cargar la barra.",
           "ejercicios": [
-            { "nombre": "Barra sola", "dosis": "20 kg total · aproximación",
-              "descripcion": "10 back squat + 10 almejitas en plancha lateral con rotación." },
-            { "nombre": "+10 kg por lado", "dosis": "40 kg total · aproximación",
-              "descripcion": "10 back squat + la misma almejita." },
-            { "nombre": "Trabajo principal", "dosis": "Prescrito: 50 kg total · 3 pasadas",
+            {
+              "nombre": "Barra sola",
+              "dosis": "20 kg total · aproximación",
+              "descripcion": "10 back squat + 10 almejitas en plancha lateral con rotación."
+            },
+            {
+              "nombre": "+10 kg por lado",
+              "dosis": "40 kg total · aproximación",
+              "descripcion": "10 back squat + la misma almejita."
+            },
+            {
+              "nombre": "Trabajo principal",
+              "dosis": "Prescrito: 50 kg total · 3 pasadas",
               "descripcion": "8–12 back squat + almejita + 20 sit-ups. Registra las series de trabajo.",
               "registro": {
                 "tipo": "por_serie",
                 "series": 3,
                 "nota": "Los 50 kg son la prescripción. Si usaste otra carga, cámbiala. Si dejas 50 kg, CERCA solo los confirma cuando marcas este bloque como listo. Reps y esfuerzo quedan sin inventar si no los anotas.",
                 "columnas": [
-                  { "campo": "carga", "etiqueta": "Kg", "unidad": "kg",
-                    "prescrito": true, "texto": "50", "prellenado": true },
-                  { "campo": "reps", "etiqueta": "Reps", "unidad": "reps",
-                    "prescrito": true, "texto": "8–12", "min": 8, "max": 12 },
-                  { "campo": "esfuerzo", "etiqueta": "Esf.", "unidad": "1–10",
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Kg",
+                    "unidad": "kg",
+                    "prescrito": true,
+                    "texto": "50",
+                    "prellenado": true
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Reps",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "8–12",
+                    "min": 8,
+                    "max": 12
+                  },
+                  {
+                    "campo": "esfuerzo",
+                    "etiqueta": "Esf.",
+                    "unidad": "1–10",
                     "prescrito": false,
-                    "motivo": "El esfuerzo lo pone ella. No se prescribe: se pregunta." }
+                    "motivo": "El esfuerzo lo pone ella. No se prescribe: se pregunta."
+                  }
                 ]
-              } }
+              }
+            }
           ]
         },
         {
@@ -115,13 +220,29 @@
           "descanso": "*Descanso:* 1 min 30 s entre rondas.",
           "registro": {
             "tipo": "carga_compartida",
-            "campo": { "campo": "carga", "etiqueta": "Mancuernas usadas", "unidad": "lb",
-                       "prescrito": true, "texto": "20", "prellenado": true }
+            "campo": {
+              "campo": "carga",
+              "etiqueta": "Mancuernas usadas",
+              "unidad": "lb",
+              "prescrito": true,
+              "texto": "20",
+              "prellenado": true
+            }
           },
           "ejercicios": [
-            { "nombre": "Estocadas caminando", "dosis": "Mancuernas del circuito", "descripcion": "20 de ida + 20 de vuelta." },
-            { "nombre": "Renegados", "descripcion": "10 repeticiones con las mismas mancuernas." },
-            { "nombre": "Medio burpee", "descripcion": "10 repeticiones." }
+            {
+              "nombre": "Estocadas caminando",
+              "dosis": "Mancuernas del circuito",
+              "descripcion": "20 de ida + 20 de vuelta."
+            },
+            {
+              "nombre": "Renegados",
+              "descripcion": "10 repeticiones con las mismas mancuernas."
+            },
+            {
+              "nombre": "Medio burpee",
+              "descripcion": "10 repeticiones."
+            }
           ]
         },
         {
@@ -130,10 +251,22 @@
           "intro": "8 minutos total",
           "descanso": "20 segundos de trabajo + 10 segundos de descanso. Mantén la secuencia durante *8 minutos*.",
           "ejercicios": [
-            { "nombre": "Escaladores", "descripcion": "20 segundos de trabajo." },
-            { "nombre": "Plancha lateral · lado 1", "descripcion": "20 segundos de trabajo." },
-            { "nombre": "Plancha lateral · lado 2", "descripcion": "20 segundos de trabajo." },
-            { "nombre": "Nados", "descripcion": "20 segundos de trabajo." }
+            {
+              "nombre": "Escaladores",
+              "descripcion": "20 segundos de trabajo."
+            },
+            {
+              "nombre": "Plancha lateral · lado 1",
+              "descripcion": "20 segundos de trabajo."
+            },
+            {
+              "nombre": "Plancha lateral · lado 2",
+              "descripcion": "20 segundos de trabajo."
+            },
+            {
+              "nombre": "Nados",
+              "descripcion": "20 segundos de trabajo."
+            }
           ],
           "crono": {
             "tipo": "tabata",
@@ -141,7 +274,12 @@
             "trabajo": 20,
             "descanso": 10,
             "total": 480,
-            "ejercicios": ["Escaladores", "Plancha lateral · lado 1", "Plancha lateral · lado 2", "Nados"]
+            "ejercicios": [
+              "Escaladores",
+              "Plancha lateral · lado 1",
+              "Plancha lateral · lado 2",
+              "Nados"
+            ]
           }
         }
       ],

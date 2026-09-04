@@ -940,6 +940,55 @@ esa misma forma. Se conserva la información; se quita la repetición.
 **Lo que NO se toca sigue sin tocarse:** qué ejercicios, en qué orden y con qué
 descanso lo dicta el entrenador. Aquí solo se le dio forma a lo dictado.
 
+### APROBADO — El check-in es estándar, y la tercera pregunta la declara la sesión (2026-09-02)
+
+Antes de entrenar, tres preguntas como máximo:
+
+1. **¿Cómo dormiste?** — igual para todos.
+2. **¿Cómo está tu energía hoy?** — igual para todos.
+3. **La que declara la sesión**, solo si esa persona tiene algo que vigilar. Si
+   no tiene nada, la pregunta no existe.
+
+Se responde comparando con lo habitual: **peor · igual · mejor**. No es una
+escala de severidad, y esa diferencia es deliberada. Un entrenador que conoce a
+la persona necesita saber si hoy está peor que de costumbre; un número del 1 al
+10 sería pedir otra cosa. Encaja con la clase A de señales de `ARQUITECTURA.md`
+§7.1 —sueño y energía son graduables— y deja la tercera aparte, que es donde esa
+misma sección la pone.
+
+**El código no interpreta la respuesta.** Cuando dice que lo que se vigila está
+peor, se muestra **el texto que escribió el entrenador para esa persona**, tal
+cual. No cambia la sesión, no sugiere, no avisa a nadie, no escala. Es §7.1:
+«el mapeo entre descripción y decisión no está en el código».
+
+**El silencio no es conformidad.** Cada respuesta declara si se registró, y el
+conjunto declara `respondido | parcial | sin_respuesta` (D-020). No responder
+queda escrito como no haber respondido.
+
+**Ámbar para el aviso.** Ni cyan ni azul: no es acción ni evidencia. Es una
+advertencia, y no comparte color con ninguna de las dos.
+
+### APROBADO — La tercera pregunta se construye con la captura desactivada (2026-09-02)
+
+`MATRIZ_DE_DATOS.md` tiene **BLOQUEADA** la solicitud y la persistencia
+deliberadas de información de salud hasta que cierre la revisión jurídica, y
+nombra explícitamente como «no se revive» una repregunta sobre una molestia con
+escala. La tercera pregunta del check-in cae justo ahí.
+
+La misma matriz **permite** construir la arquitectura con la captura
+desactivada, y eso es lo que hay: `CAPTURA_VIGILANCIA = false` en el
+reproductor. Con el interruptor apagado, la pregunta se muestra si la sesión la
+declara, el aviso se muestra, y la ejecución guarda que se preguntó y que **no**
+se guardó la respuesta.
+
+**Tampoco se guarda si el aviso apareció.** Escribirlo sería decir cuál fue la
+respuesta por la puerta de atrás.
+
+**Ninguna sesión viva declara `vigilancia` todavía.** Nico y Panchi llevan solo
+las dos preguntas estándar, que no son información de salud. Declarar la tercera
+para una persona real es el acto que la matriz bloquea, y es decisión del
+entrenador con su abogado, no del código.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

@@ -48,7 +48,7 @@ function revisar(s) {
   if (!exigir(Array.isArray(s.dias) && s.dias.length, 'La sesión no tiene ningún día.')) return { mal, resumen: '' };
 
   const sesionIds = new Set();
-  let bloques = 0, ejercicios = 0, casilleros = 0;
+  let bloques = 0, ejercicios = 0, casilleros = 0, conCheckin = 0;
 
   s.dias.forEach((d, i) => {
     const donde = `día ${i + 1}`;
@@ -119,11 +119,29 @@ function revisar(s) {
       }
     });
     if (!d.feedback || !d.feedback.titulo) mal.push(`${donde}: no le pregunta nada al alumno al terminar.`);
+
+    // El check-in es estandar. Que falte no es un error -puede haber sesiones
+    // que no lo pidan- pero la tercera pregunta, si se declara, tiene que
+    // estar entera: declarar algo que vigilar sin escribir que mostrarle
+    // cuando este peor deja la pregunta sin para que.
+    if (d.checkin) {
+      conCheckin++;
+      const v = d.checkin.vigilancia;
+      if (v) {
+        exigir(typeof v.id === 'string' && v.id, `${donde}: lo que se vigila no tiene nombre corto.`);
+        exigir(typeof v.pregunta === 'string' && v.pregunta, `${donde}: falta la pregunta de lo que se vigila.`);
+        exigir(typeof v.aviso === 'string' && v.aviso.trim(),
+          `${donde}: se le pregunta por «${v.id || 'algo'}» pero no escribiste qué mostrarle si contesta que está peor.`);
+      }
+    }
   });
 
   const dias = s.dias.length;
+  const ck = conCheckin === 0 ? 'sin check-in'
+           : conCheckin === dias ? (dias === 1 ? 'con check-in' : 'todos con check-in')
+           : `check-in en ${conCheckin} de ${dias}`;
   return { mal, resumen:
-    `${dias} ${dias === 1 ? 'día' : 'días'} · ${bloques} bloques · ${ejercicios} ejercicios · ` +
+    `${dias} ${dias === 1 ? 'día' : 'días'} (${ck}) · ${bloques} bloques · ${ejercicios} ejercicios · ` +
     `${casilleros} ${casilleros === 1 ? 'casillero' : 'casilleros'} para anotar.` };
 }
 

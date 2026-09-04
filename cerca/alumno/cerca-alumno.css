@@ -45,6 +45,7 @@
   --tuyo:      #5577ff;   /* lo que aporta el alumno: sus casilleros */
   --tuyo-tinta:#9fb2ff;
   --tocado:    #ffbd70;   /* un campo prellenado que el alumno movio */
+  --aviso:     #ffbd70;   /* lo que el entrenador escribio para este momento */
 
   /* --- Tinta ------------------------------------------------------------- */
   --texto:     #f5f7f7;
@@ -463,3 +464,52 @@ details.bloque .ejercicio:first-of-type { border-top: 0; }
 .audio-btn[hidden] { display: none; }
 .audio-estado { font-size: 12px; color: var(--apunte); line-height: 1.45; margin-top: 8px; }
 .audio audio { width: 100%; margin-top: 9px; }
+
+
+/* ==========================================================================
+   CHECK-IN
+   --------------------------------------------------------------------------
+   Va antes de todo porque es lo que se responde antes de entrenar.
+
+   Las dos primeras preguntas son iguales para todos: sueno y energia, que la
+   arquitectura clasifica como senales graduables. La tercera la declara la
+   sesion y solo existe si esa persona tiene algo que vigilar.
+
+   Las tres se responden comparando con lo habitual, no con una escala de
+   severidad. Un entrenador que conoce a la persona necesita saber si hoy esta
+   peor que de costumbre; no necesita un numero del 1 al 10, y pedirlo seria
+   pedir otra cosa.
+
+   Nada de esto adapta la sesion. Lo unico que ocurre en pantalla es que, si
+   responde que lo que se vigila esta peor, se le muestra el texto que escribio
+   el entrenador para esa persona. El codigo no interpreta la respuesta: la
+   muestra y la deja escrita.
+   ========================================================================== */
+
+.checkin {
+  margin: 0 0 4px; padding: 16px; border: 1px solid var(--linea);
+  border-radius: 16px; background: rgba(255, 255, 255, .022);
+}
+.checkin h3 { margin: 0 0 5px; }
+.checkin > p { color: var(--apunte); margin: 0 0 4px; }
+.checkin-pregunta { margin-top: 15px; }
+.checkin-pregunta > span { display: block; color: var(--texto); margin-bottom: 8px; }
+.checkin-opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.checkin-opciones button {
+  border: 1px solid var(--linea); background: #071211; color: var(--lectura);
+  border-radius: 10px; padding: 10px 6px; font-family: inherit; cursor: pointer;
+  min-height: 56px; display: grid; align-content: center; gap: 2px;
+}
+.checkin-opciones button b { font-size: 13px; font-weight: 800; }
+.checkin-opciones button small { font-size: 12px; color: var(--apunte); line-height: 1.25; }
+.checkin-opciones button[aria-pressed="true"] { border-color: var(--activo); background: rgba(16, 231, 239, .08); color: #9af9fb; }
+.checkin-opciones button[aria-pressed="true"] small { color: #7fd6da; }
+
+/* El aviso del entrenador. Ni accion ni evidencia: es una advertencia, y por
+   eso no comparte color con ninguna de las dos. */
+.checkin-aviso {
+  margin-top: 10px; padding: 11px 12px; border: 1px solid rgba(255, 189, 112, .42);
+  border-left-width: 3px; border-radius: 0 11px 11px 0;
+  background: rgba(255, 189, 112, .07); color: #ffe3c2; line-height: 1.5;
+}
+.checkin-aviso b { color: var(--aviso); }

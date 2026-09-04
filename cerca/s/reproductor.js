@@ -129,6 +129,27 @@ async function cargarSesion() {
    2. Estado vivo
    ========================================================================== */
 
+/* La captura deliberada de informacion de salud esta BLOQUEADA por
+   cerca/MATRIZ_DE_DATOS.md hasta que cierre la revision juridica. La misma
+   matriz permite construir la arquitectura con la captura desactivada, y eso
+   es lo que hay aqui: la tercera pregunta se muestra, el aviso del entrenador
+   se muestra, y la respuesta NO se guarda.
+
+   Ponerlo en true es una decision del entrenador y su abogado, no del codigo.
+   Mientras sea false, la ejecucion declara que se pregunto y que no se guardo,
+   sin dejar rastro de cual fue la respuesta: escribir "se mostro el aviso"
+   seria decir cual fue por la puerta de atras. */
+const CAPTURA_VIGILANCIA = false;
+
+/* Las tres preguntas se responden comparando con lo habitual. Es lo que un
+   entrenador que conoce a la persona puede leer, y evita pedir una escala de
+   severidad, que seria pedir otra cosa. */
+const OPCIONES_CHECKIN = [
+  { id: 'peor',  texto: 'Peor',  detalle: 'que lo habitual' },
+  { id: 'igual', texto: 'Igual', detalle: 'que siempre' },
+  { id: 'mejor', texto: 'Mejor', detalle: 'que lo habitual' }
+];
+
 const S = { sesion: null, hash: null, declarado: null, entrega: null, dias: {} };
 const D = id => S.dias[id];
 
@@ -218,7 +239,9 @@ function dibujarDia(dia, visible) {
 
   S.dias[dia.id] = {
     bloques: {}, valores: {}, tocados: {}, series: {},
-    mision: null, envio, llave, enviado: false, esfuerzo: null, audio: null
+    mision: null, envio, llave, enviado: false, esfuerzo: null, audio: null,
+    checkin: { sueno: null, energia: null, vigilancia: null },
+    checkinPedidas: dia.checkin ? 2 + (dia.checkin.vigilancia ? 1 : 0) : 0
   };
 
   const seccion = el('section', 'dia' + (visible ? ' activo' : ''));
@@ -232,12 +255,71 @@ function dibujarDia(dia, visible) {
 
   const acordeon = !!S.sesion.vista?.acordeon;
   const cuerpo = el('div', 'sesion-cuerpo');
+  // Antes de todo, porque es lo que se responde antes de entrenar.
+  if (dia.checkin) cuerpo.appendChild(dibujarCheckin(dia));
   dia.bloques.forEach((b, i) => cuerpo.appendChild(dibujarBloque(dia, b, i, acordeon)));
   if (dia.feedback) cuerpo.appendChild(dibujarFeedback(dia));
   caja.appendChild(cuerpo);
 
   seccion.appendChild(caja);
   return seccion;
+}
+
+function dibujarCheckin(dia) {
+  const est = D(dia.id);
+  const c = dia.checkin;
+  const caja = el('div', 'checkin');
+  caja.appendChild(el('h3', 'r-bloque', c.titulo || 'Antes de empezar'));
+  if (c.texto) caja.appendChild(el('p', 'r-apunte', c.texto));
+
+  /* Devuelve la fila de una pregunta. `alResponder` recibe el id elegido; lo
+     que se hace con el lo decide quien llama, no esta funcion. */
+  function pregunta(texto, alResponder) {
+    const fila = el('div', 'checkin-pregunta');
+    fila.appendChild(el('span', 'r-lectura', texto));
+    const grid = el('div', 'checkin-opciones');
+    OPCIONES_CHECKIN.forEach(op => {
+      const b = el('button');
+      b.type = 'button';
+      b.setAttribute('aria-pressed', 'false');
+      b.dataset.opcion = op.id;
+      b.appendChild(el('b', null, op.texto));
+      b.appendChild(el('small', null, op.detalle));
+      b.onclick = () => {
+        $$('button', grid).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+        alResponder(op.id);
+        refrescarEnvio(dia.id);
+      };
+      grid.appendChild(b);
+    });
+    fila.appendChild(grid);
+    caja.appendChild(fila);
+    return fila;
+  }
+
+  // Las dos de siempre.
+  pregunta(c.sueno || '¿Cómo dormiste?',   v => { est.checkin.sueno = v; });
+  pregunta(c.energia || '¿Cómo está tu energía?', v => { est.checkin.energia = v; });
+
+  // La tercera solo existe si esta sesión la declara.
+  if (c.vigilancia) {
+    const fila = pregunta(c.vigilancia.pregunta, v => {
+      est.checkin.vigilancia = v;
+      // El código no interpreta la respuesta: muestra el texto que escribió el
+      // entrenador cuando ella dice que está peor, y nada más. No cambia la
+      // sesión, no sugiere, no avisa a nadie.
+      aviso.hidden = !(v === 'peor' && c.vigilancia.aviso);
+    });
+    const aviso = el('div', 'checkin-aviso r-lectura');
+    aviso.hidden = true;
+    if (c.vigilancia.aviso) {
+      aviso.appendChild(el('b', null, 'Seba te dejó dicho: '));
+      aviso.appendChild(document.createTextNode(c.vigilancia.aviso));
+    }
+    fila.appendChild(aviso);
+  }
+
+  return caja;
 }
 
 function dibujarBloque(dia, bloque, indice, acordeon) {
@@ -584,7 +666,11 @@ function refrescarEnvio(id) {
   const anotados = Object.values(est.valores).filter(v => v !== null && v !== undefined).length;
   const acepta = $(`#consent-${id}`).checked;
 
+  const ck = est.checkin;
+  const dadas = [ck.sueno, ck.energia, ck.vigilancia].filter(v => v !== null).length;
+
   $('.resumen', caja).textContent =
+    (est.checkinPedidas ? `Check-in: ${dadas} de ${est.checkinPedidas} · ` : '') +
     `Se va a guardar: ${listos} de ${total} bloque${total === 1 ? '' : 's'} marcado${listos === 1 ? '' : 's'}` +
     (anotados ? ` · ${anotados} dato${anotados === 1 ? '' : 's'} anotado${anotados === 1 ? '' : 's'}` : ' · sin datos anotados') +
     (est.esfuerzo ? ` · esfuerzo ${est.esfuerzo}/10` : ' · falta tu esfuerzo');
@@ -714,6 +800,7 @@ function construirEjecucion(dia) {
     dia: dia.id,
     sesion_id: dia.sesion_id,
     entrega: S.entrega,
+    checkin: construirCheckin(dia),
     fuente_confirmacion: 'boton_bloque_listo',
     // Contra que se entreno, acreditado. `coincide: false` significa que la
     // entrega cambio despues de publicarse.
@@ -727,6 +814,44 @@ function construirEjecucion(dia) {
   };
   if (est.mision !== null) ejecucion.mision = { elegida: est.mision, registrada: true };
   return ejecucion;
+}
+
+/* Un check-in sin responder no se lee como conformidad: se escribe como lo que
+   es. Por eso cada respuesta declara si se registro, y el conjunto declara si
+   se respondio entero, a medias o nada. */
+function construirCheckin(dia) {
+  if (!dia.checkin) return { solicitado: false, motivo: 'esta sesión no pide check-in' };
+  const est = D(dia.id).checkin;
+  const c = dia.checkin;
+
+  const responde = v => v === null
+    ? { registrado: false, motivo: 'no_respondida' }
+    : { registrado: true, valor: v };
+
+  // Se cuentan solo las preguntas que de verdad se hicieron. La version
+  // anterior metia un centinela para la tercera cuando no existia, y ese
+  // centinela se contaba: dos de dos respondidas salian como "parcial".
+  const respuestas = [est.sueno, est.energia];
+  if (c.vigilancia) respuestas.push(est.vigilancia);
+  const pedidas = respuestas.length;
+  const dadas = respuestas.filter(v => v !== null).length;
+
+  const salida = {
+    solicitado: true,
+    estado_respuesta: dadas === 0 ? 'sin_respuesta' : dadas === pedidas ? 'respondido' : 'parcial',
+    comparado_con: 'lo habitual',
+    sueno: responde(est.sueno),
+    energia: responde(est.energia)
+  };
+
+  if (c.vigilancia) {
+    salida.vigilancia = CAPTURA_VIGILANCIA
+      ? { id: c.vigilancia.id, preguntada: true, ...responde(est.vigilancia),
+          aviso_mostrado: est.vigilancia === 'peor' && !!c.vigilancia.aviso }
+      : { id: c.vigilancia.id, preguntada: true, registrado: false,
+          motivo: 'captura de información de salud desactivada (MATRIZ_DE_DATOS)' };
+  }
+  return salida;
 }
 
 function completionDe(id) {
