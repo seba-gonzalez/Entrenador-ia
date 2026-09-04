@@ -90,7 +90,7 @@ function revisar(s) {
 
     const idsBloque = new Set();
     d.bloques.forEach(b => {
-      // Los codigos identifican dentro de SU bloque, no dentro del dia. Que el
+      // C-24 · Los codigos identifican dentro de SU bloque, no dentro del dia. Que el
       // calentamiento numere 1..6 y la zona media vuelva a numerar 1..4 no es
       // un error: cada recorrido vive dentro de su bloque y ahi no hay
       // ambiguedad, y los datos ya van separados por bloque.
@@ -99,7 +99,7 @@ function revisar(s) {
       if (!b.id) { mal.push(`${donde}: hay un bloque sin identificador.`); return; }
       if (idsBloque.has(b.id)) mal.push(`${donde}: el bloque «${b.id}» aparece dos veces.`);
       idsBloque.add(b.id);
-      // La convencion del tabata es de Sebastian: 4 minutos el simple, 8 el
+      // C-22 · La convencion del tabata es de Sebastian: 4 minutos el simple, 8 el
       // doble, siempre 20/10. Un tabata que no cuadre con eso casi siempre es
       // un numero mal copiado, como los 8 minutos que llevaba el de Pali.
       const cronos = Array.isArray(b.crono) ? b.crono : b.crono ? [b.crono] : [];
@@ -146,7 +146,7 @@ function revisar(s) {
           casilleros++;
           if (!c.campo || !c.etiqueta || !c.unidad) mal.push(`${quien}: un casillero está incompleto (le falta el nombre o la unidad).`);
           if (typeof c.prescrito !== 'boolean') { mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: no dice si el valor venía prescrito o no.`); return; }
-          // Lo prescrito tiene que poder mostrarse al lado del casillero, y lo
+          // C-14 · Lo prescrito tiene que poder mostrarse al lado del casillero, y lo
           // no prescrito tiene que decir POR QUE no lo esta. Un desconocido sin
           // motivo se lee despues como un olvido.
           if (c.prescrito && !c.texto) mal.push(`${quien}, casillero «${c.etiqueta || c.campo}»: dice que lo prescribiste pero no trae el número.`);
@@ -167,9 +167,10 @@ function revisar(s) {
         mal.push(`${donde}, bloque ${b.id}: no tiene ejercicios.`);
       }
     });
+    // C-25 · Toda sesion termina preguntandole algo al alumno.
     if (!d.feedback || !d.feedback.titulo) mal.push(`${donde}: no le pregunta nada al alumno al terminar.`);
 
-    // El check-in es estandar. Que falte no es un error -puede haber sesiones
+    // C-08 · El check-in es estandar. Que falte no es un error -puede haber sesiones
     // que no lo pidan- pero la tercera pregunta, si se declara, tiene que
     // estar entera: declarar algo que vigilar sin escribir que mostrarle
     // cuando este peor deja la pregunta sin para que.

@@ -837,7 +837,14 @@ sin dejar constancia.
 **Ámbar para el campo tocado.** Ni cyan ni azul: no es acción ni evidencia
 cerrada. Es «esto lo moviste tú».
 
-### APROBADO — El acordeón y el progreso se declaran por sesión (2026-09-02)
+### ANULADO — El acordeón y el progreso se declaran por sesión (2026-09-02)
+
+> **Anulada el 2026-09-04** por «El acordeón sale del número de bloques, no de
+> una declaración», más abajo en esta misma sección. Se conserva entera porque
+> explica de dónde venía la decisión; **no se aplica.** Se marca como anulada al
+> revisar los criterios el 2026-09-04: quedaban dos entradas APROBADO
+> contradictorias y la regla de gobernanza de este archivo pide que la nueva
+> anule a la vieja explícitamente, no por orden de lectura.
 
 `vista: { acordeon: true, progreso: true }`. Seis bloques en una sola columna
 obligan a scrollear con las manos ocupadas; tres con pestañas de día, no. No se

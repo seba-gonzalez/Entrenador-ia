@@ -139,7 +139,7 @@ async function cargarSesion() {
    Mientras sea false, la ejecucion declara que se pregunto y que no se guardo,
    sin dejar rastro de cual fue la respuesta: escribir "se mostro el aviso"
    seria decir cual fue por la puerta de atras. */
-const CAPTURA_VIGILANCIA = false;
+const CAPTURA_VIGILANCIA = false;   // C-19
 
 /* El texto de ejemplo del comentario final. Vive aqui y no copiado en cada
    sesion: es el mismo para todos los alumnos, y copiarlo garantiza que en
@@ -154,9 +154,9 @@ const CAPTURA_VIGILANCIA = false;
    Siempre 20 s de trabajo y 10 de descanso.
    La sesion declara los segundos; esto esta aqui para que quien lea el codigo
    sepa de donde salen los numeros y no los cambie por su cuenta. */
-const TABATA = { trabajo: 20, descanso: 10, simple: 240, doble: 480 };
+const TABATA = { trabajo: 20, descanso: 10, simple: 240, doble: 480 };   // C-22
 
-const MARCADOR_FEEDBACK =
+const MARCADOR_FEEDBACK =   // C-26 · C-18
   'Cuéntame cómo te fue: qué pesos usaste, qué ejercicio no te acomodó, qué te costó más de lo que esperabas, y cualquier cosa que quieras que sepa antes de armarte la próxima.';
 
 /* Las tres preguntas se responden comparando con lo habitual. Es lo que un
@@ -251,7 +251,14 @@ function dibujar() {
    de caber en pantalla y scrollear con las manos ocupadas empieza a molestar.
    No lo declara la sesion: si lo declarara, dos alumnos con dias del mismo
    largo acabarian viendose distinto sin que nadie lo hubiera decidido. */
-const esAcordeon = dia => dia.bloques.length >= 5;
+const esAcordeon = dia => dia.bloques.length >= 5;   // C-23
+
+/* C-28 · El audio dura lo que dura lo que tiene que decir. Un comentario de
+   sesion son 90 segundos: se graba con las manos cansadas, justo al terminar, y
+   lo que hay que contar cabe. La historia de entrada de alguien nuevo no cabe,
+   y por eso /hola/ declara veinte minutos. Los dos topes son deliberados y
+   distintos; estaba escrito a mano en cuatro sitios y ahora se declara una vez. */
+const TOPE_AUDIO_FEEDBACK = 90;
 
 function dibujarDia(dia, visible) {
   // El identificador de la ejecucion sobrevive a una recarga dentro de la
@@ -936,7 +943,7 @@ function dibujarAudio(dia) {
   botones.appendChild(grabar);
   botones.appendChild(borrar);
   caja.appendChild(botones);
-  const rotulo = el('div', 'audio-estado', 'Opcional · máximo 90 segundos.');
+  const rotulo = el('div', 'audio-estado', `Opcional · máximo ${TOPE_AUDIO_FEEDBACK} segundos.`);
   caja.appendChild(rotulo);
   const oir = el('audio');
   oir.controls = true;
@@ -967,7 +974,7 @@ function dibujarAudio(dia) {
     borrar.hidden = true;
     grabar.textContent = '● GRABAR AUDIO';
     grabar.classList.remove('grabando');
-    rotulo.textContent = 'Opcional · máximo 90 segundos.';
+    rotulo.textContent = `Opcional · máximo ${TOPE_AUDIO_FEEDBACK} segundos.`;
   };
 
   grabar.onclick = async () => {
@@ -996,11 +1003,11 @@ function dibujarAudio(dia) {
       rec.start();
       grabar.textContent = '■ DETENER';
       grabar.classList.add('grabando');
-      rotulo.textContent = 'Grabando… 0 s / 90 s';
+      rotulo.textContent = `Grabando… 0 s / ${TOPE_AUDIO_FEEDBACK} s`;
       reloj = setInterval(() => {
         seg++;
-        rotulo.textContent = `Grabando… ${seg} s / 90 s`;
-        if (seg >= 90 && rec?.state === 'recording') rec.stop();
+        rotulo.textContent = `Grabando… ${seg} s / ${TOPE_AUDIO_FEEDBACK} s`;
+        if (seg >= TOPE_AUDIO_FEEDBACK && rec?.state === 'recording') rec.stop();
       }, 1000);
     } catch (e) {
       soltar();

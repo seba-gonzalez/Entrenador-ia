@@ -24,7 +24,7 @@ const CABECERAS = {
 /* La version del consentimiento viaja con cada respuesta. Si el texto cambia,
    cambia la version, y dentro de un ano se puede saber a que dijo que si cada
    persona en vez de suponerlo. */
-const CONSENTIMIENTO = {
+const CONSENTIMIENTO = {   // C-20
   version: 'bienvenida-2026-09-04',
   texto: 'Acepto enviarle esto a Seba para que prepare mi entrenamiento. Entiendo que si cuento algo sobre mi salud —una lesión, un dolor, una operación— queda guardado en lo que envío, y que puedo pedirle que lo borre cuando quiera.'
 };
@@ -32,7 +32,7 @@ const CONSENTIMIENTO = {
 /* Diez minutos es el minimo que pidio direccion. El tope son veinte: alguien
    contando su historia no cabe en noventa segundos, y quedarse sin tiempo a
    mitad de una frase es peor que cualquier limite. */
-const TOPE_SEGUNDOS = 20 * 60;
+const TOPE_SEGUNDOS = 20 * 60;   // C-28
 
 const B = { entrega: null, datos: null, audio: null, audioExt: null, audioSegundos: 0 };
 
@@ -276,7 +276,10 @@ function refrescar() {
 
 async function subirAudio() {
   if (!B.audio) return null;
-  const ruta = `bienvenida/${B.datos.alumno_slug}/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${B.audioExt}`;
+  // Misma forma que el audio de feedback: la persona primero. Todo lo de
+  // alguien cuelga de su nombre corto, que es lo que hace posible atender un
+  // «borrame lo que mandé» sin ir a buscar archivo por archivo.
+  const ruta = `${B.datos.alumno_slug}/bienvenida/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${B.audioExt}`;
   const r = await fetch(`${SUPABASE_URL}/storage/v1/object/cerca-feedback-audio/${ruta}`, {
     method: 'POST',
     headers: {

@@ -45,6 +45,9 @@ jobs:
         working-directory: validacion
         run: npm run pruebas
 
+      - name: Los criterios de Sebastián y el código no se han separado
+        run: sh cerca/criterios.sh
+
       - name: El producto no puede tener dependencias
         run: |
           if [ -e app/package.json ] || [ -e app/node_modules ]; then
