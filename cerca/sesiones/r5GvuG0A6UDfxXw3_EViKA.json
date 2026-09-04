@@ -46,7 +46,8 @@
           "id": "b1",
           "titulo": "Movilidad",
           "intro": "3 vueltas · continuo",
-          "descanso": "Todo continuo, sin descanso entre ejercicios. Máximo *30 segundos* entre rondas.",
+          "recorrido": "*Cómo hacerlo:* Rotaciones → Pierna al lado → Spiderman, continuos y sin descanso entre ejercicios. Al terminar Spiderman, *máximo 30 s* y vuelves a empezar. Son *3 vueltas*.",
+          "descanso": "*Descanso:* máximo 30 s, solo al terminar Spiderman.",
           "ejercicios": [
             { "nombre": "Rotaciones en cuatro apoyos", "descripcion": "10 hacia adelante + 10 hacia atrás." },
             { "nombre": "Pierna al lado + carga adelante/atrás", "descripcion": "5 por lado." },
@@ -57,7 +58,8 @@
           "id": "b2",
           "titulo": "Activación",
           "intro": "3 vueltas · continuo",
-          "descanso": "Todo continuo, sin descanso entre ejercicios. Máximo *30 segundos* entre rondas.",
+          "recorrido": "*Cómo hacerlo:* Elevación de cadera → Palomas → Plancha, continuos y sin descanso entre ejercicios. Al terminar la plancha, *máximo 30 s* y vuelves a empezar. Son *3 vueltas*.",
+          "descanso": "*Descanso:* máximo 30 s, solo al terminar la plancha.",
           "ejercicios": [
             { "nombre": "Elevación de cadera + banda", "descripcion": "20 repeticiones. Banda en las rodillas." },
             { "nombre": "Palomas", "dosis": "15 lb", "descripcion": "10 por pierna. Mancuerna tomada con las dos manos." },
@@ -69,7 +71,8 @@
           "id": "b3",
           "titulo": "Potencia + movimiento",
           "intro": "3 rondas · descanso 2:00",
-          "descanso": "Descansa *2 minutos* entre rondas. Son 3 rondas.",
+          "recorrido": "*Cómo hacerlo:* Puntas de pie caída + saltos → Caminata de oso → Spiderman con salto. Al terminar, *descansa 2 min* y vuelves al primero. Son *3 rondas*.",
+          "descanso": "*Descanso:* 2 min entre rondas.",
           "ejercicios": [
             { "nombre": "Puntas de pie caída + saltos horizontales", "descripcion": "5 puntas de pie caída → 3 saltos horizontales → vuelve caminando → 5 puntas de pie caída → 3 saltos horizontales → vuelve caminando." },
             { "nombre": "Caminata de oso", "descripcion": "Después de la segunda vuelta, 5 caminatas de oso." },
@@ -108,7 +111,8 @@
           "id": "b5",
           "titulo": "Circuito con mancuernas",
           "intro": "4 rondas · descanso 1:30",
-          "descanso": "Descansa *1 minuto 30 segundos* entre rondas. Son 4 rondas.",
+          "recorrido": "*Cómo hacerlo:* Estocadas caminando → Renegados → Medio burpee. Al terminar el medio burpee, *descansa 1 min 30 s* y vuelves a las estocadas. Son *4 rondas*.",
+          "descanso": "*Descanso:* 1 min 30 s entre rondas.",
           "registro": {
             "tipo": "carga_compartida",
             "campo": { "campo": "carga", "etiqueta": "Mancuernas usadas", "unidad": "lb",

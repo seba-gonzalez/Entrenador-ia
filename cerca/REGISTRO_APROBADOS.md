@@ -917,14 +917,28 @@ Registrado como diferencia legítima, para no volver a levantarlo: los códigos 
 ejercicio (A1, B2), el tipo de cronómetro, la forma de registrar, la misión y el
 riel de días nacen de que los dos entrenamientos son distintos.
 
-### PENDIENTE — Los circuitos de Panchi no muestran su recorrido
+### RESUELTO — Los circuitos de Panchi ya muestran su recorrido (2026-09-02)
 
-Cuatro de sus seis bloques son circuitos y ninguno dice el recorrido completo.
-Los siete de Nico sí. Es el principio «nada se da por obvio» y es la mejor idea
-que trajo la vista de Nico.
+Estaba PENDIENTE desde la auditoría: cuatro de sus seis bloques eran circuitos y
+ninguno decía el recorrido. Dirección dictó los cuatro y se escribieron con el
+formato de Nico. **11 de 11 circuitos de los dos alumnos muestran ahora su
+recorrido completo.**
 
-No se corrige por cuenta propia: escribir el recorrido y el descanso exacto de
-cada vuelta es contenido de entrenamiento, y lo escribe el entrenador.
+**Los nombres van acortados en la cadena** —«Rotaciones → Pierna al lado →
+Spiderman»— porque una cadena con los nombres completos no se lee. Nico resuelve
+lo mismo con códigos (A1, B2); Panchi no los usa, así que cada nombre corto es
+el comienzo exacto de un solo ejercicio de la lista que va justo debajo.
+Comprobado: los cuatro recorridos nombran, en orden, los ejercicios de su
+bloque.
+
+**Consecuencia que hubo que resolver:** el aviso del final de cada bloque
+repetía casi palabra por palabra lo que ya decía el recorrido. En Nico ese aviso
+es corto —«*Descanso:* 30 s solo al terminar A5»— y está donde ella va a estar
+mirando cuando acabe el último ejercicio. Los cuatro de Panchi se acortaron a
+esa misma forma. Se conserva la información; se quita la repetición.
+
+**Lo que NO se toca sigue sin tocarse:** qué ejercicios, en qué orden y con qué
+descanso lo dicta el entrenador. Aquí solo se le dio forma a lo dictado.
 
 ### EN PRUEBA — Que el casillero recuerde
 
