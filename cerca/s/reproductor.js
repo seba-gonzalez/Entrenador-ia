@@ -141,6 +141,16 @@ async function cargarSesion() {
    seria decir cual fue por la puerta de atras. */
 const CAPTURA_VIGILANCIA = false;
 
+/* El texto de ejemplo del comentario final. Vive aqui y no copiado en cada
+   sesion: es el mismo para todos los alumnos, y copiarlo garantiza que en
+   algun momento dos alumnos tengan textos distintos sin que nadie lo decida.
+
+   Pregunta por el ENTRENAMIENTO, no por el cuerpo. No se pregunta por
+   molestias ni por dolor: si el alumno decide contar algo suyo, lo cuenta por
+   su cuenta. Una sesion puede poner el suyo, pero no hace falta. */
+const MARCADOR_FEEDBACK =
+  'Cuéntame cómo te fue: qué pesos usaste, qué ejercicio no te acomodó, qué te costó más de lo que esperabas, y cualquier cosa que quieras que sepa antes de armarte la próxima.';
+
 /* Las tres preguntas se responden comparando con lo habitual. Es lo que un
    entrenador que conoce a la persona puede leer, y evita pedir una escala de
    severidad, que seria pedir otra cosa. */
@@ -386,7 +396,17 @@ function dibujarBloque(dia, bloque, indice, acordeon) {
   // circuito) o de un ejercicio.
   if (bloque.registro) cuerpo.appendChild(dibujarRegistro(dia, bloque.id, bloque.registro));
 
-  if (bloque.crono) cuerpo.appendChild(dibujarTabata(bloque.crono));
+  // Un bloque puede traer su propio cronometro: el tabata, o el descanso entre
+  // vueltas, que es tiempo prescrito igual que una plancha.
+  (Array.isArray(bloque.crono) ? bloque.crono : bloque.crono ? [bloque.crono] : []).forEach(c => {
+    if (c.tipo === 'tabata') { cuerpo.appendChild(dibujarTabata(c)); return; }
+    const b = el('button', 'crono');
+    b.type = 'button';
+    b.appendChild(el('i', null, '⏱'));
+    b.appendChild(document.createTextNode(' ' + (c.rotulo || `${c.segundos} s`)));
+    b.onclick = () => abrirCrono(c);
+    cuerpo.appendChild(b);
+  });
 
   // Marcar el bloque como listo es el acto explicito que confirma. Mientras
   // no se marca esta disponible, no activo: por eso nace neutro.
@@ -417,6 +437,16 @@ function dibujarEjercicio(dia, bloque, ej) {
 
   if (ej.descripcion) n.appendChild(el('div', 'descripcion r-lectura', ej.descripcion));
   if (ej.consejo) n.appendChild(el('div', 'consejo r-lectura', ej.consejo));
+
+  // Una precaucion no es un consejo. Es lo que el entrenador dejo escrito para
+  // este ejercicio en concreto, y por eso lleva el color del aviso y no el de
+  // la lectura corriente. No pregunta nada y no guarda nada: se lee.
+  if (ej.precaucion) {
+    const p = el('div', 'precaucion r-lectura');
+    p.appendChild(el('b', null, 'Ojo aquí: '));
+    p.appendChild(document.createTextNode(ej.precaucion));
+    n.appendChild(p);
+  }
 
   (Array.isArray(ej.crono) ? ej.crono : ej.crono ? [ej.crono] : []).forEach(c => {
     if (c.tipo === 'tabata') { n.appendChild(dibujarTabata(c)); return; }
@@ -613,7 +643,7 @@ function dibujarFeedback(dia) {
 
   const nota = el('textarea');
   nota.maxLength = 1000;
-  nota.placeholder = dia.feedback.marcador || '';
+  nota.placeholder = dia.feedback.marcador || MARCADOR_FEEDBACK;
   caja.appendChild(nota);
 
   if (dia.feedback.audio) caja.appendChild(dibujarAudio(dia));

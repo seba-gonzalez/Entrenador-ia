@@ -1,0 +1,1403 @@
+{
+  "formato": 1,
+  "alumno": "Lili",
+  "alumno_slug": "lili",
+  "plan": "lili-semana1-v1",
+  "publicado": "2026-09-04",
+  "vista": {
+    "acordeon": true,
+    "progreso": true
+  },
+  "portada": {
+    "kicker": "Tu primera semana",
+    "titulo": "Cinco días.\nEmpezamos con calma.",
+    "bajada": "Tres días principales y dos más livianos. Esta primera semana buscamos que aprendas los movimientos y encuentres tus pesos: los que anotes son los que vamos a usar de referencia.",
+    "pastillas": [
+      "5 días",
+      "3 principales · 2 livianos",
+      "feedback por día"
+    ]
+  },
+  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
+  "chat": {
+    "atajos": [
+      "¿Cuánto descanso?",
+      "¿Qué peso uso?",
+      "¿Qué significa RPE 6–7?"
+    ],
+    "videos": [
+      [
+        "prensa",
+        "leg press machine tutorial"
+      ],
+      [
+        "hip thrust",
+        "hip thrust machine tutorial"
+      ],
+      [
+        "curl femoral",
+        "seated leg curl tutorial"
+      ],
+      [
+        "extension de rodilla",
+        "leg extension tutorial"
+      ],
+      [
+        "jalon",
+        "lat pulldown tutorial"
+      ],
+      [
+        "remo",
+        "seated cable row tutorial"
+      ],
+      [
+        "face pull",
+        "face pull tutorial"
+      ],
+      [
+        "pallof",
+        "pallof press tutorial"
+      ],
+      [
+        "dead bug",
+        "dead bug exercise"
+      ],
+      [
+        "bird dog",
+        "bird dog exercise"
+      ],
+      [
+        "glute bridge",
+        "glute bridge exercise"
+      ],
+      [
+        "step up",
+        "step up exercise tutorial"
+      ],
+      [
+        "split squat",
+        "supported split squat tutorial"
+      ],
+      [
+        "farmer",
+        "farmer carry tutorial"
+      ],
+      [
+        "sled",
+        "sled push tutorial"
+      ],
+      [
+        "trx",
+        "trx row tutorial"
+      ],
+      [
+        "arnold",
+        "arnold press tutorial"
+      ],
+      [
+        "hammer curl",
+        "hammer curl tutorial"
+      ],
+      [
+        "vuelos laterales",
+        "dumbbell lateral raise tutorial"
+      ],
+      [
+        "plancha",
+        "plank exercise"
+      ],
+      [
+        "90/90",
+        "90 90 hip switch"
+      ],
+      [
+        "thread the needle",
+        "thread the needle exercise"
+      ],
+      [
+        "open book",
+        "open book thoracic rotation"
+      ],
+      [
+        "cars",
+        "shoulder cars tutorial"
+      ]
+    ]
+  },
+  "dias": [
+    {
+      "id": "1",
+      "nav": "DÍA 1",
+      "sesion_id": "lili-dia1-v1",
+      "titulo": "Día 1 · Dominante de rodilla + empuje",
+      "bajada": "Tres bloques de fuerza y un cierre de cardio suave. Anota el peso donde lo elijas tú.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "Caminata y 2 vueltas de movilidad",
+          "recorrido": "*Primero:* la caminata. *Después:* 1 → 2 → 3 → 4 → 5 → 6 seguidos, sin descanso entre ejercicios. Al terminar el 6, *30 s* y vuelves al 1. Son *2 vueltas*.",
+          "ejercicios": [
+            {
+              "nombre": "Caminata suave",
+              "dosis": "4–5 minutos"
+            },
+            {
+              "codigo": "1",
+              "nombre": "Movilidad de tobillo contra la pared",
+              "dosis": "8 por lado",
+              "descripcion": "De frente a una pared, con todo el pie apoyado, lleva lentamente la rodilla hacia delante sin levantar el talón."
+            },
+            {
+              "codigo": "2",
+              "nombre": "90/90 Hip Switches",
+              "dosis": "6 por lado",
+              "descripcion": "Sentada con las dos rodillas flexionadas, lleva las piernas de un lado al otro, controlada."
+            },
+            {
+              "codigo": "3",
+              "nombre": "Thread the Needle",
+              "dosis": "6 por lado",
+              "descripcion": "En cuatro apoyos, pasa una mano por debajo del brazo contrario y luego abre el pecho otra vez."
+            },
+            {
+              "codigo": "4",
+              "nombre": "Band Pull Apart",
+              "dosis": "12"
+            },
+            {
+              "codigo": "5",
+              "nombre": "Dead Bug",
+              "dosis": "6 por lado",
+              "descripcion": "Boca arriba. Extiende brazo y pierna contraria sin despegar la zona lumbar."
+            },
+            {
+              "codigo": "6",
+              "nombre": "Glute Bridge",
+              "dosis": "10",
+              "descripcion": "Boca arriba, pies apoyados. Sube la cadera y aprieta glúteos arriba."
+            }
+          ],
+          "descanso": "*Descanso:* unos 30 s, solo al terminar el 6.",
+          "crono": {
+            "segundos": 30,
+            "rotulo": "Descanso 30 s"
+          }
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "3 vueltas",
+          "recorrido": "*A1 → A2 → A3* seguidos. Al terminar A3, *descansa 75–90 s* y vuelves a A1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Prensa de piernas",
+              "dosis": "10 · RPE 6–7",
+              "descripcion": "Empieza con una carga cómoda. RPE 6–7 quiere decir que al terminar podrías haber hecho tres o cuatro repeticiones más.",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A2",
+              "nombre": "Dumbbell Shoulder Press",
+              "dosis": "8–10",
+              "descripcion": "Press de hombros con mancuernas.",
+              "consejo": "Abdomen activo. No compenses arqueando la zona lumbar.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "8–10",
+                    "min": 8,
+                    "max": 10
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A3",
+              "nombre": "Adductor Rock Back",
+              "dosis": "6–8 por lado",
+              "descripcion": "Desde cuatro apoyos, extiende una pierna al costado y lleva la cadera hacia atrás, lento."
+            }
+          ],
+          "descanso": "*Descanso:* 75–90 s al terminar A3.",
+          "crono": {
+            "segundos": 75,
+            "rotulo": "Descanso 75–90 s"
+          }
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "3 vueltas",
+          "recorrido": "*B1 → B2 → B3* seguidos. Al terminar B3, *descansa 60–75 s* y vuelves a B1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Step Up bajo o medio",
+              "dosis": "8 por pierna",
+              "descripcion": "Banco o cajón a una altura que te permita subir con control."
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Dumbbell Bench Press",
+              "dosis": "10",
+              "descripcion": "Press plano o ligeramente inclinado con mancuernas.",
+              "consejo": "Puedes usar el mismo banco del Step Up y ahorrarte el traslado.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Pallof Press",
+              "dosis": "10 por lado",
+              "descripcion": "Con banda o polea."
+            }
+          ],
+          "descanso": "*Descanso:* 60–75 s al terminar B3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–75 s"
+          }
+        },
+        {
+          "id": "C",
+          "titulo": "Bloque C",
+          "intro": "3 vueltas",
+          "recorrido": "*C1 → C2 → C3* seguidos. Al terminar C3, *descansa 45–60 s* y vuelves a C1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "C1",
+              "nombre": "Extensión de rodilla en máquina",
+              "dosis": "12–15",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "12–15",
+                    "min": 12,
+                    "max": 15
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C2",
+              "nombre": "Vuelos laterales con mancuernas",
+              "dosis": "12–15",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "12–15",
+                    "min": 12,
+                    "max": 15
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C3",
+              "nombre": "Plancha lateral",
+              "dosis": "20–30 s por lado",
+              "crono": {
+                "segundos": 20,
+                "rotulo": "20–30 s"
+              }
+            }
+          ],
+          "descanso": "*Descanso:* 45–60 s al terminar C3.",
+          "crono": {
+            "segundos": 45,
+            "rotulo": "Descanso 45–60 s"
+          }
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre",
+          "ejercicios": [
+            {
+              "nombre": "Escaladora o caminata inclinada",
+              "dosis": "15–20 min · intensidad moderada"
+            },
+            {
+              "nombre": "Elongación suave",
+              "dosis": "cuádriceps, flexores de cadera, glúteos y pectoral",
+              "descripcion": "Sin forzar posiciones de la zona lumbar."
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en el Día 1?",
+        "texto": "Percepción de esfuerzo: 1 = muy fácil; 10 = extremadamente difícil. No hay número correcto: marca cómo se sintió para ti.",
+        "audio": true
+      }
+    },
+    {
+      "id": "2",
+      "nav": "DÍA 2",
+      "sesion_id": "lili-dia2-v1",
+      "titulo": "Día 2 · Dominante de cadera + tracción",
+      "bajada": "Tres bloques y cierre de cardio suave.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "Caminata o bici y 2 vueltas de movilidad",
+          "recorrido": "*Primero:* la caminata o la bici. *Después:* 1 → 2 → 3 → 4 → 5 → 6 seguidos. Al terminar el 6, *30 s* y vuelves al 1. Son *2 vueltas*.",
+          "ejercicios": [
+            {
+              "nombre": "Caminata o bicicleta",
+              "dosis": "4–5 minutos"
+            },
+            {
+              "codigo": "2",
+              "nombre": "90/90 Hip Switches",
+              "dosis": "6 por lado",
+              "descripcion": "Sentada con las dos rodillas flexionadas, lleva las piernas de un lado al otro, controlada."
+            },
+            {
+              "codigo": "2",
+              "nombre": "Hip Hinge Drill",
+              "dosis": "8",
+              "descripcion": "Práctica de bisagra de cadera, sin carga."
+            },
+            {
+              "codigo": "3",
+              "nombre": "Lateral Band Walk",
+              "dosis": "10 pasos por lado",
+              "descripcion": "Banda sobre las rodillas o los tobillos. Pasos laterales manteniendo la tensión."
+            },
+            {
+              "codigo": "4",
+              "nombre": "Retracción escapular con banda",
+              "dosis": "12"
+            },
+            {
+              "codigo": "5",
+              "nombre": "Bird Dog",
+              "dosis": "6 por lado",
+              "descripcion": "En cuatro apoyos: brazo y pierna contraria. Que la pelvis no rote."
+            },
+            {
+              "codigo": "6",
+              "nombre": "Glute Bridge",
+              "dosis": "10",
+              "descripcion": "Boca arriba, pies apoyados. Sube la cadera y aprieta glúteos arriba."
+            }
+          ],
+          "descanso": "*Descanso:* unos 30 s, solo al terminar el 6.",
+          "crono": {
+            "segundos": 30,
+            "rotulo": "Descanso 30 s"
+          }
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "4 vueltas",
+          "recorrido": "*A1 → A2 → A3* seguidos. Al terminar A3, *descansa 75–90 s* y vuelves a A1. Son *4 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Hip Thrust en máquina",
+              "dosis": "8–10",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "8–10",
+                    "min": 8,
+                    "max": 10
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A2",
+              "nombre": "One Arm Dumbbell Row con apoyo",
+              "dosis": "10 por lado",
+              "descripcion": "Remo con mancuerna a una mano, apoyándote en un banco o superficie estable.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A3",
+              "nombre": "Open Book · rotación torácica",
+              "dosis": "6 por lado",
+              "descripcion": "De lado, rodillas flexionadas. Abre el brazo de arriba lentamente, girando el pecho.",
+              "consejo": "La rotación es del pecho. No fuerces la zona lumbar."
+            }
+          ],
+          "descanso": "*Descanso:* 75–90 s al terminar A3.",
+          "crono": {
+            "segundos": 75,
+            "rotulo": "Descanso 75–90 s"
+          }
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "3 vueltas",
+          "recorrido": "*B1 → B2 → B3* seguidos. Al terminar B3, *descansa 60–75 s* y vuelves a B1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Curl femoral sentada o acostada",
+              "dosis": "10–12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Remo sentado con apoyo",
+              "dosis": "10–12",
+              "consejo": "Si las máquinas están lejos una de otra, no tienes que hacerlo en circuito: termina tus series de una estación y después te cambias.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Dead Bug",
+              "dosis": "6–8 por lado",
+              "descripcion": "Boca arriba. Extiende brazo y pierna contraria sin despegar la zona lumbar."
+            }
+          ],
+          "descanso": "*Descanso:* 60–75 s al terminar B3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–75 s"
+          }
+        },
+        {
+          "id": "C",
+          "titulo": "Bloque C",
+          "intro": "3 vueltas",
+          "recorrido": "*C1 → C2 → C3* seguidos. Al terminar C3, *descansa 60–75 s* y vuelves a C1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "C1",
+              "nombre": "Jalón al pecho",
+              "dosis": "10–12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C2",
+              "nombre": "Face Pull",
+              "dosis": "12–15",
+              "descripcion": "Cuerda en polea, o banda.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. El primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "12–15",
+                    "min": 12,
+                    "max": 15
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C3",
+              "nombre": "Pallof Hold",
+              "dosis": "20–30 s por lado",
+              "crono": {
+                "segundos": 20,
+                "rotulo": "20–30 s"
+              }
+            }
+          ],
+          "descanso": "*Descanso:* 60–75 s al terminar C3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–75 s"
+          }
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre",
+          "ejercicios": [
+            {
+              "nombre": "Bicicleta o caminata",
+              "dosis": "15–20 min · moderada"
+            },
+            {
+              "nombre": "Elongación suave",
+              "dosis": "al terminar"
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en el Día 2?",
+        "texto": "1 = muy fácil; 10 = extremadamente difícil. No buscamos un número correcto: queremos saber cómo se sintió para ti.",
+        "audio": true
+      }
+    },
+    {
+      "id": "3",
+      "nav": "DÍA 3",
+      "sesion_id": "lili-dia3-v1",
+      "titulo": "Día 3 · Full body de mantención",
+      "bajada": "Este día no compite con los fuertes. Movimiento, estímulo y técnica, y terminar sintiendo que todavía quedaba bastante. RPE alrededor de 6.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "Caminata y 2 vueltas de movilidad",
+          "recorrido": "*Primero:* la caminata. *Después:* 1 → 2 → 3 → 4 → 5 → 6 seguidos. Al terminar el 6, *30 s* y vuelves al 1. Son *2 vueltas*.",
+          "ejercicios": [
+            {
+              "nombre": "Caminata",
+              "dosis": "4 minutos"
+            },
+            {
+              "codigo": "1",
+              "nombre": "Movilidad de tobillo contra la pared",
+              "dosis": "8 por lado",
+              "descripcion": "De frente a una pared, con todo el pie apoyado, lleva lentamente la rodilla hacia delante sin levantar el talón."
+            },
+            {
+              "codigo": "2",
+              "nombre": "90/90 Hip Switches",
+              "dosis": "6 por lado",
+              "descripcion": "Sentada con las dos rodillas flexionadas, lleva las piernas de un lado al otro, controlada."
+            },
+            {
+              "codigo": "3",
+              "nombre": "Rotación torácica",
+              "dosis": "6 por lado"
+            },
+            {
+              "codigo": "4",
+              "nombre": "Lateral Band Walk",
+              "dosis": "10 pasos por lado",
+              "descripcion": "Banda sobre las rodillas o los tobillos. Pasos laterales manteniendo la tensión."
+            },
+            {
+              "codigo": "5",
+              "nombre": "Dead Bug",
+              "dosis": "6 por lado",
+              "descripcion": "Boca arriba. Extiende brazo y pierna contraria sin despegar la zona lumbar."
+            },
+            {
+              "codigo": "6",
+              "nombre": "Remo con banda",
+              "dosis": "12",
+              "descripcion": "Banda enganchada en una estructura estable."
+            }
+          ],
+          "descanso": "*Descanso:* unos 30 s, solo al terminar el 6.",
+          "crono": {
+            "segundos": 30,
+            "rotulo": "Descanso 30 s"
+          }
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "3 vueltas",
+          "recorrido": "*A1 → A2 → A3* seguidos. Al terminar A3, *descansa 75–90 s* y vuelves a A1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Prensa unilateral",
+              "dosis": "10 por pierna",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A2",
+              "nombre": "Dumbbell Arnold Press",
+              "dosis": "10",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A3",
+              "nombre": "One Arm Dumbbell Row con apoyo",
+              "dosis": "10 por lado",
+              "descripcion": "A una mano y con apoyo, para que la zona lumbar no tenga que sostener todo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  }
+                ]
+              }
+            }
+          ],
+          "descanso": "*Descanso:* 75–90 s al terminar A3.",
+          "crono": {
+            "segundos": 75,
+            "rotulo": "Descanso 75–90 s"
+          }
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "3 vueltas",
+          "recorrido": "*B1 → B2 → B3* seguidos. Al terminar B3, *descansa 75–90 s* y vuelves a B1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Hip Thrust",
+              "dosis": "10–12 · carga moderada",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Remo vertical con kettlebell",
+              "dosis": "10–12",
+              "descripcion": "De pie, toma la kettlebell y súbela controlada llevando los codos hacia arriba.",
+              "consejo": "Carga cómoda y un rango que se sienta natural para los hombros.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Supported Split Squat",
+              "dosis": "8 por lado",
+              "descripcion": "Puedes apoyarte en una estructura para ganar estabilidad.",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo."
+            }
+          ],
+          "descanso": "*Descanso:* 75–90 s al terminar B3.",
+          "crono": {
+            "segundos": 75,
+            "rotulo": "Descanso 75–90 s"
+          }
+        },
+        {
+          "id": "C",
+          "titulo": "Bloque C",
+          "intro": "2–3 vueltas",
+          "recorrido": "*C1 → C2 → C3* seguidos, y vuelves a C1. Son *2 o 3 vueltas*, según cómo te sientas.",
+          "ejercicios": [
+            {
+              "codigo": "C1",
+              "nombre": "Vuelos laterales",
+              "dosis": "12–15",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "12–15",
+                    "min": 12,
+                    "max": 15
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C2",
+              "nombre": "Dumbbell Hammer Curl",
+              "dosis": "10–12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C3",
+              "nombre": "Cable Triceps Pushdown",
+              "dosis": "12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. El primero que anotes es el que vamos a usar de referencia."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre",
+          "ejercicios": [
+            {
+              "nombre": "Cardio moderado",
+              "dosis": "10–15 min"
+            },
+            {
+              "nombre": "Movilidad y elongación suave",
+              "dosis": "al terminar",
+              "descripcion": "La sensación que buscamos al terminar el día es «podría haber hecho más». Eso está perfecto."
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en el Día 3?",
+        "texto": "Este día buscaba dejarte con capacidad de sobra. 1 = muy fácil; 10 = extremadamente difícil.",
+        "audio": true
+      }
+    },
+    {
+      "id": "4",
+      "nav": "DÍA 4",
+      "sesion_id": "lili-dia4-v1",
+      "titulo": "Día 4 · Metabólico + movilidad + zona media",
+      "bajada": "Este día tiene otra intención: moverte, cardio, zona media y movilidad. No es otro entrenamiento pesado.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "mov",
+          "titulo": "Movilidad y activación",
+          "intro": "10–15 minutos",
+          "recorrido": "Uno detrás de otro, sin buscar fatiga. *10–15 min* en total.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Movilidad de tobillo"
+            },
+            {
+              "codigo": "2",
+              "nombre": "90/90 Hip Switches"
+            },
+            {
+              "codigo": "3",
+              "nombre": "Movilidad de flexor de cadera",
+              "dosis": "media rodilla"
+            },
+            {
+              "codigo": "4",
+              "nombre": "Open Book o movilidad torácica suave"
+            },
+            {
+              "codigo": "5",
+              "nombre": "Movilidad de hombros con banda"
+            },
+            {
+              "codigo": "6",
+              "nombre": "Cat Camel suave"
+            },
+            {
+              "codigo": "7",
+              "nombre": "Glute Bridge"
+            },
+            {
+              "codigo": "8",
+              "nombre": "Bird Dog"
+            },
+            {
+              "codigo": "9",
+              "nombre": "Dead Bug"
+            }
+          ]
+        },
+        {
+          "id": "met",
+          "titulo": "Circuito metabólico",
+          "intro": "5 vueltas · RPE 6–7",
+          "recorrido": "*1 → 2 → 3 → 4 → 5* seguidos. Al terminar el 5, *descansa 60–90 s* y vuelves al 1. Son *5 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Bicicleta o elíptica",
+              "dosis": "60 segundos",
+              "crono": {
+                "segundos": 60,
+                "rotulo": "60 s"
+              }
+            },
+            {
+              "codigo": "2",
+              "nombre": "Sled Push",
+              "dosis": "20–30 metros"
+            },
+            {
+              "codigo": "3",
+              "nombre": "TRX Row",
+              "dosis": "10–12"
+            },
+            {
+              "codigo": "4",
+              "nombre": "Step Up bajo",
+              "dosis": "8–10 por pierna"
+            },
+            {
+              "codigo": "5",
+              "nombre": "Farmer Carry",
+              "dosis": "30–40 segundos",
+              "crono": {
+                "segundos": 30,
+                "rotulo": "30–40 s"
+              }
+            }
+          ],
+          "descanso": "*Descanso:* 60–90 s entre vueltas. No busques terminar agotada.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–90 s"
+          }
+        },
+        {
+          "id": "core",
+          "titulo": "Zona media",
+          "intro": "3 vueltas",
+          "recorrido": "*1 → 2 → 3 → 4* seguidos, y vuelves al 1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Pallof Press",
+              "dosis": "10 por lado"
+            },
+            {
+              "codigo": "2",
+              "nombre": "Dead Bug",
+              "dosis": "8 por lado"
+            },
+            {
+              "codigo": "3",
+              "nombre": "Plancha lateral",
+              "dosis": "20–30 s por lado",
+              "crono": {
+                "segundos": 20,
+                "rotulo": "20–30 s"
+              }
+            },
+            {
+              "codigo": "4",
+              "nombre": "Bird Dog",
+              "dosis": "6 por lado"
+            }
+          ]
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre opcional",
+          "recorrido": "Solo si terminas cómoda y todavía quieres hacer algo más.",
+          "ejercicios": [
+            {
+              "nombre": "Cardio moderado",
+              "dosis": "10–15 min"
+            },
+            {
+              "nombre": "Movilidad y elongación suave",
+              "dosis": "8–10 min"
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en el Día 4?",
+        "texto": "Este día buscaba movimiento, no fatiga. 1 = muy fácil; 10 = extremadamente difícil.",
+        "audio": true
+      }
+    },
+    {
+      "id": "5",
+      "nav": "DÍA 5",
+      "sesion_id": "lili-dia5-v1",
+      "titulo": "Día 5 · Glúteos + tren superior",
+      "bajada": "Volvemos a un día principal. Tres bloques bastan para esta primera semana.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "Caminata y 2 vueltas de movilidad",
+          "recorrido": "*Primero:* la caminata. *Después:* 1 → 2 → 3 → 4 → 5 → 6 seguidos, sin descanso entre ejercicios. Al terminar el 6, *30 s* y vuelves al 1. Son *2 vueltas*.",
+          "ejercicios": [
+            {
+              "nombre": "Caminata",
+              "dosis": "4–5 minutos"
+            },
+            {
+              "codigo": "1",
+              "nombre": "Movilidad de tobillo",
+              "dosis": "8 por lado"
+            },
+            {
+              "codigo": "2",
+              "nombre": "90/90 Hip Switches",
+              "dosis": "6 por lado",
+              "descripcion": "Sentada con las dos rodillas flexionadas, lleva las piernas de un lado al otro, controlada."
+            },
+            {
+              "codigo": "3",
+              "nombre": "Shoulder CARs",
+              "dosis": "5 por lado",
+              "descripcion": "Círculos de hombro lentos y controlados, buscando un rango cómodo."
+            },
+            {
+              "codigo": "4",
+              "nombre": "Lateral Band Walk",
+              "dosis": "10 pasos por lado",
+              "descripcion": "Banda sobre las rodillas o los tobillos. Pasos laterales manteniendo la tensión."
+            },
+            {
+              "codigo": "5",
+              "nombre": "Dead Bug",
+              "dosis": "6 por lado",
+              "descripcion": "Boca arriba. Extiende brazo y pierna contraria sin despegar la zona lumbar."
+            },
+            {
+              "codigo": "6",
+              "nombre": "Activación escapular con banda",
+              "dosis": "12"
+            }
+          ],
+          "descanso": "*Descanso:* unos 30 s, solo al terminar el 6.",
+          "crono": {
+            "segundos": 30,
+            "rotulo": "Descanso 30 s"
+          }
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "3 vueltas",
+          "recorrido": "*A1 → A2 → A3* seguidos. Al terminar A3, *descansa 60–75 s* y vuelves a A1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Single Leg Hip Thrust",
+              "dosis": "10 por lado",
+              "descripcion": "Hip thrust a una pierna, con la espalda apoyada en el banco.",
+              "consejo": "Empieza sin carga o con carga moderada. Agrega mancuerna solo si dominas bien el movimiento.",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A2",
+              "nombre": "Curl de bíceps con mancuernas",
+              "dosis": "10–12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A3",
+              "nombre": "Bench Lat Stretch",
+              "dosis": "6–8 respiraciones",
+              "descripcion": "Apoya manos o codos en el banco y lleva suavemente la cadera hacia atrás, buscando dorsales y hombros.",
+              "consejo": "Sin forzar la espalda."
+            }
+          ],
+          "descanso": "*Descanso:* 60–75 s al terminar A3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–75 s"
+          }
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "3 vueltas",
+          "recorrido": "*B1 → B2 → B3* seguidos. Al terminar B3, *descansa 60–75 s* y vuelves a B1. Son *3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Prensa con pies un poco más altos",
+              "dosis": "10–12",
+              "descripcion": "Pelvis y espalda siempre bien apoyadas.",
+              "consejo": "No es un ejercicio aislado de isquiotibiales: solo cambiamos un poco cuánto participa la cadera, manteniendo una posición cómoda.",
+              "precaucion": "Si esto aumenta la molestia más de lo habitual, baja la carga o el rango. Si aparece un dolor distinto al que conoces, irradiación hacia una pierna, hormigueo o debilidad, detén el ejercicio y cuéntamelo.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "10–12",
+                    "min": 10,
+                    "max": 12
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Half Kneeling Single Arm Dumbbell Press",
+              "dosis": "8–10 por lado",
+              "descripcion": "Press de hombro a una mano, en media rodilla. Carga moderada.",
+              "consejo": "Abdomen y glúteos activos.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
+                  },
+                  {
+                    "campo": "reps",
+                    "etiqueta": "Repeticiones por vuelta",
+                    "unidad": "reps",
+                    "prescrito": true,
+                    "texto": "8–10",
+                    "min": 8,
+                    "max": 10
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Plancha frontal",
+              "dosis": "20–30 segundos",
+              "crono": {
+                "segundos": 20,
+                "rotulo": "20–30 s"
+              }
+            }
+          ],
+          "descanso": "*Descanso:* 60–75 s al terminar B3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 60–75 s"
+          }
+        },
+        {
+          "id": "C",
+          "titulo": "Bloque C",
+          "intro": "2–3 vueltas",
+          "recorrido": "*C1 → C2 → C3* seguidos, y vuelves a C1. Son *2 o 3 vueltas*.",
+          "ejercicios": [
+            {
+              "codigo": "C1",
+              "nombre": "Curl femoral",
+              "dosis": "12",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "Es tu primera semana en esta máquina: el peso lo eliges tú, y el primero que anotes es el que vamos a usar de referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "C2",
+              "nombre": "Lateral Band Walk",
+              "dosis": "12–15 pasos por lado"
+            },
+            {
+              "codigo": "C3",
+              "nombre": "Band Pull Apart",
+              "dosis": "12–15"
+            }
+          ]
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre",
+          "recorrido": "En esta primera semana el cardio final puede ser opcional si la sesión ya fue suficiente.",
+          "ejercicios": [
+            {
+              "nombre": "Escaladora o caminata",
+              "dosis": "10–15 min · según energía y tiempo"
+            },
+            {
+              "nombre": "Elongación pasiva suave y respiración",
+              "dosis": "al terminar"
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue en el Día 5?",
+        "texto": "Último día de la semana. 1 = muy fácil; 10 = extremadamente difícil.",
+        "audio": true
+      }
+    }
+  ]
+}

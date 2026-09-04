@@ -288,7 +288,8 @@ $('#traer').onclick = async () => {
    cubre "Traer la ultima entrega". */
 const MOLDES = {
   nico:   { archivo: 'kecJVd0cI2VQVobjAof6xg', plan: 'nico-v1',           nombre: 'la semana de Nico' },
-  pancha: { archivo: 'r5GvuG0A6UDfxXw3_EViKA', plan: 'pancha-piernas-v4', nombre: 'la sesión de Panchi' }
+  pancha: { archivo: 'r5GvuG0A6UDfxXw3_EViKA', plan: 'pancha-piernas-v4', nombre: 'la sesión de Panchi' },
+  lili:   { archivo: '0l9VuCJCN-XzXYS4HUF4JA', plan: 'lili-semana1-v1',   nombre: 'la semana de Lili' }
 };
 
 $$('[data-molde]').forEach(boton => {

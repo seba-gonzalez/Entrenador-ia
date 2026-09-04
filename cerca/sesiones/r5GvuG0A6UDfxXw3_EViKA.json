@@ -286,7 +286,6 @@
       "feedback": {
         "titulo": "¿Cómo te fue, Panchi?",
         "texto": "La app ya guarda lo que marcaste y las cargas que registraste. Tú agrega la parte que no podemos ver. Elige un número; no hay valor marcado por defecto.",
-        "marcador": "Ej.: el squat se sintió liviano, en la última serie subí el peso, las estocadas me costaron bastante…",
         "audio": true
       }
     }

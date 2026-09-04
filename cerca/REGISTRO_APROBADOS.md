@@ -989,6 +989,52 @@ las dos preguntas estándar, que no son información de salud. Declarar la terce
 para una persona real es el acto que la matriz bloquea, y es decisión del
 entrenador con su abogado, no del código.
 
+### APROBADO — El texto del comentario final es uno solo, y pregunta por el entrenamiento (2026-09-04)
+
+> *«Cuéntame cómo te fue: qué pesos usaste, qué ejercicio no te acomodó, qué te
+> costó más de lo que esperabas, y cualquier cosa que quieras que sepa antes de
+> armarte la próxima.»*
+
+**Vive en el código, no copiado en cada sesión.** Copiarlo garantiza que en algún
+momento dos alumnos tengan textos distintos sin que nadie lo haya decidido — que
+es justo lo que encontró la auditoría del 2026-09-02. Los que cada sesión traía
+por su cuenta se retiraron. Una sesión puede poner el suyo, pero no hace falta.
+
+**Pregunta por el entrenamiento, no por el cuerpo.** No se pregunta por
+molestias ni por dolor. Si el alumno decide contar algo suyo, lo cuenta por su
+cuenta. Es la regla B→C de `MATRIZ_DE_DATOS.md` aplicada al único campo libre
+que queda en la vista.
+
+### APROBADO — Precaución: una instrucción escrita, ni pregunta ni registro (2026-09-04)
+
+Un ejercicio puede llevar `precaucion`: un texto fijo que el entrenador escribió
+para ese ejercicio y esa persona. **No pregunta nada y no guarda nada.**
+
+Es la vía que quedó abierta cuando la tercera pregunta del check-in se dejó con
+la captura desactivada: lo que hacía falta era que el alumno leyera una
+instrucción, y eso no necesita capturar nada de nadie.
+
+**No es un consejo.** Un consejo mejora la técnica; una precaución dice cuándo
+parar. Por eso lleva el ámbar del aviso y no el color de la lectura corriente:
+misma responsabilidad que el aviso del check-in — lo que el entrenador dejó
+escrito para este momento.
+
+**Lo que hay que tener presente:** el texto vive en la entrega, y la entrega la
+lee quien tenga el enlace. Una precaución redactada sobre una molestia concreta
+dice algo de esa persona a quien abra el enlace. Los tokens son inadivinables y
+se pueden jubilar, pero conviene escribirlas como instrucción de entrenamiento y
+no como descripción de un cuadro clínico.
+
+### APROBADO — El descanso de un bloque puede llevar cronómetro (2026-09-04)
+
+`bloque.crono` ya no es solo el tabata: acepta también un cronómetro simple, y
+una lista. Un descanso entre vueltas es tiempo prescrito igual que una plancha,
+y hasta ahora había que salir a buscar el cronómetro flotante.
+
+**En los rangos, el botón cuenta el extremo bajo y el rótulo dice el rango
+entero** («Descanso 75–90 s» contando 75). El mínimo es el número accionable:
+cuando suena, ya se puede volver.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

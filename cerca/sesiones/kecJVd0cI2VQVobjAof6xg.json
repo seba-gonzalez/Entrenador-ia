@@ -334,7 +334,6 @@
       "feedback": {
         "titulo": "¿Cómo te sentiste en el Día 1?",
         "texto": "Percepción de esfuerzo: 1 = muy fácil; 10 = extremadamente difícil, casi no podías hacer nada más. No hay número correcto: marca cómo se sintió para ti.",
-        "marcador": "Ej.: las flexiones me costaron, la bici estuvo entretenida…",
         "audio": true
       }
     },
@@ -596,7 +595,6 @@
       "feedback": {
         "titulo": "¿Cómo te sentiste en el Día 2?",
         "texto": "1 = muy fácil y 10 = extremadamente difícil. No buscamos un número correcto: queremos saber cómo se sintió para ti.",
-        "marcador": "Ej.: el press estuvo pesado, me gustó la parte de movimiento, la plancha lateral me costó…",
         "audio": true
       }
     },
@@ -663,7 +661,6 @@
       "feedback": {
         "titulo": "¿Cómo te fue en la misión?",
         "texto": "Cuéntanos qué hiciste y cómo terminaste. 1 = muy fácil; 10 = extremadamente difícil.",
-        "marcador": "Ej.: jugué básquet 45 min, caminé una hora, terminé cansado pero bien…",
         "audio": true
       }
     }

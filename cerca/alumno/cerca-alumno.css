@@ -513,3 +513,14 @@ details.bloque .ejercicio:first-of-type { border-top: 0; }
   background: rgba(255, 189, 112, .07); color: #ffe3c2; line-height: 1.5;
 }
 .checkin-aviso b { color: var(--aviso); }
+
+/* La precaución de un ejercicio: misma responsabilidad que el aviso del
+   check-in —lo que el entrenador dejó escrito para este momento— y por eso
+   mismo color. No es un consejo: un consejo mejora la técnica, una precaución
+   dice cuándo parar. */
+.precaucion {
+  margin-top: 8px; padding: 10px 11px; border: 1px solid rgba(255, 189, 112, .38);
+  border-left-width: 3px; border-radius: 0 10px 10px 0;
+  background: rgba(255, 189, 112, .06); color: #ffe3c2;
+}
+.precaucion b { color: var(--aviso); }
