@@ -1054,6 +1054,38 @@ no por olvido.
 **Lo que no se tocó:** las tres precauciones y los tres cronómetros de ese día
 siguen enteros. Registrar menos no es acompañar menos.
 
+### APROBADO — El código de un ejercicio identifica dentro de su bloque (2026-09-04)
+
+El revisor exigía que los códigos no se repitieran **en todo el día**, y eso
+bloqueó la publicación de la semana de Lili: su día 4 numera 1–9 la movilidad,
+1–5 el circuito metabólico y 1–4 la zona media.
+
+Eso no era un error suyo: **cada recorrido vive dentro de su bloque**, y ahí no
+hay ambigüedad. La regla pasa a ser por bloque.
+
+**Pero había un fallo de verdad debajo, que la regla estricta tapaba.** La clave
+interna de un casillero era `codigo.campo`, sin el bloque, así que dos
+ejercicios con el mismo código en el mismo día **se pisaban los valores**. No se
+notaba porque ninguno de los repetidos tenía casillero. Ahora la clave lleva el
+bloque delante y la ejecución guarda `bloque` junto a `ref`. Comprobado con dos
+ejercicios llamados «3» en bloques distintos y casillero en los dos: se guardan
+40 y 7, cada uno en el suyo.
+
+**Lo que sí era un error de la sesión** y se corrigió: el calentamiento del día 2
+tenía dos ejercicios con el código «2», dentro del mismo bloque. Nació de reusar
+constantes que llevaban el código escrito dentro; el código depende de la
+posición en su bloque, así que no puede viajar con el ejercicio.
+
+### APROBADO — La vista previa mide lo que mide un teléfono (2026-09-04)
+
+El marco medía 720 px de alto y el check-in de Lili empieza a los 686: quedaba
+justo fuera, y parecía no existir. Pasa a 844 px, que es el alto real de un
+teléfono corriente, y el pie dice explícitamente que se puede desplazar dentro.
+
+**Una vista previa más corta que el teléfono no es una vista previa conservadora:
+es una que miente en la dirección contraria.** Muestra menos de lo que la
+persona va a ver, y lo que se queda fuera parece no existir.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

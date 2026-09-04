@@ -61,8 +61,13 @@ function revisar(s) {
     }
     if (!Array.isArray(d.bloques) || !d.bloques.length) { mal.push(`${donde}: no tiene ningún bloque.`); return; }
 
-    const idsBloque = new Set(), codigos = new Set();
+    const idsBloque = new Set();
     d.bloques.forEach(b => {
+      // Los codigos identifican dentro de SU bloque, no dentro del dia. Que el
+      // calentamiento numere 1..6 y la zona media vuelva a numerar 1..4 no es
+      // un error: cada recorrido vive dentro de su bloque y ahi no hay
+      // ambiguedad, y los datos ya van separados por bloque.
+      const codigos = new Set();
       bloques++;
       if (!b.id) { mal.push(`${donde}: hay un bloque sin identificador.`); return; }
       if (idsBloque.has(b.id)) mal.push(`${donde}: el bloque «${b.id}» aparece dos veces.`);
@@ -74,7 +79,7 @@ function revisar(s) {
         ejercicios++;
         if (!e.nombre) mal.push(`${donde}, bloque ${b.id}: hay un ejercicio sin nombre.`);
         if (e.codigo) {
-          if (codigos.has(e.codigo)) mal.push(`${donde}: el código «${e.codigo}» está en dos ejercicios.`);
+          if (codigos.has(e.codigo)) mal.push(`${donde}, ${b.titulo || 'bloque ' + b.id}: el código «${e.codigo}» está en dos ejercicios del mismo bloque.`);
           codigos.add(e.codigo);
         }
       });

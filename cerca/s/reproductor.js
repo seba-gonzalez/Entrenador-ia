@@ -394,7 +394,7 @@ function dibujarBloque(dia, bloque, indice, acordeon) {
 
   // Un registro puede colgar del bloque (la mision, la carga compartida de un
   // circuito) o de un ejercicio.
-  if (bloque.registro) cuerpo.appendChild(dibujarRegistro(dia, bloque.id, bloque.registro));
+  if (bloque.registro) cuerpo.appendChild(dibujarRegistro(dia, `${bloque.id}::${bloque.id}`, bloque.registro));
 
   // Un bloque puede traer su propio cronometro: el tabata, o el descanso entre
   // vueltas, que es tiempo prescrito igual que una plancha.
@@ -458,7 +458,7 @@ function dibujarEjercicio(dia, bloque, ej) {
     n.appendChild(b);
   });
 
-  if (ej.registro) n.appendChild(dibujarRegistro(dia, ej.codigo || ej.nombre, ej.registro));
+  if (ej.registro) n.appendChild(dibujarRegistro(dia, `${bloque.id}::${ej.codigo || ej.nombre}`, ej.registro));
   return n;
 }
 
@@ -497,15 +497,15 @@ function casillero(dia, clave, campo, { prellenado, marcador }) {
   return input;
 }
 
-function dibujarRegistro(dia, refId, registro) {
+function dibujarRegistro(dia, base, registro) {
   const tipo = registro.tipo || 'simple';
   const caja = el('div', 'registro');
   caja.appendChild(el('div', 'registro-cab', 'Anota lo que hiciste'));
   if (registro.nota) caja.appendChild(el('div', 'registro-nota r-apunte', registro.nota));
 
-  if (tipo === 'por_serie')          dibujarSeries(dia, refId, registro, caja);
-  else if (tipo === 'carga_compartida') dibujarCargaCompartida(dia, refId, registro, caja);
-  else                                dibujarSimple(dia, refId, registro, caja);
+  if (tipo === 'por_serie')          dibujarSeries(dia, base, registro, caja);
+  else if (tipo === 'carga_compartida') dibujarCargaCompartida(dia, base, registro, caja);
+  else                                dibujarSimple(dia, base, registro, caja);
 
   const est = D(dia.id);
   if (!est.pieDicho) {
@@ -516,7 +516,7 @@ function dibujarRegistro(dia, refId, registro) {
   return caja;
 }
 
-function dibujarSimple(dia, refId, registro, caja) {
+function dibujarSimple(dia, base, registro, caja) {
   registro.campos.forEach(campo => {
     const fila = el('label', 'registro-fila');
     const et = el('span', 'registro-et r-etiqueta', campo.etiqueta);
@@ -524,7 +524,7 @@ function dibujarSimple(dia, refId, registro, caja) {
     pre.textContent = campo.prescrito ? `Seba mandó ${campo.texto}` : 'Todavía no hay referencia';
     et.appendChild(pre);
     fila.appendChild(et);
-    fila.appendChild(casillero(dia, `${refId}.${campo.campo}`, campo, { prellenado: false }));
+    fila.appendChild(casillero(dia, `${base}::${campo.campo}`, campo, { prellenado: false }));
     fila.appendChild(el('span', 'registro-un r-etiqueta', campo.unidad));
     caja.appendChild(fila);
     if (!campo.prescrito && campo.motivo) {
@@ -533,7 +533,7 @@ function dibujarSimple(dia, refId, registro, caja) {
   });
 }
 
-function dibujarCargaCompartida(dia, refId, registro, caja) {
+function dibujarCargaCompartida(dia, base, registro, caja) {
   const campo = registro.campo;
   const fila = el('div', 'carga-compartida');
   const et = el('span', 'registro-et r-etiqueta', campo.etiqueta);
@@ -543,14 +543,14 @@ function dibujarCargaCompartida(dia, refId, registro, caja) {
     : 'Todavía no hay referencia';
   et.appendChild(pre);
   fila.appendChild(et);
-  fila.appendChild(casillero(dia, `${refId}.${campo.campo}`, campo, { prellenado: !!campo.prellenado }));
+  fila.appendChild(casillero(dia, `${base}::${campo.campo}`, campo, { prellenado: !!campo.prellenado }));
   fila.appendChild(el('span', 'registro-un r-etiqueta', campo.unidad));
   caja.appendChild(fila);
 }
 
-function dibujarSeries(dia, refId, registro, caja) {
+function dibujarSeries(dia, base, registro, caja) {
   const est = D(dia.id);
-  est.series[refId] = [];
+  est.series[base] = [];
 
   const grid = el('div', 'registro-series');
   ['Serie', ...registro.columnas.map(c => c.etiqueta)].forEach(t =>
@@ -568,12 +568,12 @@ function dibujarSeries(dia, refId, registro, caja) {
   sumar.type = 'button';
 
   function renumerar() {
-    est.series[refId].forEach((s, i) => { s.n = i + 1; s.nodo.textContent = 'S' + (i + 1); });
-    sumar.disabled = est.series[refId].length >= (registro.maximo || 0);
+    est.series[base].forEach((s, i) => { s.n = i + 1; s.nodo.textContent = 'S' + (i + 1); });
+    sumar.disabled = est.series[base].length >= (registro.maximo || 0);
   }
 
   function agregar(anadida) {
-    const n = est.series[refId].length + 1;
+    const n = est.series[base].length + 1;
     const sn = el('span', 'sn', 'S' + n);
     filas.appendChild(sn);
     const serie = { n, anadida, nodo: sn, claves: {} };
@@ -581,7 +581,7 @@ function dibujarSeries(dia, refId, registro, caja) {
       // Una serie anadida no estaba prevista: ninguno de sus campos viene
       // prescrito, asi que ninguno nace con valor escrito.
       const prellenado = !anadida && !!col.prellenado;
-      const clave = `${refId}.S${n}.${col.campo}`;
+      const clave = `${base}::S${n}::${col.campo}`;
       serie.claves[col.campo] = clave;
       filas.appendChild(casillero(dia, clave, col, { prellenado, marcador: col.texto || '—' }));
     });
@@ -596,7 +596,7 @@ function dibujarSeries(dia, refId, registro, caja) {
         if (conDatos) { quitar.textContent = 'TIENE DATOS ANOTADOS'; return; }
         Object.values(serie.claves).forEach(k => { delete est.valores[k]; delete est.tocados[k]; });
         serie.nodos.forEach(x => x.remove());
-        est.series[refId] = est.series[refId].filter(x => x !== serie);
+        est.series[base] = est.series[base].filter(x => x !== serie);
         renumerar(); refrescarEnvio(dia.id);
       };
       filas.appendChild(quitar);
@@ -604,7 +604,7 @@ function dibujarSeries(dia, refId, registro, caja) {
     // Guardamos los nodos de la fila para poder retirarla entera.
     const total = 1 + registro.columnas.length + (anadida ? 1 : 0);
     serie.nodos = [...filas.children].slice(-total);
-    est.series[refId].push(serie);
+    est.series[base].push(serie);
     renumerar();
     refrescarEnvio(dia.id);
   }
@@ -793,14 +793,18 @@ function construirEjecucion(dia) {
   const registros = [];
   dia.bloques.forEach(bloque => {
     const listo = !!est.bloques[bloque.id];
-    const juntar = (refId, nombre, registro) => {
+    const juntar = (ref, nombre, registro) => {
       if (!registro) return;
       const tipo = registro.tipo || 'simple';
+      // La clave lleva el bloque delante: el codigo de un ejercicio identifica
+      // dentro de SU bloque, no dentro del dia. Sin esto, el "1" del
+      // calentamiento y el "1" de la zona media se pisan los valores.
+      const base = `${bloque.id}::${ref}`;
 
       if (tipo === 'por_serie') {
         registros.push({
-          ref: refId, nombre, captura: 'por_serie',
-          series: (est.series[refId] || []).map(s => ({
+          bloque: bloque.id, ref, nombre, captura: 'por_serie',
+          series: (est.series[base] || []).map(s => ({
             serie: s.n,
             anadida_en_ejecucion: s.anadida,
             campos: registro.columnas.map(col => campoPayload(
@@ -813,13 +817,13 @@ function construirEjecucion(dia) {
 
       const campos = tipo === 'carga_compartida' ? [registro.campo] : registro.campos;
       registros.push({
-        ref: refId, nombre,
+        bloque: bloque.id, ref, nombre,
         // Una entrada por ejercicio, no una por vuelta. Decirlo importa: "las
         // tres vueltas iguales" y "anote cada vuelta" son evidencias distintas.
         captura: tipo === 'carga_compartida' ? 'carga_compartida' : 'en_conjunto',
         campos: campos.map(c => campoPayload(
-          c, est.valores[`${refId}.${c.campo}`] ?? null,
-          est.tocados[`${refId}.${c.campo}`], listo, false))
+          c, est.valores[`${base}::${c.campo}`] ?? null,
+          est.tocados[`${base}::${c.campo}`], listo, false))
       });
     };
     juntar(bloque.id, bloque.titulo, bloque.registro);
