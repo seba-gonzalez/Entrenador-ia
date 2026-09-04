@@ -14,6 +14,8 @@
     "pastillas": ["6 bloques", "piernas + core", "feedback al final"]
   },
 
+  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
+
   "chat": {
     "atajos": ["¿Cuánto descanso?", "¿Cómo funciona el tabata?", "¿Qué carga uso?"],
     "videos": [
@@ -59,7 +61,8 @@
           "ejercicios": [
             { "nombre": "Elevación de cadera + banda", "descripcion": "20 repeticiones. Banda en las rodillas." },
             { "nombre": "Palomas", "dosis": "15 lb", "descripcion": "10 por pierna. Mancuerna tomada con las dos manos." },
-            { "nombre": "Plancha", "descripcion": "30 segundos." }
+            { "nombre": "Plancha", "descripcion": "30 segundos.",
+              "crono": { "segundos": 30, "rotulo": "30 s" } }
           ]
         },
         {

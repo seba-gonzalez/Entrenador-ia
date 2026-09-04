@@ -893,6 +893,39 @@ cuenta en el audio.
 La capacidad se conserva para quien la necesite. Lo que cambia es el defecto:
 **ausente**, no presente.
 
+### APROBADO — Lo que está en una vista está en la otra, salvo que haya un motivo (2026-09-02)
+
+Al añadir el audio a Nico se auditaron las dos sesiones clave por clave. La
+regla que sale de ahí:
+
+> **Una diferencia entre dos alumnos solo se sostiene si nace de una diferencia
+> entre sus entrenamientos, no de en qué orden se escribieron las páginas.**
+
+Corregido, porque no se sostenía:
+
+- **Audio de feedback.** Panchi lo tenía; Nico no. La capacidad ya estaba en el
+  reproductor: la sesión de Nico simplemente no la pedía.
+- **El aviso sobre el dolor.** Nico lo tenía; Panchi no. Un mensaje de seguridad
+  no puede depender de qué página se escribió primero.
+- **Cronómetro en una plancha de 30 s.** Todas las de Nico lo tenían; la de
+  Panchi no.
+- **Los presets del cronómetro llegaban hasta 1:30** y el bloque de potencia de
+  Panchi pide descansos de 2:00. Se añadió el preset, y la rejilla pasa a
+  acomodarse sola en vez de fijar cinco columnas.
+
+Registrado como diferencia legítima, para no volver a levantarlo: los códigos de
+ejercicio (A1, B2), el tipo de cronómetro, la forma de registrar, la misión y el
+riel de días nacen de que los dos entrenamientos son distintos.
+
+### PENDIENTE — Los circuitos de Panchi no muestran su recorrido
+
+Cuatro de sus seis bloques son circuitos y ninguno dice el recorrido completo.
+Los siete de Nico sí. Es el principio «nada se da por obvio» y es la mejor idea
+que trajo la vista de Nico.
+
+No se corrige por cuenta propia: escribir el recorrido y el descanso exacto de
+cada vuelta es contenido de entrenamiento, y lo escribe el entrenador.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

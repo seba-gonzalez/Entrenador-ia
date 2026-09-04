@@ -330,7 +330,7 @@ textarea:focus { border-color: var(--foco); }
 
 .crono-tiempo { text-align: center; font-size: 52px; font-weight: 900; margin: 16px 0 4px; font-variant-numeric: tabular-nums; }
 .crono-rotulo { text-align: center; color: var(--activo); font-size: 12px; font-weight: 800; letter-spacing: .06em; min-height: 20px; line-height: 1.4; }
-.presets, .mandos { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 13px; }
+.presets, .mandos { display: grid; grid-template-columns: repeat(auto-fit, minmax(52px, 1fr)); gap: 6px; margin-top: 13px; }
 .mandos { grid-template-columns: repeat(3, 1fr); }
 .presets button, .mandos button {
   min-height: 44px; border: 1px solid var(--linea); border-radius: 9px; background: #071211;
