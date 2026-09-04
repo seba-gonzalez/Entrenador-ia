@@ -774,35 +774,13 @@
             {
               "codigo": "A2",
               "nombre": "Dumbbell Arnold Press",
-              "dosis": "10",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
-                  }
-                ]
-              }
+              "dosis": "10"
             },
             {
               "codigo": "A3",
               "nombre": "One Arm Dumbbell Row con apoyo",
               "dosis": "10 por lado",
-              "descripcion": "A una mano y con apoyo, para que la zona lumbar no tenga que sostener todo.",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
-                  }
-                ]
-              }
+              "descripcion": "A una mano y con apoyo, para que la zona lumbar no tenga que sostener todo."
             }
           ],
           "descanso": "*Descanso:* 75–90 s al terminar A3.",
@@ -848,27 +826,7 @@
               "nombre": "Remo vertical con kettlebell",
               "dosis": "10–12",
               "descripcion": "De pie, toma la kettlebell y súbela controlada llevando los codos hacia arriba.",
-              "consejo": "Carga cómoda y un rango que se sienta natural para los hombros.",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
-                  },
-                  {
-                    "campo": "reps",
-                    "etiqueta": "Repeticiones por vuelta",
-                    "unidad": "reps",
-                    "prescrito": true,
-                    "texto": "10–12",
-                    "min": 10,
-                    "max": 12
-                  }
-                ]
-              }
+              "consejo": "Carga cómoda y un rango que se sienta natural para los hombros."
             },
             {
               "codigo": "B3",
@@ -893,68 +851,17 @@
             {
               "codigo": "C1",
               "nombre": "Vuelos laterales",
-              "dosis": "12–15",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
-                  },
-                  {
-                    "campo": "reps",
-                    "etiqueta": "Repeticiones por vuelta",
-                    "unidad": "reps",
-                    "prescrito": true,
-                    "texto": "12–15",
-                    "min": 12,
-                    "max": 15
-                  }
-                ]
-              }
+              "dosis": "12–15"
             },
             {
               "codigo": "C2",
               "nombre": "Dumbbell Hammer Curl",
-              "dosis": "10–12",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. La primera que anotes es la que vamos a usar de referencia."
-                  },
-                  {
-                    "campo": "reps",
-                    "etiqueta": "Repeticiones por vuelta",
-                    "unidad": "reps",
-                    "prescrito": true,
-                    "texto": "10–12",
-                    "min": 10,
-                    "max": 12
-                  }
-                ]
-              }
+              "dosis": "10–12"
             },
             {
               "codigo": "C3",
               "nombre": "Cable Triceps Pushdown",
-              "dosis": "12",
-              "registro": {
-                "campos": [
-                  {
-                    "campo": "carga",
-                    "etiqueta": "Peso que usaste",
-                    "unidad": "kg",
-                    "prescrito": false,
-                    "motivo": "El peso lo eliges tú. El primero que anotes es el que vamos a usar de referencia."
-                  }
-                ]
-              }
+              "dosis": "12"
             }
           ]
         },

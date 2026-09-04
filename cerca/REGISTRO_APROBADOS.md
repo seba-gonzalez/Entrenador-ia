@@ -1035,6 +1035,25 @@ y hasta ahora había que salir a buscar el cronómetro flotante.
 entero** («Descanso 75–90 s» contando 75). El mínimo es el número accionable:
 cuando suena, ya se puede volver.
 
+### APROBADO — Un día liviano registra menos, y eso no es una excepción (2026-09-04)
+
+El día de mantención de Lili pasó de 12 casilleros a 3: solo la prensa
+unilateral y el hip thrust. El resto de ese día no pregunta nada.
+
+**Por qué no contradice la regla del peso elegible.** La regla de fondo sigue
+siendo «un dato se captura porque puede cambiar una decisión futura», y «lleva
+peso elegible» era el atajo para reconocerla. En un día que existe para no
+competir con los fuertes —RPE 6, terminar sintiendo que quedaba capacidad— el
+peso del hammer curl no va a cambiar ninguna decisión. El atajo dejaba de
+apuntar a la regla, así que gana la regla.
+
+**Generaliza:** la intención del día pesa tanto como el equipamiento a la hora
+de decidir dónde va un casillero. Un día liviano pregunta menos por definición,
+no por olvido.
+
+**Lo que no se tocó:** las tres precauciones y los tres cronómetros de ese día
+siguen enteros. Registrar menos no es acompañar menos.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo
