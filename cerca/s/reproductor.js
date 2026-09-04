@@ -471,7 +471,10 @@ function dibujarEjercicio(dia, bloque, ej) {
    es una observacion, y perderla seria borrar evidencia. */
 function casillero(dia, clave, campo, { prellenado, marcador }) {
   const est = D(dia.id);
-  const input = el('input');
+  // `r-campo` no es decoracion: es el rol tipografico aprobado a 16px, y la
+  // razon es funcional -por debajo, Safari en iOS hace zoom al enfocar-. Se
+  // perdio al reescribir esto para Panchi, y el CSS lo respalda ademas.
+  const input = el('input', 'r-campo');
   input.dataset.clave = clave;      // deja el casillero localizable desde fuera
   input.dataset.campo = campo.campo;
   input.type = 'number';

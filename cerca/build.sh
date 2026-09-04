@@ -55,6 +55,7 @@ s/reproductor.js
 sesiones/kecJVd0cI2VQVobjAof6xg.json
 sesiones/r5GvuG0A6UDfxXw3_EViKA.json
 sesiones/0l9VuCJCN-XzXYS4HUF4JA.json
+sesiones/gpofjDzfExk7Qdi927I3dQ.json
 publicar/index.html
 publicar/publicador.js
 "

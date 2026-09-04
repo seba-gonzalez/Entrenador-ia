@@ -1,0 +1,348 @@
+{
+  "formato": 1,
+  "alumno": "Pali",
+  "alumno_slug": "pali",
+  "plan": "pali-repetir-v1",
+  "publicado": "2026-09-04",
+  "portada": {
+    "kicker": "Sesiones guardadas",
+    "titulo": "Lo que hicimos.\nPara que lo repitas.",
+    "bajada": "Estas son las dos sesiones que hiciste conmigo el 1 y el 3 de septiembre, guardadas para un día que no entrenes conmigo. No son un entrenamiento nuevo: son estas mismas, tal como salieron.",
+    "pastillas": [
+      "Sesión 1 · martes",
+      "Sesión 2 · jueves",
+      "para repetir"
+    ]
+  },
+  "seguridad": "Importante: esfuerzo y cansancio pueden ser normales. Si un ejercicio produce dolor o una molestia que te preocupa, no lo fuerces: detén ese movimiento y cuéntanos cuál fue.",
+  "chat": {
+    "atajos": [
+      "¿Cuánto descanso?",
+      "¿Qué peso uso?",
+      "¿Cómo funciona el tabata?"
+    ],
+    "videos": [
+      [
+        "perro gato",
+        "cat cow exercise"
+      ],
+      [
+        "spiderman",
+        "spiderman mobility exercise"
+      ],
+      [
+        "swing",
+        "kettlebell swing tutorial"
+      ],
+      [
+        "toques de hombro",
+        "plank shoulder taps"
+      ],
+      [
+        "jumping",
+        "jumping jack exercise"
+      ],
+      [
+        "elevacion de cadera",
+        "glute bridge exercise"
+      ],
+      [
+        "abdominales",
+        "crunch exercise tutorial"
+      ],
+      [
+        "nados",
+        "swimmers back exercise"
+      ],
+      [
+        "plancha",
+        "plank exercise"
+      ],
+      [
+        "sentadilla",
+        "squat tutorial"
+      ],
+      [
+        "pasadas",
+        "plank kettlebell pull through"
+      ],
+      [
+        "vuelos",
+        "dumbbell lateral raise tutorial"
+      ],
+      [
+        "estocada",
+        "dumbbell lunge tutorial"
+      ],
+      [
+        "antebrazo",
+        "forearm exercise dumbbell"
+      ],
+      [
+        "rotacion",
+        "quadruped thoracic rotation exercise"
+      ]
+    ]
+  },
+  "dias": [
+    {
+      "id": "1",
+      "nav": "SESIÓN 1",
+      "sesion_id": "pali-sesion1-v1",
+      "titulo": "Sesión 1 · Cuerpo completo",
+      "bajada": "La que hicimos el martes 1 de septiembre. Corta y dinámica: bisagra de cadera, plancha, glúteos, abdomen y algo de cardio. Duró unos 40 minutos, y quedó corta por tiempo, no porque estuvieras cansada.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "2 rondas",
+          "recorrido": "*1 → 2* seguidos, y vuelves al 1. Son *2 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Perro-gato",
+              "descripcion": "En cuatro apoyos: redondea suavemente la espalda y luego llévala hacia la posición contraria."
+            },
+            {
+              "codigo": "2",
+              "nombre": "Spiderman",
+              "descripcion": "Desde plancha, lleva un pie por fuera de la mano del mismo lado y carga la cadera hacia adelante."
+            }
+          ]
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "4 rondas",
+          "recorrido": "*A1 → A2 → A3* seguidos. Al terminar A3, *descansa 1 min* y vuelves a A1. Son *4 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Kettlebell Swings",
+              "dosis": "10",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Kettlebell que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "La vez que la hiciste conmigo no quedó anotado qué kettlebell usaste. Anota la de hoy: esa va a ser la referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "A2",
+              "nombre": "Toques de hombro en plancha alta",
+              "dosis": "20"
+            },
+            {
+              "codigo": "A3",
+              "nombre": "Jumping Jacks",
+              "dosis": "30"
+            }
+          ],
+          "descanso": "*Descanso:* alrededor de 1 min al terminar A3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 1 min"
+          }
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "4 rondas",
+          "recorrido": "*B1 → B2 → B3* seguidos. Al terminar B3, *descansa 1 min* y vuelves a B1. Son *4 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Elevación de cadera con kettlebell",
+              "dosis": "20",
+              "descripcion": "Kettlebell apoyada sobre la cadera.",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Kettlebell que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "La vez que la hiciste conmigo no quedó anotado qué kettlebell usaste. Anota la de hoy: esa va a ser la referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Abdominales cortos",
+              "dosis": "20",
+              "descripcion": "Con los pies apoyados sobre la cama o un banco."
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Nados",
+              "dosis": "10",
+              "descripcion": "Trabajo de espalda posterior."
+            }
+          ],
+          "descanso": "*Descanso:* alrededor de 1 min al terminar B3.",
+          "crono": {
+            "segundos": 60,
+            "rotulo": "Descanso 1 min"
+          }
+        },
+        {
+          "id": "cierre",
+          "titulo": "Cierre",
+          "intro": "Tabata de plancha frontal",
+          "recorrido": "*20 s de plancha + 10 s de descanso*, durante *8 minutos*.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Plancha frontal",
+              "dosis": "20 s de trabajo · 10 s de descanso"
+            }
+          ],
+          "descanso": "De ese día no quedó anotado el tiempo exacto ni cuántas rondas fueron. Estos 20 y 10 durante 8 minutos los fijamos ahora para que puedas repetirlo: no son lo que quedó registrado.",
+          "crono": {
+            "tipo": "tabata",
+            "rotulo": "TABATA",
+            "trabajo": 20,
+            "descanso": 10,
+            "total": 480,
+            "ejercicios": [
+              "Plancha frontal"
+            ]
+          }
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue esta vez?",
+        "texto": "Percepción de esfuerzo: 1 = muy fácil; 10 = extremadamente difícil. No hay número correcto: marca cómo se sintió para ti.",
+        "audio": true
+      }
+    },
+    {
+      "id": "2",
+      "nav": "SESIÓN 2",
+      "sesion_id": "pali-sesion2-v1",
+      "titulo": "Sesión 2 · Cuerpo completo",
+      "bajada": "La que hicimos el jueves 3 de septiembre. Global otra vez, pero con otro énfasis: sentadillas, estocadas, hombros, abdomen y trabajo metabólico.",
+      "checkin": {
+        "titulo": "Antes de empezar",
+        "texto": "Dos cosas rápidas. Nada de esto cambia tu sesión por sí solo: las lee Seba.",
+        "sueno": "¿Cómo dormiste?",
+        "energia": "¿Cómo está tu energía hoy?"
+      },
+      "bloques": [
+        {
+          "id": "cal",
+          "titulo": "Calentamiento",
+          "intro": "3 rondas",
+          "recorrido": "*1 → 2 → 3* seguidos, y vuelves al 1. Son *3 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "1",
+              "nombre": "Rotaciones en cuatro apoyos",
+              "dosis": "10 hacia delante y 10 hacia atrás"
+            },
+            {
+              "codigo": "2",
+              "nombre": "Rotaciones torácicas en cuatro apoyos",
+              "dosis": "10"
+            },
+            {
+              "codigo": "3",
+              "nombre": "Spiderman",
+              "dosis": "10"
+            }
+          ]
+        },
+        {
+          "id": "A",
+          "titulo": "Bloque A",
+          "intro": "4 rondas",
+          "recorrido": "*A1 → A2 → A3* seguidos, y vuelves a A1. Son *4 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "A1",
+              "nombre": "Sentadillas + jalón",
+              "dosis": "20"
+            },
+            {
+              "codigo": "A2",
+              "nombre": "Pasadas de kettlebell en plancha alta",
+              "dosis": "10"
+            },
+            {
+              "codigo": "A3",
+              "nombre": "Jumping Jacks",
+              "dosis": "30"
+            }
+          ]
+        },
+        {
+          "id": "B",
+          "titulo": "Bloque B",
+          "intro": "4 rondas",
+          "recorrido": "*B1 → B2 → B3 → B4* seguidos, y vuelves a B1. Son *4 rondas*.",
+          "ejercicios": [
+            {
+              "codigo": "B1",
+              "nombre": "Vuelos laterales",
+              "dosis": "10",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. Anota el que uses hoy: ese va a ser la referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B2",
+              "nombre": "Estocadas con mancuernas",
+              "dosis": "10",
+              "registro": {
+                "campos": [
+                  {
+                    "campo": "carga",
+                    "etiqueta": "Peso que usaste",
+                    "unidad": "kg",
+                    "prescrito": false,
+                    "motivo": "El peso lo eliges tú. Anota el que uses hoy: ese va a ser la referencia."
+                  }
+                ]
+              }
+            },
+            {
+              "codigo": "B3",
+              "nombre": "Abdominales cortos",
+              "dosis": "20"
+            },
+            {
+              "codigo": "B4",
+              "nombre": "Trabajo de antebrazo",
+              "dosis": "10"
+            }
+          ]
+        }
+      ],
+      "feedback": {
+        "titulo": "¿Cómo te fue esta vez?",
+        "texto": "1 = muy fácil; 10 = extremadamente difícil. No buscamos un número correcto: queremos saber cómo se sintió para ti.",
+        "audio": true
+      }
+    }
+  ]
+}

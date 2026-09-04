@@ -1086,6 +1086,46 @@ teléfono corriente, y el pie dice explícitamente que se puede desplazar dentro
 es una que miente en la dirección contraria.** Muestra menos de lo que la
 persona va a ver, y lo que se queda fuera parece no existir.
 
+### APROBADO — Una sesión puede ser un registro guardado para repetir (2026-09-04)
+
+Las dos sesiones de Pali no son una prescripción: son lo que ella ya hizo el 1 y
+el 3 de septiembre, guardado para un día que no entrene con Seba. El formato es
+el mismo; lo que cambia es la portada, que lo dice: *«Lo que hicimos. Para que lo
+repitas.»*
+
+**Ninguna carga viene escrita, y eso es lo correcto aquí.** Los 7 kg de los
+vuelos y las estocadas los eligió ella, no se los mandó nadie. Y la kettlebell
+del martes quedó anotada como «posiblemente 10 kg, sin confirmar».
+
+**Ningún número entra en la sesión, ni siquiera dentro del motivo.** Escribir «la
+vez pasada quizá usaste 10» convertiría en prescripción algo que nadie decidió, y
+un número a la vista ancla aunque vaya rodeado de dudas. Es D-029 en su forma más
+literal: que el punto de partida sea verdadero no convierte el salto en un dato,
+y aquí el punto de partida ni siquiera está confirmado. El motivo dice qué falta
+y qué hacer: *«no quedó anotado qué kettlebell usaste. Anota la de hoy: esa va a
+ser la referencia.»*
+
+**Lo que se rellenó, se declara.** El tabata de cierre no tenía tiempos ni rondas
+anotadas. Se fijaron 20 s / 10 s durante 8 minutos, y el bloque lo dice con esas
+palabras: *«Estos 20 y 10 durante 8 minutos los fijamos ahora para que puedas
+repetirlo: no son lo que quedó registrado.»* Un hueco cerrado que no dice que lo
+cerraron es un hueco que después se lee como registro.
+
+### APROBADO — La auditoría recorre TODAS las sesiones, no la última (2026-09-04)
+
+Al reescribir el reproductor para Panchi se perdió la clase `r-campo` de los
+casilleros, y con ella los 16 px del rol campo. **Nico se quedó en 13,3 px
+durante dos commits** —el mismo zoom de Safari en iOS que se había arreglado
+antes— y las auditorías no lo vieron porque se habían movido a Panchi, que usa
+otro camino de CSS.
+
+La auditoría pasa a recorrer las cuatro sesiones en 320, 390 y 768, y falla si
+alguna baja del piso de 12 px, si algún campo baja de 16, si hay scroll
+horizontal o si hay errores de consola.
+
+> **Mover una comprobación al caso nuevo no es mantenerla: es dejar de mirar el
+> viejo.** La cobertura se pierde en silencio, que es como se perdió esta.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo
