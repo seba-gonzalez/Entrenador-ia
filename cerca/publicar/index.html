@@ -66,7 +66,7 @@ td.jub{color:var(--apunte)}
 
   <main id="app" class="oculto">
     <h1>Publicar una sesión</h1>
-    <p class="sub">Traes la sesión, la miras como la va a ver el alumno, y te llevas el enlace. No caduca, no se puede adivinar y no requiere tocar código.</p>
+    <p class="sub">Traes la sesión —o la bienvenida de alguien nuevo—, la miras como la va a ver esa persona, y te llevas el enlace. No caduca, no se puede adivinar y no requiere tocar código.</p>
 
     <h2>1 · De quién es</h2>
     <div class="caja">
@@ -94,6 +94,10 @@ td.jub{color:var(--apunte)}
         <button class="btn sec" data-molde="lili">La semana de Lili</button>
         <button class="btn sec" data-molde="pali">Las sesiones de Pali</button>
       </div>
+      <label style="margin-top:16px">O empezar una bienvenida para alguien nuevo</label>
+      <div class="fila">
+        <button class="btn sec" data-molde="bienvenida">Bienvenida para alguien nuevo</button>
+      </div>
       <div class="estado" id="estadoTraer"></div>
     </div>
 
@@ -103,7 +107,7 @@ td.jub{color:var(--apunte)}
       <ul class="problemas" id="problemas"></ul>
 
       <div class="telefono"><iframe id="vista" title="Vista previa de la sesión"></iframe></div>
-      <p class="pie-vista">Esto es exactamente lo que va a ver en su teléfono. <b>Desplázate dentro</b> para ver la sesión completa; puedes tocarla y nada de lo que hagas aquí se guarda.</p>
+      <p class="pie-vista">Esto es exactamente lo que va a ver en su teléfono. <b>Desplázate dentro</b> para verlo completo; puedes tocarlo y nada de lo que hagas aquí se guarda.</p>
 
       <details class="codigo">
         <summary>Ver el código</summary>
@@ -135,7 +139,7 @@ td.jub{color:var(--apunte)}
     </div>
 
     <div class="aviso">
-      Esta pantalla es interna y no se publica con la landing. La clave vive solo en este navegador y se borra al cerrar la pestaña.
+      Esta pantalla es interna pero sí está en internet: tiene que estarlo para poder usarla desde el iPad. Lo que la protege no es estar escondida, sino que la clave se comprueba dentro de Supabase. La clave vive solo en este navegador y se borra al cerrar la pestaña.
     </div>
   </main>
 </div>
@@ -145,6 +149,7 @@ const SUPABASE_URL = 'https://lggygnieziilvquvttby.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_YWZ6fII-dO-jpDlZwFE47A_97hMqPpC';
 /* Cambia esto si publicas la vista de alumno en otro dominio. */
 const BASE_ALUMNO = location.origin + '/s/';
+const BASE_BIENVENIDA = location.origin + '/hola/';
 </script>
 <script src="publicador.js"></script>
 </body>

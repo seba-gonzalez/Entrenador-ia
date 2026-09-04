@@ -31,13 +31,15 @@ Si dice *Success*, listo.
 
 ## Paso 2 · Traer la sesión
 
-En `/publicar/`, arriba, tienes tres botones:
+En `/publicar/`, arriba, tienes estos botones:
 
 - **Traer la última entrega de este alumno** — el camino normal. Trae lo que le
   mandaste la semana pasada para que le cambies los números.
-- **La semana de Nico** / **La sesión de Panchi** — para empezar desde una que
-  ya existe. La primera vez de cada alumno, o cuando quieras copiar la
-  estructura de otro.
+- **La semana de Nico** / **La sesión de Panchi** / **La semana de Lili** /
+  **Las sesiones de Pali** — para empezar desde una que ya existe. La primera
+  vez de cada alumno, o cuando quieras copiar la estructura de otro.
+- **Bienvenida para alguien nuevo** — eso no es una sesión. Está explicado
+  abajo, en *Cómo le mando la bienvenida a alguien nuevo*.
 
 ---
 
@@ -97,6 +99,51 @@ más corta de 20 caracteres, o que falte correr el SQL del paso 1.
 
 **Si algo falla, mándame el texto que salió en pantalla.** Está escrito para que
 sirva de diagnóstico: con esa frase sé exactamente en qué paso se cortó.
+
+---
+
+## Cómo le mando la bienvenida a alguien nuevo
+
+Es lo que hoy mandas por WhatsApp cuando invitas a alguien. Ahora es una página
+con su propio enlace, y lo que la persona cuenta llega a la base de datos en vez
+de quedarse en una conversación.
+
+**Una sola vez en la vida**, igual que el paso 1: abre `cerca/sql/002-bienvenidas.sql`,
+pégalo entero en el **SQL Editor** de Supabase y aprieta **Run**. Este no lleva
+clave que cambiar.
+
+Después, cada persona nueva son cuatro toques:
+
+1. Abre `/publicar/` y aprieta **Bienvenida para alguien nuevo**.
+2. Arriba, en **Alumno**, escribe su nombre corto: `javiera`, `mati`, `ana-luz`.
+   Minúsculas, sin tildes ni espacios. **Eso es todo lo que tienes que
+   escribir.** La plantilla viene sin nombre a propósito, para que sirva para
+   cualquiera, y el publicador le pone el que escribiste sin que tengas que
+   abrir el código.
+3. Mira la vista previa: es la página que ella va a abrir, con tu texto entero.
+4. Aprieta **Publicar** y copia el enlace. Termina en `/hola/?e=…`, no en `/s/`.
+
+Lo que le llega a ella: tu texto tal cual, un botón para grabar y un cuadro para
+escribir. Puede usar los dos o solo uno, y **no hay ningún campo obligatorio**.
+El audio puede durar hasta veinte minutos, y puede pausar, seguir, escucharlo
+antes de mandarlo y volver a grabar si no le gustó. Antes de enviar tiene que
+marcar el consentimiento; si no lo marca, el botón no la deja.
+
+Cuando envía, ve un mensaje diciendo que te llegó y que le vas a devolver lo que
+entendiste antes de armarle nada.
+
+**Dónde queda lo que te manda.** En Supabase, tabla `cerca_bienvenidas`: el
+nombre corto, la fecha, el texto y la ruta del audio, que vive en el mismo sitio
+que los audios de feedback. **El audio no lo lee ninguna IA.** Lo escuchas tú y
+escribes el resumen a mano, como hiciste con Nico y con Lili.
+
+**Una cosa que tienes que decidir tú, y no es técnica.** Ese relato puede traer
+lesiones u operaciones, y hoy **no hay ningún plazo de conservación**: se queda
+guardado hasta que alguien lo borre a mano. El consentimiento le promete a la
+persona que puede pedirte que lo borres, y hoy eso significa que entras a
+Supabase y borras la fila y el archivo. Con cuatro personas funciona. Está
+escrito entero, con lo que sí quedó protegido, en `MATRIZ_DE_DATOS.md`, entrada
+**B-02**.
 
 ---
 

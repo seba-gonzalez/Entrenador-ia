@@ -368,6 +368,56 @@ El onboarding actual de la raíz contiene este texto, que **no pasa a CERCA**:
 
 Es una pregunta bien escrita y humana. Es también captura directa de datos sensibles.
 
+### B-02 · `bienvenida` — el relato de entrada de una persona nueva (2026-09-04)
+
+> **Esta entrada anula parcialmente el bloqueo para este caso, y solo para este caso.**
+> Se registra como entrada nueva y no borra nada de lo anterior, según la regla de gobernanza
+> del registro de aprobados.
+
+**Qué se decidió.** La pantalla `/hola/` muestra a una persona nueva el texto de invitación del
+entrenador y recibe su respuesta en audio y/o texto libre. Ese texto contiene, entre ocho
+preguntas guía, esta:
+
+> *"¿Hay algún ejercicio, movimiento, dolor, molestia, lesión o condición que debamos conocer?"*
+
+**Llamemos a las cosas por su nombre: esto es solicitud deliberada de categoría C.** No importa
+que la respuesta sea un relato libre en vez de una escala, ni que la persona decida qué incluye.
+La pregunta nombra dolor, molestia y lesión, y la §6 de este documento la tenía bloqueada. El
+formato cambia la experiencia; no cambia la categoría del dato. Registrarlo de otra forma sería
+maquillar la decisión.
+
+**Por qué se aprueba igual.** Porque el punto de comparación no es «no existe este dato». Ese
+relato **ya se está recogiendo hoy**, por WhatsApp, con la misma pregunta y sin ninguna de las
+protecciones de abajo: sin consentimiento versionado, sin poder saber a qué dijo que sí la
+persona, sin poder encontrar después qué borrar, y guardado en un servicio de terceros que el
+proyecto no controla. Mover ese mismo relato a una página propia **mejora la posición de
+privacidad; no la empeora.** Lo que la §6 evitaba —crear una captura de salud donde no la
+había— aquí no aplica: la captura ya existía fuera de control.
+
+**Cómo queda acotado.** Está implementado, no prometido:
+
+| Protección | Dónde vive |
+|---|---|
+| No se lee con la clave pública: la tabla tiene política de *insert* y solo de *insert*, y `select`, `update` y `delete` están revocados para `anon`. | `sql/002-bienvenidas.sql` |
+| Consentimiento explícito y **versionado**, que nombra la salud con todas sus letras y dice que se puede pedir el borrado. Sin marcarlo no se puede enviar. | `hola/bienvenida.js` · `consentimiento_version` |
+| Cada fila se marca `contiene_salud_posible = true` **por lo que puede contener, no por lo que contiene** — nadie ha escuchado el audio todavía. Es lo que permitirá encontrar qué borrar el día que exista política de retención. | columna con `default true` |
+| Cada fila declara `procesado_por_ia = false`. Hoy es cierto; si deja de serlo, tendrá que cambiarlo alguien a propósito. | columna con `default false` |
+| Nada del contenido viaja en la URL ni en el nombre del archivo de audio: la ruta es `bienvenida/<nombre-corto>/<marca-de-tiempo>-<azar>`. | `subirAudio()` · comprobado en prueba |
+| Enlace por persona, largo e inadivinable, y jubilable publicando otro. | `cerca_publicar` |
+| Ningún campo obligatorio. Se puede mandar solo audio, solo texto, o nada de una de las dos. | `refrescar()` |
+
+**Lo que esto NO autoriza, y sigue bloqueado:**
+- procesar el relato con IA —resumir, transcribir, clasificar o inferir— (§6 y la regla derivada de P-09 siguen enteras);
+- pedir la causa corporal de una restricción en cualquier **otra** pantalla (la REGLA B→C sigue vigente para todo lo demás);
+- reutilizar este relato como fuente de un campo estructurado de salud.
+
+**Lo que queda pendiente y no es una decisión técnica:**
+1. **Plazo de conservación.** Hoy no hay ninguno. Los audios se quedan hasta que alguien los borre a mano. Es la decisión 7 de la §8 y ahora tiene un caso concreto que la vuelve urgente.
+2. **Cómo se atiende un borrado.** El consentimiento promete que se puede pedir. Hoy eso significa que Sebastián entra a Supabase y borra la fila y el archivo. Funciona con cuatro personas; hay que escribirlo antes de que sean cuarenta.
+3. **La revisión jurídica** sigue abierta y esta entrada es material para ella, no un sustituto.
+
+---
+
 ### HALLAZGO ACTIVO — el bloqueo no cubre lo que ya está en producción
 
 El bloqueo, tal como está enunciado, impide **implementar** captura nueva de salud. Pero
@@ -436,7 +486,8 @@ Ordenado por urgencia, no por comodidad.
 | 4 | Publicar la política de privacidad prometida en la propia landing. | Alta |
 | 5 | Confirmar o rechazar la propuesta de Perfil V0 sin persistencia (§7). | Media — bloquea la Fase C |
 | 6 | Eliminar `city` (D-04) si no se le encuentra finalidad. | Baja, pero es gratis |
-| 7 | Fijar plazos de conservación reales. Los 24 meses de este documento son una propuesta mía, no un criterio del proyecto. | Media |
+| 7 | Fijar plazos de conservación reales. Los 24 meses de este documento son una propuesta mía, no un criterio del proyecto. | **Alta desde el 2026-09-04** — B-02 ya está guardando relatos sin plazo |
+| 8 | Escribir cómo se atiende una petición de borrado. B-02 la promete en el consentimiento. | Alta |
 
 ---
 

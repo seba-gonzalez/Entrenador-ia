@@ -525,3 +525,69 @@ details.bloque .ejercicio:first-of-type { border-top: 0; }
   background: rgba(255, 189, 112, .06); color: #ffe3c2;
 }
 .precaucion b { color: var(--aviso); }
+
+/* ==========================================================================
+   BIENVENIDA
+   --------------------------------------------------------------------------
+   La pantalla que abre una persona nueva. No es una sesion: aqui no hay nada
+   que ejecutar y nada que confirmar, asi que no aparece ni el cyan de "listo"
+   ni el azul de la evidencia del alumno. Solo hay un texto para leer y dos
+   formas de contestarlo.
+
+   El texto del entrenador se dibuja tal cual llega. Lo unico que hace el CSS
+   es darle medida de lectura y aire entre parrafos: una invitacion escrita a
+   mano no se lee como una tabla de ejercicios.
+   ========================================================================== */
+
+.invitacion { margin-top: 4px; }
+.invitacion p { color: var(--lectura); margin: 0 0 14px; }
+
+/* La lista de preguntas es una guia, no un formulario, y por eso no lleva
+   numeros: numerarlas invita a contestarlas una por una, que es justo lo que
+   el texto pide no hacer. */
+.invitacion-lista { list-style: none; margin: 4px 0 18px; padding: 0; }
+.invitacion-lista li {
+  color: var(--lectura); margin: 0 0 11px; padding-left: 17px; position: relative;
+}
+.invitacion-lista li::before {
+  content: ''; position: absolute; left: 0; top: .52em;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--apunte);
+}
+.invitacion b { color: var(--texto); font-weight: 700; }
+
+/* --- Responder ------------------------------------------------------------ */
+
+.responder {
+  margin-top: 22px; padding: 17px; border: 1px solid var(--linea);
+  border-radius: 18px; background: linear-gradient(180deg, var(--panel), #030c0c);
+}
+.responder h3 { margin: 0 0 5px; }
+.responder > div + div { margin-top: 22px; }
+
+.audio-larga > p { color: var(--apunte); margin: 0 0 12px; }
+
+/* El reloj es lo unico grande de la pantalla mientras se graba: es la unica
+   pregunta que la persona se hace ahi ("cuanto llevo"). */
+.audio-reloj {
+  text-align: center; font-size: 44px; font-weight: 900; line-height: 1;
+  margin: 6px 0 12px; font-variant-numeric: tabular-nums; color: var(--texto);
+}
+
+.audio-larga .audio-botones { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 8px; }
+.audio-larga .audio-botones .btn { width: auto; }
+.audio-larga .btn[hidden] { display: none; }
+.audio-principal:not(:disabled) { border: 0; background: var(--accion); color: var(--sobre-acento); }
+.audio-larga audio { width: 100%; margin-top: 12px; }
+.audio-larga .audio-estado { text-align: center; }
+
+.escribir > p { color: var(--apunte); margin: 0 0 10px; }
+.escribir textarea { min-height: 190px; }
+
+/* --- El acuse ------------------------------------------------------------- */
+
+.gracias {
+  margin-top: 22px; padding: 20px 17px; border: 1px solid rgba(16, 231, 239, .3);
+  border-radius: 18px; background: rgba(16, 231, 239, .05);
+}
+.gracias h2 { margin: 0 0 8px; }
+.gracias p { color: var(--lectura); margin: 0; }

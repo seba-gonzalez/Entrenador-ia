@@ -37,7 +37,34 @@ async function rpc(nombre, cuerpo) {
 /* --- Revisor -------------------------------------------------------------
    Comprueba estructura, no criterio de entrenamiento. Nunca opina sobre si
    una carga es alta o si faltan ejercicios: eso es del entrenador. */
+
+/* Una bienvenida no es una sesion y no se le pueden pedir las mismas cosas:
+   no tiene dias, ni bloques, ni nada que anotar. Lo unico que tiene es el
+   texto, y de ese texto lo unico que se comprueba es que exista y que llegue
+   entero: el revisor no opina sobre lo que dice ni le cuenta las preguntas.
+   El nombre corto no se exige aqui porque lo pone la casilla de arriba: la
+   plantilla viaja sin nombre a proposito, para que sirva para cualquiera. */
+function revisarBienvenida(s) {
+  const mal = [];
+  if (s.formato !== 1) mal.push('La bienvenida no dice en qué formato está escrita.');
+  if (typeof s.texto !== 'string' || !s.texto.trim()) {
+    mal.push('La bienvenida no trae el texto que va a leer la persona.');
+    return { mal, resumen: '' };
+  }
+  const c = s.cierre || {};
+  if (!c.titulo || !c.texto) {
+    mal.push('Falta el mensaje que ve al terminar de enviar. Sin eso queda sin saber si llegó.');
+  }
+  const parrafos = s.texto.split(/\n{2,}/).filter(x => x.trim()).length;
+  const preguntas = (s.texto.match(/^[•\-–]\s/gm) || []).length;
+  return { mal, resumen:
+    `Una bienvenida · ${parrafos} párrafos · ${preguntas} preguntas de guía · ` +
+    'audio y texto, ninguno obligatorio.' };
+}
+
 function revisar(s) {
+  if (s && typeof s === 'object' && s.tipo === 'bienvenida') return revisarBienvenida(s);
+
   const mal = [];
   const exigir = (cond, texto) => { if (!cond) mal.push(texto); return cond; };
 
@@ -216,10 +243,14 @@ window.addEventListener('message', e => {
   }
 });
 
+/* Cada cosa se previsualiza en la pantalla que de verdad la abre. Una
+   bienvenida cargada en el reproductor no se veria mal: no se veria. */
+const pantallaDe = s => s && s.tipo === 'bienvenida' ? '/hola/index.html' : '/s/index.html';
+
 function mostrar(sesion) {
   PENDIENTE = sesion;
   // Recargar el marco es lo que provoca el saludo al que respondemos arriba.
-  $('#vista').src = '/s/index.html?p=vista&t=' + Date.now();
+  $('#vista').src = pantallaDe(sesion) + '?p=vista&t=' + Date.now();
 }
 
 function veredicto(clase, marca, texto, problemas = []) {
@@ -258,6 +289,11 @@ function comprobar({ mostrarVista = true } = {}) {
     veredicto('', '·', 'Todavía no puedo leer este texto. Si lo estás editando, sigue: reviso solo cuando pares.');
     return;
   }
+
+  // La plantilla de bienvenida viaja sin nombre para que sirva para cualquiera.
+  // El nombre lo pone la casilla de arriba, y asi Sebastian no tiene que abrir
+  // el codigo para mandarle la bienvenida a alguien nuevo.
+  if (s && s.tipo === 'bienvenida') s.alumno_slug = $('#alumno').value.trim();
 
   const { mal, resumen } = revisar(s);
   if (mal.length) {
@@ -319,7 +355,10 @@ const MOLDES = {
   nico:   { archivo: 'kecJVd0cI2VQVobjAof6xg', plan: 'nico-v1',           nombre: 'la semana de Nico' },
   pancha: { archivo: 'r5GvuG0A6UDfxXw3_EViKA', plan: 'pancha-piernas-v4', nombre: 'la sesión de Panchi' },
   lili:   { archivo: '0l9VuCJCN-XzXYS4HUF4JA', plan: 'lili-semana1-v1',   nombre: 'la semana de Lili' },
-  pali:   { archivo: 'gpofjDzfExk7Qdi927I3dQ', plan: 'pali-repetir-v1',   nombre: 'las sesiones de Pali' }
+  pali:   { archivo: 'gpofjDzfExk7Qdi927I3dQ', plan: 'pali-repetir-v1',   nombre: 'las sesiones de Pali' },
+  // Esta no es la bienvenida de nadie: es la plantilla, y por eso no trae
+  // nombre. Se le pone arriba y sale una bienvenida nueva para esa persona.
+  bienvenida: { archivo: 'y3wuS1uRkNnITGE1ezuUfA', plan: 'bienvenida-v1', nombre: 'la bienvenida', sinNombre: true }
 };
 
 $$('[data-molde]').forEach(boton => {
@@ -330,9 +369,11 @@ $$('[data-molde]').forEach(boton => {
       const r = await fetch(`/sesiones/${m.archivo}.json`);
       if (!r.ok) throw new Error(`No encontré ${m.nombre} en este sitio.`);
       $('#json').value = JSON.stringify(await r.json(), null, 2);
-      $('#alumno').value = boton.dataset.molde;
+      if (!m.sinNombre) $('#alumno').value = boton.dataset.molde;
       $('#plan').value = m.plan;
-      decir('#estadoTraer', `Cargada ${m.nombre}. Mírala abajo y edítale lo que haga falta.`, 'bien');
+      decir('#estadoTraer', m.sinNombre
+        ? 'Cargada la bienvenida. Escribe arriba el nombre corto de la persona y publícala.'
+        : `Cargada ${m.nombre}. Mírala abajo y edítale lo que haga falta.`, 'bien');
       comprobar();
     } catch (e) { decir('#estadoTraer', e.message, 'mal'); }
   };
@@ -358,7 +399,7 @@ $('#publicar').onclick = async () => {
       p_clave: CLAVE, p_token: t, p_alumno: alumno, p_plan: plan,
       p_sesion: SESION, p_hash: await huella(SESION), p_nota: $('#nota').value.trim() || null
     });
-    const url = BASE_ALUMNO + '?e=' + t;
+    const url = (SESION.tipo === 'bienvenida' ? BASE_BIENVENIDA : BASE_ALUMNO) + '?e=' + t;
     $('#url').textContent = url;
     $('#abrir').href = url;
     $('#enlace').classList.add('on');
@@ -402,7 +443,7 @@ async function listar() {
       const c = r.insertCell();
       if (f.vigente) {
         const a = document.createElement('a');
-        a.href = BASE_ALUMNO + '?e=' + f.token; a.target = '_blank'; a.rel = 'noopener';
+        a.href = (f.sesion && f.sesion.tipo === 'bienvenida' ? BASE_BIENVENIDA : BASE_ALUMNO) + '?e=' + f.token; a.target = '_blank'; a.rel = 'noopener';
         a.style.color = '#9af9fb'; a.textContent = 'abrir';
         c.appendChild(a);
       } else c.textContent = '—';

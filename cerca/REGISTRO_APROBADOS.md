@@ -1168,6 +1168,48 @@ plano; Panchi plegado; Lili plegada salvo el día 4, que tiene cuatro bloques;
 Pali plana en sus dos sesiones. Con esto se cierra el pendiente que dejó la
 conversión de Nico.
 
+### APROBADO — La pantalla de bienvenida (2026-09-04)
+
+> **Lo que hoy se manda por WhatsApp y se pierde en una conversación, ahora es una
+> página con enlace propio, y lo que la persona cuenta llega a la base de datos.**
+
+Es la primera pantalla de CERCA que **no** es una sesión: no hay nada que ejecutar, nada que
+confirmar y nada que anotar. Por eso no aparece ni el cyan de «listo» ni el azul de la
+evidencia del alumno: aquí no hay evidencia todavía, hay una conversación.
+
+**El texto del entrenador se dibuja tal cual llega.** Lo único que hace el código es decidir
+dónde empieza un párrafo y dónde una lista; no toca una palabra. Las ocho preguntas guía salen
+**sin numerar** a propósito: numerarlas invita a contestarlas una por una, que es justo lo que
+el texto pide no hacer.
+
+**Un solo audio y un solo cuadro de texto, no una cajita por pregunta.** Partir la respuesta en
+campos —objetivo, experiencia, equipamiento— convierte una conversación en un formulario, y lo
+que se pierde es exactamente lo que hace útil este momento: que la persona hable suelto y
+cuente lo que no cabía en ninguna casilla.
+
+**El audio es largo por diseño: hasta veinte minutos.** El feedback de una sesión son noventa
+segundos porque es un comentario; esto es una historia. Se puede pausar, seguir, escuchar antes
+de mandar y volver a grabar. Se graba en trozos de un segundo para que una grabación larga no
+se pierda entera si algo falla a los quince minutos.
+
+**Nada es obligatorio.** Solo audio, solo texto, o los dos. Lo único que bloquea el envío es el
+consentimiento, y el botón dice en cada momento qué falta: «GRABA O ESCRIBE ALGO», «ACEPTA PARA
+ENVIAR», «ENVIAR A SEBA».
+
+**Ninguna IA la toca.** No resume, no transcribe y no interpreta. El resumen lo escribe el
+entrenador después de escuchar, como hasta ahora. Cada fila lo deja declarado por escrito
+(`procesado_por_ia = false`) para que dejar de ser verdad tenga que ser una decisión de alguien.
+
+**Cuesta esto:** una tabla más, una pantalla más que mantener, y —lo importante— **abre una
+puerta que la matriz de datos tenía cerrada**. Está razonado y acotado en `MATRIZ_DE_DATOS.md`
+§6, entrada **B-02**, que anula parcialmente el bloqueo solo para este caso y deja escritas dos
+decisiones que siguen siendo del proyecto: el plazo de conservación y cómo se atiende un
+borrado.
+
+**Cómo se manda a alguien nuevo:** el publicador tiene un botón «Bienvenida para alguien
+nuevo». La plantilla viaja **sin nombre a propósito**, para que sirva para cualquiera: se
+escribe el nombre corto arriba y el publicador lo mete dentro solo. Sin abrir el código.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo
