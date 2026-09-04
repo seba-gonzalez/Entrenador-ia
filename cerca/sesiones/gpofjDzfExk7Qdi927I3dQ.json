@@ -200,22 +200,22 @@
         {
           "id": "cierre",
           "titulo": "Cierre",
-          "intro": "Tabata de plancha frontal",
-          "recorrido": "*20 s de plancha + 10 s de descanso*, durante *8 minutos*.",
+          "intro": "Tabata · 4 minutos",
+          "recorrido": "*20 s de plancha + 10 s de descanso*, *8 rondas*. Son *4 minutos*.",
           "ejercicios": [
             {
               "codigo": "1",
               "nombre": "Plancha frontal",
-              "dosis": "20 s de trabajo · 10 s de descanso"
+              "dosis": "20 s de trabajo · 10 s de descanso · 8 rondas"
             }
           ],
-          "descanso": "De ese día no quedó anotado el tiempo exacto ni cuántas rondas fueron. Estos 20 y 10 durante 8 minutos los fijamos ahora para que puedas repetirlo: no son lo que quedó registrado.",
+          "descanso": "De ese día no quedó anotado el tiempo exacto ni cuántas rondas fueron. Estos 20 y 10 durante 4 minutos los fijamos ahora para que puedas repetirlo: no son lo que quedó registrado.",
           "crono": {
             "tipo": "tabata",
             "rotulo": "TABATA",
             "trabajo": 20,
             "descanso": 10,
-            "total": 480,
+            "total": 240,
             "ejercicios": [
               "Plancha frontal"
             ]

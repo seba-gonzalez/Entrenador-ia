@@ -1126,6 +1126,48 @@ horizontal o si hay errores de consola.
 > **Mover una comprobación al caso nuevo no es mantenerla: es dejar de mirar el
 > viejo.** La cobertura se pierde en silencio, que es como se perdió esta.
 
+### APROBADO — Tabata: la convención de Sebastián (2026-09-04)
+
+Es suya, no se deduce de ningún sitio, y la va a seguir usando:
+
+| | duración | rondas |
+|---|---|---|
+| **tabata** | 4 minutos | 8 |
+| **tabata doble** | 8 minutos | 16 |
+
+**Siempre 20 s de trabajo y 10 de descanso.**
+
+Queda escrita en tres sitios porque los tres la necesitan: aquí, como decisión;
+en el reproductor, para que quien lea el código sepa de dónde salen los números y
+no los cambie por su cuenta; y en el revisor, que **rechaza un tabata que no
+cuadre** — otros tiempos que no sean 20/10, una duración que no sea 4 u 8
+minutos, un bloque de 8 minutos que no se llame «doble», o uno que se llame
+doble y dure 4.
+
+**De dónde salió:** el cierre de Pali se escribió con 8 minutos por una
+indicación equivocada. El de Panchi dice «Tabata doble» y sí lleva 8. La
+comprobación existe para que la palabra y el número no puedan volver a
+separarse.
+
+### APROBADO — El acordeón sale del número de bloques, no de una declaración (2026-09-04)
+
+> **Un día con cinco bloques o más se pliega. Con menos, se ve entero.**
+
+Cinco es donde el día deja de caber en pantalla y scrollear con las manos
+ocupadas empieza a molestar. La barra de progreso acompaña al acordeón y se
+esconde en los días planos: cuando se ven todos los bloques a la vez, la barra
+no dice nada que la pantalla no diga ya.
+
+**Deja de declararse por sesión.** `vista.acordeon` y `vista.progreso` se
+retiraron de las cuatro. Si lo declarara cada sesión, dos alumnos con días del
+mismo largo acabarían viéndose distinto sin que nadie lo hubiera decidido — que
+es exactamente lo que encontró la auditoría del 2026-09-02.
+
+Cómo quedan: Nico días 1 y 2 plegados y el día 3 —la misión, un solo bloque—
+plano; Panchi plegado; Lili plegada salvo el día 4, que tiene cuatro bloques;
+Pali plana en sus dos sesiones. Con esto se cierra el pendiente que dejó la
+conversión de Nico.
+
 ### EN PRUEBA — Que el casillero recuerde
 
 Que la semana siguiente el casillero diga «la vez pasada anotaste 25 kg». No lo

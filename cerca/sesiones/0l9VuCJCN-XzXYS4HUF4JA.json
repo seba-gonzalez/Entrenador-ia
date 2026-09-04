@@ -4,10 +4,6 @@
   "alumno_slug": "lili",
   "plan": "lili-semana1-v1",
   "publicado": "2026-09-04",
-  "vista": {
-    "acordeon": true,
-    "progreso": true
-  },
   "portada": {
     "kicker": "Tu primera semana",
     "titulo": "Cinco días.\nEmpezamos con calma.",

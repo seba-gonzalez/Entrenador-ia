@@ -72,6 +72,23 @@ function revisar(s) {
       if (!b.id) { mal.push(`${donde}: hay un bloque sin identificador.`); return; }
       if (idsBloque.has(b.id)) mal.push(`${donde}: el bloque «${b.id}» aparece dos veces.`);
       idsBloque.add(b.id);
+      // La convencion del tabata es de Sebastian: 4 minutos el simple, 8 el
+      // doble, siempre 20/10. Un tabata que no cuadre con eso casi siempre es
+      // un numero mal copiado, como los 8 minutos que llevaba el de Pali.
+      const cronos = Array.isArray(b.crono) ? b.crono : b.crono ? [b.crono] : [];
+      cronos.filter(c => c.tipo === 'tabata').forEach(c => {
+        const donde2 = `${donde}, ${b.titulo || 'bloque ' + b.id}`;
+        if (c.trabajo !== 20 || c.descanso !== 10) {
+          mal.push(`${donde2}: un tabata siempre es 20 s de trabajo y 10 de descanso, y este dice ${c.trabajo ?? '?'} y ${c.descanso ?? '?'}.`);
+        }
+        if (c.total !== 240 && c.total !== 480) {
+          mal.push(`${donde2}: un tabata dura 4 minutos y un tabata doble 8, y este dura ${c.total ? Math.round(c.total / 60) + ' minutos' : 'un tiempo sin declarar'}.`);
+        }
+        const doble = /doble/i.test(b.titulo || '');
+        if (c.total === 480 && !doble) mal.push(`${donde2}: dura 8 minutos, así que es un tabata doble y el bloque debería decirlo.`);
+        if (c.total === 240 && doble) mal.push(`${donde2}: se llama doble pero dura 4 minutos, que es un tabata simple.`);
+      });
+
       if (b.tipo === 'mision' && (!Array.isArray(b.opciones) || !b.opciones.length)) {
         mal.push(`${donde}, bloque ${b.id}: es una misión pero no ofrece ninguna opción para elegir.`);
       }
@@ -265,6 +282,13 @@ $('#json').addEventListener('input', () => {
   clearTimeout(reloj);
   reloj = setTimeout(() => comprobar(), 700);
 });
+
+/* Cambiar de quien es tambien vuelve a habilitar el boton. Sin esto, despues
+   de publicar una vez el boton se quedaba en "Publicada ✓" y la unica forma de
+   salir de ahi era tocar el codigo, que es justo lo que ya no hay que hacer.
+   La vista no se recarga: el contenido no cambio, solo a quien va. */
+['#alumno', '#plan'].forEach(sel =>
+  $(sel).addEventListener('input', () => comprobar({ mostrarVista: false })));
 
 $('#ordenar').onclick = () => {
   try { $('#json').value = JSON.stringify(leerJson(), null, 2); comprobar(); }

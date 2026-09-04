@@ -4,10 +4,6 @@
   "alumno_slug": "pancha",
   "plan": "pancha-piernas-v4",
   "publicado": "2026-09-01",
-  "vista": {
-    "acordeon": true,
-    "progreso": true
-  },
   "portada": {
     "kicker": "Entrenamiento de hoy",
     "titulo": "Hola, Panchi 👋\nHoy vamos con piernas.",

@@ -148,6 +148,14 @@ const CAPTURA_VIGILANCIA = false;
    Pregunta por el ENTRENAMIENTO, no por el cuerpo. No se pregunta por
    molestias ni por dolor: si el alumno decide contar algo suyo, lo cuenta por
    su cuenta. Una sesion puede poner el suyo, pero no hace falta. */
+/* CONVENCION DE SEBASTIAN, y no se deduce de ningun sitio:
+     tabata        = 4 minutos · 8 rondas
+     tabata doble  = 8 minutos · 16 rondas
+   Siempre 20 s de trabajo y 10 de descanso.
+   La sesion declara los segundos; esto esta aqui para que quien lea el codigo
+   sepa de donde salen los numeros y no los cambie por su cuenta. */
+const TABATA = { trabajo: 20, descanso: 10, simple: 240, doble: 480 };
+
 const MARCADOR_FEEDBACK =
   'Cuéntame cómo te fue: qué pesos usaste, qué ejercicio no te acomodó, qué te costó más de lo que esperabas, y cualquier cosa que quieras que sepa antes de armarte la próxima.';
 
@@ -196,7 +204,10 @@ function dibujar() {
       s.portada.pastillas.forEach(t => fila.appendChild(el('span', 'pastilla r-apunte', t)));
       p.appendChild(fila);
     }
-    if (s.vista?.progreso) {
+    // La barra existe si algun dia se pliega, y se esconde en los que no.
+    // En un dia plano se ven todos los bloques a la vez: la barra no dice nada
+    // que la pantalla no diga ya.
+    if (s.dias.some(esAcordeon)) {
       const pr = el('div', 'progreso');
       const cab = el('div', 'progreso-cab r-etiqueta');
       cab.appendChild(el('span', null, 'Tu sesión'));
@@ -236,6 +247,12 @@ function dibujar() {
   s.dias.forEach(d => { refrescarEnvio(d.id); refrescarProgreso(d.id); });
 }
 
+/* Un dia largo se pliega; uno corto se ve entero. Cinco bloques es donde deja
+   de caber en pantalla y scrollear con las manos ocupadas empieza a molestar.
+   No lo declara la sesion: si lo declarara, dos alumnos con dias del mismo
+   largo acabarian viendose distinto sin que nadie lo hubiera decidido. */
+const esAcordeon = dia => dia.bloques.length >= 5;
+
 function dibujarDia(dia, visible) {
   // El identificador de la ejecucion sobrevive a una recarga dentro de la
   // misma pestana: recargar en mitad del entrenamiento no puede crear una
@@ -263,7 +280,7 @@ function dibujarDia(dia, visible) {
   if (dia.bajada) cab.appendChild(el('p', 'r-apunte', dia.bajada));
   caja.appendChild(cab);
 
-  const acordeon = !!S.sesion.vista?.acordeon;
+  const acordeon = esAcordeon(dia);
   const cuerpo = el('div', 'sesion-cuerpo');
   // Antes de todo, porque es lo que se responde antes de entrenar.
   if (dia.checkin) cuerpo.appendChild(dibujarCheckin(dia));
@@ -681,7 +698,12 @@ function cuentaBloques(id) {
 }
 
 function refrescarProgreso(id) {
-  if (!S.sesion.vista?.progreso || id !== S.diaVisible) return;
+  if (id !== S.diaVisible) return;
+  const caja = $('.progreso');
+  if (!caja) return;
+  const dia = S.sesion.dias.find(d => d.id === id);
+  caja.hidden = !esAcordeon(dia);
+  if (caja.hidden) return;
   const { listos, total } = cuentaBloques(id);
   const n = $('.progreso-n');
   if (!n) return;
